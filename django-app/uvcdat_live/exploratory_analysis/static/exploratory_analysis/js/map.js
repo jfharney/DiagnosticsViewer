@@ -4,7 +4,12 @@ function create_map_canvas(json_datafile, map_div_id, width, height) {
 
     var projection = d3.geo.equirectangular().translate([width/2, height/2]);
 
-    d3.json(json_datafile, function(mapdata) {
+    mapdata = JSON.parse(json_datafile);
+
+//    var dx = mapdata[0].length,
+//            dy = mapdata.length;
+    
+//    d3.json(json_datafile, function(mapdata) {
         var dx = mapdata[0].length,
             dy = mapdata.length;
 
@@ -143,5 +148,6 @@ function create_map_canvas(json_datafile, map_div_id, width, height) {
         function removeZero(axis) {
             axis.selectAll("g").filter(function(d) { return !d; }).remove();
         }
-    });
-}
+    };
+        
+//}

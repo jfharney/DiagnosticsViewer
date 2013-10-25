@@ -193,16 +193,16 @@
 				data: queryString,
 				success: function(data) {
 					
-					console.log('data: ' + data);
+					//console.log('data: ' + data);
 					$('.page-header').empty();
 					$('.lead').empty();
 					$('#map-canvas').empty();
 					
-					//create_map_canvas(data, "#map-canvas", 720, 360);
+					create_map_canvas(data, "#map-canvas", 720, 360);
 					
 					$('.page-header').append('<h3>' + variable  + 'Average Map</h3>');
 					$('#map-canvas').append('<div>Data for: ' + variable + '</div>');
-					$('#map-canvas').append('<div>' + data + '</div>');
+					//$('#map-canvas').append('<div>' + data + '</div>');
 					
 					
 				},
