@@ -22,25 +22,6 @@ def index(request):
 
   return HttpResponse(template.render(context))
 
-def ar(request):
-    
-  #data = open('/Users/8xo/esgfWorkspace/UVCDAT_live/WebContent/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/AR1.json')
-  #jsonData = json.dumps(data)
-  
-  
-    
-  print request.GET.get('q')
-  
-  template = loader.get_template('exploratory_analysis/ar.html')
-#  latest_poll_list = Poll.objects.order_by('-pub_date')[:5]
-#  template = loader.get_template('polls/index.html')
-  context = RequestContext(request, {
-    'b' : 'bbbb',
-  })
-
-  return HttpResponse(template.render(context))
-  #return HttpResponse(jsonData)
-
 
 def datasets(request):
     
@@ -52,11 +33,10 @@ def datasets(request):
   else:
       variable = request.GET.get('variable')
   
-  file = '/Users/csg/Desktop/uvcdat-web/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/' + variable + '.json' 
-  #file = '/Users/8xo/esgfWorkspace/UVCDAT_live/WebContent/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/' + variable + '.json' 
+  #file = '/Users/csg/Desktop/uvcdat-web/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/' + variable + '.json' 
+  file = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/' + variable + '.json' 
   
-  print file
-  
+ 
   with open(file , 'r') as myfile:
       data = myfile.read().replace('\n','')
       
@@ -67,5 +47,77 @@ def datasets(request):
   return HttpResponse(jsonData)
 
 
+def getDatasetListJSONStr(user_id):
+    
+  #list of paths
+  paths = ['path1','path2','path3']
+
+  #list of datasets
+  datasets = ['dataset1','dataset2','dataset3']
+
+
+  #list of year range per dataset
+  dataset1years = ['150','151','152']
+  dataset2years = ['150','151','152']
+  dataset3years = ['150','151','152']
+
+  year_range = [dataset1years, dataset2years, dataset3years]
+    
+  data =  { 'datasets' : datasets, 'paths' : paths, 'year_range' : year_range }
+  print 'DATA:',repr(data)
+  data_string = json.dumps(data,sort_keys=True,indent=2)
+  print 'JSON:',data_string
+  data_string = json.dumps(data,sort_keys=False,indent=2)
+  print 'JSON:',data_string
+
+  jsonStr = json.loads(data_string)
+
+  print jsonStr
+  #print dir(json)
+
+  return jsonStr
+
+
+
+  
+
+#
+'''
+#URL String:
+  http://<host>/exploratory_analysis/datasetsList/<user_id>
+
+lists all the datasets given a user
+output is:
+{
+  user : '',
+  datasets : [],
+  paths: [],
+  year_range: [[]]
+  
+}
+
+'''
+def datasetsList(request,user_id):
+  #get user query parameter
+  user = ''
+  if(request.GET.get('user') == None):
+      user = 'Chad'
+  else:
+      user = request.GET.get('user')
+      
+  
+  
+  #from the user, get all the datasets that are available to that user
+  print user_id
+  
+  jsonStr = getDatasetListJSONStr(user_id)
+  
+  
+  #print 'Returning dataset list for user ' + user
+  
+  return HttpResponse(jsonStr['year_range'][0])  
+
+
+  
 
 
