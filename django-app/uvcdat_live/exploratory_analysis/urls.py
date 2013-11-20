@@ -6,6 +6,15 @@ print dir(views)
 
 urlpatterns = patterns('',
   url(r'^$', views.index, name='index'),
+  url(r'^treedata/(?P<user_id>\w+)/$', views.treedata, name='treedata'),
+  #url(r'^ar/$', views.arData, name='ar'),
+  url(r'^datasets/(?P<user_id>\w+)/$',views.datasets,name='datasets'),
+  url(r'^variables/(?P<dataset_id>\w+)/$',views.variables,name='variables'),
+  url(r'^times/(?P<variable_id>\w+)/$',views.times,name='times'),
+  
+  
+  
+  
   url(r'^tree/$', views.tree, name='tree'),
   url(r'^tree/treedata/(?P<user_id>\w+)/$', views.treedata, name='treedata'),
   #url(r'^ar/$', views.arData, name='ar'),

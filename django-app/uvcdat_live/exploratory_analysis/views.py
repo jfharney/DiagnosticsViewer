@@ -9,8 +9,8 @@ from exploratory_analysis.models import Diags
 import json
 
 def tree(request):
-  #template = loader.get_template('exploratory_analysis/treeview.html')
-  template = loader.get_template('exploratory_analysis/tree.html')
+  template = loader.get_template('exploratory_analysis/treeview.html')
+  #template = loader.get_template('exploratory_analysis/tree.html')
   context = RequestContext(request, {
     'a' : 'aaaaa',
     })
