@@ -8,6 +8,64 @@ from exploratory_analysis.models import Diags
 
 import json
 
+def tree(request):
+  #template = loader.get_template('exploratory_analysis/treeview.html')
+  template = loader.get_template('exploratory_analysis/tree.html')
+  context = RequestContext(request, {
+    'a' : 'aaaaa',
+    })
+  
+  return HttpResponse(template.render(context))
+  
+  
+  
+  
+def treedata(request,user_id):
+    
+    username = user_id
+  
+
+    file = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/css/tree/flare2.json';
+
+    from pprint import pprint
+
+    data = ''
+    with open(file) as data_file:    
+        data = json.load(data_file)
+        pprint(data)
+    
+    url = 'http://cds.ccs.ornl.gov/y9s/singlef/i1850cn_cruncep_CNDA_Cli_b_2000-2009-i1850cn_cruncep_ctl_2000-2009/setsIndex.html'
+    
+    children_arr = [ { "name": "Set 1" } ]
+    
+    #data = { 'name' : 'LND_DIAG', 'url' : url, 'children' : children_arr }
+    data_string = json.dumps(data,sort_keys=True,indent=2)
+    print 'JSON:',data_string
+            
+            
+            
+    
+    return HttpResponse(data_string)
+    
+
+
+def maps(request):
+  print request.GET.get('q')
+  template = loader.get_template('exploratory_analysis/mapview.html')
+  context = RequestContext(request, {
+    'a' : 'aaaaa',
+  })
+#  latest_poll_list = Poll.objects.order_by('-pub_date')[:5]
+#  template = loader.get_template('polls/index.html')
+#  context = RequestContext(request, {
+#    'latest_poll_list' : latest_poll_list,
+#  })
+
+  return HttpResponse(template.render(context))
+
+
+
+
 def index(request):
   print request.GET.get('q')
   template = loader.get_template('exploratory_analysis/index.html')
@@ -22,8 +80,94 @@ def index(request):
 
   return HttpResponse(template.render(context))
 
+def datasets(request,user_id):
+  
+  username = 'jfharney'
+  
+  #list of paths
+  paths = ['path1','path2','path3']
 
-def datasets(request):
+  #list of datasets
+  datasets = ['dataset1','dataset2','dataset3']
+
+
+  #list of year range per dataset
+  dataset1years = ['150','151','152']
+  dataset2years = ['150','151','152']
+  dataset3years = ['150','151','152']
+
+  year_range = [dataset1years, dataset2years, dataset3years]
+    
+  data =  { 'username' : username, 'datasets' : datasets, 'paths' : paths, 'year_range' : year_range }
+  print 'DATA:',repr(data)
+  data_string = json.dumps(data,sort_keys=True,indent=2)
+  print 'JSON:',data_string
+  data_string = json.dumps(data,sort_keys=False,indent=2)
+  print 'JSON:',data_string
+
+  jsonStr = json.loads(data_string)
+
+    
+    
+
+  return HttpResponse(data_string)
+
+
+def variables(request,dataset_id):
+  
+  #dataset_id = 'dataset1'
+  if(dataset_id == None):
+      dataset_id = 'dataset1' 
+  
+  if(dataset_id == 'dataset3'):
+      variables = ['AR','BTRAN','CWDC','DEADCROOTC','DEADSTEMC','ER','FROOTC','FSDS','GPP','HR','LIVECROOTC','LIVESTEMC','NEE','NPP','PCO2', 'RAIN', 'TBOT', 'TLAI', 'TOTECOSYSC', 'TOTLITC','TOTSOMC','TOTVEGC', 'WOODC'    ]
+  else:
+      variables = ['ALL', 'AR','BTRAN','CWDC','DEADCROOTC','DEADSTEMC','ER','FROOTC','FSDS','GPP','HR','LIVECROOTC','LIVESTEMC','NEE','NPP','PCO2', 'RAIN', 'TBOT', 'TLAI', 'TOTECOSYSC', 'TOTLITC','TOTSOMC','TOTVEGC', 'WOODC'    ]
+  
+  data =  { 'dataset_id' : dataset_id, 'variables' : variables }
+  print 'DATA:',repr(data)
+  data_string = json.dumps(data,sort_keys=True,indent=2)
+  #print 'JSON:',data_string
+  #data_string = json.dumps(data,sort_keys=False,indent=2)
+  #print 'JSON:',data_string
+
+  jsonStr = json.loads(data_string)
+
+
+  return HttpResponse(data_string)
+
+
+
+
+
+
+def times(request,variable_id):
+  
+    print 'times for variable ', variable_id
+  
+    #dataset_id = 'dataset1'
+    if(variable_id == None):
+        variable_id = 'AR' 
+  
+    if(variable_id == 'AR'):
+        times = ['jan','feb','mar']
+    else:
+        times = ['april','may','june']
+    
+    data =  { 'variable_id' : variable_id, 'times' : times }
+    print 'DATA:',repr(data)
+    data_string = json.dumps(data,sort_keys=True,indent=2)
+    jsonStr = json.loads(data_string)
+    
+    return HttpResponse(data_string)
+
+
+
+
+
+
+
+def visualizations(request):
     
   print request.GET.get('variable')
   
