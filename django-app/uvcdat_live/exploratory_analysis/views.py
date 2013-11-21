@@ -9,8 +9,8 @@ from exploratory_analysis.models import Diags
 import json
 
 def tree(request):
-  template = loader.get_template('exploratory_analysis/treeview.html')
-  #template = loader.get_template('exploratory_analysis/tree.html')
+  #template = loader.get_template('exploratory_analysis/treeview.html')
+  template = loader.get_template('exploratory_analysis/tree.html')
   context = RequestContext(request, {
     'a' : 'aaaaa',
     })
@@ -25,7 +25,8 @@ def treedata(request,user_id):
     username = user_id
   
 
-    file = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/css/tree/flare2.json';
+    #file = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/css/tree/flare2.json';
+    file = '/Users/csg/Desktop/uvcdat-web/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/css/tree/flare2.json';
 
     from pprint import pprint
 
@@ -177,8 +178,8 @@ def visualizations(request):
   else:
       variable = request.GET.get('variable')
   
-  #file = '/Users/csg/Desktop/uvcdat-web/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/' + variable + '.json' 
-  file = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/' + variable + '.json' 
+  file = '/Users/csg/Desktop/uvcdat-web/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/' + variable + '.json' 
+  #file = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/' + variable + '.json' 
   
  
   with open(file , 'r') as myfile:

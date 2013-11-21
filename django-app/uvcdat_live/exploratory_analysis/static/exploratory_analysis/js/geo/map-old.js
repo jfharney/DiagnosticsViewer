@@ -1,10 +1,10 @@
-function create_map_canvas(mapdata, map_div_id, width, height) {
+function create_map_canvas(json_datafile, map_div_id, width, height) {
     //var width = 720,
     //    height = 360;
 
     var projection = d3.geo.equirectangular().translate([width/2, height/2]);
 
-    //mapdata = JSON.parse(json_datafile);
+    mapdata = JSON.parse(json_datafile);
 
 //    var dx = mapdata[0].length,
 //            dy = mapdata.length;
