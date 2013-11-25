@@ -24,7 +24,7 @@ var vis = d3.select("#body").append("svg:svg")
 
 
 var queryString = '';
-var url = 'treedata/' + 'jfharney';
+var url = 'http://localhost:8081/exploratory_analysis/treedata/' + 'jfharney';
 
 /*
 $.ajax({
