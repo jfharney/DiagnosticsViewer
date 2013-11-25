@@ -20,8 +20,9 @@ from frontend.treeview import TreeView
 def tree(request):
     #template = loader.get_template('exploratory_analysis/treeview.html')
     template = loader.get_template('exploratory_analysis/tree.html')
-  
     return HttpResponse(template.render(context))
+  
+  
   
  
 def treedata(request,user_id):
@@ -87,6 +88,8 @@ def treedataOld(request,user_id):
     username = user_id
 
     file = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/css/tree/flare3.json';
+    #file = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/css/tree/flare2.json';
+    
 
     from pprint import pprint
 
@@ -290,11 +293,6 @@ def visualizations(request):
   
   
   
-  
-  
-  
-  
-  
    print request.GET.get('variable')
   
    variable = ''
@@ -305,7 +303,7 @@ def visualizations(request):
   
    #file = '/Users/csg/Desktop/uvcdat-web/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/' + variable + '.json' 
    file = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/' + variable + '.json' 
-  
+ 
  
    with open(file , 'r') as myfile:
       data = myfile.read().replace('\n','')
