@@ -13,7 +13,7 @@ $(document).ready(function(){
 				variable_id = 'AR';
 			}
 			
-			var url = 'visualizations?variable=' + variable_id;
+			var url = 'http://localhost:8081/exploratory_analysis/visualizations?variable=' + variable_id;
 			
 			$.ajax({
 				url: url,
@@ -23,17 +23,18 @@ $(document).ready(function(){
 				data: queryString,
 				success: function(data) {
 					
-					//console.log('data: ' + data);
+					mapdata = JSON.parse(data);
+					
 					$('.page-header').empty();
 					$('.lead').empty();
 					$('#map-canvas').empty();
 					
-					create_map_canvas(data, "#map-canvas", 720, 360);
+					
+					create_map_canvas(mapdata, "#map-canvas", 720, 360);
 					
 					$('.page-header').append('<h3>' + variable_id  + 'Average Map</h3>');
 					$('#map-canvas').append('<div>Data for: ' + variable_id + '</div>');
 					//$('#map-canvas').append('<div>' + data + '</div>');
-					
 					
 				},
 				error: function( jqXHR, textStatus, errorThrown ) {

@@ -6,7 +6,7 @@ $(document).ready(function(){
 			
 			var jsonData = '';
 			var queryString = '';
-			var url = 'variables/' + this.innerHTML;
+			var url = 'http://localhost:8081/exploratory_analysis/variables/' + this.innerHTML;
 			
 			console.log('querying: ' + url);
 			

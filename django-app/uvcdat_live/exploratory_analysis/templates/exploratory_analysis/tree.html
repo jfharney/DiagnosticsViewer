@@ -55,11 +55,8 @@ path.link {
 	
 
 	<script src="http://d3js.org/d3.v2.min.js?2.9.6"></script>
-	<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/map.js' %}"></script>
 	
     <script type="text/javascript">
-console.log('hello');
-    
     
 // max number of images to display simultaneously.
 var MAX_CANVAS = 4;
@@ -85,7 +82,7 @@ var vis = d3.select("#body").append("svg:svg")
 
 
 var queryString = '';
-var url = 'treedata/' + 'jfharney';
+var url = 'http://localhost:8081/exploratory_analysis/treedata/' + 'jfharney';
 
 $.ajax({
 	url: url,

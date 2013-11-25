@@ -17,15 +17,70 @@ from fileio.findfiles import *
 
 from frontend.treeview import TreeView 
 
+
+#Home page view...nothing fancy here just points to the view located at index.html
+def index(request):
+    
+    print request.GET.get('q')
+    
+    template = loader.get_template('exploratory_analysis/index.html')
+
+    context = RequestContext(request, {
+        'username' : 'jfharney',
+    })
+
+    return HttpResponse(template.render(context))
+
+
+
+#Called upon index page startup
+def datasets(request,user_id):
+  
+  username = 'jfharney'
+  
+  #list of paths
+  paths = ['path1','path2','path3']
+
+  #list of datasets
+  datasets = ['dataset1','dataset2','tropics_warming_th_q_co2']
+
+
+  #list of year range per dataset
+  dataset1years = ['150','151','152']
+  dataset2years = ['150','151','152']
+  dataset3years = ['150','151','152']
+
+  year_range = [dataset1years, dataset2years, dataset3years]
+    
+  data =  { 'username' : username, 'datasets' : datasets, 'paths' : paths, 'year_range' : year_range }
+  print 'DATA:',repr(data)
+  data_string = json.dumps(data,sort_keys=True,indent=2)
+  print 'JSON:',data_string
+  data_string = json.dumps(data,sort_keys=False,indent=2)
+  print 'JSON:',data_string
+
+  jsonStr = json.loads(data_string)
+
+    
+    
+
+  return HttpResponse(data_string)
+
+
 def tree(request):
     #template = loader.get_template('exploratory_analysis/treeview.html')
     template = loader.get_template('exploratory_analysis/tree.html')
+    
+    context = RequestContext(request, {
+        'username' : 'jfharney',
+    })
+    
     return HttpResponse(template.render(context))
   
   
   
  
-def treedata(request,user_id):
+def treedataBrian(request,user_id):
     
     username = user_id
   
@@ -83,7 +138,7 @@ def treedata(request,user_id):
  
 
   
-def treedataOld(request,user_id):
+def treedata(request,user_id):
     
     username = user_id
 
@@ -129,52 +184,6 @@ def maps(request):
 
 
 
-
-def index(request):
-  print request.GET.get('q')
-  template = loader.get_template('exploratory_analysis/index.html')
-  context = RequestContext(request, {
-    'a' : 'aaaaa',
-  })
-#  latest_poll_list = Poll.objects.order_by('-pub_date')[:5]
-#  template = loader.get_template('polls/index.html')
-#  context = RequestContext(request, {
-#    'latest_poll_list' : latest_poll_list,
-#  })
-
-  return HttpResponse(template.render(context))
-
-def datasets(request,user_id):
-  
-  username = 'jfharney'
-  
-  #list of paths
-  paths = ['path1','path2','path3']
-
-  #list of datasets
-  datasets = ['dataset1','dataset2','tropics_warming_th_q_co2']
-
-
-  #list of year range per dataset
-  dataset1years = ['150','151','152']
-  dataset2years = ['150','151','152']
-  dataset3years = ['150','151','152']
-
-  year_range = [dataset1years, dataset2years, dataset3years]
-    
-  data =  { 'username' : username, 'datasets' : datasets, 'paths' : paths, 'year_range' : year_range }
-  print 'DATA:',repr(data)
-  data_string = json.dumps(data,sort_keys=True,indent=2)
-  print 'JSON:',data_string
-  data_string = json.dumps(data,sort_keys=False,indent=2)
-  print 'JSON:',data_string
-
-  jsonStr = json.loads(data_string)
-
-    
-    
-
-  return HttpResponse(data_string)
 
 
 def variables(request,dataset_id):
@@ -229,7 +238,7 @@ def times(request,variable_id):
 '''
 http://
 '''
-def visualizations(request):
+def visualizationsBrian(request):
     
    
    o = Options()
@@ -325,6 +334,8 @@ def visualizations(request):
 
 def visualizations(request):
     
+  
+   print 'in visualizations'
   
    print request.GET.get('variable')
   

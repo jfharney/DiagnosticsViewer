@@ -121,6 +121,7 @@ function create_map_canvas(mapdata, map_div_id, width, height) {
 
         // Compute the pixel colors; scaled by CSS.
         function drawImage(canvas) {
+        	console.log('in draw image');
             var context = canvas.node().getContext("2d"),
                 image = context.createImageData(dx, dy);
 

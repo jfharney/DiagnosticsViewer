@@ -7,7 +7,7 @@ $(document).ready(function(){
 			
 			var jsonData = '';
 			var queryString = '';
-			var url = 'times/' + this.innerHTML;
+			var url = 'http://localhost:8081/exploratory_analysis/times/' + this.innerHTML;
 			
 			console.log('querying: ' + url);
 			
