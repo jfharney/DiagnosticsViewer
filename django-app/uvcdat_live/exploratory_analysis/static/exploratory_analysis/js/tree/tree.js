@@ -1,66 +1,5 @@
-{% load staticfiles %}
 
-<!DOCTYPE html>
-<html xmlns:xlink="http://www.w3.org/1999/xlink">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-    
-    
-	<link href="{% static 'exploratory_analysis/css/tree/style.css' %}" rel="stylesheet" />
-    
-    <!--<script type="text/javascript" src="d3.v3/d3.v3.js"></script>-->
-    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-    
-    <!--<script type="text/javascript" src="d3/d3.layout.js"></script>-->
-    <style type="text/css">
-
-
-
-html {
-	overflow-y: scroll;
-}
-
-.node circle {
-  cursor: pointer;
-  fill: #fff;
-  stroke: steelblue;
-  stroke-width: 1.5px;
-}
-
-.node text {
-  font-size: 11px;
-}
-
-path.link {
-  fill: none;
-  stroke: #ccc;
-  stroke-width: 1.5px;
-}
-
-    </style>
-  </head>
-  <body>
-    <div id="body">
-      <div id="footer">
-        LND_DIAG 
-        <div class="hint">click or option-click to expand or collapse</div>
-      </div>
-    </div>
-    <canvas id = "image_canvas" width = "1800" height = "1000"></canvas>
-    
-    
-	<script src="{% static 'exploratory_analysis/js/jquery/jquery-1.10.2.min.js' %}"></script>
-	<script src="{% static 'exploratory_analysis/js/bootstrap/bootstrap.min.js' %}"></script>
-	<script src="{% static 'exploratory_analysis/js/bootstrap/bootstrap-combobox.js' %}"></script>
-	
-
-	<script src="http://d3js.org/d3.v2.min.js?2.9.6"></script>
-	<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/map.js' %}"></script>
-	
-    <script type="text/javascript">
-console.log('hello');
-    
-    
+	    
 // max number of images to display simultaneously.
 var MAX_CANVAS = 4;
 
@@ -87,6 +26,7 @@ var vis = d3.select("#body").append("svg:svg")
 var queryString = '';
 var url = 'treedata/' + 'jfharney';
 
+/*
 $.ajax({
 	url: url,
 	global: false,
@@ -100,22 +40,15 @@ $.ajax({
 		}
 		
 		callD3(data);
-		/*
-		var datasetList = data['datasets'];
-		$('#dataset_name').empty();
-		for (var i=0;i<datasetList.length;i++) {
-			var dataset = datasetList[i];
-			$('.dropdown-dataset-menu').append('<li class="dataset_menu" id="' + dataset + '"><a href="#">' + dataset + '</a></li>');
-		}
-		*/
+		
 	},
 	error: function( jqXHR, textStatus, errorThrown ) {
-		alert('treeview textStatus: ' + textStatus + ' errorThrown: ' + errorThrown);
+		alert('tree.js textStatus: ' + textStatus + ' errorThrown: ' + errorThrown);
 		
 	}
 });
 
-
+*/
 
 
 function callD3(data) {
@@ -157,7 +90,7 @@ function callD3(data) {
 	  update(root);
 	  
 	  
-//	});
+//			});
 }
 
 function update(source) {
@@ -169,7 +102,7 @@ function update(source) {
   // Normalize for fixed-depth.
   nodes.forEach(function(d) { d.y = d.depth * 180; });
 
-  // Update the nodes‚Ä¶
+  // Update the nodes…
   var node = vis.selectAll("g.node")
       .data(nodes, function(d) { return d.id || (d.id = ++i); });
 
@@ -218,7 +151,7 @@ function update(source) {
   nodeExit.select("text")
       .style("fill-opacity", 1e-6);
 
-  // Update the links‚Ä¶
+  // Update the links…
   var link = vis.selectAll("path.link")
       .data(tree.links(nodes), function(d) { return d.target.id; });
 
@@ -292,6 +225,4 @@ function drawImage(context, i) {
 }
 
 
-    </script>
-  </body>
-</html>
+		
