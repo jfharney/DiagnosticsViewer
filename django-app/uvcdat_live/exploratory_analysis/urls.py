@@ -32,6 +32,10 @@ urlpatterns = patterns('',
   url(r'^treedata/(?P<user_id>\w+)/$', views.treedata, name='treedata'),
   
   
+  #grabs the timeseries data
+  url(r'^timeseries/$', views.timeseries, name='timeseries'),
+  
+  
   #url(r'^maps/datasets/(?P<user_id>\w+)/$',views.datasets,name='datasets'),
   #url(r'^maps/variables/(?P<dataset_id>\w+)/$',views.variables,name='variables'),
   #url(r'^maps/times/(?P<variable_id>\w+)/$',views.times,name='times'),

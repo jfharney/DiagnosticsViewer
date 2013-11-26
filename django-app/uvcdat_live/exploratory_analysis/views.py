@@ -328,6 +328,39 @@ def visualizationsBrian(request):
    return HttpResponse(jsonData)
 
 
+def timeseries(request):
+    print 'in time series'
+    
+  
+    print request.GET.get('variable')
+  
+    variable = ''
+    if(request.GET.get('variable') == None):
+         variable = 'AR'
+    else:
+         variable = request.GET.get('variable')
+  
+    #file = '/Users/csg/Desktop/uvcdat-web/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/' + variable + '.json' 
+    #file = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/' + variable + '.json' 
+    file = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/src/time-plot-example/data/TLAI-avg.csv' 
+  
+ 
+    data = ''
+    with open(file , 'r') as myfile:
+        for line in myfile:
+            #print line
+            data = data + line
+         #data = data + myfile.read().replace('\n','')
+         #print myfile.read().replace('\n','')
+      
+    print 'data', data  
+      
+    #jsonData = json.dumps(data)
+
+    #jsonData = json.dumps("{ 'variable' : '" + variable  +  "'} ")
+    #print jsonData
+  
+    return HttpResponse(data)
 
 
 
