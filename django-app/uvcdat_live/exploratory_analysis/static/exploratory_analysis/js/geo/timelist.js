@@ -1,5 +1,12 @@
 $(document).ready(function(){
 	
+		$('.dropdown-time-menu').on('click','a',function() {
+
+			$('#time_name').empty();
+			$('#time_name').append(this.innerHTML);
+			
+		});
+	
 		$('.dropdown-variable-menu').on('click','a',function() {
 			//alert('issue an ajax call for variables for dataset ' + this.innerHTML);
 			
