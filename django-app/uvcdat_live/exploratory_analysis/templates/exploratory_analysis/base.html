@@ -25,6 +25,7 @@
 	
 	<link href="{% static 'exploratory_analysis/css/tree/style.css' %}" rel="stylesheet" />
 
+<!--  
     <script type="text/javascript">
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-39778348-1']);
@@ -38,7 +39,8 @@
         
         
     </script>
-    
+-->
+   
     <style type="text/css">
 
 
@@ -63,6 +65,24 @@
 		  stroke: #ccc;
 		  stroke-width: 1.5px;
 		}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
 
     </style>
 

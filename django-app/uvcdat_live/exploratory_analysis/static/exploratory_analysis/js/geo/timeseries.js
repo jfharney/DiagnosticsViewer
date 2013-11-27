@@ -1,5 +1,7 @@
 var parseDate = d3.time.format("%Y%m").parse;
+
 var timedata;
+
 $(document).ready(function(){
 	
 	$('#viz_button').click(function() {
@@ -24,7 +26,7 @@ $(document).ready(function(){
 				url: url,
 				global: false,
 				type: 'GET',
-				//dataType: 'json',
+				dataType: 'json',
 				data: queryString,
 				success: function(data) {
 					
@@ -32,11 +34,20 @@ $(document).ready(function(){
 					
 					var timedata = JSON.parse(data);
 					
+					//timedata = [{"date": "015102", "spinup": "1.8900274269", "co2": "1.90766742744"}];
+					
+					
+					timedata.forEach(function(d) {
+                        d.date = parseDate(d.date);
+                        console.log('d ' + d.date);
+                    });
+					
 					for (var key in timedata) {
 						//console.log('key: ' + key + ' ' + timedata[key]);
 					}
 					
-					create_multiseries_time_plot(timedata, "map_plot_canvas1", 720, 150);
+					create_multiseries_time_plot(timedata, "#map_plot_canvas1", 720, 150);
+					
 					
 					/*
 					var csvObj = d3.csv.parse(data);
