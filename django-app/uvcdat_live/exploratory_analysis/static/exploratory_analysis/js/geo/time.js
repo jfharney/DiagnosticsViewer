@@ -87,7 +87,7 @@ function create_multiseries_time_plot(data, map_div_id, plot_width, plot_height)
             .attr("x", 3)
             .attr("dy", ".35em")
             .text(function(d) { return d.name; });
-        console.log("test");
+        console.log("\n\n\nmultiseries line plot\n\n\n");
  //   });
 }
 

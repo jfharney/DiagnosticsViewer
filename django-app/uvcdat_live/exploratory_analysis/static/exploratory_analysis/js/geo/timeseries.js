@@ -29,6 +29,16 @@ $(document).ready(function(){
 				success: function(data) {
 					
 					alert('success');
+					
+					var timedata = JSON.parse(data);
+					
+					for (var key in timedata) {
+						//console.log('key: ' + key + ' ' + timedata[key]);
+					}
+					
+					create_multiseries_time_plot(timedata, "map_plot_canvas1", 720, 150);
+					
+					/*
 					var csvObj = d3.csv.parse(data);
 					timedata = csvObj;
 					for (var key in csvObj) {
@@ -49,6 +59,8 @@ $(document).ready(function(){
 						}
 					} 
 					create_multiseries_time_plot(csvObj, "map_plot_canvas1", 720, 150);
+					*/
+					
 					/*
 					d3.csv(data, function(error, csvdata) {
 				        timedata = csvdata;

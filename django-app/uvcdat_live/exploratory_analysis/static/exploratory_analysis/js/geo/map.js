@@ -2,6 +2,8 @@ function create_map_canvas(mapdata, map_div_id, width, height) {
     //var width = 720,
     //    height = 360;
 
+	console.log('\n\n\n\nIN CREAT MAP CANVAS\n\n\n');
+	
     var projection = d3.geo.equirectangular().translate([width/2, height/2]);
 
     //mapdata = JSON.parse(json_datafile);

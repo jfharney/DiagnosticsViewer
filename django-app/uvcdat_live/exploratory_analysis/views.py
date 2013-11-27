@@ -342,9 +342,21 @@ def timeseries(request):
   
     #file = '/Users/csg/Desktop/uvcdat-web/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/' + variable + '.json' 
     #file = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/' + variable + '.json' 
-    file = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/src/time-plot-example/data/TLAI-avg.csv' 
+    #file = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/src/time-plot-example/data/TLAI-avg.csv' 
+    #file = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/src/time-plot-example/data/time/TLAI-avg.json' 
+    file = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/time/TLAI-avg.json'
+    
+    data = ''
+    with open(file , 'r') as myfile:
+        data = myfile.read().replace('\n','')
+      
+    jsonData = json.dumps(data)
+
+    #jsonData = json.dumps("{ 'variable' : '" + variable  +  "'} ")
+    #print jsonData
   
- 
+    return HttpResponse(jsonData) 
+'''
     data = ''
     with open(file , 'r') as myfile:
         for line in myfile:
@@ -361,7 +373,7 @@ def timeseries(request):
     #print jsonData
   
     return HttpResponse(data)
-
+'''
 
 
 

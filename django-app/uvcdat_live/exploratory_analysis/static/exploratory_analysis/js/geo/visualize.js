@@ -30,7 +30,7 @@ $(document).ready(function(){
 					$('#map-canvas').empty();
 					
 					
-					create_map_canvas(mapdata, "#map-canvas", 720, 360);
+					//create_map_canvas(mapdata, "#map-canvas", 720, 360);
 					
 					$('.page-header').append('<h3>' + variable_id  + 'Average Map</h3>');
 					$('#map-canvas').append('<div>Data for: ' + variable_id + '</div>');
