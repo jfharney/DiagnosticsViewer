@@ -30,11 +30,13 @@ body {
   width: 1000px;
 }
 
+/*
 #footer {
   top: 680px;
   right: 140px;
   text-align: right;
 }
+*/
 
 rect {
   fill: none;

@@ -4,13 +4,13 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
-	<meta content="utf-8" http-equiv="encoding">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+	<meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
+	<meta content="utf-8" http-equiv="encoding" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
     
-    <link rel="shortcut icon" href="./ico/favicon.png">
+    <link rel="shortcut icon" href="./ico/favicon.png" />
 
 
     <title>UV-CDAT+ Prototype</title>
@@ -25,22 +25,7 @@
 	
 	<link href="{% static 'exploratory_analysis/css/tree/style.css' %}" rel="stylesheet" />
 
-<!--  
-    <script type="text/javascript">
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-39778348-1']);
-        _gaq.push(['_trackPageview']);
 
-        (function() {
-            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-        })();
-        
-        
-    </script>
--->
-   
     <style type="text/css">
 
 
@@ -73,14 +58,30 @@
   shape-rendering: crispEdges;
 }
 
-.x.axis path {
-  display: none;
-}
+//.x.axis path {
+//  display: none;
+//}
 
 .line {
   fill: none;
   stroke: steelblue;
   stroke-width: 1.5px;
+}
+
+.overlay {
+    fill: none;
+    pointer-events: all;
+}
+
+.focus circle {
+    fill: none;
+    stroke: black;
+}
+
+.focus line {
+    fill: none;
+    stroke: black;
+    stroke-width: 1;
 }
 
 
@@ -114,7 +115,7 @@
 
 	                	<li class="active"><a href="http://localhost:8081/exploratory_analysis">Home</a></li>
 			            <li><a href="http://localhost:8081/exploratory_analysis/maps">Geo</a></li>
-						<li><a href="http://localhost:8081/exploratory_analysis/tree">Diags Tree</a></li>
+						<li><a href="http://localhost:8081/exploratory_analysis/treeex/jfharney">Diagnostics Tree</a></li>
 			            
             		</ul>
 
@@ -127,9 +128,9 @@
 
 		
 
-		<div id="content">
+		<!-- <div id="content">  -->
         {% block content %}{% endblock %}
-    	</div>
+    	<!-- </div>  -->
 
 
   	</div>
@@ -152,13 +153,18 @@
 	
 
 	<!-- <script src="http://d3js.org/d3.v2.min.js?2.9.6"></script>   -->
+	<script type="text/javascript" src="{% static 'exploratory_analysis/js/datasets/selection.js' %}"></script>
 	<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/visualize.js' %}"></script>
 	<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/time.js' %}"></script>
 	<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/timeseries.js' %}"></script>
 	<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/map.js' %}"></script>
 	<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/variablelist.js' %}"></script>
 	<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/timelist.js' %}"></script>
+	
+	<!--  
 	<script type="text/javascript" src="{% static 'exploratory_analysis/js/tree/tree.js' %}"></script>
+	-->
+	
 	
     <!--<script type="text/javascript" src="d3.v3/d3.v3.js"></script>-->
     <!-- <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>  
@@ -168,39 +174,6 @@
 	<script type="text/javascript">
 	
 	
-	$(document).ready(function(){
-		
-		var jsonData = '';
-		var queryString = '';
-		var url = 'http://localhost:8081/exploratory_analysis/datasets/' + 'jfharney';
-		
-		console.log('querying: ' + url);
-
-		$.ajax({
-			url: url,
-			global: false,
-			type: 'GET',
-			dataType: 'json',
-			data: queryString,
-			success: function(data) {
-				
-				var datasetList = data['datasets'];
-				$('#dataset_name').empty();
-				for (var i=0;i<datasetList.length;i++) {
-					var dataset = datasetList[i];
-					$('.dropdown-dataset-menu').append('<li class="dataset_menu" id="' + dataset + '"><a href="#">' + dataset + '</a></li>');
-				}
-				
-			},
-			error: function( jqXHR, textStatus, errorThrown ) {
-				alert('datasetList textStatus: ' + textStatus + ' errorThrown: ' + errorThrown);
-
-				
-			}
-		});
-		
-
-});
 
 
 	</script>
@@ -211,4 +184,19 @@
 
 </html>
 
+<!--  
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-39778348-1']);
+        _gaq.push(['_trackPageview']);
 
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        
+        
+    </script>
+-->
+   

@@ -1,21 +1,124 @@
+#flag for toggling connection to the diags backend
+isConnected = False
+
 
 # Create your views here.
-
 from django.http import HttpResponse
 from django.template import RequestContext, loader
 from exploratory_analysis.models import Diags
 import json
 import sys 
 
-sys.path.append('/Users/8xo/software/exploratory_analysis/DiagnosticsGen/uvcmetrics/src/python')
-sys.path.append('/Users/8xo/software/exploratory_analysis/uvcdat_light/build-uvcdat/install/Library/Frameworks/Python.framework/Versions/2.7/bin/cdscan')
+# import the diags code
+if isConnected:
+    sys.path.append('/Users/8xo/software/exploratory_analysis/DiagnosticsGen/uvcmetrics/src/python')
+    sys.path.append('/Users/8xo/software/exploratory_analysis/uvcdat_light/build-uvcdat/install/Library/Frameworks/Python.framework/Versions/2.7/bin/cdscan')
    
-from frontend.options import Options
-from computation.reductions import *
-from fileio.filetable import *
-from fileio.findfiles import *
+    from frontend.options import Options
+    from computation.reductions import *
+    from fileio.filetable import *
+    from fileio.findfiles import *
 
-from frontend.treeview import TreeView 
+    from frontend.treeview import TreeView 
+
+cache_dir = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/'
+#cache_dir = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/css/tree/'
+
+
+#New tree view
+def treeex(request,user_id):
+    
+    
+    
+    template = loader.get_template('exploratory_analysis/treeex.html')
+
+    
+    treeFile = 'flare15.json'
+    
+    '''
+    #### Start diagnostics generation here...
+    username = user_id
+  
+    o = Options()
+    #   o.processCmdLine()
+    #   o.verifyOptions()
+   
+   ##### SET THESE BASED ON USER INPUT FROM THE GUI
+    o._opts['packages'] = ['lmwg'] 
+    o._opts['vars'] = ['TG']
+    o._opts['path'] = ['/Users/8xo/sampledatalens/tropics_warming_th_q_co2']
+    o._opts['times'] = ['JAN']
+    
+    
+    ### NOTE: 'ANN' won't work for times this way, but that shouldn't be a problem
+    datafiles = []
+    filetables = []
+    vars = o._opts['vars']
+    #   print vars
+
+    index = 0
+    for p in o._opts['path']:
+      datafiles.append(dirtree_datafiles(p))
+      filetables.append(basic_filetable(datafiles[index], o))
+      index = index+1
+
+    print 'Creating diags tree view JSON file...'
+    
+    
+    tv = TreeView()
+    dtree = tv.makeTree(o, filetables)
+    tv.dump(filename=treeFile)
+    
+    import os
+    import shutil
+    
+    #srcfile = treeFile
+    dstroot = cache_dir
+
+
+    assert not os.path.isabs(treeFile)
+    dstdir =  os.path.join(dstroot, os.path.dirname(treeFile))
+
+    
+
+    #file = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/css/tree/flare4.json';
+    file = cache_dir + treeFile
+
+    from pprint import pprint
+    
+    data = ''
+    with open(file) as data_file:    
+        data = json.load(data_file)
+        pprint(data)
+    
+    url = 'http://cds.ccs.ornl.gov/y9s/singlef/i1850cn_cruncep_CNDA_Cli_b_2000-2009-i1850cn_cruncep_ctl_2000-2009/setsIndex.html'
+    
+    children_arr = [ { "name": "Set 1" } ]
+    
+    #data = { 'name' : 'LND_DIAG', 'url' : url, 'children' : children_arr }
+    data_string = json.dumps(data,sort_keys=True,indent=2)
+    print 'JSON:',data_string
+    '''
+    
+    if isConnected:
+        #use 
+        print 'use the diags'
+    else:
+        print 'use the sample file with the hard coded data'   
+            
+            
+    context = RequestContext(request, {
+        'username' : 'jfharney',
+        'treeFile' : treeFile,
+    })
+    
+            
+    
+    
+    print '\nleaving treex\n'
+
+    return HttpResponse(template.render(context))
+
 
 
 #Home page view...nothing fancy here just points to the view located at index.html
@@ -67,9 +170,11 @@ def datasets(request,user_id):
   return HttpResponse(data_string)
 
 
+
+
 def tree(request):
-    #template = loader.get_template('exploratory_analysis/treeview.html')
-    template = loader.get_template('exploratory_analysis/tree.html')
+    template = loader.get_template('exploratory_analysis/treeview.html')
+    #template = loader.get_template('exploratory_analysis/tree.html')
     
     context = RequestContext(request, {
         'username' : 'jfharney',
@@ -108,7 +213,7 @@ def treedataBrian(request,user_id):
     print 'Creating diags tree view JSON file...'
     tv = TreeView()
     dtree = tv.makeTree(o, filetables)
-    tv.dump(filename='flare.json')
+    tv.dump(filename='flare11.json')
     
     
 
@@ -169,18 +274,18 @@ def treedata(request,user_id):
 
 
 def maps(request):
-  print request.GET.get('q')
-  template = loader.get_template('exploratory_analysis/mapview.html')
-  context = RequestContext(request, {
-    'a' : 'aaaaa',
-  })
+    print request.GET.get('q')
+    template = loader.get_template('exploratory_analysis/mapview.html')
+    context = RequestContext(request, {
+      'view_name' : 'maps',
+    })
 #  latest_poll_list = Poll.objects.order_by('-pub_date')[:5]
 #  template = loader.get_template('polls/index.html')
 #  context = RequestContext(request, {
 #    'latest_poll_list' : latest_poll_list,
 #  })
 
-  return HttpResponse(template.render(context))
+    return HttpResponse(template.render(context))
 
 
 
@@ -188,26 +293,28 @@ def maps(request):
 
 def variables(request,dataset_id):
   
-  #dataset_id = 'dataset1'
-  if(dataset_id == None):
-      dataset_id = 'dataset1' 
+    #dataset_id = 'dataset1'
+    if(dataset_id == None):
+        dataset_id = 'dataset1' 
   
-  if(dataset_id == 'dataset3'):
-      variables = ['AR','BTRAN','CWDC','DEADCROOTC','DEADSTEMC','ER','FROOTC','FSDS','GPP','HR','LIVECROOTC','LIVESTEMC','NEE','NPP','PCO2', 'RAIN', 'TBOT', 'TLAI', 'TOTECOSYSC', 'TOTLITC','TOTSOMC','TOTVEGC', 'WOODC'    ]
-  else:
-      variables = ['ALL', 'AR','BTRAN','CWDC','DEADCROOTC','DEADSTEMC','ER','FROOTC','FSDS','GPP','HR','LIVECROOTC','LIVESTEMC','NEE','NPP','PCO2', 'RAIN', 'TBOT', 'TLAI', 'TOTECOSYSC', 'TOTLITC','TOTSOMC','TOTVEGC', 'WOODC'    ]
+    #if(dataset_id == 'dataset3'):
+    #    variables = ['AR','BTRAN','CWDC','DEADCROOTC','DEADSTEMC','ER','FROOTC','FSDS','GPP','HR','LIVECROOTC','LIVESTEMC','NEE','NPP','PCO2', 'RAIN', 'TBOT', 'TLAI', 'TOTECOSYSC', 'TOTLITC','TOTSOMC','TOTVEGC', 'WOODC'    ]
+    #else:
+    #    variables = ['ALL', 'AR','BTRAN','CWDC','DEADCROOTC','DEADSTEMC','ER','FROOTC','FSDS','GPP','HR','LIVECROOTC','LIVESTEMC','NEE','NPP','PCO2', 'RAIN', 'TBOT', 'TLAI', 'TOTECOSYSC', 'TOTLITC','TOTSOMC','TOTVEGC', 'WOODC'    ]
+    #Shared variables
+    variables = ['BTRAN','NPP','TLAI']
   
-  data =  { 'dataset_id' : dataset_id, 'variables' : variables }
-  print 'DATA:',repr(data)
-  data_string = json.dumps(data,sort_keys=True,indent=2)
-  #print 'JSON:',data_string
-  #data_string = json.dumps(data,sort_keys=False,indent=2)
-  #print 'JSON:',data_string
+    data =  { 'dataset_id' : dataset_id, 'variables' : variables }
+    print 'DATA:',repr(data)
+    data_string = json.dumps(data,sort_keys=True,indent=2)
+    #print 'JSON:',data_string
+    #data_string = json.dumps(data,sort_keys=False,indent=2)
+    #print 'JSON:',data_string
 
-  jsonStr = json.loads(data_string)
+    jsonStr = json.loads(data_string)
 
 
-  return HttpResponse(data_string)
+    return HttpResponse(data_string)
 
 
 
@@ -328,6 +435,11 @@ def visualizationsBrian(request):
    return HttpResponse(jsonData)
 
 
+#Shared variables
+#BTRAN
+#NPP
+#TLAI
+
 def timeseries(request):
     print 'in time series'
     
@@ -356,56 +468,32 @@ def timeseries(request):
     #print jsonData
   
     return HttpResponse(jsonData) 
-'''
-    data = ''
-    with open(file , 'r') as myfile:
-        for line in myfile:
-            #print line
-            data = data + line
-         #data = data + myfile.read().replace('\n','')
-         #print myfile.read().replace('\n','')
-      
-    print 'data', data  
-      
-    #jsonData = json.dumps(data)
 
-    #jsonData = json.dumps("{ 'variable' : '" + variable  +  "'} ")
-    #print jsonData
-  
-    return HttpResponse(data)
-'''
 
 
 
 def visualizations(request):
     
+    
+    print 'in visualizations'
+    print request.GET.get('variable')
   
-   print 'in visualizations'
   
-   print request.GET.get('variable')
-  
-   variable = ''
-   if(request.GET.get('variable') == None):
+    variable = ''
+    if(request.GET.get('variable') == None):
         variable = 'AR'
-   else:
+    else:
         variable = request.GET.get('variable')
   
-   #file = '/Users/csg/Desktop/uvcdat-web/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/' + variable + '.json' 
-   file = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/' + variable + '.json' 
+    #file = '/Users/csg/Desktop/uvcdat-web/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/' + variable + '.json' 
+    file = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/' + variable + '.json' 
   
- 
-   with open(file , 'r') as myfile:
-      data = myfile.read().replace('\n','')
+    with open(file , 'r') as myfile:
+       data = myfile.read().replace('\n','')
       
-   jsonData = json.dumps(data)
+    jsonData = json.dumps(data)
 
-   #jsonData = json.dumps("{ 'variable' : '" + variable  +  "'} ")
-   #print jsonData
-  
-  
-  
-  
-   return HttpResponse(jsonData)
+    return HttpResponse(jsonData)
 
 
 

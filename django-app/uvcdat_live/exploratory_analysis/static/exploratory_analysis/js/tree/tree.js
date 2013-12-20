@@ -4,8 +4,8 @@
 var MAX_CANVAS = 4;
 
 var m = [20, 120, 20, 120],
-    w = 1280 - m[1] - m[3],
-    h = 800 - m[0] - m[2],
+    w = 640 - m[1] - m[3],
+    h = 400 - m[0] - m[2],
     i = 0,
     canvasData = [],
     root;
@@ -16,7 +16,7 @@ var tree = d3.layout.tree()
 var diagonal = d3.svg.diagonal()
     .projection(function(d) { return [d.y, d.x]; });
 
-var vis = d3.select("#body").append("svg:svg")
+var vis = d3.select("#treebody").append("svg:svg")
     .attr("width", w + m[1] + m[3])
     .attr("height", h + m[0] + m[2])
   .append("svg:g")
