@@ -1,7 +1,6 @@
 #flag for toggling connection to the diags backend
 isConnected = False
 
-
 # Create your views here.
 from django.http import HttpResponse
 from django.template import RequestContext, loader
