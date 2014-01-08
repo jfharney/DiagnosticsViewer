@@ -5,8 +5,12 @@ from exploratory_analysis import views
 print dir(views)
 
 urlpatterns = patterns('',
-                       
+             
+  ############
+  #Services#
+  ############
   
+  #####Used in the geo page#####
   
   #grabs datasets given a user id (used in an ajax call)
   url(r'^datasets/(?P<user_id>\w+)/$',views.datasets,name='datasets'),
@@ -19,10 +23,6 @@ urlpatterns = patterns('',
   
   #grabs the map
   url(r'^visualizations/$', views.visualizations, name='visualizations'),
-  
-  
-  #points to the tree view
-  url(r'^tree/$', views.tree, name='tree'),
   
   #grabs the tree data
   url(r'^treedata/(?P<user_id>\w+)/$', views.treedata, name='treedata'),
@@ -49,6 +49,13 @@ urlpatterns = patterns('',
   url(r'^treeex/(?P<user_id>\w+)/$', views.treeex, name='treeex'),
   
   
+  
+  
+  
+  #Not used but keeping just in case
+  
+  #points to the tree view
+  url(r'^tree/$', views.tree, name='tree'),
   
   
   

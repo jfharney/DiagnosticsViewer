@@ -1,5 +1,5 @@
 #flag for toggling connection to the diags backend
-isConnected = False
+isConnected = True
 
 # Create your views here.
 from django.http import HttpResponse
@@ -31,13 +31,22 @@ def treeex(request,user_id):
     
     template = loader.get_template('exploratory_analysis/treeex.html')
 
+    if isConnected:
+        #use 
+        print 'use the diags'
+    else:
+        print 'use the sample file with the hard coded data'   
+     
+    
     
     treeFile = 'flare15.json'
     
-    '''
+    
     #### Start diagnostics generation here...
     username = user_id
   
+    print username
+    
     o = Options()
     #   o.processCmdLine()
     #   o.verifyOptions()
@@ -55,8 +64,10 @@ def treeex(request,user_id):
     vars = o._opts['vars']
     #   print vars
 
+    
     index = 0
     for p in o._opts['path']:
+      print '\ndirtree\n' , dirtree_datafiles(p)
       datafiles.append(dirtree_datafiles(p))
       filetables.append(basic_filetable(datafiles[index], o))
       index = index+1
@@ -67,7 +78,7 @@ def treeex(request,user_id):
     tv = TreeView()
     dtree = tv.makeTree(o, filetables)
     tv.dump(filename=treeFile)
-    
+    '''
     import os
     import shutil
     
@@ -99,12 +110,7 @@ def treeex(request,user_id):
     print 'JSON:',data_string
     '''
     
-    if isConnected:
-        #use 
-        print 'use the diags'
-    else:
-        print 'use the sample file with the hard coded data'   
-            
+           
             
     context = RequestContext(request, {
         'username' : 'jfharney',
