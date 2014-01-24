@@ -1,3 +1,10 @@
+
+from paths import paths
+
+databases_name = paths.databases_name
+staticfiles_dirs = paths.staticfiles_dirs
+template_dirs = paths.template_dirs
+
 # Django settings for uvcdat_live project.
 
 DEBUG = True
@@ -12,7 +19,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '/Users/8xo/sqlite3/11-3/mydb.db',                      # Or path to database file if using sqlite3.
+        'NAME': databases_name,                      # Or path to database file if using sqlite3.
         #'NAME': '/Users/8xo/uvcdat_live/uvcdat_live.db',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': '',
@@ -117,7 +124,7 @@ TEMPLATE_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     #"/Users/csg/Desktop/uvcdat-web/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/templates/exploratory_analysis"
-    "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/templates/exploratory_analysis"
+    template_dirs,#"/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/templates/exploratory_analysis"
 )
 
 INSTALLED_APPS = (
@@ -132,6 +139,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'exploratory_analysis',
+    'polls',
 )
 
 # A sample logging configuration. The only tangible logging

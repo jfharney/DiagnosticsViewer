@@ -1,0 +1,30 @@
+####related to settings.py####
+databases_name = '/Users/8xo/sqlite3/11-3/mydb.db'
+
+staticfiles_dirs = "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis",
+    
+template_dirs = "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/templates/exploratory_analysis"
+####end related to settings.py####
+
+
+#path to uvcmetric python code
+syspath_append_uvcmetrics = '/Users/8xo/software/exploratory_analysis/DiagnosticsGen/uvcmetrics/src/python'
+
+#path to cdscan (in uvcdat)
+syspath_append_cdscan = '/Users/8xo/software/exploratory_analysis/uvcdat_light/build-uvcdat/install/Library/Frameworks/Python.framework/Versions/2.7/bin/cdscan'
+
+#path to "cache", i.e. place to store figures and json files for d3 renderings
+cache_dir = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/cache/'
+
+#path for front end to access cache (can't be a local path)
+front_end_cache_dir = '../../../static/cache/'
+
+#directory holding netcdf datasets
+default_sample_data_dir = '/Users/8xo/sampledatalens/tropics_warming_th_q_co2'
+
+
+
+img_cache_path = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/cache/'
+
+
+

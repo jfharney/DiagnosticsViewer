@@ -1,7 +1,99 @@
 from django.db import models
 
+
+
 class Diags(models.Model):
   state = models.CharField(max_length=200)
 
+class Poll(models.Model):
+    question = models.CharField(max_length=200)
+    pub_date = models.DateTimeField('date published')
+    
+    def __unicode__(self):
+        return self.question
 
+class Choice(models.Model):
+    poll = models.ForeignKey(Poll)
+    choice_text = models.CharField(max_length=200)
+    votes = models.IntegerField(default=0)
+    
+    def __unicode__(self):
+        return self.choice_text
+    
+class TreeBookmarks(models.Model):
+    name = models.CharField(max_length=200)
+    bookmarklist = models.CharField(max_length=20000)
+    
+    
+    
+'''    
+    
+    
+class Blog(models.Model):
+    name = models.CharField(max_length=100)
+    tagline = models.TextField()
+
+    # On Python 3: def __str__(self):
+    def __unicode__(self):
+        return self.name
+
+class Author(models.Model):
+    name = models.CharField(max_length=50)
+    email = models.EmailField()
+
+    # On Python 3: def __str__(self):
+    def __unicode__(self):
+        return self.name
+
+class Entry(models.Model):
+    blog = models.ForeignKey(Blog)
+    headline = models.CharField(max_length=255)
+    body_text = models.TextField()
+    pub_date = models.DateField()
+    mod_date = models.DateField()
+    authors = models.ManyToManyField(Author)
+    n_comments = models.IntegerField()
+    n_pingbacks = models.IntegerField()
+    rating = models.IntegerField()
+
+    # On Python 3: def __str__(self):
+    def __unicode__(self):
+        return self.headline
 # Create your models here.
+
+class DiagPlot(models.Model):
+    name = models.CharField(max_length=10000)
+    url = models.CharField(max_length=10000)
+    
+'''    
+    
+    
+#Use these
+#tree_bookmarks
+#class Tree_Bookmarks(models.Model):
+#    name = models.CharField(max_length=1000) 
+ 
+#figure_bookmarks   
+class Figure_Bookmarks(models.Model):
+    figure_bookmark_name = models.CharField(max_length=1000)
+    figure_bookmark_username = models.CharField(max_length=1000)
+    figure_bookmark_location = models.CharField(max_length=1000)
+    figure_bookmark_description = models.CharField(max_length=10000)
+    
+    def __unicode__(self):
+        return self.figure_bookmark_name
+    
+
+ 
+#figure_bookmarks   
+class Tree_Bookmarks(models.Model):
+    bookmark_name = models.CharField(max_length=1000)
+    bookmark_username = models.CharField(max_length=1000)
+    bookmark_variables = models.CharField(max_length=10000)
+    bookmark_time_periods = models.CharField(max_length=10000)
+    bookmark_description = models.CharField(max_length=10000)
+    
+    def __unicode__(self):
+        return self.bookmark_name
+    
+

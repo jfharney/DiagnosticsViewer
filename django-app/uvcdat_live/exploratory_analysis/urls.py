@@ -7,6 +7,24 @@ print dir(views)
 urlpatterns = patterns('',
              
   ############
+  #Page views#
+  ############
+  
+  #points to the main page view
+  url(r'^$', views.index, name='index'),
+  
+  #points to the geo view
+  url(r'^maps/$', views.maps, name='maps'),
+  
+  #the diagnostic tree view
+  #example url: http://localhost:8081/exploratory_analysis/treex/jfharney
+  url(r'^treeex/(?P<user_id>\w+)/$', views.treeex, name='treeex'),
+  
+  
+  
+            
+             
+  ############
   #Services#
   ############
   
@@ -24,6 +42,11 @@ urlpatterns = patterns('',
   #grabs the map
   url(r'^visualizations/$', views.visualizations, name='visualizations'),
   
+  
+  
+  
+  
+  
   #grabs the tree data
   url(r'^treedata/(?P<user_id>\w+)/$', views.treedata, name='treedata'),
   
@@ -31,26 +54,21 @@ urlpatterns = patterns('',
   #grabs the timeseries data
   url(r'^timeseries/$', views.timeseries, name='timeseries'),
   
+  ############
+  #Tree stuff#
+  ############
+  url(r'^test/$', views.test, name='test'),
+  
+  url(r'^diagplot/$', views.diagplot, name='diagplot'),
   
   
+  ############
+  #Treeview bookmarks API#
+  ############
+  url(r'^tree_bookmarks/$', views.tree_bookmarks, name='tree_bookmarks'),
+  url(r'^figure_bookmarks/$', views.figure_bookmarks, name='figure_bookmarks'),
 
-  ############
-  #Page views#
-  ############
-  
-  #points to the main page view
-  url(r'^$', views.index, name='index'),
-  
-  #points to the geo view
-  url(r'^maps/$', views.maps, name='maps'),
-  
-  #the diagnostic tree view
-  #example url: http://localhost:8081/exploratory_analysis/treex/jfharney
-  url(r'^treeex/(?P<user_id>\w+)/$', views.treeex, name='treeex'),
-  
-  
-  
-  
+   
   
   #Not used but keeping just in case
   

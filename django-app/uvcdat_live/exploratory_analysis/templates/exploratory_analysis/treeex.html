@@ -66,7 +66,19 @@ svg {
 </style>
 <body>
 
+<div id="csrf">
+{% csrf_token %}
+</div>
+<!--  
+
+     	<button type="button" class="btn btn-default" id="test" >Test Submit</button>
+     	<button type="button" class="btn btn-default" id="test2" >Test2 Submit</button>
+     	<button type="button" class="btn btn-default" id="test3" >Test3 Submit</button>
+     	<button type="button" class="btn btn-default" id="test4" >Test4 Submit</button>
+-->     
+     
 	<div class="container">
+		<span id="CachedFile" style="display:none">{{ cachedfile }}</span>
 	<!-- 
     <button type="button" id="example"  class="btn btn-default" data-content="It's so simple to create a tooltop for my website!" rel="popover">Default</button>
      -->
@@ -76,33 +88,39 @@ svg {
     <div class="row">
 		<div class="span-12">
 			
+			       
 			
 			
+			<!-- overlay modal -->
+			<div class="modal" id="myModal">
+				<div class="modal-dialog">
+			      <div class="modal-content">
+			        <div class="modal-header">
+			          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			          <h4 class="modal-title" id="modal-title"></h4>
+			        </div><div class="container"></div>
+			        <div class="modal-body">
+			          
+			        </div>
+			        <hr>
+			        <div class="checkbox" style="margin-left:20px">
+					  <label>
+					    <input type="checkbox"> Share
+					  </label>
+					</div>
+			        <div class="modal-footer">
+			        <span style="margin-right:20px" id=""> Comments: </span>
+			        	
+			       		<textarea style="width:55%" class="field span10" id="figure_bookmark_description" rows="3" placeholder="Figure Description"></textarea>
 			
+			       
+			          <a href="#" data-dismiss="modal" class="btn">Close</a>
+			          <a href="#" class="btn btn-primary" id="save_plot">Save</a>
+			        </div>
+			      </div>
+			    </div>
+			</div>
 
-<div class="modal" id="myModal">
-	<div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-          <h4 class="modal-title" id="modal-title"></h4>
-        </div><div class="container"></div>
-        <div class="modal-body">
-          
-        </div>
-        <div class="modal-footer">
-          <a href="#" data-dismiss="modal" class="btn">Close</a>
-          <a href="#" class="btn btn-primary">Save changes</a>
-        </div>
-      </div>
-    </div>
-</div>
-
-			
-			
-			
-			
-			
 			
 			
 			
@@ -114,7 +132,7 @@ svg {
 	</div>
     	
     <div class="row">
-		<div class="span-12">
+		<div class="col-md-12">
 			<div class="page-header">
   			<h1>UV-CDAT+ Experimental Prototype</h1>
 			</div>
@@ -122,7 +140,78 @@ svg {
 		</div>
 	    		
 	</div>	
+	
     
+    <div class="row" style="margin-bottom:10px">
+    	<div class="bs-example">
+   
+   		
+		    <ul class="nav nav-pills">
+		        
+		        <li class="dropdown">
+		            <a href="#" data-toggle="dropdown" class="dropdown-toggle">Bookmarks <b class="caret"></b></a>
+		            <ul class="dropdown-menu" id="bookmark_menu">
+		            	{% for bookmark in bookmark_list %}
+		            		<li><a href="#" id="{{bookmark}}">{{bookmark}}</a></li>
+		            	{% endfor %}
+		            	<li class="divider"></li>
+		                <li><a href="#" id="custom">Custom</a></li>
+		            <!-- 
+		                <li><a href="#" id="b1">Bookmark1</a></li>
+		                <li><a href="#" id="b2">Bookmark2</a></li>
+		                 -->
+		            </ul>
+		        </li>
+		        <li class="dropdown">
+		            <a href="#" data-toggle="dropdown" class="dropdown-toggle">Saved Images <b class="caret"></b></a>
+		            <ul class="dropdown-menu" id="bookmark_menu">
+		            	{% for figure_bookmark in figure_bookmark_list %}
+		            		<li><a href="#" id="{{figure_bookmark}}">{{figure_bookmark}}</a></li>
+		            	{% endfor %}
+		            	<!-- 
+		                <li><a href="#" id="b1">Image1</a></li>
+		                <li><a href="#" id="b2">Image2</a></li>
+		                 -->
+		            </ul>
+		        </li>
+		    </ul>
+    
+		</div>
+
+    </div>
+    
+    <div class="row" style="margin-bottom:10px;display:none;border: 1px solid #000000;padding:10px" id="bookmark_selection"  >
+    	<div class="col-lg-12">
+	    	<h4>Variables</h4>
+			
+			{% for variable in variable_list %}
+			<input name="{{variable}}" id="{{variable}}" type="checkbox" value="signup" class="variable_list" >
+			<label for="{{variable}}" class="checkboxselection">{{variable}}</label>
+			{% endfor %}
+			
+			<hr>
+			<h4 style="margin-top:5px">Seasons</h4>
+			{% for season in season_list %}
+			<input name="{{season}}" id="{{season}}" type="checkbox" value="signup" class="season_list" >
+			<label for="{{season}}" class="checkboxselection">{{season}}</label>
+			{% endfor %}
+			
+		</div>
+		<hr>
+		<div class="col-lg-12">
+			<div class="col-lg-5">
+		    	<input type="text" class="form-control" placeholder="Bookmark Name (optional)">
+		  	</div>
+		  	<div class="col-lg-1">
+		    	<button type="button" class="btn btn-default" id="bookmark_submit" >Submit</button>
+		  	</div>
+		  	<div class="col-lg-1">
+		    	<button type="button" class="btn btn-default" id="bookmark_cancel">Cancel</button>
+		  	</div>
+		</div>
+    </div>
+    
+     
 	<div class="row" style="border: 1px solid #000000;padding:10px;">
 		<div class="col-md-9" style="border-right: 1px solid #000000;height:900px;max-height:900px">
 			
@@ -140,13 +229,16 @@ svg {
 		
 		</div>
 	</div>
-	
+	 
+	 
+	 
 	</div>
 
 	<script src="{% static 'exploratory_analysis/js/jquery/jquery-1.10.2.min.js' %}"></script>
 	<script src="{% static 'exploratory_analysis/js/bootstrap/bootstrap.min.js' %}"></script>
 	<script src="{% static 'exploratory_analysis/js/bootstrap/bootstrap-combobox.js' %}"></script>
 	<script src="{% static 'exploratory_analysis/js/bootstrap/bootstrap-popover.js' %}"></script>
+	<script src="{% static 'exploratory_analysis/js/bootstrap/bootstrap-dropdown.js' %}"></script>
 	<script src="{% static 'exploratory_analysis/js/d3/d3.min.js' %}"></script>
 	<!--  -->
 	<script src="{% static 'exploratory_analysis/js/tree/dynamictree.js' %}"></script>
@@ -154,8 +246,283 @@ svg {
 
 <script>
 
+$(document).ready(function(){
 
+	function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+    
+	console.log('csrftoken ' + csrftoken);
+	
+	
+	
+$('#save_plot').click(function() {
+		
+		console.log('csrftoken in test ' + csrftoken);
+		
 
+		var figureUrl = '../../../static/exploratory_analysis/img/carousel/set6_turbf_Global.gif';
+
+		console.log('title: ' + $('#modal-title').find('#figtitle').html());
+		console.log('url: ' + $('#modal-title').find('#figurl').html());
+		
+		var figureName = $('#modal-title').find('#figtitle').html();
+		console.log('need to push a figure url (e.g. ' + figureUrl +') with figure name: ' + figureName);
+		
+		var fileUrl = $('#modal-title').find('#figurl').html();
+
+		//alert('description: ' + $('.modal-content').find('#figure_bookmark_description').html());
+		
+		//alert('description: ' + $('#myModal').find('.modal-footer').find('textarea#figure_bookmark_description').val());
+		
+		alert('description: ' + $('textarea#figure_bookmark_description').val());
+		var description = $('textarea#figure_bookmark_description').val();
+		
+		
+		var figure_bookmark_username = 'jfharney';
+		var figure_bookmark_name = figureName;
+		var figure_bookmark_location = figureUrl;
+		var figure_bookmark_description = description;
+		
+
+		var data = {
+				'csrfmiddlewaretoken': csrftoken,
+				'figure_bookmark_name' : figure_bookmark_name,
+				'figure_bookmark_username' : figure_bookmark_username,
+				'figure_bookmark_location' : figure_bookmark_location,
+				'figure_bookmark_description' : figure_bookmark_description
+		}
+		
+		var url = 'http://localhost:8081/exploratory_analysis/figure_bookmarks/';
+		$.ajax({
+			  type: "POST",
+			  url: url,
+			  async: false,
+			  data: data,
+			  success: function()
+			  { 
+				  console.log('success');
+			  },
+			  error: function(xhr, status, error) {
+				  console.log('error'); 
+			    if(xhr.status==404)
+			    { 
+			    	
+			    }
+			  }
+			});
+		
+		
+		/*
+		var data = {
+						'csrfmiddlewaretoken': csrftoken,
+						'figureName' : figureName,
+						'figureUrl' : figureUrl
+					};
+		
+		
+		var requestType = 'POST';
+		if($('a#save_plot').html() == 'Discard') {
+			requestType = 'DELETE';
+		}
+		
+		$.ajax({
+			  type: requestType,
+			  url: fileUrl,
+			  async: false,
+			  data: data,			
+			  success: function()
+			  { 
+				  console.log('success');
+				  console.log('save_plot ' + $('a#save_plot').html());
+				  $('a#save_plot').html('Discard');
+				  
+				  
+			  },
+			  error: function(xhr, status, error) {
+				  console.log('error'); 
+			    if(xhr.status==404)
+			    { 
+			    	
+			    }
+			  }
+			});
+		*/
+		
+		
+	});
+	
+	
+	$('#test2').click(function() {
+		alert('test 2 submit');
+		
+		var data = {'csrfmiddlewaretoken': csrftoken};
+		var fileUrl = 'http://localhost:8081/exploratory_analysis/tree_bookmarks/';
+		$.ajax({
+			  type: "POST",
+			  url: fileUrl,
+			  async: false,
+			  data: data,
+			  success: function()
+			  { 
+				  console.log('success');
+			  },
+			  error: function(xhr, status, error) {
+				  console.log('error'); 
+			    if(xhr.status==404)
+			    { 
+			    	
+			    }
+			  }
+			});
+		
+	});
+	
+	
+	
+	$('#test').click(function() {
+		
+
+		console.log('csrftoken in test ' + csrftoken);
+		
+		var data = {'csrfmiddlewaretoken': csrftoken};
+		var fileUrl = 'http://localhost:8081/exploratory_analysis/test/';
+		$.ajax({
+			  type: "POST",
+			  url: fileUrl,
+			  async: false,
+			  data: data,
+			  success: function()
+			  { 
+				  console.log('success');
+			  },
+			  error: function(xhr, status, error) {
+				  console.log('error'); 
+			    if(xhr.status==404)
+			    { 
+			    	
+			    }
+			  }
+			});
+		
+		
+	});
+	
+	$('#test3').click(function() {
+		alert('test 3 submit');
+		
+		var data = {'csrfmiddlewaretoken': csrftoken};
+		var fileUrl = 'http://localhost:8081/exploratory_analysis/figure_bookmarks/';
+		$.ajax({
+			  type: "POST",
+			  url: fileUrl,
+			  async: false,
+			  data: data,
+			  success: function()
+			  { 
+				  console.log('success');
+			  },
+			  error: function(xhr, status, error) {
+				  console.log('error'); 
+			    if(xhr.status==404)
+			    { 
+			    	
+			    }
+			  }
+			});
+		
+	});
+	
+	$('#test4').click(function() {
+		alert('test 4 submit');
+		
+		var data = {'csrfmiddlewaretoken': csrftoken};
+		var fileUrl = 'http://localhost:8081/exploratory_analysis/tree_bookmarks/';
+		$.ajax({
+			  type: "POST",
+			  url: fileUrl,
+			  async: false,
+			  data: data,
+			  success: function()
+			  { 
+				  console.log('success');
+			  },
+			  error: function(xhr, status, error) {
+				  console.log('error'); 
+			    if(xhr.status==404)
+			    { 
+			    	
+			    }
+			  }
+			});
+		
+	});
+	
+	
+	
+	$('.dropdown-toggle').dropdown();
+	
+	
+
+	$('#b1').click(function() {
+		alert('click');
+	});
+	$('#b2').click(function() {
+		alert('redirecting to...' + $(this).html());
+		location.href='http://localhost:8081/exploratory_analysis/treeex/jfharney?bookmark='+$(this).html();
+	});
+	
+	
+	
+	$('#custom').click(function() {
+		alert('customizing bookmarks');
+		
+		
+		$('div#bookmark_selection').show();
+	});
+
+	
+	$('#bookmark_submit').click(function(){
+		var variable_arr = new Array();
+		var time_arr = new Array();
+		
+		$("input[type='checkbox'].variable_list").each(function(index, element){
+			//var a = $("input[type='checkbox'].variable_list");
+			
+		    if(element.checked) {
+		    	
+				variable_arr.push(element.id);
+		    }
+		});
+		$("input[type='checkbox'].time_list").each(function(index, element){
+			if(element.checked) {
+				time_arr.push(element.id);
+			}
+		    
+		});
+		console.log('Sending variables ' + variable_arr);
+		console.log('Sending times ' + time_arr);
+		
+	});
+	
+	$('#bookmark_cancel').click(function(){
+		$('div#bookmark_selection').hide();
+	});
+	
+});
 
 
 

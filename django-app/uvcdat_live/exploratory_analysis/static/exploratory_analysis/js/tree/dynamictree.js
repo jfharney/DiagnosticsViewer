@@ -11,8 +11,101 @@ $(document).ready(function(){
 	});
 	
 	
+	
+
+	var cache_dir = '../../../static/cache/';
+	console.log('cached file: ' + $('span#CachedFile').html());
+	
+	var fileName = "flare25.json";
+	
+	
+	//if(checkFile(cache_dir+fileName))
+	if(checkFile($('span#CachedFile').html()))
+	{
+	
+		//render the tree
+		//http://localhost:8081/static/exploratory_analysis/css/bootstrap/bootstrap.css
+		//d3.json("../../../static/exploratory_analysis/css/tree/flare25.json", function(error, flare) {
+		
+		d3.json($('span#CachedFile').html(), function(error, flare) {
+		
+		//d3.json(cache_dir + fileName, function(error, flare) {
+		
+		///Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/css/tree/flare13.json
+		//d3.json("{% static 'exploratory_analysis/css/tree/flare13.json' %}", function(error, flare) {
+		root = flare;
+		root.x0 = height / 2;
+		root.y0 = 0;
+	
+		function collapse(d) {
+		if (d.children) {
+		  d._children = d.children;
+		  d._children.forEach(collapse);
+		  d.children = null;
+		}
+		}
+	
+		root.children.forEach(collapse);
+		update(root);
+		});
+	
+	} else {
+		console.log('leave blank');
+	}
+	
+	
+	
+	
+	
+	
+	
 });
 
+
+function checkFile(fileUrl) {
+	var found = false;
+	$.ajax({
+		  type: "GET",
+		  url: fileUrl,
+		  async: false,
+		  success: function()
+		  { 
+			  found = true;
+		  },
+		  error: function(xhr, status, error) {
+		    if(xhr.status==404)
+		      { /** not found! **/}
+		  }
+		});
+	
+	return found;
+	/*
+    var xmlHttpReq = false;
+    var self = this;
+    // Mozilla/Safari
+    if (window.XMLHttpRequest) {
+        self.xmlHttpReq = new XMLHttpRequest();
+    }
+    // IE
+    else if (window.ActiveXObject) {
+        self.xmlHttpReq = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    self.xmlHttpReq.open('HEAD', fileUrl, true);
+    self.xmlHttpReq.onreadystatechange = function() {
+        if (self.xmlHttpReq.readyState == 4) {
+            if (self.xmlHttpReq.status == 200) {
+                alert('the file exists');
+                return true;
+            } else if (self.xmlHttpReq.status == 404) {
+                alert('the file does not exist');
+                return false;
+            }
+        }
+    }
+    self.xmlHttpReq.send();
+    */
+}
 
 function stripPipe(path) {
 	console.log('path1: ' + path);
@@ -153,25 +246,9 @@ var svg = d3.select("#treeimg").append("svg")
 .append("g")
 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-//http://localhost:8081/static/exploratory_analysis/css/bootstrap/bootstrap.css
-d3.json("../../../static/exploratory_analysis/css/tree/flare13.json", function(error, flare) {
-///Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/css/tree/flare13.json
-//d3.json("{% static 'exploratory_analysis/css/tree/flare13.json' %}", function(error, flare) {
-root = flare;
-root.x0 = height / 2;
-root.y0 = 0;
 
-function collapse(d) {
-if (d.children) {
-  d._children = d.children;
-  d._children.forEach(collapse);
-  d.children = null;
-}
-}
 
-root.children.forEach(collapse);
-update(root);
-});
+
 
 
 
@@ -202,7 +279,6 @@ function hover(d) {
 //Toggle children on click.
 function click(d) {
 if (d.children) {
-  alert('in if');
   d._children = d.children;
 d.children = null;
 } else {
@@ -224,7 +300,8 @@ d.children = null;
 	  
 	  $('#modal-title').empty();
 	  $('.modal-body').empty();
-	  $('#modal-title').append('<div>' + reversePath(fullpath) + '</div>');
+	  $('#modal-title').append('<span>TITLE:</span> <div id="' + "figtitle" + '"> ' + reversePath(fullpath) + '</div>');
+	  $('#modal-title').append('<span>URL:</span> <div id="' + "figurl" + '">' + staticImg + '</div>');
 	  $('.modal-body').append('<div>' + '<img src="' + staticImg + '" style="max-width:600px;max-height:500px;display: block;display: block;margin-left: auto;margin-right: auto" />' + '</div>')
 	  
 	  console.log('picname: ' + name);
