@@ -13,8 +13,12 @@ urlpatterns = patterns('',
   #points to the main page view
   url(r'^$', views.index, name='index'),
   
+  url(r'^main/(?P<user_id>\w+)/$',views.main,name='main'),
+  
+  
+  
   #points to the geo view
-  url(r'^maps/$', views.maps, name='maps'),
+  url(r'^maps/(?P<user_id>\w+)/$', views.maps, name='maps'),
   
   #the diagnostic tree view
   #example url: http://localhost:8081/exploratory_analysis/treex/jfharney
@@ -57,8 +61,6 @@ urlpatterns = patterns('',
   ############
   #Tree stuff#
   ############
-  url(r'^test/$', views.test, name='test'),
-  
   url(r'^diagplot/$', views.diagplot, name='diagplot'),
   
   
@@ -74,6 +76,11 @@ urlpatterns = patterns('',
   
   #points to the tree view
   url(r'^tree/$', views.tree, name='tree'),
+  
+  
+  
+  #login view
+  url(r'^login/$',views.login,name='login'),
   
   
   

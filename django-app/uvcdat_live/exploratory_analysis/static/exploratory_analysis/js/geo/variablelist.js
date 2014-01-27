@@ -2,11 +2,14 @@ $(document).ready(function(){
 	
 
 	$('.dropdown-dataset-menu').on('click','a',function() {
-			//alert('issue an ajax call for variables for dataset ' + this.innerHTML);
 			
-			var jsonData = '';
 			var queryString = '';
-			var url = 'http://localhost:8081/exploratory_analysis/variables/' + this.innerHTML;
+			
+			//assemble the query string
+			var hostname = location.hostname;
+			var port = location.port;
+			var url = 'http://' + hostname + ':' + port + '/exploratory_analysis/variables/' + this.innerHTML;
+			
 			
 			console.log('querying: ' + url);
 			
@@ -19,14 +22,11 @@ $(document).ready(function(){
 				data: queryString,
 				success: function(data) {
 					
-					for(var key in data) {
-						console.log('key: ' + key + ' ' + data[key]);
-					}
 					
 					var variableList = data['variables'];
 					$('.dropdown-variable-menu').empty();
 					
-					console.log(variableList);
+					//console.log(variableList);
 					for (var i=0;i<variableList.length;i++) {
 						var variable = variableList[i];
 						console.log('variable: ' + variable);

@@ -1,21 +1,24 @@
 $(document).ready(function(){
 
-		$("#example").popover({
-			trigger : 'hover'
-		});  
+		//grab the username from the model pushed to the view
+		var mapview_username = $('#mapview_username').html();
 		
-		var jsonData = '';
-		var queryString = '';
-		var url = 'http://localhost:8081/exploratory_analysis/datasets/' + 'jfharney';
+		//initially no query string params
+		var queryStringParams = '';
 		
-		console.log('querying: ' + url);
+		//assemble the query string
+		var hostname = location.hostname;
+		var port = location.port;
+		var url = 'http://' + hostname + ':' + port + '/exploratory_analysis/datasets/' + mapview_username;
+		
+		
 
 		$.ajax({
 			url: url,
 			global: false,
 			type: 'GET',
 			dataType: 'json',
-			data: queryString,
+			data: queryStringParams,
 			success: function(data) {
 				
 				var datasetList = data['datasets'];
@@ -32,9 +35,6 @@ $(document).ready(function(){
 				
 			}
 		});
-		
-		
-		
 		
 		
 

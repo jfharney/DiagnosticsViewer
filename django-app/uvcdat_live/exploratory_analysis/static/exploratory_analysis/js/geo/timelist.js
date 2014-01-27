@@ -14,11 +14,17 @@ $(document).ready(function(){
 			
 			var jsonData = '';
 			var queryString = '';
-			var url = 'http://localhost:8081/exploratory_analysis/times/' + this.innerHTML;
-			
-			console.log('querying: ' + url);
 			
 			
+			
+			//assemble the query string
+			var hostname = location.hostname;
+			var port = location.port;
+			var url = 'http://' + hostname + ':' + port + '/exploratory_analysis/times/' + this.innerHTML;
+			
+			
+			
+			//See 
 			$.ajax({
 				url: url,
 				global: false,

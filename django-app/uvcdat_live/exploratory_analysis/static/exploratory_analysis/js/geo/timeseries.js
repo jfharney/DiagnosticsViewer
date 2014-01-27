@@ -10,7 +10,6 @@ $(document).ready(function(){
 			console.log('variable id: ' + $('span#variable_name').html());
 			console.log('time id: ' + $('span#time_name').html());
 			
-			console.log('\n\n\n\npresent time series plot\n\n\n\n\n');
 			
 			var variable_id = $('span#variable_name').html();
 			
@@ -18,7 +17,13 @@ $(document).ready(function(){
 				variable_id = 'AR';
 			}
 			
-			var url = 'http://localhost:8081/exploratory_analysis/timeseries?variable=' + variable_id;
+			var queryString = '';
+			
+			
+			//assemble the query string
+			var hostname = location.hostname;
+			var port = location.port;
+			var url = 'http://' + hostname + ':' + port + '/exploratory_analysis/timeseries?variable=' + variable_id;
 			
 			
 			

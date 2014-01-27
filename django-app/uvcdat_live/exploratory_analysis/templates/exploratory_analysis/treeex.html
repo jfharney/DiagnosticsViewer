@@ -326,43 +326,6 @@ $('#save_plot').click(function() {
 			});
 		
 		
-		/*
-		var data = {
-						'csrfmiddlewaretoken': csrftoken,
-						'figureName' : figureName,
-						'figureUrl' : figureUrl
-					};
-		
-		
-		var requestType = 'POST';
-		if($('a#save_plot').html() == 'Discard') {
-			requestType = 'DELETE';
-		}
-		
-		$.ajax({
-			  type: requestType,
-			  url: fileUrl,
-			  async: false,
-			  data: data,			
-			  success: function()
-			  { 
-				  console.log('success');
-				  console.log('save_plot ' + $('a#save_plot').html());
-				  $('a#save_plot').html('Discard');
-				  
-				  
-			  },
-			  error: function(xhr, status, error) {
-				  console.log('error'); 
-			    if(xhr.status==404)
-			    { 
-			    	
-			    }
-			  }
-			});
-		*/
-		
-		
 	});
 	
 	

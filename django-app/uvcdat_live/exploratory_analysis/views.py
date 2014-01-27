@@ -65,17 +65,36 @@ def index(request):
 
     return HttpResponse(template.render(context))
 
+#Home page view...nothing fancy here just points to the view located at index.html
+#corresponds with url: http://<host>/exploratory_analysis
+def main(request,user_id):
+    
+    print request.GET.get('q')
+    
+    template = loader.get_template('exploratory_analysis/index.html')
+    
+    context = RequestContext(request, {
+        'username' : user_id,
+    })
+
+    return HttpResponse(template.render(context))
+
 
 
 
 
 #geo map/time series view
 #corresponds with url: http://<host>/exploratory_analysis/maps
-def maps(request):
-    print request.GET.get('q')
+def maps(request,user_id):
+    username = 'jfharney'
+    
+    if user_id != None:
+        username = user_id 
+    
     template = loader.get_template('exploratory_analysis/mapview.html')
+    
     context = RequestContext(request, {
-      'view_name' : 'maps',
+      'username' : username,
     })
     
     return HttpResponse(template.render(context))
@@ -86,7 +105,13 @@ def maps(request):
 #New tree view
 def treeex(request,user_id):
     
-
+    username = 'jfharney'
+    
+    #grab the username
+    if user_id != None:
+        username = user_id
+    
+    
     
     #first we check if the request is in the cache or if it is the initial call
     #if it is in the cache, no need to do any back end generation
@@ -103,6 +128,7 @@ def treeex(request,user_id):
         path = default_sample_data_dir#'/Users/8xo/sampledatalens/tropics_warming_th_q_co2'
         times = ['JAN','FEB']
         
+        bookmark = "New"
         
 
         
@@ -131,6 +157,7 @@ def treeex(request,user_id):
             
         else:
             print 'other bookmark'
+            bookmark = 'New'
         
         
         
@@ -190,7 +217,7 @@ def treeex(request,user_id):
     
     #pass all the data back to the view
     context = RequestContext(request, {
-        'username' : 'jfharney',
+        'username' : username,
         'cachedfile' : cached_file_name,
         'variable_list' : variable_list,
         'season_list' : season_list,
@@ -231,69 +258,25 @@ def treeex(request,user_id):
   #http://<host>/exploratory_analysis/datasets/<user_id>/
 
 def datasets(request,user_id):
-  
-  print '\n\n\nUSER:' + user_id
-  
-  #grab the username
-  username = 'jfharney'
-  
-  #list of paths
-  paths = ['path1','path2','path3']
-
-  #list of datasets
-  datasets = ['dataset1','dataset2','tropics_warming_th_q_co2']
-
-
-  #list of year range per dataset
-  dataset1years = ['150','151','152']
-  dataset2years = ['150','151','152']
-  dataset3years = ['150','151','152']
-
-  year_range = [dataset1years, dataset2years, dataset3years]
     
-  data =  { 'username' : username, 'datasets' : datasets, 'paths' : paths, 'year_range' : year_range }
-  print 'DATA:',repr(data)
-  data_string = json.dumps(data,sort_keys=True,indent=2)
-  print 'JSON:',data_string
-  data_string = json.dumps(data,sort_keys=False,indent=2)
-  print 'JSON:',data_string
-
-  jsonStr = json.loads(data_string)
-
+    print '\n\n\nIn datasets'
     
+    from menuhelper import datasets
+  
+    data_string = datasets.datasetListHelper(request,user_id)
     
-
-  return HttpResponse(data_string)
-
+    return HttpResponse(data_string)
 
 
   #grabs variables given a dataset
   #http://<host>/exploratory_analysis/variables/dataset_id
 def variables(request,dataset_id):
-  
-    #dataset_id = 'dataset1'
-    if(dataset_id == None):
-        dataset_id = 'dataset1' 
-  
-    #if(dataset_id == 'dataset3'):
-    #    variables = ['AR','BTRAN','CWDC','DEADCROOTC','DEADSTEMC','ER','FROOTC','FSDS','GPP','HR','LIVECROOTC','LIVESTEMC','NEE','NPP','PCO2', 'RAIN', 'TBOT', 'TLAI', 'TOTECOSYSC', 'TOTLITC','TOTSOMC','TOTVEGC', 'WOODC'    ]
-    #else:
-    #    variables = ['ALL', 'AR','BTRAN','CWDC','DEADCROOTC','DEADSTEMC','ER','FROOTC','FSDS','GPP','HR','LIVECROOTC','LIVESTEMC','NEE','NPP','PCO2', 'RAIN', 'TBOT', 'TLAI', 'TOTECOSYSC', 'TOTLITC','TOTSOMC','TOTVEGC', 'WOODC'    ]
-    #Shared variables
-    variables = ['BTRAN','NPP','TLAI']
-  
-    data =  { 'dataset_id' : dataset_id, 'variables' : variables }
-    print 'DATA:',repr(data)
-    data_string = json.dumps(data,sort_keys=True,indent=2)
-    #print 'JSON:',data_string
-    #data_string = json.dumps(data,sort_keys=False,indent=2)
-    #print 'JSON:',data_string
-
-    jsonStr = json.loads(data_string)
-
-
+    
+    from menuhelper import variablelist
+    
+    data_string = variablelist.variableListHelper(request,dataset_id)
+    
     return HttpResponse(data_string)
-
  
   
   
@@ -301,26 +284,12 @@ def variables(request,dataset_id):
 #gets time ranges for a given variable id
 #http://<host>/exploratory_analysis/times/variable_id'
 def times(request,variable_id):
-  
-    print 'times for variable ', variable_id
-  
-    #dataset_id = 'dataset1'
-    if(variable_id == None):
-        variable_id = 'AR' 
-  
-    if(variable_id == 'AR'):
-        times = ['jan','feb','mar']
-    else:
-        times = ['april','may','june']
+    from menuhelper import times
     
-    data =  { 'variable_id' : variable_id, 'times' : times }
-    print 'DATA:',repr(data)
-    data_string = json.dumps(data,sort_keys=True,indent=2)
-    jsonStr = json.loads(data_string)
+    data_string = times.timesHelper(request,variable_id)
     
     return HttpResponse(data_string)
-  
-  
+
   
   
 
@@ -370,6 +339,9 @@ def visualizations(request):
 
   #####End Used in the geo page#####
   
+  
+  
+  
   #####Used in the tree page#####
   
    
@@ -410,55 +382,14 @@ def treedata(request,user_id):
   
   #grabs the timeseries data
   #http://<host>/exploratory_analysis/timeseries
-#Shared variables
-#BTRAN
-#NPP
-#TLAI
 def timeseries(request):
-    print 'in time series'
     
-  
-    print request.GET.get('variable')
-  
-    variable = ''
-    if(request.GET.get('variable') == None):
-         variable = 'AR'
-    else:
-         variable = request.GET.get('variable')
-  
-    #file = '/Users/csg/Desktop/uvcdat-web/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/cache/' + variable + '.json' 
-    #file = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/cache/' + variable + '.json' 
-    #file = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/src/time-plot-example/data/TLAI-avg.csv' 
-    #file = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/src/time-plot-example/data/time/TLAI-avg.json' 
-    file = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/cache/time/TLAI-avg.json'
     
-    data = ''
-    with open(file , 'r') as myfile:
-        data = myfile.read().replace('\n','')
-      
-    jsonData = json.dumps(data)
+    from menuhelper import timeseries
 
-    #jsonData = json.dumps("{ 'variable' : '" + variable  +  "'} ")
-    #print jsonData
-  
+    
+    jsonData = timeseries.timeSeriesHelper(request)
     return HttpResponse(jsonData) 
-
-
-
-  
-  
-  
-  
-#http://<host>/exploratory_analysis/test  
-#diagnostic static plot API
-def test(request):
-    #Do your regular get method processes here
-    if request.POST:
-        print 'posting'
-        #Do something with post data here
-    #return render_to_response('form.html', locals(), context_instance = RequestContext(request))
-    return HttpResponse()
-
   
   
   
@@ -474,15 +405,8 @@ def diagplot(request):
         print 'figureName: ' + request.DELETE['figureName']
     return HttpResponse("Here's the text of the Web page.")
 
-'''
-def test_post(request):
-    if request.POST:
-        print 'posting test_post'
-        #Do something with post data here
-    return render_to_response('form.html', locals(), context_instance = RequestContext(request)
-'''
 
-  
+
 
   ############
   #Treeview bookmarks API#
@@ -719,7 +643,17 @@ def figure_bookmarks(request):
         
         
     
+#Tree Figures BookmarksAPI
+#http://<host>/exploratory_analysis/login
+#Need to store Bookmark name, bookmark variables, bookmark time periods, bookmark description
+def login(request):
+    template = loader.get_template('exploratory_analysis/login.html')
 
+    context = RequestContext(request, {
+        
+    })
+
+    return HttpResponse(template.render(context))
 
 
 
