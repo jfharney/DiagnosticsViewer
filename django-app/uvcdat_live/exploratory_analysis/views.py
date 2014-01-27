@@ -26,15 +26,16 @@ timeseries_cache_path = paths.timeseries_cache_path
 if isConnected:
     #sys.path.append('/Users/8xo/software/exploratory_analysis/DiagnosticsGen/uvcmetrics/src/python')
     #sys.path.append('/Users/8xo/software/exploratory_analysis/uvcdat_light/build-uvcdat/install/Library/Frameworks/Python.framework/Versions/2.7/bin/cdscan')
-    sys.path.append(syspath_append_uvcmetrics)
-    sys.path.append(syspath_append_cdscan)
+    #sys.path.append(syspath_append_uvcmetrics)
+    #sys.path.append(syspath_append_cdscan)
    
-    from frontend.options import Options
-    from computation.reductions import *
-    from fileio.filetable import *
-    from fileio.findfiles import *
+    
+    from metrics.frontend.options import Options
+    from metrics.computation.reductions import *
+    from metrics.fileio.filetable import *
+    from metrics.fileio.findfiles import *
 
-    from frontend.treeview import TreeView 
+    from metrics.frontend.treeview import TreeView 
 
 cache_dir = paths_cache_dir#'/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/cache/'
     #cache_dir = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/css/tree/'
@@ -100,6 +101,65 @@ def maps(request,user_id):
     })
     
     return HttpResponse(template.render(context))
+
+
+
+
+
+
+
+
+def figureGenerator(request):
+      print 'in figure generator'
+    
+      o= Options()
+      o._opts['path']=[default_sample_data_dir]
+      o._opts['vars']=['TG']
+      o._opts['times']=['MAM']
+      o._opts['sets']=['2']
+      o._opts['packages']=['lmwg']
+      o._opts['realms']=['land']
+    
+    
+    
+    
+    
+      import metrics.fileio.filetable as ft
+      import metrics.fileio.findfiles as fi
+      dtree1 = fi.dirtree_datafiles(o, pathid=0)
+      filetable1 = ft.basic_filetable(dtree1, o)
+      filetable2 = None
+      print 'No second dataset for comparison'
+         
+      package=o._opts['packages']
+
+      # this needs a filetable probably, or we just define the maximum list of variables somewhere
+      im = ".".join(['metrics', 'packages', package[0], package[0]])
+      if package[0] == 'lmwg':
+         pclass = getattr(__import__(im, fromlist=['LMWG']), 'LMWG')()
+      elif package[0]=='amwg':
+         pclass = getattr(__import__(im, fromlist=['AMWG']), 'AMWG')()
+
+      setname = o._opts['sets'][0]
+      varid = o._opts['vars'][0]
+      seasonid = o._opts['times'][0]
+      print 'CALLING LIST SETS'
+      slist = pclass.list_diagnostic_sets()
+      print 'DONE CALLIGN LIST SETS'
+      keys = slist.keys()
+      keys.sort()
+      import vcs
+      print 'generating output.png ...'
+      v = vcs.init()
+      for k in keys:
+         fields = k.split()
+         if setname[0] == fields[0]:
+            print 'calling init for ', k, 'varid: ', varid, 'seasonid: ', seasonid
+            plot = slist[k](filetable1, filetable2, varid, seasonid)
+            res = plot.compute()
+            v.plot(res[0].vars, res[0].presentation, bg=1)
+            v.png('output.png')
+            
 
 
 
