@@ -20,6 +20,8 @@ paths_front_end_cache_dir = paths.front_end_cache_dir
 default_sample_data_dir = paths.default_sample_data_dir
 img_cache_path = paths.img_cache_path
 
+timeseries_cache_path = paths.timeseries_cache_path
+
 # import the diags code
 if isConnected:
     #sys.path.append('/Users/8xo/software/exploratory_analysis/DiagnosticsGen/uvcmetrics/src/python')
@@ -384,11 +386,16 @@ def treedata(request,user_id):
   #http://<host>/exploratory_analysis/timeseries
 def timeseries(request):
     
+    print ' ... in time series ...'
     
-    from menuhelper import timeseries
+    from mapviewhelper import timeseries
 
+    #timeseries_cache_path = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/cache'
     
-    jsonData = timeseries.timeSeriesHelper(request)
+    jsonData = timeseries.timeSeriesHelper1(request,timeseries_cache_path)
+    
+    print ' ... end in time series ...'
+    
     return HttpResponse(jsonData) 
   
   

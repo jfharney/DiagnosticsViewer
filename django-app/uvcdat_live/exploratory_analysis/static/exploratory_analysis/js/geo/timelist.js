@@ -8,13 +8,9 @@ $(document).ready(function(){
 		});
 	
 		$('.dropdown-variable-menu').on('click','a',function() {
-			//alert('issue an ajax call for variables for dataset ' + this.innerHTML);
 			
-			console.log('find times ' + this.innerHTML);
 			
-			var jsonData = '';
 			var queryString = '';
-			
 			
 			
 			//assemble the query string
@@ -24,7 +20,7 @@ $(document).ready(function(){
 			
 			
 			
-			//See 
+			//See menuhelper/times.py for implementation
 			$.ajax({
 				url: url,
 				global: false,
@@ -32,10 +28,6 @@ $(document).ready(function(){
 				dataType: 'json',
 				data: queryString,
 				success: function(data) {
-					
-					for(var key in data) {
-						console.log('key: ' + key + ' ' + data[key]);
-					}
 					
 					var timeList = data['times'];
 					$('.dropdown-time-menu').empty();
