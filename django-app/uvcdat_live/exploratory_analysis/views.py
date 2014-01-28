@@ -4,7 +4,7 @@ isConnected = True
 # Create your views here.
 from django.http import HttpResponse
 from django.template import RequestContext, loader
-from exploratory_analysis.models import Diags
+#from exploratory_analysis.models import Diags
 import json
 import sys 
 
@@ -192,28 +192,34 @@ def treeex(request,user_id):
     #get the season list here using Brian's code
     season_list = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC','DJF','MAM','JJA','SON','ANN']
 
-
+    '''
     #get the bookmarks of the user
     from exploratory_analysis.models import Tree_Bookmarks
     bookmark_list = Tree_Bookmarks.objects.filter(bookmark_username='jfharney')
-        
+    ''' 
+    bookmark_list = None
+    if bookmark_list == None:
+        bookmark_list = ['bookmark1','bookmark2','bookmark3']
+    
+    
     print 'flag: ' + str(bookmark_list == None) + ' ' + str(bookmark_list == [])
     
     print  'str: '  + str(len(bookmark_list))
     
-    for key in bookmark_list:
-        print 'key: ' + key + ' ' + bookmark_list[key]
+    #for key in bookmark_list:
+    #    print 'key: ' + key + ' ' + bookmark_list[key]
     
     
     if not bookmark_list:#str(len(bookmark_list)) == 0:
         bookmark_list = ['b1','b2','b3']
     
-    
+    figure_bookmark_list = None
+    '''
     #get the figure bookmarks of the user
     #query the database using username, figure bookmark name
     from exploratory_analysis.models import Figure_Bookmarks
     figure_bookmark_list = Figure_Bookmarks.objects.filter(figure_bookmark_username='jfharney')
-    
+    '''
     if figure_bookmark_list == None:
         figure_bookmark_list = ['figure1','figure2','figure3']
     
@@ -415,240 +421,7 @@ def diagplot(request):
 
 
 
-  ############
-  #Treeview bookmarks API#
-  ############
-  
-  
-  #http://<host>/exploratory_analysis/tree_bookmarks
-#Tree Bookmarks API
-#Need to store Bookmark name, bookmark variables, bookmark time periods, bookmark description
-def tree_bookmarks(request):
-    
-    
-    username = None
-    bookmark_name = None
-    bookmark_variables = None
-    bookmark_time_periods = None
-    bookmark_description = None
-    
-    
-    print 'in tree bookmarks'
-    if request.method == 'POST':
-        print 'POST'
-        
-        #grab the user's name
-        #default username: jfharney
-        if username == None:
-            print 'using default username'
-            username = 'jfharney'
-        
-        #grab the bookmark name
-        #default bookmark: bookmark + currentmillitime
-        if bookmark_name == None:
-            import time
-            print 'tme ' + str(time.time())
-            millis = int(round(time.time()*1000))
-            print 'millis' + str(millis)
-            bookmark_name = 'bookmark' + str(millis)
-            print 'using default bookmark name ' + bookmark_name
-        
-        
-        #grab the bookmark variables
-        #default figure: ../../../static/exploratory_analysis/cache/carousel/set6_turbf_Global.gif
-        if bookmark_variables == None:
-            print 'using default bookmark_variables'
-            variable_list = ['ACTUAL_IMMOB', 'AGNPP', 'ANN_FAREA_BURNED', 'AR', 'BCDEP', 'BGNPP', 'BIOGENCO', 'BSW', 'BTRAN', 'BUILDHEAT', 'COL_CTRUNC', 'COL_FIRE_CLOSS', 'COL_FIRE_NLOSS', 'COL_NTRUNC', 'CPOOL', 'CWDC', 'CWDC_HR', 'CWDC_LOSS', 'CWDN', 'DEADCROOTC', 'DEADCROOTN', 'DEADSTEMC', 'DEADSTEMN', 'DENIT', 'DISPVEGC', 'DISPVEGN', 'DSTDEP', 'DSTFLXT', 'DWT_CLOSS', 'DWT_CONV_CFLUX', 'DWT_CONV_NFLUX', 'DWT_NLOSS', 'DWT_PROD100C_GAIN', 'DWT_PROD100N_GAIN', 'DWT_PROD10C_GAIN', 'DWT_PROD10N_GAIN', 'DWT_SEEDC_TO_DEADSTEM', 'DWT_SEEDC_TO_LEAF', 'DWT_SEEDN_TO_DEADSTEM', 'DWT_SEEDN_TO_LEAF', 'DZSOI', 'E-T', 'EFLX_DYNBAL', 'EFLX_LH_TOT_R', 'EFLX_LH_TOT_U', 'ELAI', 'ER', 'ERRH2O', 'ERRSEB', 'ERRSOI', 'ERRSOL', 'ESAI', 'EVAPFRAC', 'FCEV', 'FCOV', 'FCTR', 'FGEV', 'FGR', 'FGR12', 'FGR_R', 'FGR_U', 'FIRA', 'FIRA_R', 'FIRA_U', 'FIRE', 'FIRESEASONL', 'FLDS', 'FLUXFM2A', 'FLUXFMLND', 'FPG', 'FPI', 'FPSN', 'FROOTC', 'FROOTC_ALLOC', 'FROOTC_LOSS', 'FROOTN', 'FSA', 'FSAT', 'FSA_R', 'FSA_U', 'FSDS', 'FSDSND', 'FSDSNDLN', 'FSDSNI', 'FSDSVD', 'FSDSVDLN', 'FSDSVI', 'FSH', 'FSH_G', 'FSH_NODYNLNDUSE', 'FSH_R', 'FSH_U', 'FSH_V', 'FSM', 'FSM_R', 'FSM_U', 'FSNO', 'FSR', 'FSRND', 'FSRNDLN', 'FSRNI', 'FSRVD', 'FSRVDLN', 'FSRVI', 'GC_HEAT1', 'GC_ICE1', 'GC_LIQ1', 'GPP', 'GR', 'GROSS_NMIN', 'H2OCAN', 'H2OSNO', 'H2OSNO_TOP', 'H2OSOI', 'HC', 'HCSOI', 'HEAT_FROM_AC', 'HKSAT', 'HR', 'HTOP', 'ISOPRENE', 'LAISHA', 'LAISUN', 'LAND_UPTAKE', 'LAND_USE_FLUX', 'LEAFC', 'LEAFC_ALLOC', 'LEAFC_LOSS', 'LEAFN', 'LHEAT', 'LITFALL', 'LITHR', 'LITR1C', 'LITR1C_TO_SOIL1C', 'LITR1N', 'LITR2C', 'LITR2C_TO_SOIL2C', 'LITR2N', 'LITR3C', 'LITR3C_TO_SOIL3C', 'LITR3N', 'LITTERC', 'LITTERC_HR', 'LITTERC_LOSS', 'LIVECROOTC', 'LIVECROOTN', 'LIVESTEMC', 'LIVESTEMN', 'MEAN_FIRE_PROB', 'MONOTERP', 'MR', 'NBP', 'NDEPLOY', 'NDEP_TO_SMINN', 'NEE', 'NEP', 'NET_NMIN', 'NFIX_TO_SMINN', 'NPP', 'OCDEP', 'ORVOC', 'OVOC', 'PBOT', 'PCO2', 'PFT_CTRUNC', 'PFT_FIRE_CLOSS', 'PFT_FIRE_NLOSS', 'PFT_NTRUNC', 'PLANT_NDEMAND', 'POTENTIAL_IMMOB', 'PREC', 'PROD100C', 'PROD100C_LOSS', 'PROD100N', 'PROD100N_LOSS', 'PROD10C', 'PROD10C_LOSS', 'PROD10N', 'PROD10N_LOSS', 'PRODUCT_CLOSS', 'PRODUCT_NLOSS', 'PSNSHA', 'PSNSHADE_TO_CPOOL', 'PSNSUN', 'PSNSUN_TO_CPOOL', 'Q2M', 'QBOT', 'QCHANR', 'QCHANR_ICE', 'QCHARGE', 'QCHOCNR', 'QCHOCNR_ICE', 'QDRAI', 'QDRIP', 'QFLX_ICE_DYNBAL', 'QFLX_LIQ_DYNBAL', 'QINFL', 'QINTR', 'QMELT', 'QOVER', 'QRGWL', 'QRUNOFF', 'QRUNOFF_NODYNLNDUSE', 'QRUNOFF_R', 'QRUNOFF_U', 'QSNWCPICE', 'QSNWCPICE_NODYNLNDUSE', 'QSOIL', 'QVEGE', 'QVEGT', 'RAIN', 'RAINATM', 'RAINFM2A', 'RETRANSN', 'RETRANSN_TO_NPOOL', 'RH2M', 'RH2M_R', 'RH2M_U', 'RR', 'SABG', 'SABV', 'SEEDC', 'SEEDN', 'SHEAT', 'SMINN', 'SMINN_LEACHED', 'SMINN_TO_NPOOL', 'SMINN_TO_PLANT', 'SNOBCMCL', 'SNOBCMSL', 'SNODSTMCL', 'SNODSTMSL', 'SNOOCMCL', 'SNOOCMSL', 'SNOW', 'SNOWATM', 'SNOWDP', 'SNOWFM2A', 'SNOWICE', 'SNOWLIQ', 'SOIL1C', 'SOIL1N', 'SOIL2C', 'SOIL2N', 'SOIL3C', 'SOIL3N', 'SOIL4C', 'SOIL4N', 'SOILC', 'SOILC_HR', 'SOILC_LOSS', 'SOILICE', 'SOILLIQ', 'SOILPSI', 'SOILWATER_10CM', 'SOMHR', 'SR', 'STORVEGC', 'STORVEGN', 'SUCSAT', 'SUPPLEMENT_TO_SMINN', 'SoilAlpha', 'SoilAlpha_U', 'TAUX', 'TAUY', 'TBOT', 'TBUILD', 'TG', 'TG_R', 'TG_U', 'THBOT', 'TLAI', 'TLAKE', 'TOTCOLC', 'TOTCOLN', 'TOTECOSYSC', 'TOTECOSYSN', 'TOTLITC', 'TOTLITN', 'TOTPFTC', 'TOTPFTN', 'TOTPRODC', 'TOTPRODN', 'TOTSOMC', 'TOTSOMN', 'TOTVEGC', 'TOTVEGN', 'TREFMNAV', 'TREFMNAV_R', 'TREFMNAV_U', 'TREFMXAV', 'TREFMXAV_R', 'TREFMXAV_U', 'TSA', 'TSAI', 'TSA_R', 'TSA_U', 'TSOI', 'TSOI_10CM', 'TV', 'U10', 'URBAN_AC', 'URBAN_HEAT', 'VOCFLXT', 'VOLR', 'WA', 'WASTEHEAT', 'WATSAT', 'WIND', 'WOODC', 'WOODC_ALLOC', 'WOODC_LOSS', 'WOOD_HARVESTC', 'WOOD_HARVESTN', 'WT', 'XSMRPOOL', 'XSMRPOOL_RECOVER', 'ZBOT', 'ZSOI', 'ZWT', 'area', 'areaatm', 'areaupsc', 'date_written', 'edgee', 'edgen', 'edges', 'edgew', 'indxupsc', 'landfrac', 'landmask', 'latixy', 'latixyatm', 'longxy', 'longxyatm', 'mcdate', 'mcsec', 'mdcur', 'mscur', 'nstep', 'pftmask', 'time_bounds', 'time_written', 'topo', 'topodnsc']
-            variable_list_str = ', '.join(variable_list)
-            bookmark_variables = variable_list_str
-        
-        
-        #grab the bookmark time periods
-        if bookmark_time_periods == None:
-            print 'using default bookmark_variables'
-            season_list = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC','DJF','MAM','JJA','SON','ANN']
-            season_list_str = ', '.join(season_list)
-            bookmark_time_periods = season_list_str
-        
-        #grab the bookmark description
-        if bookmark_description == None:
-            print 'using default bookmark_descriptions'
-            bookmark_description = 'Default description'
-        
-        #insert into database
-        print 'inserting into database'
-        
-        
-        
-        from exploratory_analysis.models import Tree_Bookmarks
-        p = Tree_Bookmarks(bookmark_name=bookmark_name,
-                             bookmark_username=username,
-                             bookmark_variables=bookmark_variables,
-                             bookmark_time_periods=bookmark_time_periods,
-                             bookmark_description=bookmark_description)
-        p.save()
-        print Tree_Bookmarks.objects.all()
-        
-        return HttpResponse()
-        
-    elif request.method == 'GET':
-        print 'In GET'
-        
-        #grab the user's name
-        username = 'jfharney'
-        
-        #grab the bookmark name
-        bookmark_name = 'bookmark1390373464356'
-        
-        #query the database using username, figure bookmark name
-        from exploratory_analysis.models import Tree_Bookmarks
-        bookmark_list = Tree_Bookmarks.objects.filter(bookmark_name=bookmark_name,
-                                                               bookmark_username='jfharney')
-        
-        bookmark_obj = None
-        for f in bookmark_list:
-            bookmark_obj = f
-            
-            
-        
-        #put into the context
-        data =  { 'bookmark_username' : username, 
-                 'bookmark_name' : bookmark_name, 
-                 'bookmark_variables' : bookmark_obj.bookmark_variables,
-                 'bookmark_time_periods' : bookmark_obj.bookmark_time_periods,
-                 'bookmark_description': bookmark_obj.bookmark_description}
-        
-        data_string = json.dumps(data,sort_keys=True,indent=2)
-        
-        return HttpResponse(data_string)
-    
-        
-        #return HttpResponse()
-    
-      
-  
-  
-  
-  
-  
-  
-#Tree Figures BookmarksAPI
-#http://<host>/exploratory_analysis/figure_bookmarks
-#Need to store Bookmark name, bookmark variables, bookmark time periods, bookmark description
-def figure_bookmarks(request):
-    
-    
-    username = None
-    figure_bookmark_name = None
-    figure_location = None
-    figure_bookmark_description = None
-    
-    
-    print 'in tree figures bookmarks'
-    if request.method == 'POST':
-        print 'in figure bookmarks POST'
-        
-        '''
-        username = request.POST['figure_bookmark_username']
-        figure_bookmark_name = request.POST['figure_bookmark_name']
-        figure_bookmark_location = request.POST['figure_bookmark_location']
-        figure_bookmark_description = request.POST['figure_bookmark_description']
-        '''
-        
-        for key in request.POST:
-            print 'key ' + key + ' value: ' + request.POST[key]
-        
-        '''
-                'figure_bookmark_name' : figure_bookmark_name.
-                'figure_bookmark_username' : figure_bookmark_username,
-                'figure_bookmark_location' : figure_bookmark_location,
-                'figure_bookmark_description' : figure_bookmark_description
-        '''
-        
-        #grab the user's name
-        #default username: jfharney
-        if username == None:
-            print 'using default username'
-            username = 'jfharney'
-        
-        #grab the figure bookmark name
-        #default bookmark: bookmark + currentmillitime
-        if figure_bookmark_name == None:
-            import time
-            print 'tme ' + str(time.time())
-            millis = int(round(time.time()*1000))
-            print 'millis' + str(millis)
-            figure_bookmark_name = 'bookmark' + str(millis)
-            print 'using default figure bookmark name ' + figure_bookmark_name
-        
-        #grab the figure bookmark location
-        #default figure: ../../../static/exploratory_analysis/cache/carousel/set6_turbf_Global.gif
-        if figure_location == None:
-            print 'using default figure location'
-            figure_location = '../../../static/exploratory_analysis/cache/carousel/set6_turbf_Global.gif'
-        
-        #grab the figure bookmark description
-        if figure_bookmark_description == None:
-            print 'using default figure bookmark description'
-            figure_bookmark_description = ''
-        
-        #insert into database
-        print 'inserting into database'
-        
-        from exploratory_analysis.models import Figure_Bookmarks
-        p = Figure_Bookmarks(figure_bookmark_name=figure_bookmark_name,
-                             figure_bookmark_username=username,
-                             figure_bookmark_location=figure_location,
-                             figure_bookmark_description=figure_bookmark_description)
-        p.save()
-        print Figure_Bookmarks.objects.all()
-        
-        return HttpResponse()
-    elif request.method == 'GET':
-        print 'In GET'
-        #grab the user's name
-        #default username: jfharney
-        if username == None:
-            print 'using default username'
-            username = 'jfharney'
-        
-        #grab the figure bookmark name
-        #default bookmark: bookmark + currentmillitime
-        if figure_bookmark_name == None:
-            import time
-            print 'tme ' + str(time.time())
-            millis = int(round(time.time()*1000))
-            print 'millis' + str(millis)
-            #figure_bookmark_name = 'bookmark' + str(millis)
-            figure_bookmark_name = 'bookmark' + '1390367784718'
-            print 'using default figure bookmark name ' + figure_bookmark_name
-        
-        
-        
-        
-        #query the database using username, figure bookmark name
-        from exploratory_analysis.models import Figure_Bookmarks
-        #figure_bookmark_list = Figure_Bookmarks.objects.filter(figure_bookmark_name='bookmark1390367784718',
-        #                                                       figure_bookmark_username='jfharney')
-        figure_bookmark_list = Figure_Bookmarks.objects.filter(figure_bookmark_name='bookmark1390440035535',
-                                                               figure_bookmark_username='jfharney')
-        
-        figure_bookmark_obj = None
-        for f in figure_bookmark_list:
-            figure_bookmark_obj = f
-            
-            
-        
-        #put into the context
-        data =  { 'figure_bookmark_username' : username, 
-                 'figure_bookmark_name' : figure_bookmark_name, 
-                 'figure_bookmark_location' : figure_bookmark_obj.figure_bookmark_location,
-                 'figure_bookmark_description': figure_bookmark_obj.figure_bookmark_description}
-        data_string = json.dumps(data,sort_keys=True,indent=2)
-        
-        return HttpResponse(data_string)
-        
-        
+
     
 #Tree Figures BookmarksAPI
 #http://<host>/exploratory_analysis/login
@@ -981,5 +754,285 @@ def getDatasetListJSONStr(user_id):
     print jsonStr
 
     return jsonStr
+
+
+
+
+
+
+
+  ############
+  #Treeview bookmarks API#
+  ############
+  
+  
+  #http://<host>/exploratory_analysis/tree_bookmarks
+#Tree Bookmarks API
+#Need to store Bookmark name, bookmark variables, bookmark time periods, bookmark description
+def tree_bookmarks(request):
+    
+    from exploratory_analysis.models import Tree_Bookmarks, Figure_Bookmarks
+    
+    tree_bookmark_name = None
+    tree_bookmark_datasetname = None
+    tree_bookmark_realm = None
+    tree_bookmark_username = None
+    tree_bookmark_variables = None
+    tree_bookmark_times = None
+    tree_bookmark_sets = None
+    tree_bookmark_description = None
+    tree_cache_url = None
+    
+    if request.method == 'POST':
+        
+        tree_bookmark_name = request.POST['tree_bookmark_name']
+        tree_bookmark_datasetname = request.POST['tree_bookmark_datasetname']
+        tree_bookmark_realm = request.POST['tree_bookmark_realm']
+        tree_bookmark_username = request.POST['tree_bookmark_username']
+        tree_bookmark_variables = request.POST['tree_bookmark_variables']
+        tree_bookmark_times = request.POST['tree_bookmark_times']
+        tree_bookmark_sets = request.POST['tree_bookmark_sets']
+        tree_bookmark_description = request.POST['tree_bookmark_description']
+        tree_cache_url = request.POST['tree_cache_url']
+        
+        tree_bookmark_record = TreeB
+        
+        
+        print 'POST'
+        
+        
+        
+    elif request.method == 'GET':
+        print 'GET'
+    elif request.method == 'DELETE':
+        print 'DELETE'
+    
+    
+    return HttpResponse()
+    '''
+    username = None
+    bookmark_name = None
+    bookmark_variables = None
+    bookmark_time_periods = None
+    bookmark_description = None
+    
+    
+    print 'in tree bookmarks'
+    if request.method == 'POST':
+        print 'POST'
+        
+        #grab the user's name
+        #default username: jfharney
+        if username == None:
+            print 'using default username'
+            username = 'jfharney'
+        
+        #grab the bookmark name
+        #default bookmark: bookmark + currentmillitime
+        if bookmark_name == None:
+            import time
+            print 'tme ' + str(time.time())
+            millis = int(round(time.time()*1000))
+            print 'millis' + str(millis)
+            bookmark_name = 'bookmark' + str(millis)
+            print 'using default bookmark name ' + bookmark_name
+        
+        
+        #grab the bookmark variables
+        #default figure: ../../../static/exploratory_analysis/cache/carousel/set6_turbf_Global.gif
+        if bookmark_variables == None:
+            print 'using default bookmark_variables'
+            variable_list = ['ACTUAL_IMMOB', 'AGNPP', 'ANN_FAREA_BURNED', 'AR', 'BCDEP', 'BGNPP', 'BIOGENCO', 'BSW', 'BTRAN', 'BUILDHEAT', 'COL_CTRUNC', 'COL_FIRE_CLOSS', 'COL_FIRE_NLOSS', 'COL_NTRUNC', 'CPOOL', 'CWDC', 'CWDC_HR', 'CWDC_LOSS', 'CWDN', 'DEADCROOTC', 'DEADCROOTN', 'DEADSTEMC', 'DEADSTEMN', 'DENIT', 'DISPVEGC', 'DISPVEGN', 'DSTDEP', 'DSTFLXT', 'DWT_CLOSS', 'DWT_CONV_CFLUX', 'DWT_CONV_NFLUX', 'DWT_NLOSS', 'DWT_PROD100C_GAIN', 'DWT_PROD100N_GAIN', 'DWT_PROD10C_GAIN', 'DWT_PROD10N_GAIN', 'DWT_SEEDC_TO_DEADSTEM', 'DWT_SEEDC_TO_LEAF', 'DWT_SEEDN_TO_DEADSTEM', 'DWT_SEEDN_TO_LEAF', 'DZSOI', 'E-T', 'EFLX_DYNBAL', 'EFLX_LH_TOT_R', 'EFLX_LH_TOT_U', 'ELAI', 'ER', 'ERRH2O', 'ERRSEB', 'ERRSOI', 'ERRSOL', 'ESAI', 'EVAPFRAC', 'FCEV', 'FCOV', 'FCTR', 'FGEV', 'FGR', 'FGR12', 'FGR_R', 'FGR_U', 'FIRA', 'FIRA_R', 'FIRA_U', 'FIRE', 'FIRESEASONL', 'FLDS', 'FLUXFM2A', 'FLUXFMLND', 'FPG', 'FPI', 'FPSN', 'FROOTC', 'FROOTC_ALLOC', 'FROOTC_LOSS', 'FROOTN', 'FSA', 'FSAT', 'FSA_R', 'FSA_U', 'FSDS', 'FSDSND', 'FSDSNDLN', 'FSDSNI', 'FSDSVD', 'FSDSVDLN', 'FSDSVI', 'FSH', 'FSH_G', 'FSH_NODYNLNDUSE', 'FSH_R', 'FSH_U', 'FSH_V', 'FSM', 'FSM_R', 'FSM_U', 'FSNO', 'FSR', 'FSRND', 'FSRNDLN', 'FSRNI', 'FSRVD', 'FSRVDLN', 'FSRVI', 'GC_HEAT1', 'GC_ICE1', 'GC_LIQ1', 'GPP', 'GR', 'GROSS_NMIN', 'H2OCAN', 'H2OSNO', 'H2OSNO_TOP', 'H2OSOI', 'HC', 'HCSOI', 'HEAT_FROM_AC', 'HKSAT', 'HR', 'HTOP', 'ISOPRENE', 'LAISHA', 'LAISUN', 'LAND_UPTAKE', 'LAND_USE_FLUX', 'LEAFC', 'LEAFC_ALLOC', 'LEAFC_LOSS', 'LEAFN', 'LHEAT', 'LITFALL', 'LITHR', 'LITR1C', 'LITR1C_TO_SOIL1C', 'LITR1N', 'LITR2C', 'LITR2C_TO_SOIL2C', 'LITR2N', 'LITR3C', 'LITR3C_TO_SOIL3C', 'LITR3N', 'LITTERC', 'LITTERC_HR', 'LITTERC_LOSS', 'LIVECROOTC', 'LIVECROOTN', 'LIVESTEMC', 'LIVESTEMN', 'MEAN_FIRE_PROB', 'MONOTERP', 'MR', 'NBP', 'NDEPLOY', 'NDEP_TO_SMINN', 'NEE', 'NEP', 'NET_NMIN', 'NFIX_TO_SMINN', 'NPP', 'OCDEP', 'ORVOC', 'OVOC', 'PBOT', 'PCO2', 'PFT_CTRUNC', 'PFT_FIRE_CLOSS', 'PFT_FIRE_NLOSS', 'PFT_NTRUNC', 'PLANT_NDEMAND', 'POTENTIAL_IMMOB', 'PREC', 'PROD100C', 'PROD100C_LOSS', 'PROD100N', 'PROD100N_LOSS', 'PROD10C', 'PROD10C_LOSS', 'PROD10N', 'PROD10N_LOSS', 'PRODUCT_CLOSS', 'PRODUCT_NLOSS', 'PSNSHA', 'PSNSHADE_TO_CPOOL', 'PSNSUN', 'PSNSUN_TO_CPOOL', 'Q2M', 'QBOT', 'QCHANR', 'QCHANR_ICE', 'QCHARGE', 'QCHOCNR', 'QCHOCNR_ICE', 'QDRAI', 'QDRIP', 'QFLX_ICE_DYNBAL', 'QFLX_LIQ_DYNBAL', 'QINFL', 'QINTR', 'QMELT', 'QOVER', 'QRGWL', 'QRUNOFF', 'QRUNOFF_NODYNLNDUSE', 'QRUNOFF_R', 'QRUNOFF_U', 'QSNWCPICE', 'QSNWCPICE_NODYNLNDUSE', 'QSOIL', 'QVEGE', 'QVEGT', 'RAIN', 'RAINATM', 'RAINFM2A', 'RETRANSN', 'RETRANSN_TO_NPOOL', 'RH2M', 'RH2M_R', 'RH2M_U', 'RR', 'SABG', 'SABV', 'SEEDC', 'SEEDN', 'SHEAT', 'SMINN', 'SMINN_LEACHED', 'SMINN_TO_NPOOL', 'SMINN_TO_PLANT', 'SNOBCMCL', 'SNOBCMSL', 'SNODSTMCL', 'SNODSTMSL', 'SNOOCMCL', 'SNOOCMSL', 'SNOW', 'SNOWATM', 'SNOWDP', 'SNOWFM2A', 'SNOWICE', 'SNOWLIQ', 'SOIL1C', 'SOIL1N', 'SOIL2C', 'SOIL2N', 'SOIL3C', 'SOIL3N', 'SOIL4C', 'SOIL4N', 'SOILC', 'SOILC_HR', 'SOILC_LOSS', 'SOILICE', 'SOILLIQ', 'SOILPSI', 'SOILWATER_10CM', 'SOMHR', 'SR', 'STORVEGC', 'STORVEGN', 'SUCSAT', 'SUPPLEMENT_TO_SMINN', 'SoilAlpha', 'SoilAlpha_U', 'TAUX', 'TAUY', 'TBOT', 'TBUILD', 'TG', 'TG_R', 'TG_U', 'THBOT', 'TLAI', 'TLAKE', 'TOTCOLC', 'TOTCOLN', 'TOTECOSYSC', 'TOTECOSYSN', 'TOTLITC', 'TOTLITN', 'TOTPFTC', 'TOTPFTN', 'TOTPRODC', 'TOTPRODN', 'TOTSOMC', 'TOTSOMN', 'TOTVEGC', 'TOTVEGN', 'TREFMNAV', 'TREFMNAV_R', 'TREFMNAV_U', 'TREFMXAV', 'TREFMXAV_R', 'TREFMXAV_U', 'TSA', 'TSAI', 'TSA_R', 'TSA_U', 'TSOI', 'TSOI_10CM', 'TV', 'U10', 'URBAN_AC', 'URBAN_HEAT', 'VOCFLXT', 'VOLR', 'WA', 'WASTEHEAT', 'WATSAT', 'WIND', 'WOODC', 'WOODC_ALLOC', 'WOODC_LOSS', 'WOOD_HARVESTC', 'WOOD_HARVESTN', 'WT', 'XSMRPOOL', 'XSMRPOOL_RECOVER', 'ZBOT', 'ZSOI', 'ZWT', 'area', 'areaatm', 'areaupsc', 'date_written', 'edgee', 'edgen', 'edges', 'edgew', 'indxupsc', 'landfrac', 'landmask', 'latixy', 'latixyatm', 'longxy', 'longxyatm', 'mcdate', 'mcsec', 'mdcur', 'mscur', 'nstep', 'pftmask', 'time_bounds', 'time_written', 'topo', 'topodnsc']
+            variable_list_str = ', '.join(variable_list)
+            bookmark_variables = variable_list_str
+        
+        
+        #grab the bookmark time periods
+        if bookmark_time_periods == None:
+            print 'using default bookmark_variables'
+            season_list = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC','DJF','MAM','JJA','SON','ANN']
+            season_list_str = ', '.join(season_list)
+            bookmark_time_periods = season_list_str
+        
+        #grab the bookmark description
+        if bookmark_description == None:
+            print 'using default bookmark_descriptions'
+            bookmark_description = 'Default description'
+        
+        #insert into database
+        print 'inserting into database'
+        
+        
+        
+        from exploratory_analysis.models import Tree_Bookmarks
+        p = Tree_Bookmarks(bookmark_name=bookmark_name,
+                             bookmark_username=username,
+                             bookmark_variables=bookmark_variables,
+                             bookmark_time_periods=bookmark_time_periods,
+                             bookmark_description=bookmark_description)
+        p.save()
+        print Tree_Bookmarks.objects.all()
+        
+        return HttpResponse()
+        
+    elif request.method == 'GET':
+        print 'In GET'
+        
+        #grab the user's name
+        username = 'jfharney'
+        
+        #grab the bookmark name
+        bookmark_name = 'bookmark1390373464356'
+        
+        #query the database using username, figure bookmark name
+        from exploratory_analysis.models import Tree_Bookmarks
+        bookmark_list = Tree_Bookmarks.objects.filter(bookmark_name=bookmark_name,
+                                                               bookmark_username='jfharney')
+        
+        bookmark_obj = None
+        for f in bookmark_list:
+            bookmark_obj = f
+            
+            
+        
+        #put into the context
+        data =  { 'bookmark_username' : username, 
+                 'bookmark_name' : bookmark_name, 
+                 'bookmark_variables' : bookmark_obj.bookmark_variables,
+                 'bookmark_time_periods' : bookmark_obj.bookmark_time_periods,
+                 'bookmark_description': bookmark_obj.bookmark_description}
+        
+        data_string = json.dumps(data,sort_keys=True,indent=2)
+        
+        return HttpResponse(data_string)
+    
+        
+        #return HttpResponse()
+    
+    '''  
+  
+  
+  
+  
+  
+  
+#Tree Figures BookmarksAPI
+#http://<host>/exploratory_analysis/figure_bookmarks
+#Need to store Bookmark name, bookmark variables, bookmark time periods, bookmark description
+def figure_bookmarks(request):
+    
+    
+    username = None
+    figure_bookmark_name = None
+    figure_location = None
+    figure_bookmark_description = None
+    
+    
+    print 'in tree figures bookmarks'
+    if request.method == 'POST':
+        print 'in figure bookmarks POST'
+        
+        '''
+        username = request.POST['figure_bookmark_username']
+        figure_bookmark_name = request.POST['figure_bookmark_name']
+        figure_bookmark_location = request.POST['figure_bookmark_location']
+        figure_bookmark_description = request.POST['figure_bookmark_description']
+        '''
+        
+        for key in request.POST:
+            print 'key ' + key + ' value: ' + request.POST[key]
+        
+        '''
+                'figure_bookmark_name' : figure_bookmark_name.
+                'figure_bookmark_username' : figure_bookmark_username,
+                'figure_bookmark_location' : figure_bookmark_location,
+                'figure_bookmark_description' : figure_bookmark_description
+        '''
+        
+        #grab the user's name
+        #default username: jfharney
+        if username == None:
+            print 'using default username'
+            username = 'jfharney'
+        
+        #grab the figure bookmark name
+        #default bookmark: bookmark + currentmillitime
+        if figure_bookmark_name == None:
+            import time
+            print 'tme ' + str(time.time())
+            millis = int(round(time.time()*1000))
+            print 'millis' + str(millis)
+            figure_bookmark_name = 'bookmark' + str(millis)
+            print 'using default figure bookmark name ' + figure_bookmark_name
+        
+        #grab the figure bookmark location
+        #default figure: ../../../static/exploratory_analysis/cache/carousel/set6_turbf_Global.gif
+        if figure_location == None:
+            print 'using default figure location'
+            figure_location = '../../../static/exploratory_analysis/cache/carousel/set6_turbf_Global.gif'
+        
+        #grab the figure bookmark description
+        if figure_bookmark_description == None:
+            print 'using default figure bookmark description'
+            figure_bookmark_description = ''
+        
+        #insert into database
+        print 'inserting into database'
+        
+        from exploratory_analysis.models import Figure_Bookmarks
+        p = Figure_Bookmarks(figure_bookmark_name=figure_bookmark_name,
+                             figure_bookmark_username=username,
+                             figure_bookmark_location=figure_location,
+                             figure_bookmark_description=figure_bookmark_description)
+        p.save()
+        print Figure_Bookmarks.objects.all()
+        
+        return HttpResponse()
+    elif request.method == 'GET':
+        print 'In GET'
+        #grab the user's name
+        #default username: jfharney
+        if username == None:
+            print 'using default username'
+            username = 'jfharney'
+        
+        #grab the figure bookmark name
+        #default bookmark: bookmark + currentmillitime
+        if figure_bookmark_name == None:
+            import time
+            print 'tme ' + str(time.time())
+            millis = int(round(time.time()*1000))
+            print 'millis' + str(millis)
+            #figure_bookmark_name = 'bookmark' + str(millis)
+            figure_bookmark_name = 'bookmark' + '1390367784718'
+            print 'using default figure bookmark name ' + figure_bookmark_name
+        
+        
+        
+        
+        #query the database using username, figure bookmark name
+        from exploratory_analysis.models import Figure_Bookmarks
+        #figure_bookmark_list = Figure_Bookmarks.objects.filter(figure_bookmark_name='bookmark1390367784718',
+        #                                                       figure_bookmark_username='jfharney')
+        figure_bookmark_list = Figure_Bookmarks.objects.filter(figure_bookmark_name='bookmark1390440035535',
+                                                               figure_bookmark_username='jfharney')
+        
+        figure_bookmark_obj = None
+        for f in figure_bookmark_list:
+            figure_bookmark_obj = f
+            
+            
+        
+        #put into the context
+        data =  { 'figure_bookmark_username' : username, 
+                 'figure_bookmark_name' : figure_bookmark_name, 
+                 'figure_bookmark_location' : figure_bookmark_obj.figure_bookmark_location,
+                 'figure_bookmark_description': figure_bookmark_obj.figure_bookmark_description}
+        data_string = json.dumps(data,sort_keys=True,indent=2)
+        
+        return HttpResponse(data_string)
+        
+        
+
 
 

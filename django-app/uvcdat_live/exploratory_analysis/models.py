@@ -1,7 +1,7 @@
 from django.db import models
 
 
-
+''' 
 class Diags(models.Model):
   state = models.CharField(max_length=200)
 
@@ -26,7 +26,7 @@ class TreeBookmarks(models.Model):
     
     
     
-'''    
+   
     
     
 class Blog(models.Model):
@@ -76,9 +76,11 @@ class DiagPlot(models.Model):
 #figure_bookmarks   
 class Figure_Bookmarks(models.Model):
     figure_bookmark_name = models.CharField(max_length=1000)
+    figure_bookmark_datasetname = models.CharField(max_length=1000)
+    figure_bookmark_realm = models.CharField(max_length=1000)
     figure_bookmark_username = models.CharField(max_length=1000)
-    figure_bookmark_location = models.CharField(max_length=1000)
-    figure_bookmark_description = models.CharField(max_length=10000)
+    figure_bookmark_description = models.CharField(max_length=100000)
+    figure_cache_url = models.CharField(max_length=1000)
     
     def __unicode__(self):
         return self.figure_bookmark_name
@@ -87,13 +89,17 @@ class Figure_Bookmarks(models.Model):
  
 #figure_bookmarks   
 class Tree_Bookmarks(models.Model):
-    bookmark_name = models.CharField(max_length=1000)
-    bookmark_username = models.CharField(max_length=1000)
-    bookmark_variables = models.CharField(max_length=10000)
-    bookmark_time_periods = models.CharField(max_length=10000)
-    bookmark_description = models.CharField(max_length=10000)
+    tree_bookmark_name = models.CharField(max_length=1000)
+    tree_bookmark_datasetname = models.CharField(max_length=1000)
+    tree_bookmark_realm = models.CharField(max_length=1000)
+    tree_bookmark_username = models.CharField(max_length=1000)
+    tree_bookmark_variables = models.CharField(max_length=10000) #should be a list
+    tree_bookmark_times = models.CharField(max_length=10000) #should be a list
+    tree_bookmark_sets = models.CharField(max_length=10000) #should be a list
+    tree_bookmark_description = models.CharField(max_length=10000) #should be a list
+    tree_cache_url = models.CharField(max_length=1000) 
     
     def __unicode__(self):
-        return self.bookmark_name
+        return self.tree_bookmark_name
     
 

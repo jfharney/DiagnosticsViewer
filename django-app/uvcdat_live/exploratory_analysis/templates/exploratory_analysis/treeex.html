@@ -69,13 +69,13 @@ svg {
 <div id="csrf">
 {% csrf_token %}
 </div>
-<!--  
+ 
 
      	<button type="button" class="btn btn-default" id="test" >Test Submit</button>
-     	<button type="button" class="btn btn-default" id="test2" >Test2 Submit</button>
+     	<button type="button" class="btn btn-default" id="test2" >Post tree bookmark</button>
      	<button type="button" class="btn btn-default" id="test3" >Test3 Submit</button>
      	<button type="button" class="btn btn-default" id="test4" >Test4 Submit</button>
--->     
+     
      
 	<div class="container">
 		<span id="CachedFile" style="display:none">{{ cachedfile }}</span>
@@ -269,8 +269,69 @@ $(document).ready(function(){
 	
 	
 	
-$('#save_plot').click(function() {
+	
+	
+	
+	
+	$('#test2').click(function() {
+		//alert('test 2 submit');
 		
+		var fileUrl = 'http://localhost:8081/exploratory_analysis/tree_bookmarks/';
+
+	    var tree_bookmark_name = 'tree_bookmark_name1';
+	    var tree_bookmark_datasetname = 'tree_bookmark_datasetname1';
+	    var tree_bookmark_realm = 'tree_bookmark_realm1';
+	    var tree_bookmark_username = 'tree_bookmark_username1';
+	    var tree_bookmark_variables = 'tree_bookmark_variables1';
+	    var tree_bookmark_times = 'tree_bookmark_times1';
+	    var tree_bookmark_sets = 'tree_bookmark_sets1';
+	    var tree_bookmark_description = 'tree_bookmark_description1';
+	    var tree_cache_url = 'tree_cache_url1';
+	    
+	    var data = {
+	    			'csrfmiddlewaretoken': csrftoken,
+	    			'tree_bookmark_name': tree_bookmark_name,
+	    			'tree_bookmark_datasetname':tree_bookmark_datasetname,
+	    			'tree_bookmark_realm':tree_bookmark_realm,
+	    			'tree_bookmark_username':tree_bookmark_username,
+	    			'tree_bookmark_times':tree_bookmark_variables,
+	    			'tree_bookmark_sets':tree_bookmark_sets,
+	    			'tree_bookmark_description':tree_bookmark_description,
+	    			'tree_cache_url':tree_cache_url
+	    };
+		
+		
+		$.ajax({
+			  type: "POST",
+			  url: fileUrl,
+			  async: false,
+			  data: data,
+			  success: function(data)
+			  { 
+				  
+				  
+				  console.log('success');
+			  },
+			  error: function(xhr, status, error) {
+				  console.log('error'); 
+			    if(xhr.status==404)
+			    { 
+			    	
+			    }
+			  }
+			});
+		
+	});
+	
+	
+	
+	
+	
+	
+	
+$('#save_plot').click(function() {
+	
+	
 		console.log('csrftoken in test ' + csrftoken);
 		
 
@@ -328,31 +389,6 @@ $('#save_plot').click(function() {
 		
 	});
 	
-	
-	$('#test2').click(function() {
-		alert('test 2 submit');
-		
-		var data = {'csrfmiddlewaretoken': csrftoken};
-		var fileUrl = 'http://localhost:8081/exploratory_analysis/tree_bookmarks/';
-		$.ajax({
-			  type: "POST",
-			  url: fileUrl,
-			  async: false,
-			  data: data,
-			  success: function()
-			  { 
-				  console.log('success');
-			  },
-			  error: function(xhr, status, error) {
-				  console.log('error'); 
-			    if(xhr.status==404)
-			    { 
-			    	
-			    }
-			  }
-			});
-		
-	});
 	
 	
 	
