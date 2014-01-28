@@ -795,7 +795,7 @@ def tree_bookmarks(request):
         tree_bookmark_description = request.POST['tree_bookmark_description']
         tree_cache_url = request.POST['tree_cache_url']
         
-        tree_bookmark_record = TreeB
+        tree_bookmark_record = Tree_Bookmarks()
         
         
         print 'POST'
