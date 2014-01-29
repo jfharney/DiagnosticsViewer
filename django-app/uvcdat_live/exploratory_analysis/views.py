@@ -872,9 +872,6 @@ def tree_bookmarks(request):
         
         tree_bookmark_record.save()
         
-        #print tree_bookmark_record
-        
-        
         print 'POST'
         
         return HttpResponse()

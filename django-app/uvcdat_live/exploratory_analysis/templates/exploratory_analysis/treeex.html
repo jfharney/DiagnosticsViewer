@@ -71,7 +71,6 @@ svg {
 </div>
  
 <div>
-	<button type="button" class="btn btn-default" id="test" >Test Submit</button>
      	<button type="button" class="btn btn-default" id="test2" >Post tree bookmark</button>
      	<button type="button" class="btn btn-default" id="test3" >Delete tree bookmark</button>
      	<button type="button" class="btn btn-default" id="test4" >Get tree bookmark</button>
@@ -79,7 +78,6 @@ svg {
      
 </div>
 <div>
-<button type="button" class="btn btn-default" id="test1" >Test Submit</button>
      	<button type="button" class="btn btn-default" id="test12" >Post figure bookmark</button>
      	<button type="button" class="btn btn-default" id="test13" >Delete figure bookmark</button>
      	<button type="button" class="btn btn-default" id="test14" >Get figure bookmark</button>
@@ -259,6 +257,7 @@ svg {
 
 $(document).ready(function(){
 
+	//for post requests, need to get the csrf token
 	function getCookie(name) {
         var cookieValue = null;
         if (document.cookie && document.cookie != '') {
@@ -278,38 +277,25 @@ $(document).ready(function(){
     
 	console.log('csrftoken ' + csrftoken);
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	//testers for the bookmark API
+	
 	$('#test4').click(function() {
 		//alert('test 2 submit');
 		
 		var fileUrl = 'http://localhost:8081/exploratory_analysis/tree_bookmarks/';
 
-	    var tree_bookmark_name = 'tree_bookmark_name1';
-	    var tree_bookmark_datasetname = 'tree_bookmark_datasetname1';
-	    var tree_bookmark_realm = 'tree_bookmark_realm1';
-	    var tree_bookmark_username = 'tree_bookmark_username1';
-	    var tree_bookmark_variables = 'tree_bookmark_variables1';
-	    var tree_bookmark_times = 'tree_bookmark_times1';
-	    var tree_bookmark_sets = 'tree_bookmark_sets1';
-	    var tree_bookmark_description = 'tree_bookmark_description1';
-	    var tree_cache_url = 'tree_cache_url1';
-	    
-	    var data = {
-	    			'csrfmiddlewaretoken': csrftoken,
-	    			'tree_bookmark_name': tree_bookmark_name,
-	    			'tree_bookmark_datasetname':tree_bookmark_datasetname,
-	    			'tree_bookmark_realm':tree_bookmark_realm,
-	    			'tree_bookmark_username':tree_bookmark_username,
-	    			'tree_bookmark_variables':tree_bookmark_variables,
-	    			'tree_bookmark_times':tree_bookmark_times,
-	    			'tree_bookmark_sets':tree_bookmark_sets,
-	    			'tree_bookmark_description':tree_bookmark_description,
-	    			'tree_cache_url':tree_cache_url
-	    };
 		
-		var querystring = '?tree_bookmark_name=' + tree_bookmark_name+
-							'&tree_bookmark_datasetname=' + tree_bookmark_datasetname+
-							'&tree_bookmark_realm=' + tree_bookmark_realm+
-							'&tree_bookmark_username=' + tree_bookmark_username;
+
+	    var data = getSampleDataTree(csrftoken);
+	    var querystring = getSampleQueryStringTree();
 		
 		fileUrl = fileUrl + querystring;
 		test4(fileUrl,csrftoken,data);
@@ -326,37 +312,13 @@ $(document).ready(function(){
 		
 		var fileUrl = 'http://localhost:8081/exploratory_analysis/tree_bookmarks/';
 
-	    var tree_bookmark_name = 'tree_bookmark_name1';
-	    var tree_bookmark_datasetname = 'tree_bookmark_datasetname1';
-	    var tree_bookmark_realm = 'tree_bookmark_realm1';
-	    var tree_bookmark_username = 'tree_bookmark_username1';
-	    var tree_bookmark_variables = 'tree_bookmark_variables1';
-	    var tree_bookmark_times = 'tree_bookmark_times1';
-	    var tree_bookmark_sets = 'tree_bookmark_sets1';
-	    var tree_bookmark_description = 'tree_bookmark_description1';
-	    var tree_cache_url = 'tree_cache_url1';
 	    
-	    var data = {
-	    			'csrfmiddlewaretoken': csrftoken,
-	    			'tree_bookmark_name': tree_bookmark_name,
-	    			'tree_bookmark_datasetname':tree_bookmark_datasetname,
-	    			'tree_bookmark_realm':tree_bookmark_realm,
-	    			'tree_bookmark_username':tree_bookmark_username,
-	    			'tree_bookmark_variables':tree_bookmark_variables,
-	    			'tree_bookmark_times':tree_bookmark_times,
-	    			'tree_bookmark_sets':tree_bookmark_sets,
-	    			'tree_bookmark_description':tree_bookmark_description,
-	    			'tree_cache_url':tree_cache_url
-	    };
-		
-		var querystring = '?tree_bookmark_name=' + tree_bookmark_name+
-							'&tree_bookmark_datasetname=' + tree_bookmark_datasetname+
-							'&tree_bookmark_realm=' + tree_bookmark_realm+
-							'&tree_bookmark_username=' + tree_bookmark_username;
-		
+
+	    var data = getSampleDataTree(csrftoken);
+	    var querystring = getSampleQueryStringTree();
+	    
 		fileUrl = fileUrl + querystring;
 	    
-	
 		test3(fileUrl,csrftoken,data);
 		
 	});
@@ -370,29 +332,11 @@ $(document).ready(function(){
 		
 		var fileUrl = 'http://localhost:8081/exploratory_analysis/tree_bookmarks/';
 
-	    var tree_bookmark_name = 'tree_bookmark_name1';
-	    var tree_bookmark_datasetname = 'tree_bookmark_datasetname1';
-	    var tree_bookmark_realm = 'tree_bookmark_realm1';
-	    var tree_bookmark_username = 'tree_bookmark_username1';
-	    var tree_bookmark_variables = 'tree_bookmark_variables1';
-	    var tree_bookmark_times = 'tree_bookmark_times1';
-	    var tree_bookmark_sets = 'tree_bookmark_sets1';
-	    var tree_bookmark_description = 'tree_bookmark_description1';
-	    var tree_cache_url = 'tree_cache_url1';
-	    
-	    var data = {
-	    			'csrfmiddlewaretoken': csrftoken,
-	    			'tree_bookmark_name': tree_bookmark_name,
-	    			'tree_bookmark_datasetname':tree_bookmark_datasetname,
-	    			'tree_bookmark_realm':tree_bookmark_realm,
-	    			'tree_bookmark_username':tree_bookmark_username,
-	    			'tree_bookmark_variables':tree_bookmark_variables,
-	    			'tree_bookmark_times':tree_bookmark_times,
-	    			'tree_bookmark_sets':tree_bookmark_sets,
-	    			'tree_bookmark_description':tree_bookmark_description,
-	    			'tree_cache_url':tree_cache_url
-	    };
 		
+		
+	    var data = getSampleDataTree(csrftoken);
+	    var querystring = getSampleQueryStringTree();
+	    
 	    test2(fileUrl,csrftoken,data);
 		
 		
@@ -405,27 +349,11 @@ $(document).ready(function(){
 		
 		var fileUrl = 'http://localhost:8081/exploratory_analysis/figure_bookmarks/';
 
-		var figure_bookmark_name = 'figure_bookmark_name1';
-	    var figure_bookmark_datasetname = 'figure_bookmark_datasetname1';
-	    var figure_bookmark_realm = 'figure_bookmark_realm1';
-	    var figure_bookmark_username = 'figure_bookmark_username1';
-	    var figure_bookmark_description = 'figure_bookmark_description1';
-	    var figure_cache_url = 'figure_cache_url1';
-	    
-	    var data = {
-	    			'csrfmiddlewaretoken': csrftoken,
-	    			'figure_bookmark_name': figure_bookmark_name,
-	    			'figure_bookmark_datasetname':figure_bookmark_datasetname,
-	    			'figure_bookmark_realm':figure_bookmark_realm,
-	    			'figure_bookmark_username':figure_bookmark_username,
-	    			'figure_bookmark_description':figure_bookmark_description,
-	    			'figure_cache_url':figure_cache_url
-	    };
 		
-		var querystring = '?figure_bookmark_name=' + figure_bookmark_name+
-							'&figure_bookmark_datasetname=' + figure_bookmark_datasetname+
-							'&figure_bookmark_realm=' + figure_bookmark_realm+
-							'&figure_bookmark_username=' + figure_bookmark_username;
+		
+		var data = getSampleDataFigure(csrftoken);
+		var querystring = getSampleQueryStringFigure();
+		
 		
 		fileUrl = fileUrl + querystring;
 		test14(fileUrl,csrftoken,data);
@@ -442,27 +370,9 @@ $(document).ready(function(){
 		
 		var fileUrl = 'http://localhost:8081/exploratory_analysis/figure_bookmarks/';
 
-		var figure_bookmark_name = 'figure_bookmark_name1';
-	    var figure_bookmark_datasetname = 'figure_bookmark_datasetname1';
-	    var figure_bookmark_realm = 'figure_bookmark_realm1';
-	    var figure_bookmark_username = 'figure_bookmark_username1';
-	    var figure_bookmark_description = 'figure_bookmark_description1';
-	    var figure_cache_url = 'figure_cache_url1';
-	    
-	    var data = {
-	    			'csrfmiddlewaretoken': csrftoken,
-	    			'figure_bookmark_name': figure_bookmark_name,
-	    			'figure_bookmark_datasetname':figure_bookmark_datasetname,
-	    			'figure_bookmark_realm':figure_bookmark_realm,
-	    			'figure_bookmark_username':figure_bookmark_username,
-	    			'figure_bookmark_description':figure_bookmark_description,
-	    			'figure_cache_url':figure_cache_url
-	    };
 		
-		var querystring = '?figure_bookmark_name=' + figure_bookmark_name+
-							'&figure_bookmark_datasetname=' + figure_bookmark_datasetname+
-							'&figure_bookmark_realm=' + figure_bookmark_realm+
-							'&figure_bookmark_username=' + figure_bookmark_username;
+		var data = getSampleDataFigure(csrftoken);
+		var querystring = getSampleQueryStringFigure();
 		
 		fileUrl = fileUrl + querystring;
 	    
@@ -478,23 +388,11 @@ $(document).ready(function(){
 		
 		var fileUrl = 'http://localhost:8081/exploratory_analysis/figure_bookmarks/';
 
-	    var figure_bookmark_name = 'figure_bookmark_name1';
-	    var figure_bookmark_datasetname = 'figure_bookmark_datasetname1';
-	    var figure_bookmark_realm = 'figure_bookmark_realm1';
-	    var figure_bookmark_username = 'figure_bookmark_username1';
-	    var figure_bookmark_description = 'figure_bookmark_description1';
-	    var figure_cache_url = 'figure_cache_url1';
-	    
-	    var data = {
-	    			'csrfmiddlewaretoken': csrftoken,
-	    			'figure_bookmark_name': figure_bookmark_name,
-	    			'figure_bookmark_datasetname':figure_bookmark_datasetname,
-	    			'figure_bookmark_realm':figure_bookmark_realm,
-	    			'figure_bookmark_username':figure_bookmark_username,
-	    			'figure_bookmark_description':figure_bookmark_description,
-	    			'figure_cache_url':figure_cache_url
-	    };
 		
+	    var data = getSampleDataFigure(csrftoken);
+		var querystring = getSampleQueryStringFigure();
+		
+	    
 	    test12(fileUrl,csrftoken,data);
 	    
 	});
