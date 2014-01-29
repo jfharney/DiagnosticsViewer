@@ -70,12 +70,22 @@ svg {
 {% csrf_token %}
 </div>
  
-
-     	<button type="button" class="btn btn-default" id="test" >Test Submit</button>
+<div>
+	<button type="button" class="btn btn-default" id="test" >Test Submit</button>
      	<button type="button" class="btn btn-default" id="test2" >Post tree bookmark</button>
-     	<button type="button" class="btn btn-default" id="test3" >Test3 Submit</button>
-     	<button type="button" class="btn btn-default" id="test4" >Test4 Submit</button>
+     	<button type="button" class="btn btn-default" id="test3" >Delete tree bookmark</button>
+     	<button type="button" class="btn btn-default" id="test4" >Get tree bookmark</button>
      
+     
+</div>
+<div>
+<button type="button" class="btn btn-default" id="test1" >Test Submit</button>
+     	<button type="button" class="btn btn-default" id="test12" >Post figure bookmark</button>
+     	<button type="button" class="btn btn-default" id="test13" >Delete figure bookmark</button>
+     	<button type="button" class="btn btn-default" id="test14" >Get figure bookmark</button>
+     
+</div>
+     	
      
 	<div class="container">
 		<span id="CachedFile" style="display:none">{{ cachedfile }}</span>
@@ -267,7 +277,134 @@ $(document).ready(function(){
     
 	console.log('csrftoken ' + csrftoken);
 	
+	$('#test4').click(function() {
+		//alert('test 2 submit');
+		
+		var fileUrl = 'http://localhost:8081/exploratory_analysis/tree_bookmarks/';
+
+	    var tree_bookmark_name = 'tree_bookmark_name1';
+	    var tree_bookmark_datasetname = 'tree_bookmark_datasetname1';
+	    var tree_bookmark_realm = 'tree_bookmark_realm1';
+	    var tree_bookmark_username = 'tree_bookmark_username1';
+	    var tree_bookmark_variables = 'tree_bookmark_variables1';
+	    var tree_bookmark_times = 'tree_bookmark_times1';
+	    var tree_bookmark_sets = 'tree_bookmark_sets1';
+	    var tree_bookmark_description = 'tree_bookmark_description1';
+	    var tree_cache_url = 'tree_cache_url1';
+	    
+	    var data = {
+	    			'csrfmiddlewaretoken': csrftoken,
+	    			'tree_bookmark_name': tree_bookmark_name,
+	    			'tree_bookmark_datasetname':tree_bookmark_datasetname,
+	    			'tree_bookmark_realm':tree_bookmark_realm,
+	    			'tree_bookmark_username':tree_bookmark_username,
+	    			'tree_bookmark_variables':tree_bookmark_variables,
+	    			'tree_bookmark_times':tree_bookmark_times,
+	    			'tree_bookmark_sets':tree_bookmark_sets,
+	    			'tree_bookmark_description':tree_bookmark_description,
+	    			'tree_cache_url':tree_cache_url
+	    };
+		
+		var querystring = '?tree_bookmark_name=' + tree_bookmark_name+
+							'&tree_bookmark_datasetname=' + tree_bookmark_datasetname+
+							'&tree_bookmark_realm=' + tree_bookmark_realm+
+							'&tree_bookmark_username=' + tree_bookmark_username;
+		
+		fileUrl = fileUrl + querystring;
+	    
+		$.ajax({
+			  type: "GET",
+			  url: fileUrl,
+			  dataType: 'json',
+			  async: false,
+			  beforeSend: function(xhr) {
+			        xhr.setRequestHeader("X-CSRFToken", csrftoken);//getCookie("csrftoken"));
+			  },
+			  //data: data,
+			  success: function(data)
+			  { 
+				  console.log(data);
+				  
+				  for (var key in data) {
+					  console.log('key: ' + key + ' value: ' + data[key]);
+				  }
+				  
+				  console.log('success');
+			  },
+			  error: function(xhr, status, error) {
+				  console.log('error'); 
+			    if(xhr.status==404)
+			    { 
+			    	
+			    }
+			  }
+			});
+		
+	});
 	
+	
+	
+	
+	
+	$('#test3').click(function() {
+		//alert('test 2 submit');
+		
+		var fileUrl = 'http://localhost:8081/exploratory_analysis/tree_bookmarks/';
+
+	    var tree_bookmark_name = 'tree_bookmark_name1';
+	    var tree_bookmark_datasetname = 'tree_bookmark_datasetname1';
+	    var tree_bookmark_realm = 'tree_bookmark_realm1';
+	    var tree_bookmark_username = 'tree_bookmark_username1';
+	    var tree_bookmark_variables = 'tree_bookmark_variables1';
+	    var tree_bookmark_times = 'tree_bookmark_times1';
+	    var tree_bookmark_sets = 'tree_bookmark_sets1';
+	    var tree_bookmark_description = 'tree_bookmark_description1';
+	    var tree_cache_url = 'tree_cache_url1';
+	    
+	    var data = {
+	    			'csrfmiddlewaretoken': csrftoken,
+	    			'tree_bookmark_name': tree_bookmark_name,
+	    			'tree_bookmark_datasetname':tree_bookmark_datasetname,
+	    			'tree_bookmark_realm':tree_bookmark_realm,
+	    			'tree_bookmark_username':tree_bookmark_username,
+	    			'tree_bookmark_variables':tree_bookmark_variables,
+	    			'tree_bookmark_times':tree_bookmark_times,
+	    			'tree_bookmark_sets':tree_bookmark_sets,
+	    			'tree_bookmark_description':tree_bookmark_description,
+	    			'tree_cache_url':tree_cache_url
+	    };
+		
+		var querystring = '?tree_bookmark_name=' + tree_bookmark_name+
+							'&tree_bookmark_datasetname=' + tree_bookmark_datasetname+
+							'&tree_bookmark_realm=' + tree_bookmark_realm+
+							'&tree_bookmark_username=' + tree_bookmark_username;
+		
+		fileUrl = fileUrl + querystring;
+	    
+		$.ajax({
+			  type: "DELETE",
+			  url: fileUrl,
+			  async: false,
+			  beforeSend: function(xhr) {
+			        xhr.setRequestHeader("X-CSRFToken", csrftoken);//getCookie("csrftoken"));
+			  },
+			  //data: data,
+			  success: function(data)
+			  { 
+				  
+				  
+				  console.log('success');
+			  },
+			  error: function(xhr, status, error) {
+				  console.log('error'); 
+			    if(xhr.status==404)
+			    { 
+			    	
+			    }
+			  }
+			});
+		
+	});
 	
 	
 	
@@ -294,7 +431,8 @@ $(document).ready(function(){
 	    			'tree_bookmark_datasetname':tree_bookmark_datasetname,
 	    			'tree_bookmark_realm':tree_bookmark_realm,
 	    			'tree_bookmark_username':tree_bookmark_username,
-	    			'tree_bookmark_times':tree_bookmark_variables,
+	    			'tree_bookmark_variables':tree_bookmark_variables,
+	    			'tree_bookmark_times':tree_bookmark_times,
 	    			'tree_bookmark_sets':tree_bookmark_sets,
 	    			'tree_bookmark_description':tree_bookmark_description,
 	    			'tree_cache_url':tree_cache_url
@@ -322,6 +460,175 @@ $(document).ready(function(){
 			});
 		
 	});
+	
+	
+	
+	$('#test14').click(function() {
+		//alert('test 2 submit');
+		
+		var fileUrl = 'http://localhost:8081/exploratory_analysis/figure_bookmarks/';
+
+		var figure_bookmark_name = 'figure_bookmark_name1';
+	    var figure_bookmark_datasetname = 'figure_bookmark_datasetname1';
+	    var figure_bookmark_realm = 'figure_bookmark_realm1';
+	    var figure_bookmark_username = 'figure_bookmark_username1';
+	    var figure_bookmark_description = 'figure_bookmark_description1';
+	    var figure_cache_url = 'figure_cache_url1';
+	    
+	    var data = {
+	    			'csrfmiddlewaretoken': csrftoken,
+	    			'figure_bookmark_name': figure_bookmark_name,
+	    			'figure_bookmark_datasetname':figure_bookmark_datasetname,
+	    			'figure_bookmark_realm':figure_bookmark_realm,
+	    			'figure_bookmark_username':figure_bookmark_username,
+	    			'figure_bookmark_description':figure_bookmark_description,
+	    			'figure_cache_url':figure_cache_url
+	    };
+		
+		var querystring = '?figure_bookmark_name=' + figure_bookmark_name+
+							'&figure_bookmark_datasetname=' + figure_bookmark_datasetname+
+							'&figure_bookmark_realm=' + figure_bookmark_realm+
+							'&figure_bookmark_username=' + figure_bookmark_username;
+		
+		fileUrl = fileUrl + querystring;
+	    
+		$.ajax({
+			  type: "GET",
+			  url: fileUrl,
+			  dataType: 'json',
+			  async: false,
+			  beforeSend: function(xhr) {
+			        xhr.setRequestHeader("X-CSRFToken", csrftoken);//getCookie("csrftoken"));
+			  },
+			  //data: data,
+			  success: function(data)
+			  { 
+				  console.log(data);
+				  
+				  for (var key in data) {
+					  console.log('key: ' + key + ' value: ' + data[key]);
+				  }
+				  
+				  console.log('success');
+			  },
+			  error: function(xhr, status, error) {
+				  console.log('error'); 
+			    if(xhr.status==404)
+			    { 
+			    	
+			    }
+			  }
+			});
+		
+	});
+	
+	
+	
+	
+	
+	$('#test13').click(function() {
+		//alert('test 2 submit');
+		
+		var fileUrl = 'http://localhost:8081/exploratory_analysis/figure_bookmarks/';
+
+		var figure_bookmark_name = 'figure_bookmark_name1';
+	    var figure_bookmark_datasetname = 'figure_bookmark_datasetname1';
+	    var figure_bookmark_realm = 'figure_bookmark_realm1';
+	    var figure_bookmark_username = 'figure_bookmark_username1';
+	    var figure_bookmark_description = 'figure_bookmark_description1';
+	    var figure_cache_url = 'figure_cache_url1';
+	    
+	    var data = {
+	    			'csrfmiddlewaretoken': csrftoken,
+	    			'figure_bookmark_name': figure_bookmark_name,
+	    			'figure_bookmark_datasetname':figure_bookmark_datasetname,
+	    			'figure_bookmark_realm':figure_bookmark_realm,
+	    			'figure_bookmark_username':figure_bookmark_username,
+	    			'figure_bookmark_description':figure_bookmark_description,
+	    			'figure_cache_url':figure_cache_url
+	    };
+		
+		var querystring = '?figure_bookmark_name=' + figure_bookmark_name+
+							'&figure_bookmark_datasetname=' + figure_bookmark_datasetname+
+							'&figure_bookmark_realm=' + figure_bookmark_realm+
+							'&figure_bookmark_username=' + figure_bookmark_username;
+		
+		fileUrl = fileUrl + querystring;
+	    
+		$.ajax({
+			  type: "DELETE",
+			  url: fileUrl,
+			  async: false,
+			  beforeSend: function(xhr) {
+			        xhr.setRequestHeader("X-CSRFToken", csrftoken);//getCookie("csrftoken"));
+			  },
+			  //data: data,
+			  success: function(data)
+			  { 
+				  
+				  
+				  console.log('delete success');
+			  },
+			  error: function(xhr, status, error) {
+				  console.log('error'); 
+			    if(xhr.status==404)
+			    { 
+			    	
+			    }
+			  }
+			});
+		
+	});
+	
+	
+	
+	$('#test12').click(function() {
+		//alert('test 2 submit');
+		
+		var fileUrl = 'http://localhost:8081/exploratory_analysis/figure_bookmarks/';
+
+	    var figure_bookmark_name = 'figure_bookmark_name1';
+	    var figure_bookmark_datasetname = 'figure_bookmark_datasetname1';
+	    var figure_bookmark_realm = 'figure_bookmark_realm1';
+	    var figure_bookmark_username = 'figure_bookmark_username1';
+	    var figure_bookmark_description = 'figure_bookmark_description1';
+	    var figure_cache_url = 'figure_cache_url1';
+	    
+	    var data = {
+	    			'csrfmiddlewaretoken': csrftoken,
+	    			'figure_bookmark_name': figure_bookmark_name,
+	    			'figure_bookmark_datasetname':figure_bookmark_datasetname,
+	    			'figure_bookmark_realm':figure_bookmark_realm,
+	    			'figure_bookmark_username':figure_bookmark_username,
+	    			'figure_bookmark_description':figure_bookmark_description,
+	    			'figure_cache_url':figure_cache_url
+	    };
+		
+		
+		$.ajax({
+			  type: "POST",
+			  url: fileUrl,
+			  async: false,
+			  data: data,
+			  success: function(data)
+			  { 
+				  
+				  
+				  console.log('success');
+			  },
+			  error: function(xhr, status, error) {
+				  console.log('error'); 
+			    if(xhr.status==404)
+			    { 
+			    	
+			    }
+			  }
+			});
+		
+	});
+	
+	
+	
 	
 	
 	
@@ -420,6 +727,8 @@ $('#save_plot').click(function() {
 		
 	});
 	
+	
+	/*
 	$('#test3').click(function() {
 		alert('test 3 submit');
 		
@@ -445,6 +754,7 @@ $('#save_plot').click(function() {
 		
 	});
 	
+	
 	$('#test4').click(function() {
 		alert('test 4 submit');
 		
@@ -469,7 +779,7 @@ $('#save_plot').click(function() {
 			});
 		
 	});
-	
+	*/
 	
 	
 	$('.dropdown-toggle').dropdown();
