@@ -891,26 +891,44 @@ def tree_bookmarks(request):
     
         from exploratory_analysis.models import Tree_Bookmarks
     
-        tree_bookmark_record = Tree_Bookmarks.objects.get(tree_bookmark_name=tree_bookmark_name,
+        
+        
+        
+        
+        
+        try:
+            tree_bookmark_record = Tree_Bookmarks.objects.get(tree_bookmark_name=tree_bookmark_name,
                                       tree_bookmark_datasetname=tree_bookmark_datasetname,
                                       tree_bookmark_realm=tree_bookmark_realm,
                                       tree_bookmark_username=tree_bookmark_username)
     
-        #print tree_bookmark_record.tree_cache_url
-        data =  { 
-                 'tree_bookmark_name' : tree_bookmark_record.tree_bookmark_name, 
-                 'tree_bookmark_datasetname' : tree_bookmark_record.tree_bookmark_datasetname, 
-                 'tree_bookmark_realm' : tree_bookmark_record.tree_bookmark_realm, 
-                 'tree_bookmark_username' : tree_bookmark_record.tree_bookmark_username,
-                 'tree_bookmark_variables' : tree_bookmark_record.tree_bookmark_variables, 
-                 'tree_bookmark_times' : tree_bookmark_record.tree_bookmark_times, 
-                 'tree_bookmark_sets' : tree_bookmark_record.tree_bookmark_sets, 
-                 'tree_bookmark_description' : tree_bookmark_record.tree_bookmark_description,
-                 'tree_cache_url' : tree_bookmark_record.tree_cache_url
-                 }
-        print 'DATA:',repr(data)
-        data_string = json.dumps(data,sort_keys=True,indent=2)
+            #print tree_bookmark_record.tree_cache_url
+            data =  { 
+                     'tree_bookmark_name' : tree_bookmark_record.tree_bookmark_name, 
+                     'tree_bookmark_datasetname' : tree_bookmark_record.tree_bookmark_datasetname, 
+                     'tree_bookmark_realm' : tree_bookmark_record.tree_bookmark_realm, 
+                     'tree_bookmark_username' : tree_bookmark_record.tree_bookmark_username,
+                     'tree_bookmark_variables' : tree_bookmark_record.tree_bookmark_variables, 
+                     'tree_bookmark_times' : tree_bookmark_record.tree_bookmark_times, 
+                     'tree_bookmark_sets' : tree_bookmark_record.tree_bookmark_sets, 
+                     'tree_bookmark_description' : tree_bookmark_record.tree_bookmark_description,
+                     'tree_cache_url' : tree_bookmark_record.tree_cache_url
+                     }
+            print 'DATA:',repr(data)
+            data_string = json.dumps(data,sort_keys=True,indent=2)
+        
+            return HttpResponse(data_string)
+        
     
+        except:
+            print "Unexpected error:"
+            data =  { }
+            data_string = json.dumps(data,sort_keys=True,indent=2)
+            return HttpResponse(data_string)
+            
+        
+        
+        
         
         
         return HttpResponse(data_string)
@@ -998,7 +1016,7 @@ def figure_bookmarks(request):
         
         print 'POST'
         
-        
+        return HttpResponse()
         
     
     elif request.method == 'GET':
@@ -1012,13 +1030,36 @@ def figure_bookmarks(request):
     
         from exploratory_analysis.models import Figure_Bookmarks
     
-        figure_bookmark_record = Figure_Bookmarks.objects.get(figure_bookmark_name=figure_bookmark_name,
+    
+        try:
+            figure_bookmark_record = Figure_Bookmarks.objects.get(figure_bookmark_name=figure_bookmark_name,
                                       figure_bookmark_datasetname=figure_bookmark_datasetname,
                                       figure_bookmark_realm=figure_bookmark_realm,
                                       figure_bookmark_username=figure_bookmark_username)
     
+            #print tree_bookmark_record.tree_cache_url
+            data =  { 
+                 'figure_bookmark_name' : figure_bookmark_record.figure_bookmark_name, 
+                 'figure_bookmark_datasetname' : figure_bookmark_record.figure_bookmark_datasetname, 
+                 'figure_bookmark_realm' : figure_bookmark_record.figure_bookmark_realm, 
+                 'figure_bookmark_username' : figure_bookmark_record.figure_bookmark_username,
+                 'figure_bookmark_description' : figure_bookmark_record.figure_bookmark_description,
+                 'figure_cache_url' : figure_bookmark_record.figure_cache_url
+                 }
+            print 'DATA:',repr(data)
+            
+            data_string = json.dumps(data,sort_keys=True,indent=2)
+            return HttpResponse(data_string)
+        
     
+        except:
+            print "Unexpected error:"
+            data =  { }
+            data_string = json.dumps(data,sort_keys=True,indent=2)
+            return HttpResponse(data_string)
+            
     
+        '''
         #print tree_bookmark_record.tree_cache_url
         data =  { 
                  'figure_bookmark_name' : figure_bookmark_record.figure_bookmark_name, 
@@ -1036,7 +1077,7 @@ def figure_bookmarks(request):
         return HttpResponse(data_string)
     
         print 'GET'
-    
+        '''
     elif request.method == 'DELETE':
         
         figure_bookmark_name = request.GET.get('figure_bookmark_name')
@@ -1061,111 +1102,8 @@ def figure_bookmarks(request):
         
         
     
-    return HttpResponse()
-    
-    
-    '''
-    username = None
-    figure_bookmark_name = None
-    figure_location = None
-    figure_bookmark_description = None
-    
-    
-    print 'in tree figures bookmarks'
-    if request.method == 'POST':
-        print 'in figure bookmarks POST'
-        
-        
-        
-        for key in request.POST:
-            print 'key ' + key + ' value: ' + request.POST[key]
-        
-        
-        
-        #grab the user's name
-        #default username: jfharney
-        if username == None:
-            print 'using default username'
-            username = 'jfharney'
-        
-        #grab the figure bookmark name
-        #default bookmark: bookmark + currentmillitime
-        if figure_bookmark_name == None:
-            import time
-            print 'tme ' + str(time.time())
-            millis = int(round(time.time()*1000))
-            print 'millis' + str(millis)
-            figure_bookmark_name = 'bookmark' + str(millis)
-            print 'using default figure bookmark name ' + figure_bookmark_name
-        
-        #grab the figure bookmark location
-        #default figure: ../../../static/exploratory_analysis/cache/carousel/set6_turbf_Global.gif
-        if figure_location == None:
-            print 'using default figure location'
-            figure_location = '../../../static/exploratory_analysis/cache/carousel/set6_turbf_Global.gif'
-        
-        #grab the figure bookmark description
-        if figure_bookmark_description == None:
-            print 'using default figure bookmark description'
-            figure_bookmark_description = ''
-        
-        #insert into database
-        print 'inserting into database'
-        
-        from exploratory_analysis.models import Figure_Bookmarks
-        p = Figure_Bookmarks(figure_bookmark_name=figure_bookmark_name,
-                             figure_bookmark_username=username,
-                             figure_bookmark_location=figure_location,
-                             figure_bookmark_description=figure_bookmark_description)
-        p.save()
-        print Figure_Bookmarks.objects.all()
-        
         return HttpResponse()
-    elif request.method == 'GET':
-        print 'In GET'
-        #grab the user's name
-        #default username: jfharney
-        if username == None:
-            print 'using default username'
-            username = 'jfharney'
-        
-        #grab the figure bookmark name
-        #default bookmark: bookmark + currentmillitime
-        if figure_bookmark_name == None:
-            import time
-            print 'tme ' + str(time.time())
-            millis = int(round(time.time()*1000))
-            print 'millis' + str(millis)
-            #figure_bookmark_name = 'bookmark' + str(millis)
-            figure_bookmark_name = 'bookmark' + '1390367784718'
-            print 'using default figure bookmark name ' + figure_bookmark_name
-        
-        
-        
-        
-        #query the database using username, figure bookmark name
-        from exploratory_analysis.models import Figure_Bookmarks
-        #figure_bookmark_list = Figure_Bookmarks.objects.filter(figure_bookmark_name='bookmark1390367784718',
-        #                                                       figure_bookmark_username='jfharney')
-        figure_bookmark_list = Figure_Bookmarks.objects.filter(figure_bookmark_name='bookmark1390440035535',
-                                                               figure_bookmark_username='jfharney')
-        
-        figure_bookmark_obj = None
-        for f in figure_bookmark_list:
-            figure_bookmark_obj = f
-            
-            
-        
-        #put into the context
-        data =  { 'figure_bookmark_username' : username, 
-                 'figure_bookmark_name' : figure_bookmark_name, 
-                 'figure_bookmark_location' : figure_bookmark_obj.figure_bookmark_location,
-                 'figure_bookmark_description': figure_bookmark_obj.figure_bookmark_description}
-        data_string = json.dumps(data,sort_keys=True,indent=2)
-        
-        return HttpResponse(data_string)
-     '''   
-        
-
+    
+    
 
 

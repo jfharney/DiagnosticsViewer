@@ -252,6 +252,7 @@ svg {
 	<script src="{% static 'exploratory_analysis/js/d3/d3.min.js' %}"></script>
 	<!--  -->
 	<script src="{% static 'exploratory_analysis/js/tree/dynamictree.js' %}"></script>
+	<script src="{% static 'exploratory_analysis/js/tree/bookmarks.js' %}"></script>
 	
 
 <script>
@@ -311,34 +312,8 @@ $(document).ready(function(){
 							'&tree_bookmark_username=' + tree_bookmark_username;
 		
 		fileUrl = fileUrl + querystring;
-	    
-		$.ajax({
-			  type: "GET",
-			  url: fileUrl,
-			  dataType: 'json',
-			  async: false,
-			  beforeSend: function(xhr) {
-			        xhr.setRequestHeader("X-CSRFToken", csrftoken);//getCookie("csrftoken"));
-			  },
-			  //data: data,
-			  success: function(data)
-			  { 
-				  console.log(data);
-				  
-				  for (var key in data) {
-					  console.log('key: ' + key + ' value: ' + data[key]);
-				  }
-				  
-				  console.log('success');
-			  },
-			  error: function(xhr, status, error) {
-				  console.log('error'); 
-			    if(xhr.status==404)
-			    { 
-			    	
-			    }
-			  }
-			});
+		test4(fileUrl,csrftoken,data);
+		
 		
 	});
 	
@@ -381,28 +356,8 @@ $(document).ready(function(){
 		
 		fileUrl = fileUrl + querystring;
 	    
-		$.ajax({
-			  type: "DELETE",
-			  url: fileUrl,
-			  async: false,
-			  beforeSend: function(xhr) {
-			        xhr.setRequestHeader("X-CSRFToken", csrftoken);//getCookie("csrftoken"));
-			  },
-			  //data: data,
-			  success: function(data)
-			  { 
-				  
-				  
-				  console.log('success');
-			  },
-			  error: function(xhr, status, error) {
-				  console.log('error'); 
-			    if(xhr.status==404)
-			    { 
-			    	
-			    }
-			  }
-			});
+	
+		test3(fileUrl,csrftoken,data);
 		
 	});
 	
@@ -438,26 +393,8 @@ $(document).ready(function(){
 	    			'tree_cache_url':tree_cache_url
 	    };
 		
+	    test2(fileUrl,csrftoken,data);
 		
-		$.ajax({
-			  type: "POST",
-			  url: fileUrl,
-			  async: false,
-			  data: data,
-			  success: function(data)
-			  { 
-				  
-				  
-				  console.log('success');
-			  },
-			  error: function(xhr, status, error) {
-				  console.log('error'); 
-			    if(xhr.status==404)
-			    { 
-			    	
-			    }
-			  }
-			});
 		
 	});
 	
@@ -491,34 +428,8 @@ $(document).ready(function(){
 							'&figure_bookmark_username=' + figure_bookmark_username;
 		
 		fileUrl = fileUrl + querystring;
-	    
-		$.ajax({
-			  type: "GET",
-			  url: fileUrl,
-			  dataType: 'json',
-			  async: false,
-			  beforeSend: function(xhr) {
-			        xhr.setRequestHeader("X-CSRFToken", csrftoken);//getCookie("csrftoken"));
-			  },
-			  //data: data,
-			  success: function(data)
-			  { 
-				  console.log(data);
-				  
-				  for (var key in data) {
-					  console.log('key: ' + key + ' value: ' + data[key]);
-				  }
-				  
-				  console.log('success');
-			  },
-			  error: function(xhr, status, error) {
-				  console.log('error'); 
-			    if(xhr.status==404)
-			    { 
-			    	
-			    }
-			  }
-			});
+		test14(fileUrl,csrftoken,data);
+		
 		
 	});
 	
@@ -555,28 +466,8 @@ $(document).ready(function(){
 		
 		fileUrl = fileUrl + querystring;
 	    
-		$.ajax({
-			  type: "DELETE",
-			  url: fileUrl,
-			  async: false,
-			  beforeSend: function(xhr) {
-			        xhr.setRequestHeader("X-CSRFToken", csrftoken);//getCookie("csrftoken"));
-			  },
-			  //data: data,
-			  success: function(data)
-			  { 
-				  
-				  
-				  console.log('delete success');
-			  },
-			  error: function(xhr, status, error) {
-				  console.log('error'); 
-			    if(xhr.status==404)
-			    { 
-			    	
-			    }
-			  }
-			});
+		test13(fileUrl,csrftoken,data);
+	    
 		
 	});
 	
@@ -604,27 +495,8 @@ $(document).ready(function(){
 	    			'figure_cache_url':figure_cache_url
 	    };
 		
-		
-		$.ajax({
-			  type: "POST",
-			  url: fileUrl,
-			  async: false,
-			  data: data,
-			  success: function(data)
-			  { 
-				  
-				  
-				  console.log('success');
-			  },
-			  error: function(xhr, status, error) {
-				  console.log('error'); 
-			    if(xhr.status==404)
-			    { 
-			    	
-			    }
-			  }
-			});
-		
+	    test12(fileUrl,csrftoken,data);
+	    
 	});
 	
 	
