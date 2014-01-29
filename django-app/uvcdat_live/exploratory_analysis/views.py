@@ -116,7 +116,8 @@ def figureGenerator(request):
       o._opts['path']=[default_sample_data_dir]
       o._opts['vars']=['TG']
       o._opts['times']=['MAM']
-      o._opts['sets']=['2']
+      #Note: only use 1 or 2 
+      o._opts['sets']=['1']
       o._opts['packages']=['lmwg']
       o._opts['realms']=['land']
     
@@ -160,7 +161,7 @@ def figureGenerator(request):
             v.plot(res[0].vars, res[0].presentation, bg=1)
             v.png('output.png')
             
-
+      return HttpResponse()
 
 
 
