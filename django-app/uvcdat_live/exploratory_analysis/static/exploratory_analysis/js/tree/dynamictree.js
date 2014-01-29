@@ -298,6 +298,36 @@ d.children = null;
 	  //"../../../static/exploratory_analysis/css/tree/flare13.json"
 	  var staticImg = computedImg;
 	  
+	  
+	  /*
+	   * 
+	   */
+	  var get_image_url = 'http://localhost:8081/exploratory_analysis/figure_generator';
+	  $.ajax({
+			url: get_image_url,
+			global: false,
+			type: 'GET',
+			//dataType: 'json',
+			//data: queryStringParams,
+			success: function(data) {
+				alert('data; ' + data);
+				/*
+				var datasetList = data['datasets'];
+				$('#dataset_name').empty();
+				for (var i=0;i<datasetList.length;i++) {
+					var dataset = datasetList[i];
+					$('.dropdown-dataset-menu').append('<li class="dataset_menu" id="' + dataset + '"><a href="#">' + dataset + '</a></li>');
+				}
+				*/
+				
+			},
+			error: function( jqXHR, textStatus, errorThrown ) {
+				//alert('datasetList textStatus: ' + textStatus + ' errorThrown: ' + errorThrown);
+
+				
+			}
+		});
+	  
 	  $('#modal-title').empty();
 	  $('.modal-body').empty();
 	  $('#modal-title').append('<span>TITLE:</span> <div id="' + "figtitle" + '"> ' + reversePath(fullpath) + '</div>');

@@ -49,7 +49,7 @@ urlpatterns = patterns('',
   
   
   
-  
+  url(r'^figure_generator/$', views.figureGenerator, name='figureGenerator'),
   
   #grabs the tree data
   url(r'^treedata/(?P<user_id>\w+)/$', views.treedata, name='treedata'),
