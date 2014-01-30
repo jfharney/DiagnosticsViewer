@@ -302,31 +302,39 @@ d.children = null;
 	  /*
 	   * 
 	   */
-	  var get_image_url = 'http://localhost:8081/exploratory_analysis/figure_generator';
-	  $.ajax({
-			url: get_image_url,
-			global: false,
-			type: 'GET',
-			//dataType: 'json',
-			//data: queryStringParams,
-			success: function(data) {
-				alert('data; ' + data);
-				/*
-				var datasetList = data['datasets'];
-				$('#dataset_name').empty();
-				for (var i=0;i<datasetList.length;i++) {
-					var dataset = datasetList[i];
-					$('.dropdown-dataset-menu').append('<li class="dataset_menu" id="' + dataset + '"><a href="#">' + dataset + '</a></li>');
-				}
-				*/
-				
-			},
-			error: function( jqXHR, textStatus, errorThrown ) {
-				//alert('datasetList textStatus: ' + textStatus + ' errorThrown: ' + errorThrown);
-
-				
-			}
-		});
+	  
+	  var params = fullpath.split('9');
+	  //9MAR9TLAI9set19tropics_warming_th_q_co29lmwg9jfharney
+	  
+	  var times = '';
+	  var variables = '';
+	  var sets = '';
+	  var dataset = '';
+	  var packages = '';
+	  var realms = 'land';
+	  var username = 'jfharney';
+	  
+	  for(var i=0;i<params.length;i++) {
+		  console.log('param: ' + params[i]);
+		  if(i == 1) {
+			  times = params[i];
+		  } else if(i == 2) {
+			  variables = params[i];
+		  } else if(i == 3) {
+			  sets = params[i];
+		  } else if(i == 4) {
+			  dataset = params[i];
+		  } else if(i == 5) {
+			  packages = params[i];
+		  } else if(i == 6) {
+			  username = params[i];
+		  }
+		  
+	  }
+	  
+	  //alert('fullpath ' + fullpath)
+	  
+	  figure_generator(times,variables,sets,dataset,packages,realms,username);
 	  
 	  $('#modal-title').empty();
 	  $('.modal-body').empty();
@@ -383,4 +391,77 @@ function reversePath(path) {
 	
 	return reversedPath;
 	
+}
+
+
+function figure_generator(times,variables,sets,dataset,packages,realms,username) {
+	var csrftoken = getCookie('csrftoken');
+	
+    /*
+    var variables = 'TG';
+    var times = 'MAM';
+    
+    var sets = '1';
+    var packages = 'lmwg';
+    var realms = 'land'
+    */
+	
+	alert('times: ' + times + 
+		  ' variables: ' + variables + 
+		  ' sets: ' + sets + 
+		  ' packages: ' + packages + 
+		  ' realms: ' + realms);
+    
+    var data = {
+    			'csrfmiddlewaretoken': csrftoken,
+    			'variables': variables,
+    			'times':times,
+    			'sets':sets,
+    			'packages':packages,
+    			'realms':realms
+    };
+	
+	var get_image_url = 'http://localhost:8081/exploratory_analysis/figure_generator/';
+	$.ajax({
+		url: get_image_url,
+		global: false,
+		type: 'POST',
+		data: data,
+		success: function(data) {
+			alert('figure generated');
+			/*
+			var datasetList = data['datasets'];
+			$('#dataset_name').empty();
+			for (var i=0;i<datasetList.length;i++) {
+				var dataset = datasetList[i];
+				$('.dropdown-dataset-menu').append('<li class="dataset_menu" id="' + dataset + '"><a href="#">' + dataset + '</a></li>');
+			}
+			*/
+			
+		},
+		error: function( jqXHR, textStatus, errorThrown ) {
+			//alert('datasetList textStatus: ' + textStatus + ' errorThrown: ' + errorThrown);
+			alert('error in generating figure');
+			
+		}
+	  });
+	  
+}
+
+
+//for post requests, need to get the csrf token
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
 }

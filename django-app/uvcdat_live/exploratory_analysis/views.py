@@ -112,7 +112,39 @@ def maps(request,user_id):
 def figureGenerator(request):
       print 'in figure generator'
     
+      #hard coded
+      path = default_sample_data_dir
+      
+      
+        
+      variables = [request.POST['variables']]
+      times = [request.POST['times']]
+      sets = [request.POST['sets']]
+      packages = [request.POST['packages']]
+      realms = [request.POST['realms']]
+      ''' 
+      variables = ['TG']
+      times = ['MAM']
+      
+      sets = ['1']
+      packages = ['lmwg']
+      realms = ['land']
+      '''
+      sets = ['1']
+    
+      print variables
+      print times
+      print sets
+      print packages
+      print realms
+        
+    
+    
+    
+    
       o= Options()
+      
+      ''' Old defaults
       o._opts['path']=[default_sample_data_dir]
       o._opts['vars']=['TG']
       o._opts['times']=['MAM']
@@ -120,11 +152,19 @@ def figureGenerator(request):
       o._opts['sets']=['1']
       o._opts['packages']=['lmwg']
       o._opts['realms']=['land']
+      '''
+    
+      o._opts['path']=[default_sample_data_dir]
+      o._opts['vars']=variables
+      o._opts['times']=times
+      #Note: only use 1 or 2 
+      o._opts['sets']=sets
+      o._opts['packages']=packages
+      o._opts['realms']=realms
     
     
-    
-    
-    
+      filepath = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/treeex/'
+      filename = request.POST['realms'] + '_' + request.POST['packages'] + '_' + request.POST['sets'] + '_' + request.POST['times'] + '_' + request.POST['variables']
       import metrics.fileio.filetable as ft
       import metrics.fileio.findfiles as fi
       dtree1 = fi.dirtree_datafiles(o, pathid=0)
@@ -159,8 +199,10 @@ def figureGenerator(request):
             plot = slist[k](filetable1, filetable2, varid, seasonid)
             res = plot.compute()
             v.plot(res[0].vars, res[0].presentation, bg=1)
-            v.png('output.png')
             
+            v.png(filepath + filename)
+      
+    
       return HttpResponse()
 
 
