@@ -22,6 +22,9 @@ img_cache_path = paths.img_cache_path
 
 timeseries_cache_path = paths.timeseries_cache_path
 
+generated_img_path = paths.generated_img_path# = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/treeex/'
+
+
 # import the diags code
 if isConnected:
     #sys.path.append('/Users/8xo/software/exploratory_analysis/DiagnosticsGen/uvcmetrics/src/python')
@@ -163,7 +166,8 @@ def figureGenerator(request):
       o._opts['realms']=realms
     
     
-      filepath = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/treeex/'
+      #filepath = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/treeex/'
+      filepath = generated_img_path
       filename = request.POST['realms'] + '_' + request.POST['packages'] + '_' + request.POST['sets'] + '_' + request.POST['times'] + '_' + request.POST['variables']
       import metrics.fileio.filetable as ft
       import metrics.fileio.findfiles as fi
@@ -434,6 +438,8 @@ def visualizations(request):
         variable = 'AR'
     else:
         variable = request.GET.get('variable')
+  
+  
   
     #statically load the json file from the cache - each file is labelled by variable <variable_name>.json
     file = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/cache/' + variable + '.json' 

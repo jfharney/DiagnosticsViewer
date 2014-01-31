@@ -30,3 +30,5 @@ img_cache_path = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/dja
 
 timeseries_cache_path = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/cache'
 
+
+generated_img_path = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/treeex/'

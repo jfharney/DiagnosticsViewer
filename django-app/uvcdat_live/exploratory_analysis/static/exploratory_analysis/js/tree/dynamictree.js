@@ -294,6 +294,7 @@ d.children = null;
 	  
 	  var computedImg = "../../../static/exploratory_analysis/img/carousel/set6_turbf_Global.gif";
 	  
+	  var computedImg = '../../../static/exploratory_analysis/img/treeex/land_lmwg_set1_MAY_TG.png';
 	  //var staticImg = "{% static 'exploratory_analysis/img/carousel/set6_turbf_Global.gif' %}";
 	  //"../../../static/exploratory_analysis/css/tree/flare13.json"
 	  var staticImg = computedImg;
