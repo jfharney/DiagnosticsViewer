@@ -70,6 +70,10 @@ urlpatterns = patterns('',
   url(r'^tree_bookmarks/$', views.tree_bookmarks, name='tree_bookmarks'),
   url(r'^figure_bookmarks/$', views.figure_bookmarks, name='figure_bookmarks'),
 
+  ############
+  #Variables Names API#
+  ############
+  url(r'^variable_names/(?P<variable_short_name>\w+)/$', views.variable_names, name='variable_names'),
    
   
   #Not used but keeping just in case

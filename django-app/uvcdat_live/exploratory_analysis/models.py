@@ -103,3 +103,11 @@ class Tree_Bookmarks(models.Model):
         return self.tree_bookmark_name
     
 
+class Long_Names(models.Model):
+    short_name = models.CharField(max_length=100)
+    long_name = models.CharField(max_length=1000)
+    description = models.CharField(max_length=10000)
+    def __unicode__(self):
+        return self.short_name
+    
+

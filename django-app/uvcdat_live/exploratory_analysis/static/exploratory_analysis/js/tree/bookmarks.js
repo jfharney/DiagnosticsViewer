@@ -1,3 +1,146 @@
+$(document).ready(function(){
+
+//testers for the bookmark API
+	
+	//for post requests, need to get the csrf token
+	function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+    
+	console.log('csrftoken ' + csrftoken);
+	
+	
+	$('#test4').click(function() {
+		//alert('test 2 submit');
+		
+		var fileUrl = 'http://localhost:8081/exploratory_analysis/tree_bookmarks/';
+
+		
+
+	    var data = getSampleDataTree(csrftoken);
+	    var querystring = getSampleQueryStringTree();
+		
+		fileUrl = fileUrl + querystring;
+		test4(fileUrl,csrftoken,data);
+		
+		
+	});
+	
+	
+	
+	
+	
+	$('#test3').click(function() {
+		//alert('test 2 submit');
+		
+		var fileUrl = 'http://localhost:8081/exploratory_analysis/tree_bookmarks/';
+
+	    
+
+	    var data = getSampleDataTree(csrftoken);
+	    var querystring = getSampleQueryStringTree();
+	    
+		fileUrl = fileUrl + querystring;
+	    
+		test3(fileUrl,csrftoken,data);
+		
+	});
+	
+	
+	
+	
+	
+	$('#test2').click(function() {
+		//alert('test 2 submit');
+		
+		var fileUrl = 'http://localhost:8081/exploratory_analysis/tree_bookmarks/';
+
+		
+		
+	    var data = getSampleDataTree(csrftoken);
+	    var querystring = getSampleQueryStringTree();
+	    
+	    test2(fileUrl,csrftoken,data);
+		
+		
+	});
+	
+	
+	
+	$('#test14').click(function() {
+		//alert('test 2 submit');
+		
+		var fileUrl = 'http://localhost:8081/exploratory_analysis/figure_bookmarks/';
+
+		
+		
+		var data = getSampleDataFigure(csrftoken);
+		var querystring = getSampleQueryStringFigure();
+		
+		
+		fileUrl = fileUrl + querystring;
+		test14(fileUrl,csrftoken,data);
+		
+		
+	});
+	
+	
+	
+	
+	
+	$('#test13').click(function() {
+		//alert('test 2 submit');
+		
+		var fileUrl = 'http://localhost:8081/exploratory_analysis/figure_bookmarks/';
+
+		
+		var data = getSampleDataFigure(csrftoken);
+		var querystring = getSampleQueryStringFigure();
+		
+		fileUrl = fileUrl + querystring;
+	    
+		test13(fileUrl,csrftoken,data);
+	    
+		
+	});
+	
+	
+	
+	$('#test12').click(function() {
+		//alert('test 2 submit');
+		
+		var fileUrl = 'http://localhost:8081/exploratory_analysis/figure_bookmarks/';
+
+		
+	    var data = getSampleDataFigure(csrftoken);
+		var querystring = getSampleQueryStringFigure();
+		
+	    
+	    test12(fileUrl,csrftoken,data);
+	    
+	});
+	
+	
+	
+	
+	
+});
+
+
+
 function test2(fileUrl,csrftoken,data) {
 	$.ajax({
 		  type: "POST",
@@ -234,4 +377,62 @@ function getSampleQueryStringFigure() {
 	
 	return querystring;
 }
+
+
+
+
+/*
+$('#test3').click(function() {
+	alert('test 3 submit');
+	
+	var data = {'csrfmiddlewaretoken': csrftoken};
+	var fileUrl = 'http://localhost:8081/exploratory_analysis/figure_bookmarks/';
+	$.ajax({
+		  type: "POST",
+		  url: fileUrl,
+		  async: false,
+		  data: data,
+		  success: function()
+		  { 
+			  console.log('success');
+		  },
+		  error: function(xhr, status, error) {
+			  console.log('error'); 
+		    if(xhr.status==404)
+		    { 
+		    	
+		    }
+		  }
+		});
+	
+});
+
+
+$('#test4').click(function() {
+	alert('test 4 submit');
+	
+	var data = {'csrfmiddlewaretoken': csrftoken};
+	var fileUrl = 'http://localhost:8081/exploratory_analysis/tree_bookmarks/';
+	$.ajax({
+		  type: "POST",
+		  url: fileUrl,
+		  async: false,
+		  data: data,
+		  success: function()
+		  { 
+			  console.log('success');
+		  },
+		  error: function(xhr, status, error) {
+			  console.log('error'); 
+		    if(xhr.status==404)
+		    { 
+		    	
+		    }
+		  }
+		});
+	
+});
+*/
+
+
 
