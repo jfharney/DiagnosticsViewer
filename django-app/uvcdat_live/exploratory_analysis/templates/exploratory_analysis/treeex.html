@@ -106,7 +106,7 @@ svg {
 		<span id="CachedFile" style="display:none">{{ cachedfile }}</span>
 	
      
-     
+    
      
     <div class="row">
 		<div class="span-12">
@@ -203,6 +203,8 @@ svg {
 
     </div>
     
+    
+	
     <div class="row" style="margin-bottom:10px;display:none;border: 1px solid #000000;padding:10px" id="bookmark_selection"  >
     	<div class="col-lg-12">
 	    	<h4>Variables</h4>
@@ -234,9 +236,81 @@ svg {
 		</div>
     </div>
     
+    
      
-	<div class="row" style="border: 1px solid #000000;padding:10px;">
-		<div class="col-md-9" style="border-right: 1px solid #000000;height:900px;max-height:900px">
+	<!-- <div class="row" style="border: 1px solid #000000;padding:10px;">  -->
+	<div class="row" style="">
+		<div class="col-md-2">
+		
+		
+			<div class="row">
+						<div class="dropdown"  id="dropdown-dataset-container" >
+	               			<a href="#" class="dropdown-toggle" data-toggle="dropdown">CLM Datasets<b class="caret"></b></a>
+	               			<ul class="dropdown-menu dropdown-dataset-menu">
+	               			
+			             	</ul>
+				     	</div>
+					
+			</div>
+			<div class="row" style="margin-top:20px">
+			</div>
+			<div class="row">
+				<div class="dropdown" id="dropdown-variable-container" style="display:none">
+              			<a href="#" class="dropdown-toggle" data-toggle="dropdown">CLM Variables<b class="caret"></b></a>
+              			<ul class="dropdown-menu dropdown-variable-menu">
+              			
+   
+	             	</ul>
+		     	</div>
+			
+			</div>
+			<div class="row" style="margin-top:20px">
+			</div>
+			<div class="row">
+				<div class="dropdown" id="dropdown-time-container" style="display:none">
+              			<a href="#" class="dropdown-toggle" data-toggle="dropdown">CLM Time Series<b class="caret"></b></a>
+              				<ul class="dropdown-menu dropdown-time-menu">
+              			</ul>
+		     	</div>
+			
+			</div>
+			
+			<div class="row" style="margin-top:20px;padding-top:5px;border-top: 10px outset #ffffff">
+				<div style="margin-top:10px;">
+					Dataset: <span id="dataset_name"></span>
+				</div>
+				<div style="margin-top:10px;">
+					Variable: <span id="variable_name"></span>
+				</div>
+				<div style="margin-top:10px;">
+					Time: <span id="time_name"></span>
+				</div>
+				
+			</div>
+			<div class="row" style="margin-top:20px;padding-top:5px;border-top: 10px outset #ffffff" id="viz_button">
+				<button type="button" class="btn btn-default" >Submit</button>
+			</div>
+	
+		
+		</div>
+		
+		<div class="col-md-10">
+			<div class="row" style="border: 1px solid #000000;">
+				<div class="col-md-9" style="border-right: 1px solid #000000;height:900px;max-height:900px">
+				tree
+					<div id="treeimg" style="overflow-x:visible">
+			
+					</div>
+				</div>
+				<div class="col-md-3 scrollable" id="gallery"  style="overflow:scroll;max-height:900px">
+					
+				</div>
+			</div>
+		
+		</div>
+		
+		<!-- 
+		<div class="col-md-7" style="border-right: 1px solid #000000;height:900px;max-height:900px">
 			
 			<div id="treeimg" style="overflow-x:visible">
 			
@@ -251,6 +325,7 @@ svg {
 			
 		
 		</div>
+		 -->
 	</div>
 	 
 	 

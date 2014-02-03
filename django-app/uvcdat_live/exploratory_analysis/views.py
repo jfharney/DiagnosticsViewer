@@ -135,80 +135,98 @@ def figureGenerator(request):
       '''
       sets = ['1']
     
-      print variables
-      print times
-      print sets
-      print packages
-      print realms
+      print 'variables: ' + str(variables)
+      print 'times: ' + str(times)
+      print 'sets: ' + str(sets)
+      print 'packages: ' + str(packages)
+      print 'realms: ' + str(realms)
         
     
-    
-    
-    
-      o= Options()
+      inCache = False
       
-      ''' Old defaults
-      o._opts['path']=[default_sample_data_dir]
-      o._opts['vars']=['TG']
-      o._opts['times']=['MAM']
-      #Note: only use 1 or 2 
-      o._opts['sets']=['1']
-      o._opts['packages']=['lmwg']
-      o._opts['realms']=['land']
-      '''
-    
-      o._opts['path']=[default_sample_data_dir]
-      o._opts['vars']=variables
-      o._opts['times']=times
-      #Note: only use 1 or 2 
-      o._opts['sets']=sets
-      o._opts['packages']=packages
-      o._opts['realms']=realms
-    
-    
-      #filepath = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/treeex/'
-      filepath = generated_img_path
-      filename = request.POST['realms'] + '_' + request.POST['packages'] + '_' + request.POST['sets'] + '_' + request.POST['times'] + '_' + request.POST['variables']
-      import metrics.fileio.filetable as ft
-      import metrics.fileio.findfiles as fi
-      dtree1 = fi.dirtree_datafiles(o, pathid=0)
-      filetable1 = ft.basic_filetable(dtree1, o)
-      filetable2 = None
-      print 'No second dataset for comparison'
-         
-      package=o._opts['packages']
-
-      # this needs a filetable probably, or we just define the maximum list of variables somewhere
-      im = ".".join(['metrics', 'packages', package[0], package[0]])
-      if package[0] == 'lmwg':
-         pclass = getattr(__import__(im, fromlist=['LMWG']), 'LMWG')()
-      elif package[0]=='amwg':
-         pclass = getattr(__import__(im, fromlist=['AMWG']), 'AMWG')()
-
-      setname = o._opts['sets'][0]
-      varid = o._opts['vars'][0]
-      seasonid = o._opts['times'][0]
-      print 'CALLING LIST SETS'
-      slist = pclass.list_diagnostic_sets()
-      print 'DONE CALLIGN LIST SETS'
-      keys = slist.keys()
-      keys.sort()
-      import vcs
-      print 'generating output.png ...'
-      v = vcs.init()
-      for k in keys:
-         fields = k.split()
-         if setname[0] == fields[0]:
-            print 'calling init for ', k, 'varid: ', varid, 'seasonid: ', seasonid
-            plot = slist[k](filetable1, filetable2, varid, seasonid)
-            res = plot.compute()
-            v.plot(res[0].vars, res[0].presentation, bg=1)
-            
-            v.png(filepath + filename)
+      cachedFile = realms[0] + '_' + packages[0] + '_set' + sets[0] + '_' + times[0] + '_' + variables[0] + '.png'
       
+      print 'cachedFile: ' + cachedFile
+      
+      #. => /Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/
+      
+      #. + exploratory_analysis/static/exploratory_analysis/img/treeex/
+      #path = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/treeex/' + cachedFile
+      path = './' +  'exploratory_analysis/static/exploratory_analysis/img/treeex/' + cachedFile
+      print 'path: ' + path
+      print 'absolute path: ' + os.path.abspath(path)
+      print 'not in cache: ' + str(not inCache) + ' os isfile: ' + str(os.path.exists(path))
+      
+      if(os.path.exists(path)):
+          inCache = True
     
-      return HttpResponse()
-
+      if(not inCache):
+          print 'not in cache'
+          o= Options()
+          
+          ''' Old defaults
+          o._opts['path']=[default_sample_data_dir]
+          o._opts['vars']=['TG']
+          o._opts['times']=['MAM']
+          #Note: only use 1 or 2 
+          o._opts['sets']=['1']
+          o._opts['packages']=['lmwg']
+          o._opts['realms']=['land']
+          '''
+        
+          o._opts['path']=[default_sample_data_dir]
+          o._opts['vars']=variables
+          o._opts['times']=times
+          #Note: only use 1 or 2 
+          o._opts['sets']=sets
+          o._opts['packages']=packages
+          o._opts['realms']=realms
+        
+          
+          #filepath = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/treeex/'
+          filepath = generated_img_path
+          filename = request.POST['realms'] + '_' + request.POST['packages'] + '_' + request.POST['sets'] + '_' + request.POST['times'] + '_' + request.POST['variables']
+          import metrics.fileio.filetable as ft
+          import metrics.fileio.findfiles as fi
+          dtree1 = fi.dirtree_datafiles(o, pathid=0)
+          filetable1 = ft.basic_filetable(dtree1, o)
+          filetable2 = None
+          print 'No second dataset for comparison'
+             
+          package=o._opts['packages']
+    
+          # this needs a filetable probably, or we just define the maximum list of variables somewhere
+          im = ".".join(['metrics', 'packages', package[0], package[0]])
+          if package[0] == 'lmwg':
+             pclass = getattr(__import__(im, fromlist=['LMWG']), 'LMWG')()
+          elif package[0]=='amwg':
+             pclass = getattr(__import__(im, fromlist=['AMWG']), 'AMWG')()
+    
+          setname = o._opts['sets'][0]
+          varid = o._opts['vars'][0]
+          seasonid = o._opts['times'][0]
+          print 'CALLING LIST SETS'
+          slist = pclass.list_diagnostic_sets()
+          print 'DONE CALLIGN LIST SETS'
+          keys = slist.keys()
+          keys.sort()
+          import vcs
+          print 'generating output.png ...'
+          v = vcs.init()
+          for k in keys:
+             fields = k.split()
+             if setname[0] == fields[0]:
+                print 'calling init for ', k, 'varid: ', varid, 'seasonid: ', seasonid
+                plot = slist[k](filetable1, filetable2, varid, seasonid)
+                res = plot.compute()
+                v.plot(res[0].vars, res[0].presentation, bg=1)
+                
+                v.png(filepath + filename)
+          
+    
+    
+      #return HttpResponse()
+      return HttpResponse(cachedFile)
 
 
 #New tree view
@@ -282,9 +300,9 @@ def treeex(request,user_id):
      
     
     
-    #diagsHelper(user_id)
+    diagsHelper(user_id)
     
-    
+    #bookmark = 'Bookmark1'
     fileName = bookmark + ".json"
     
     cached_file_name = front_end_cache_dir + fileName
@@ -551,7 +569,7 @@ def diagsHelper(user_id):
     print 'in diags helper'
     
     
-    treeFile = cache_dir + 'Bookmark2.json'
+    treeFile = cache_dir + 'Bookmark3.json'
     
     
     #### Start diagnostics generation here...
@@ -565,9 +583,9 @@ def diagsHelper(user_id):
    
    ##### SET THESE BASED ON USER INPUT FROM THE GUI
     o._opts['packages'] = ['lmwg'] 
-    o._opts['vars'] = ['TLAI', 'TG']
+    o._opts['vars'] = ['TLAI', 'TG','NPP']
     o._opts['path'] = [default_sample_data_dir]
-    o._opts['times'] = ['MAR','APR','MAY']
+    o._opts['times'] = ['MAR','APR','MAY','JUNE','JULY']
     
     
     ### NOTE: 'ANN' won't work for times this way, but that shouldn't be a problem
@@ -576,14 +594,18 @@ def diagsHelper(user_id):
     vars = o._opts['vars']
     #   print vars
 
-    
+    for p in range(len(o._opts['path'])):
+        print '\ndirtree\n',dirtree_datafiles(o,pathid=p)
+        datafiles.append(dirtree_datafiles(o,pathid=p))
+        filetables.append(basic_filetable(datafiles[p],o))
+    '''
     index = 0
     for p in o._opts['path']:
       print '\ndirtree\n' , dirtree_datafiles(p)
       datafiles.append(dirtree_datafiles(p))
       filetables.append(basic_filetable(datafiles[index], o))
       index = index+1
-
+    '''
     print 'Creating diags tree view JSON file...'
     
     

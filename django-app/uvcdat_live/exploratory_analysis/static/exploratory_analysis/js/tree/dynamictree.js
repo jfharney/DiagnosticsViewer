@@ -429,7 +429,7 @@ function figure_generator(times,variables,sets,dataset,packages,realms,username)
 		type: 'POST',
 		data: data,
 		success: function(data) {
-			alert('figure generated');
+			alert('data: ' + data);
 			/*
 			var datasetList = data['datasets'];
 			$('#dataset_name').empty();
