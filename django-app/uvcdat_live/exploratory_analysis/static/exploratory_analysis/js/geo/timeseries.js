@@ -1,7 +1,7 @@
 var parseDate = d3.time.format("%Y%m").parse;
 
 var timedata;
-
+/*
 $(document).ready(function(){
 	
 	$('#viz_button').click(function() {
@@ -58,3 +58,4 @@ $(document).ready(function(){
 		});
 
 });
+*/
