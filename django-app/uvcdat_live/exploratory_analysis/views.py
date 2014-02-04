@@ -296,6 +296,7 @@ def treeex(request,user_id):
     treeFile = diagsHelper(user_id,bookmark_name)
     
     
+    print '\n\n\ntreeFile: ' + treeFile    
     #print 'treeFile: ' + treeFile
     
     #bookmark = 'Bookmark1'
@@ -346,11 +347,11 @@ def treeex(request,user_id):
         'season_list' : season_list,
         'bookmark_list' : bookmark_list,
         'figure_bookmark_list' : figure_bookmark_list,
-        'treeFile': treeFile
+        'treefile': treeFile,
+        'current_bookmark': bookmark
         #'treeFile' : treeFile,
     })
-    
-            
+        
 
     return HttpResponse(template.render(context))
 

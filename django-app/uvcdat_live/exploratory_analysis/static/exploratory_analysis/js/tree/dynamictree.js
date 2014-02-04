@@ -18,6 +18,7 @@ $(document).ready(function(){
 	var fileName = "flare25.json";
 	
 	var treeFile = $('span#treeFile').html();
+	//alert('treeFile: ' + treeFile);
 	treeFile = treeFile.replace('/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis','../../..');
 	console.log('treeFile: ' + treeFile);
 	
@@ -129,7 +130,7 @@ function checkFile(fileUrl) {
         }
     }
     self.xmlHttpReq.send();
-    */
+   
 }
 
 function stripPipe(path) {
