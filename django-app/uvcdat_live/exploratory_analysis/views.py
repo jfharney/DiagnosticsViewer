@@ -452,6 +452,7 @@ def visualizations(request):
   
   
     #statically load the json file from the cache - each file is labelled by variable <variable_name>.json
+    
     file = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/cache/' + variable + '.json' 
   
     with open(file , 'r') as myfile:
