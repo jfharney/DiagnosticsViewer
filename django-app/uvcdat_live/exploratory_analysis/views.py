@@ -1150,5 +1150,20 @@ def figure_bookmarks(request):
         return HttpResponse()
     
     
-
+#variable_namesAPI
+#http://<host>/exploratory_analysis/variable_names/<short_name>
+def variable_names(request,variable_short_name):
+    
+    print 'variable_short_name: ' + variable_short_name
+    
+    if request.method == 'POST':
+        print 'POST Variable'
+    elif request.method == 'DELETE':
+        print 'DELETE Variable'
+    elif request.method == 'GET':
+        print 'GET Variable'
+    else:
+        print 'OTHER'
+        
+    return HttpResponse()
 
