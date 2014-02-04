@@ -14,25 +14,26 @@ $(document).ready(function(){
 	
 
 	var cache_dir = '../../../static/cache/';
-	console.log('cached file: ' + $('span#CachedFile').html());
 	
 	var fileName = "flare25.json";
 	
+	var treeFile = $('span#treeFile').html();
+	treeFile = treeFile.replace('/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis','../../..');
+	console.log('treeFile: ' + treeFile);
 	
+	//treeFile = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/cache/Bookmark3.json';
+	//alert('treeFile: ' + treeFile);
 	//if(checkFile(cache_dir+fileName))
-	if(checkFile($('span#CachedFile').html()))
+	if(checkFile(treeFile))
 	{
 	
 		//render the tree
-		//http://localhost:8081/static/exploratory_analysis/css/bootstrap/bootstrap.css
-		//d3.json("../../../static/exploratory_analysis/css/tree/flare25.json", function(error, flare) {
 		
-		d3.json($('span#CachedFile').html(), function(error, flare) {
+		d3.json(treeFile, function(error, flare) {
 		
 		//d3.json(cache_dir + fileName, function(error, flare) {
 		
 		///Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/css/tree/flare13.json
-		//d3.json("{% static 'exploratory_analysis/css/tree/flare13.json' %}", function(error, flare) {
 		root = flare;
 		root.x0 = height / 2;
 		root.y0 = 0;
@@ -63,10 +64,34 @@ $(document).ready(function(){
 
 
 function checkFile(fileUrl) {
+	
+	//for post requests, need to get the csrf token
+	function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+    
+    var data = {'csrfmiddlewaretoken': csrftoken};
+	
+    //alert('fileUrl: ' + fileUrl);
+    
 	var found = false;
 	$.ajax({
 		  type: "GET",
 		  url: fileUrl,
+		  data: data,
 		  async: false,
 		  success: function()
 		  { 
@@ -79,7 +104,7 @@ function checkFile(fileUrl) {
 		});
 	
 	return found;
-	/*
+	
     var xmlHttpReq = false;
     var self = this;
     // Mozilla/Safari
@@ -280,7 +305,7 @@ function hover(d) {
 function click(d) {
 if (d.children) {
   d._children = d.children;
-d.children = null;
+  d.children = null;
 } else {
   //alert('in else ');
   
@@ -292,12 +317,9 @@ d.children = null;
 		  console.log('key: ' + key + ' val: ' + d[key]);
 	  }
 	  
-	  var computedImg = "../../../static/exploratory_analysis/img/carousel/set6_turbf_Global.gif";
 	  
-	  var computedImg = '../../../static/exploratory_analysis/img/treeex/land_lmwg_set1_MAY_TG.png';
-	  //var staticImg = "{% static 'exploratory_analysis/img/carousel/set6_turbf_Global.gif' %}";
-	  //"../../../static/exploratory_analysis/css/tree/flare13.json"
-	  var staticImg = computedImg;
+	  
+	  
 	  
 	  
 	  /*
@@ -333,34 +355,10 @@ d.children = null;
 		  
 	  }
 	  
-	  //alert('fullpath ' + fullpath)
-	  
-	  figure_generator(times,variables,sets,dataset,packages,realms,username);
-	  
-	  $('#modal-title').empty();
-	  $('.modal-body').empty();
-	  $('#modal-title').append('<span>TITLE:</span> <div id="' + "figtitle" + '"> ' + reversePath(fullpath) + '</div>');
-	  $('#modal-title').append('<span>URL:</span> <div id="' + "figurl" + '">' + staticImg + '</div>');
-	  $('.modal-body').append('<div>' + '<img src="' + staticImg + '" style="max-width:600px;max-height:500px;display: block;display: block;margin-left: auto;margin-right: auto" />' + '</div>')
-	  
-	  console.log('picname: ' + name);
-	  var addedListing = ' <li style="padding:10px;border: 1px solid #000000;list-style-type: none;margin-bottom:10px" id="' + stripPipe(fullpath) + '">' +
-	  	'<a class="thumbnail">' +
-	  	'<img src="' + staticImg + '" style="max-width:150px;display: block;" />' +
-	  	'</a>' +
-	  	'<div style="font-size:10px;color:red;text-align: center;margin-top:5px">' + reversePath(fullpath) + '</div>' +
-	  	'<div style="text-align: center;;padding:5px">' +
-	  	'<button type="button" class="btn btn-default btn-remove" style="margin-right:10px;" id="remove_' + stripPipe(fullpath) + '">'+'Remove'+'</button>' +
-	  	'<a data-toggle="modal" href="#myModal" class="btn btn-primary">View</a>' +
-	  	'</div>' +
-	  	'</li>';
-	  	
-	  	
+	  figure_generator(times,variables,sets,dataset,packages,realms,username,fullpath);
 	  
 	  
-	  //add an image
-	  var appended = '<div class="row"><div class="col-md-12">'+ name + '</div></div>';
-	  $('div#gallery').append(addedListing);
+	  
 		
 	  
   }
@@ -395,8 +393,16 @@ function reversePath(path) {
 }
 
 
-function figure_generator(times,variables,sets,dataset,packages,realms,username) {
+function figure_generator(times,variables,sets,dataset,packages,realms,username,fullpath) {
 	var csrftoken = getCookie('csrftoken');
+	
+	//var computedImg = "../../../static/exploratory_analysis/img/carousel/set6_turbf_Global.gif";
+	  
+	  var computedImg = '../../../static/exploratory_analysis/img/treeex/land_lmwg_set1_MAY_TG.png';
+	  //var staticImg = "{% static 'exploratory_analysis/img/carousel/set6_turbf_Global.gif' %}";
+	  //"../../../static/exploratory_analysis/css/tree/flare13.json"
+	  var staticImg = computedImg;
+	  
 	
     /*
     var variables = 'TG';
@@ -407,12 +413,14 @@ function figure_generator(times,variables,sets,dataset,packages,realms,username)
     var realms = 'land'
     */
 	
+	/*
 	alert('times: ' + times + 
 		  ' variables: ' + variables + 
 		  ' sets: ' + sets + 
 		  ' packages: ' + packages + 
 		  ' realms: ' + realms);
-    
+    */
+	
     var data = {
     			'csrfmiddlewaretoken': csrftoken,
     			'variables': variables,
@@ -429,7 +437,54 @@ function figure_generator(times,variables,sets,dataset,packages,realms,username)
 		type: 'POST',
 		data: data,
 		success: function(data) {
+			alert('fullpath: ' + fullpath);
+			
+			
+			
+			
+			
 			alert('data: ' + data);
+			
+			
+			
+			
+			
+			
+			alert('fullpath ' + fullpath)
+			  //cachedFile = realms[0] + '_' + packages[0] + '_set' + sets[0] + '_' + times[0] + '_' + variables[0] + '.png'
+		      var figTitle = realms + '_' + packages + '_' + sets + '_' + times + '_' + variables + '.png'; 
+			  
+			  
+			  $('#modal-title').empty();
+			  $('.modal-body').empty();
+			  //$('#modal-title').append('<span>TITLE:</span> <div id="' + "figtitle" + '"> ' + reversePath(fullpath) + '</div>');
+			  //$('#modal-title').append('<span>TITLE:</span> <div id="' + "figtitle" + '"> ' + figTitle + '</div>');
+			  $('#modal-title').append('<div id="' + "figtitle" + '"> ' + figTitle + '</div>');
+			  
+			  $('#modal-title').append('<span>URL:</span> <div id="' + "figurl" + '">' + staticImg + '</div>');
+			  $('.modal-body').append('<div>' + '<img src="' + staticImg + '" style="max-width:600px;max-height:500px;display: block;display: block;margin-left: auto;margin-right: auto" />' + '</div>')
+			  
+			  console.log('picname: ' + name);
+			  var addedListing = ' <li style="padding:10px;border: 1px solid #000000;list-style-type: none;margin-bottom:10px" id="' + stripPipe(fullpath) + '">' +
+			  	'<a class="thumbnail">' +
+			  	'<img src="' + staticImg + '" style="max-width:150px;display: block;" />' +
+			  	'</a>' +
+			  	'<div style="font-size:10px;color:red;text-align: center;margin-top:5px">' + reversePath(fullpath) + '</div>' +
+			  	'<div style="text-align: center;;padding:5px">' +
+			  	'<button type="button" class="btn btn-default btn-remove" style="margin-right:10px;" id="remove_' + stripPipe(fullpath) + '">'+'Remove'+'</button>' +
+			  	'<a data-toggle="modal" href="#myModal" class="btn btn-primary">View</a>' +
+			  	'</div>' +
+			  	'</li>';
+			  	
+			  	
+			  
+			  
+			  //add an image
+			  var appended = '<div class="row"><div class="col-md-12">'+ name + '</div></div>';
+			  $('div#gallery').append(addedListing);
+			
+			
+			
 			/*
 			var datasetList = data['datasets'];
 			$('#dataset_name').empty();
