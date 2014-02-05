@@ -328,8 +328,18 @@ def treeex(request,user_id):
     #bookmark_list = None
     print 'bookmark list: ' + str(bookmark_list)
    
+    #get the bookmarks of the user
+    from exploratory_analysis.models import Figure_Bookmarks
+    figure_bookmark_list_obj = Figure_Bookmarks.objects.filter(figure_bookmark_username='jfharney')
     
-    figure_bookmark_list = None
+    figure_bookmark_list = [] 
+    for obj in figure_bookmark_list_obj:
+        figure_bookmark_list.append(obj.figure_bookmark_name)
+    
+    print 'figure bookmark list ' + str(figure_bookmark_list)
+    
+    
+    #figure_bookmark_list = None
     
     
     #get the figure bookmarks of the user
@@ -337,8 +347,8 @@ def treeex(request,user_id):
     #from exploratory_analysis.models import Figure_Bookmarks
     #figure_bookmark_list = Figure_Bookmarks.objects.filter(figure_bookmark_username='jfharney')
     
-    if figure_bookmark_list == None:
-        figure_bookmark_list = ['figure1','figure2','figure3']
+    #if figure_bookmark_list == None:
+    #    figure_bookmark_list = ['figure1','figure2','figure3']
     
     #pass all the data back to the view
     context = RequestContext(request, {
@@ -1094,6 +1104,7 @@ def figure_bookmarks(request):
     elif request.method == 'GET':
         
         
+        print '\n\n\nIN GET\n\n\n'
         
         figure_bookmark_name = request.GET.get('figure_bookmark_name')
         figure_bookmark_datasetname = request.GET.get('figure_bookmark_datasetname')
@@ -1102,6 +1113,11 @@ def figure_bookmarks(request):
     
         from exploratory_analysis.models import Figure_Bookmarks
     
+        print 'figure_bookmark_name: ' + figure_bookmark_name
+        print 'figure_bookmark_datasetname: ' + figure_bookmark_datasetname
+        print 'figure_bookmark_realm: ' + figure_bookmark_realm
+        print 'figure_bookmark_username: ' + figure_bookmark_username
+        
     
         try:
             figure_bookmark_record = Figure_Bookmarks.objects.get(figure_bookmark_name=figure_bookmark_name,

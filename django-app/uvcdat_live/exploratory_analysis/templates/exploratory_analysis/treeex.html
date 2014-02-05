@@ -201,8 +201,9 @@ svg {
 		        <li class="dropdown">
 		            <a href="#" data-toggle="dropdown" class="dropdown-toggle">Saved Images <b class="caret"></b></a>
 		            <ul class="dropdown-menu" id="bookmark_menu">
+		            <!-- '<a data-toggle="modal" href="#myModal" class="btn btn-primary">View</a>' +  -->
 		            	{% for figure_bookmark in figure_bookmark_list %}
-		            		<li><a href="#" id="{{figure_bookmark}}">{{figure_bookmark}}</a></li>
+		            		<li><a data-toggle="modal" href="#myModal" class="figure_bookmark" id="{{figure_bookmark}}">{{figure_bookmark}}</a></li>
 		            	{% endfor %}
 		            	<!-- 
 		                <li><a href="#" id="b1">Image1</a></li>
@@ -360,6 +361,76 @@ svg {
 
 $(document).ready(function(){
 
+	$('.figure_bookmark').click(function() {
+		
+		
+
+        var figure_bookmark_name = $(this).html();//bookmark_id;
+        var figure_bookmark_datasetname = 'tropics_warming_th_q_co2';
+        var figure_bookmark_realm = 'land';
+        var figure_bookmark_username = 'jfharney';
+		var data = {
+				'csrfmiddlewaretoken': csrftoken,
+				'figure_bookmark_name' : figure_bookmark_name,
+				'figure_bookmark_username' : figure_bookmark_username,
+				'figure_bookmark_datasetname' : figure_bookmark_datasetname,
+				'figure_bookmark_realm' : figure_bookmark_realm
+		}
+		
+		var url = 'http://localhost:8081/exploratory_analysis/figure_bookmarks/';
+		$.ajax({
+			  type: "GET",
+			  url: url,
+			  async: false,
+			  data: data,
+			  dataType: 'json',
+			  success: function(data)
+			  { 
+				  console.log('success');
+				  
+				  for (var key in data) {
+					  console.log('key: ' + key + ' value: ' + data[key]);
+				  }
+				  var bookmark_id = figure_bookmark_name + '.png';
+				  var staticImg = data['figure_cache_url'] + '.png';
+				  
+				  figTitle = bookmark_id;
+				  
+				  console.log('figTitle: ' + figTitle);
+				  console.log('url ' + url);
+				  
+				  
+				  
+				  staticImg = staticImg.replace('/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis','../../..');
+					
+				  
+				  $('#modal-title').empty();
+				  $('.modal-body').empty();
+				  //$('#modal-title').append('<span>TITLE:</span> <div id="' + "figtitle" + '"> ' + reversePath(fullpath) + '</div>');
+				  //$('#modal-title').append('<span>TITLE:</span> <div id="' + "figtitle" + '"> ' + figTitle + '</div>');
+				  $('#modal-title').append('<div id="' + "figtitle" + '"> ' + figTitle + '</div>');
+				  
+				  //$('#modal-title').append('<span>URL:</span> <div id="' + "figurl" + '">' + staticImg + '</div>');
+				  $('.modal-body').append('<div>' + '<img src="' + staticImg + '" style="max-width:600px;max-height:500px;display: block;display: block;margin-left: auto;margin-right: auto" />' + '</div>')
+				  
+				 				  
+				  
+				  
+				  
+				  
+				  
+			  },
+			  error: function(xhr, status, error) {
+				  console.log('error'); 
+			    if(xhr.status==404)
+			    { 
+			    	
+			    }
+			  }
+			});
+		
+	});
+	
 	//show/hide the api checks
 	//$('#api_check').show();
 	
