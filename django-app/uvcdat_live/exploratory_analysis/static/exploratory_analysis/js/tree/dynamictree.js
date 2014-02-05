@@ -5,17 +5,20 @@ $(document).ready(function(){
 	//removing thumbnail image from the pane
 	$('body').on('click','button.btn-remove',function() {
 		var id = $(this).attr('id');
+		//alert('id: ' + id);
 		console.log('id: ' + id);
 		var removedListId = id.split('_')[1];
-		$('li#'+removedListId).remove();
+		//alert('removedListId: ' + removedListId);
+		//$('li#'+removedListId).remove();
+		$('li#'+id).remove();
 	});
 	
 	
 	
 
-	var cache_dir = '../../../static/cache/';
+	//var cache_dir = '../../../static/cache/';
 	
-	var fileName = "flare25.json";
+	//var fileName = "flare25.json";
 	
 	var treeFile = $('span#treeFile').html();
 	//alert('treeFile: ' + treeFile);
@@ -355,12 +358,8 @@ if (d.children) {
 		  }
 		  
 	  }
-	  
+	  //alert('fullpath: ' + fullpath);
 	  figure_generator(times,variables,sets,dataset,packages,realms,username,fullpath);
-	  
-	  
-	  
-		
 	  
   }
 		d.children = d._children;
@@ -399,10 +398,14 @@ function figure_generator(times,variables,sets,dataset,packages,realms,username,
 	
 	//var computedImg = "../../../static/exploratory_analysis/img/carousel/set6_turbf_Global.gif";
 	  
+	var img_prefix = '../../../static/exploratory_analysis/img/treeex/';
+	//alert('computedIMG: ' + img_prefix + realms + '_' + packages + '_' + sets + '_' + times + '_' + variables + '.png');
+	
 	  var computedImg = '../../../static/exploratory_analysis/img/treeex/land_lmwg_set1_MAY_TG.png';
+	  
 	  //var staticImg = "{% static 'exploratory_analysis/img/carousel/set6_turbf_Global.gif' %}";
 	  //"../../../static/exploratory_analysis/css/tree/flare13.json"
-	  var staticImg = computedImg;
+	var staticImg = img_prefix + realms + '_' + packages + '_' + sets + '_' + times + '_' + variables + '.png';//computedImg;
 	  
 	
     /*
@@ -438,20 +441,8 @@ function figure_generator(times,variables,sets,dataset,packages,realms,username,
 		type: 'POST',
 		data: data,
 		success: function(data) {
-			alert('fullpath: ' + fullpath);
-			
-			
-			
-			
-			
-			alert('data: ' + data);
-			
-			
-			
-			
-			
-			
-			alert('fullpath ' + fullpath)
+			//alert('data: ' + data);
+			//alert('fullpath ' + fullpath)
 			  //cachedFile = realms[0] + '_' + packages[0] + '_set' + sets[0] + '_' + times[0] + '_' + variables[0] + '.png'
 		      var figTitle = realms + '_' + packages + '_' + sets + '_' + times + '_' + variables + '.png'; 
 			  
@@ -462,17 +453,22 @@ function figure_generator(times,variables,sets,dataset,packages,realms,username,
 			  //$('#modal-title').append('<span>TITLE:</span> <div id="' + "figtitle" + '"> ' + figTitle + '</div>');
 			  $('#modal-title').append('<div id="' + "figtitle" + '"> ' + figTitle + '</div>');
 			  
-			  $('#modal-title').append('<span>URL:</span> <div id="' + "figurl" + '">' + staticImg + '</div>');
+			  //$('#modal-title').append('<span>URL:</span> <div id="' + "figurl" + '">' + staticImg + '</div>');
 			  $('.modal-body').append('<div>' + '<img src="' + staticImg + '" style="max-width:600px;max-height:500px;display: block;display: block;margin-left: auto;margin-right: auto" />' + '</div>')
 			  
-			  console.log('picname: ' + name);
-			  var addedListing = ' <li style="padding:10px;border: 1px solid #000000;list-style-type: none;margin-bottom:10px" id="' + stripPipe(fullpath) + '">' +
+			  console.log('figTitle: ' + figTitle);
+			  //alert('strip pipe: ' + stripPipe(fullpath))
+			  //alert('figTitle: ' + figTitle);
+			  var addedListing = ' <li style="padding:10px;border: 1px solid #000000;list-style-type: none;margin-bottom:10px" id="' + stripPeriod(figTitle) + '">' +
 			  	'<a class="thumbnail">' +
 			  	'<img src="' + staticImg + '" style="max-width:150px;display: block;" />' +
 			  	'</a>' +
-			  	'<div style="font-size:10px;color:red;text-align: center;margin-top:5px">' + reversePath(fullpath) + '</div>' +
+			  //'<div style="font-size:10px;color:red;text-align: center;margin-top:5px">' + reversePath(fullpath) + '</div>' +
+			    '<div style="font-size:10px;color:red;text-align: center;margin-top:5px">' + figTitle + '</div>' +
 			  	'<div style="text-align: center;;padding:5px">' +
-			  	'<button type="button" class="btn btn-default btn-remove" style="margin-right:10px;" id="remove_' + stripPipe(fullpath) + '">'+'Remove'+'</button>' +
+			  	'<button type="button" class="btn btn-default btn-remove" style="margin-right:10px;" id="' + stripPeriod(figTitle) + '">'+'Remove'+'</button>' +
+			  	
+			  	//'<button type="button" class="btn btn-default btn-remove" style="margin-right:10px;" id="remove_' + stripPipe(fullpath) + '">'+'Remove'+'</button>' +
 			  	'<a data-toggle="modal" href="#myModal" class="btn btn-primary">View</a>' +
 			  	'</div>' +
 			  	'</li>';
@@ -505,6 +501,11 @@ function figure_generator(times,variables,sets,dataset,packages,realms,username,
 	  
 }
 
+function stripPeriod(word) {
+	var newWord = '';
+	newWord = word.replace('.','_');
+	return newWord;
+}
 
 //for post requests, need to get the csrf token
 function getCookie(name) {

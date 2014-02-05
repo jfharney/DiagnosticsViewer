@@ -229,6 +229,7 @@ def figureGenerator(request):
       return HttpResponse(cachedFile)
 
 
+
 #New tree view
 def treeex(request,user_id):
     
@@ -1026,7 +1027,23 @@ def tree_bookmarks(request):
   
   
   
-  
+def figure_bookmarks_get_helper(figure_bookmark_name,
+                                figure_bookmark_datasetname,
+                                figure_bookmark_realm,
+                                figure_bookmark_username,
+                                figure_bookmark_description,
+                                figure_cache_ur
+                                ):
+    figure_bookmark_record = Figure_Bookmarks(
+                                            figure_bookmark_name = figure_bookmark_name,
+                                            figure_bookmark_datasetname = figure_bookmark_datasetname,
+                                            figure_bookmark_realm = figure_bookmark_realm,
+                                            figure_bookmark_username = figure_bookmark_username,
+                                            figure_bookmark_description = figure_bookmark_description,
+                                            figure_cache_url = figure_cache_url
+                                              )
+        
+    figure_bookmark_record.save()
   
   
 #Tree Figures BookmarksAPI
