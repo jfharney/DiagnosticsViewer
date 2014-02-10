@@ -16,5 +16,6 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
     url(r'^exploratory_analysis/', include('exploratory_analysis.urls')),
+    url(r'^message_reader/', include('message_reader.urls')),
     #url(r'^polls/', include('polls.urls', namespace="polls")),
 )

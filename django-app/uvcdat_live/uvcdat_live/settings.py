@@ -4,6 +4,7 @@ from paths import paths
 databases_name = paths.databases_name
 staticfiles_dirs = paths.staticfiles_dirs
 template_dirs = paths.template_dirs
+message_reader_template_dirs = paths.message_reader_template_dirs
 
 # Django settings for uvcdat_live project.
 
@@ -125,6 +126,8 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
     #"/Users/csg/Desktop/uvcdat-web/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/templates/exploratory_analysis"
     template_dirs,#"/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/templates/exploratory_analysis"
+    message_reader_template_dirs,
+
 )
 
 INSTALLED_APPS = (
@@ -140,6 +143,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'exploratory_analysis',
     #'polls',
+    'message_reader',
 )
 
 # A sample logging configuration. The only tangible logging
