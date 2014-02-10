@@ -22,8 +22,7 @@ img_cache_path = paths.img_cache_path
 
 timeseries_cache_path = paths.timeseries_cache_path
 
-generated_img_path = paths.generated_img_path# = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/treeex/'
-
+generated_img_path = paths.generated_img_path
 
 # import the diags code
 if isConnected:
