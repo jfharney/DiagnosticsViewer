@@ -22,8 +22,7 @@ img_cache_path = paths.img_cache_path
 
 timeseries_cache_path = paths.timeseries_cache_path
 
-generated_img_path = paths.generated_img_path# = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/treeex/'
-
+generated_img_path = paths.generated_img_path
 
 # import the diags code
 if isConnected:
@@ -135,79 +134,98 @@ def figureGenerator(request):
       '''
       sets = ['1']
     
-      print variables
-      print times
-      print sets
-      print packages
-      print realms
+      print 'variables: ' + str(variables)
+      print 'times: ' + str(times)
+      print 'sets: ' + str(sets)
+      print 'packages: ' + str(packages)
+      print 'realms: ' + str(realms)
         
     
-    
-    
-    
-      o= Options()
+      inCache = False
       
-      ''' Old defaults
-      o._opts['path']=[default_sample_data_dir]
-      o._opts['vars']=['TG']
-      o._opts['times']=['MAM']
-      #Note: only use 1 or 2 
-      o._opts['sets']=['1']
-      o._opts['packages']=['lmwg']
-      o._opts['realms']=['land']
-      '''
-    
-      o._opts['path']=[default_sample_data_dir]
-      o._opts['vars']=variables
-      o._opts['times']=times
-      #Note: only use 1 or 2 
-      o._opts['sets']=sets
-      o._opts['packages']=packages
-      o._opts['realms']=realms
-    
-    
-      #filepath = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/treeex/'
-      filepath = generated_img_path
-      filename = request.POST['realms'] + '_' + request.POST['packages'] + '_' + request.POST['sets'] + '_' + request.POST['times'] + '_' + request.POST['variables']
-      import metrics.fileio.filetable as ft
-      import metrics.fileio.findfiles as fi
-      dtree1 = fi.dirtree_datafiles(o, pathid=0)
-      filetable1 = ft.basic_filetable(dtree1, o)
-      filetable2 = None
-      print 'No second dataset for comparison'
-         
-      package=o._opts['packages']
-
-      # this needs a filetable probably, or we just define the maximum list of variables somewhere
-      im = ".".join(['metrics', 'packages', package[0], package[0]])
-      if package[0] == 'lmwg':
-         pclass = getattr(__import__(im, fromlist=['LMWG']), 'LMWG')()
-      elif package[0]=='amwg':
-         pclass = getattr(__import__(im, fromlist=['AMWG']), 'AMWG')()
-
-      setname = o._opts['sets'][0]
-      varid = o._opts['vars'][0]
-      seasonid = o._opts['times'][0]
-      print 'CALLING LIST SETS'
-      slist = pclass.list_diagnostic_sets()
-      print 'DONE CALLIGN LIST SETS'
-      keys = slist.keys()
-      keys.sort()
-      import vcs
-      print 'generating output.png ...'
-      v = vcs.init()
-      for k in keys:
-         fields = k.split()
-         if setname[0] == fields[0]:
-            print 'calling init for ', k, 'varid: ', varid, 'seasonid: ', seasonid
-            plot = slist[k](filetable1, filetable2, varid, seasonid)
-            res = plot.compute()
-            v.plot(res[0].vars, res[0].presentation, bg=1)
-            
-            v.png(filepath + filename)
+      cachedFile = realms[0] + '_' + packages[0] + '_set' + sets[0] + '_' + times[0] + '_' + variables[0] + '.png'
       
+      print 'cachedFile: ' + cachedFile
+      
+      #. => /Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/
+      
+      #. + exploratory_analysis/static/exploratory_analysis/img/treeex/
+      #path = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/treeex/' + cachedFile
+      path = './' +  'exploratory_analysis/static/exploratory_analysis/img/treeex/' + cachedFile
+      print 'path: ' + path
+      print 'absolute path: ' + os.path.abspath(path)
+      print 'not in cache: ' + str(not inCache) + ' os isfile: ' + str(os.path.exists(path))
+      
+      if(os.path.exists(path)):
+          inCache = True
     
-      return HttpResponse()
+      if(not inCache):
+          print 'not in cache'
+          o= Options()
+          
+          ''' Old defaults
+          o._opts['path']=[default_sample_data_dir]
+          o._opts['vars']=['TG']
+          o._opts['times']=['MAM']
+          #Note: only use 1 or 2 
+          o._opts['sets']=['1']
+          o._opts['packages']=['lmwg']
+          o._opts['realms']=['land']
+          '''
+        
+          o._opts['path']=[default_sample_data_dir]
+          o._opts['vars']=variables
+          o._opts['times']=times
+          #Note: only use 1 or 2 
+          o._opts['sets']=sets
+          o._opts['packages']=packages
+          o._opts['realms']=realms
+        
+          
+          #filepath = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/treeex/'
+          filepath = generated_img_path
+          filename = request.POST['realms'] + '_' + request.POST['packages'] + '_' + request.POST['sets'] + '_' + request.POST['times'] + '_' + request.POST['variables']
+          import metrics.fileio.filetable as ft
+          import metrics.fileio.findfiles as fi
+          dtree1 = fi.dirtree_datafiles(o, pathid=0)
+          filetable1 = ft.basic_filetable(dtree1, o)
+          filetable2 = None
+          print 'No second dataset for comparison'
+             
+          package=o._opts['packages']
+    
+          # this needs a filetable probably, or we just define the maximum list of variables somewhere
+          im = ".".join(['metrics', 'packages', package[0], package[0]])
+          if package[0] == 'lmwg':
+             pclass = getattr(__import__(im, fromlist=['LMWG']), 'LMWG')()
+          elif package[0]=='amwg':
+             pclass = getattr(__import__(im, fromlist=['AMWG']), 'AMWG')()
+    
+          setname = o._opts['sets'][0]
+          varid = o._opts['vars'][0]
+          seasonid = o._opts['times'][0]
+          print 'CALLING LIST SETS'
+          slist = pclass.list_diagnostic_sets()
+          print 'DONE CALLIGN LIST SETS'
+          keys = slist.keys()
+          keys.sort()
+          import vcs
+          print 'generating output.png ...'
+          v = vcs.init()
+          for k in keys:
+             fields = k.split()
+             if setname[0] == fields[0]:
+                print 'calling init for ', k, 'varid: ', varid, 'seasonid: ', seasonid
+                plot = slist[k](filetable1, filetable2, varid, seasonid)
+                res = plot.compute()
+                v.plot(res[0].vars, res[0].presentation, bg=1)
+                
+                v.png(filepath + filename)
+          
+    
+    
+      #return HttpResponse()
+      return HttpResponse(cachedFile)
 
 
 
@@ -227,7 +245,10 @@ def treeex(request,user_id):
     
     bookmark = request.GET.get('bookmark')
     
+    #print '\n\n\nBOOKMARK: ' + bookmark
     
+    
+    '''
     if bookmark == None:
         print 'it is not in the cache'
         
@@ -239,11 +260,6 @@ def treeex(request,user_id):
         
         bookmark = "New"
         
-
-        
-
-
-    
     elif bookmark=='new':
         print 'page reached for the first time'
         #dont load anything yet
@@ -257,34 +273,33 @@ def treeex(request,user_id):
         if bookmark == 'Bookmark1':
             print 'Bookmark1'
             
-            
-            
-            
         elif bookmark == 'Bookmark2':
             print 'Bookmark2'
-            
-            
         else:
             print 'other bookmark'
-            bookmark = 'New'
+            #bookmark = 'New'
+        
+    '''    
         
         
-        
-        
-    
-    
-    
+    '''
     if isConnected:
         #use 
         print 'use the diags'
     else:
         print 'use the sample file with the hard coded data'   
-     
+    '''
+    
+    bookmark_name = bookmark
+    
+    #treeFile = None
+    treeFile = diagsHelper(user_id,bookmark_name)
     
     
-    #diagsHelper(user_id)
+    print '\n\n\ntreeFile: ' + treeFile    
+    #print 'treeFile: ' + treeFile
     
-    
+    #bookmark = 'Bookmark1'
     fileName = bookmark + ".json"
     
     cached_file_name = front_end_cache_dir + fileName
@@ -299,36 +314,40 @@ def treeex(request,user_id):
     #get the season list here using Brian's code
     season_list = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC','DJF','MAM','JJA','SON','ANN']
 
-    '''
+    
     #get the bookmarks of the user
     from exploratory_analysis.models import Tree_Bookmarks
-    bookmark_list = Tree_Bookmarks.objects.filter(bookmark_username='jfharney')
-    ''' 
-    bookmark_list = None
-    if bookmark_list == None:
-        bookmark_list = ['bookmark1','bookmark2','bookmark3']
+    bookmark_list_obj = Tree_Bookmarks.objects.filter(tree_bookmark_username='jfharney')
+     
+    bookmark_list = [] 
+    for obj in bookmark_list_obj:
+        bookmark_list.append(obj.tree_bookmark_name)
     
     
-    print 'flag: ' + str(bookmark_list == None) + ' ' + str(bookmark_list == [])
+    #bookmark_list = None
+    print 'bookmark list: ' + str(bookmark_list)
+   
+    #get the bookmarks of the user
+    from exploratory_analysis.models import Figure_Bookmarks
+    figure_bookmark_list_obj = Figure_Bookmarks.objects.filter(figure_bookmark_username='jfharney')
     
-    print  'str: '  + str(len(bookmark_list))
+    figure_bookmark_list = [] 
+    for obj in figure_bookmark_list_obj:
+        figure_bookmark_list.append(obj.figure_bookmark_name)
     
-    #for key in bookmark_list:
-    #    print 'key: ' + key + ' ' + bookmark_list[key]
+    print 'figure bookmark list ' + str(figure_bookmark_list)
     
     
-    if not bookmark_list:#str(len(bookmark_list)) == 0:
-        bookmark_list = ['b1','b2','b3']
+    #figure_bookmark_list = None
     
-    figure_bookmark_list = None
-    '''
+    
     #get the figure bookmarks of the user
     #query the database using username, figure bookmark name
-    from exploratory_analysis.models import Figure_Bookmarks
-    figure_bookmark_list = Figure_Bookmarks.objects.filter(figure_bookmark_username='jfharney')
-    '''
-    if figure_bookmark_list == None:
-        figure_bookmark_list = ['figure1','figure2','figure3']
+    #from exploratory_analysis.models import Figure_Bookmarks
+    #figure_bookmark_list = Figure_Bookmarks.objects.filter(figure_bookmark_username='jfharney')
+    
+    #if figure_bookmark_list == None:
+    #    figure_bookmark_list = ['figure1','figure2','figure3']
     
     #pass all the data back to the view
     context = RequestContext(request, {
@@ -337,11 +356,12 @@ def treeex(request,user_id):
         'variable_list' : variable_list,
         'season_list' : season_list,
         'bookmark_list' : bookmark_list,
-        'figure_bookmark_list' : figure_bookmark_list
+        'figure_bookmark_list' : figure_bookmark_list,
+        'treefile': treeFile,
+        'current_bookmark': bookmark
         #'treeFile' : treeFile,
     })
-    
-            
+        
 
     return HttpResponse(template.render(context))
 
@@ -442,7 +462,8 @@ def visualizations(request):
   
   
     #statically load the json file from the cache - each file is labelled by variable <variable_name>.json
-    file = '/Users/i7j/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/cache/' + variable + '.json' 
+    
+    file = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/cache/' + variable + '.json' 
   
     with open(file , 'r') as myfile:
        data = myfile.read().replace('\n','')
@@ -547,82 +568,81 @@ def login(request):
 
 
 
-def diagsHelper(user_id):
+def diagsHelper(user_id,bookmark_name):
     print 'in diags helper'
     
     
-    treeFile = cache_dir + 'Bookmark2.json'
+    #check the bookmark name
     
     
-    #### Start diagnostics generation here...
-    username = user_id
-  
-    print username
+    treeFile = cache_dir + bookmark_name + '.json'
     
-    o = Options()
-    #   o.processCmdLine()
-    #   o.verifyOptions()
-   
-   ##### SET THESE BASED ON USER INPUT FROM THE GUI
-    o._opts['packages'] = ['lmwg'] 
-    o._opts['vars'] = ['TLAI', 'TG']
-    o._opts['path'] = [default_sample_data_dir]
-    o._opts['times'] = ['MAR','APR','MAY']
-    
-    
-    ### NOTE: 'ANN' won't work for times this way, but that shouldn't be a problem
-    datafiles = []
-    filetables = []
-    vars = o._opts['vars']
-    #   print vars
-
-    
-    index = 0
-    for p in o._opts['path']:
-      print '\ndirtree\n' , dirtree_datafiles(p)
-      datafiles.append(dirtree_datafiles(p))
-      filetables.append(basic_filetable(datafiles[index], o))
-      index = index+1
-
-    print 'Creating diags tree view JSON file...'
-    
-    
-    
-    tv = TreeView()
-    dtree = tv.makeTree(o, filetables,None,user=username,ftnames=['tropics_warming_th_q_co2'])
-    tv.dump(filename=treeFile)
-    '''
     import os
-    import shutil
     
-    #srcfile = treeFile
-    dstroot = cache_dir
+    print '\n\ntreeFile: ' + treeFile + '\n\texists? ' + str(os.path.exists(treeFile)) + '\n\n'
+    
+    treeFileExists = os.path.exists(treeFile)
+    
+    #if the file is not in the cache already, then we have to generate the file
+    if not treeFileExists:
+        #### Start diagnostics generation here...
+        username = user_id
+      
+        print username
+        
+        o = Options()
+        #   o.processCmdLine()
+        #   o.verifyOptions()
+       
+       ##### SET THESE BASED ON USER INPUT FROM THE GUI
+       
+        #defaults here
+        packages = ['lmwg']
+        vars = ['TLAI', 'TG','NPP']
+        path = [default_sample_data_dir]
+        times = ['MAR','APR','MAY','JUNE','JULY']
+        
+        
+        o._opts['packages'] = packages
+        o._opts['vars'] = vars
+        o._opts['path'] = path
+        o._opts['times'] = times
+        
+        
+        ### NOTE: 'ANN' won't work for times this way, but that shouldn't be a problem
+        datafiles = []
+        filetables = []
+        vars = o._opts['vars']
+        #   print vars
+    
+        for p in range(len(o._opts['path'])):
+            print '\ndirtree\n',dirtree_datafiles(o,pathid=p)
+            datafiles.append(dirtree_datafiles(o,pathid=p))
+            filetables.append(basic_filetable(datafiles[p],o))
+        '''
+        index = 0
+        for p in o._opts['path']:
+          print '\ndirtree\n' , dirtree_datafiles(p)
+          datafiles.append(dirtree_datafiles(p))
+          filetables.append(basic_filetable(datafiles[index], o))
+          index = index+1
+        '''
+        print 'Creating diags tree view JSON file...'
+        
+        
+        
+        tv = TreeView()
+        dtree = tv.makeTree(o, filetables,None,user=username,ftnames=['tropics_warming_th_q_co2'])
+        tv.dump(filename=treeFile)
+        
+        
+        
+    #return the file and the location of the file
+    return treeFile
 
 
-    assert not os.path.isabs(treeFile)
-    dstdir =  os.path.join(dstroot, os.path.dirname(treeFile))
 
-    
 
-    #file = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/css/tree/flare4.json';
-    file = cache_dir + treeFile
-
-    from pprint import pprint
-    
-    data = ''
-    with open(file) as data_file:    
-        data = json.load(data_file)
-        pprint(data)
-    
-    url = 'http://cds.ccs.ornl.gov/y9s/singlef/i1850cn_cruncep_CNDA_Cli_b_2000-2009-i1850cn_cruncep_ctl_2000-2009/setsIndex.html'
-    
-    children_arr = [ { "name": "Set 1" } ]
-    
-    #data = { 'name' : 'LND_DIAG', 'url' : url, 'children' : children_arr }
-    data_string = json.dumps(data,sort_keys=True,indent=2)
-    print 'JSON:',data_string
-    '''
-    
 
 
 
@@ -1016,7 +1036,23 @@ def tree_bookmarks(request):
   
   
   
-  
+def figure_bookmarks_get_helper(figure_bookmark_name,
+                                figure_bookmark_datasetname,
+                                figure_bookmark_realm,
+                                figure_bookmark_username,
+                                figure_bookmark_description,
+                                figure_cache_ur
+                                ):
+    figure_bookmark_record = Figure_Bookmarks(
+                                            figure_bookmark_name = figure_bookmark_name,
+                                            figure_bookmark_datasetname = figure_bookmark_datasetname,
+                                            figure_bookmark_realm = figure_bookmark_realm,
+                                            figure_bookmark_username = figure_bookmark_username,
+                                            figure_bookmark_description = figure_bookmark_description,
+                                            figure_cache_url = figure_cache_url
+                                              )
+        
+    figure_bookmark_record.save()
   
   
 #Tree Figures BookmarksAPI
@@ -1067,6 +1103,7 @@ def figure_bookmarks(request):
     elif request.method == 'GET':
         
         
+        print '\n\n\nIN GET\n\n\n'
         
         figure_bookmark_name = request.GET.get('figure_bookmark_name')
         figure_bookmark_datasetname = request.GET.get('figure_bookmark_datasetname')
@@ -1075,6 +1112,11 @@ def figure_bookmarks(request):
     
         from exploratory_analysis.models import Figure_Bookmarks
     
+        print 'figure_bookmark_name: ' + figure_bookmark_name
+        print 'figure_bookmark_datasetname: ' + figure_bookmark_datasetname
+        print 'figure_bookmark_realm: ' + figure_bookmark_realm
+        print 'figure_bookmark_username: ' + figure_bookmark_username
+        
     
         try:
             figure_bookmark_record = Figure_Bookmarks.objects.get(figure_bookmark_name=figure_bookmark_name,
@@ -1166,4 +1208,42 @@ def variable_names(request,variable_short_name):
         print 'OTHER'
         
     return HttpResponse()
+
+
+
+
+
+
+    ''' from diagsHelper
+    import os
+    import shutil
+    
+    #srcfile = treeFile
+    dstroot = cache_dir
+
+
+    assert not os.path.isabs(treeFile)
+    dstdir =  os.path.join(dstroot, os.path.dirname(treeFile))
+
+    
+
+    #file = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/css/tree/flare4.json';
+    file = cache_dir + treeFile
+
+    from pprint import pprint
+    
+    data = ''
+    with open(file) as data_file:    
+        data = json.load(data_file)
+        pprint(data)
+    
+    url = 'http://cds.ccs.ornl.gov/y9s/singlef/i1850cn_cruncep_CNDA_Cli_b_2000-2009-i1850cn_cruncep_ctl_2000-2009/setsIndex.html'
+    
+    children_arr = [ { "name": "Set 1" } ]
+    
+    #data = { 'name' : 'LND_DIAG', 'url' : url, 'children' : children_arr }
+    data_string = json.dumps(data,sort_keys=True,indent=2)
+    print 'JSON:',data_string
+    '''
+    
 

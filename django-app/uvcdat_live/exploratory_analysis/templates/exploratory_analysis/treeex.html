@@ -63,6 +63,15 @@ svg {
   overflow-x:visible;
 }
 
+
+.hiddentext {
+	
+}
+
+.hiddenfunctionality {
+	display:none
+}
+
 </style>
 <body>
 
@@ -71,7 +80,7 @@ svg {
 </div>
 
 
-<div id="api_check" style="display:none">
+<div id="api_check" class="hiddenfunctionality">
 
 
 	<div>
@@ -104,9 +113,11 @@ svg {
 </div>   
 	<div class="container">
 		<span id="CachedFile" style="display:none">{{ cachedfile }}</span>
+		<span id="treeFile" style="display:none">{{ treefile }}</span>
+		<span id="current_bookmark" style="display:none" >{{ current_bookmark }}</span>
 	
      
-     
+    
      
     <div class="row">
 		<div class="span-12">
@@ -175,7 +186,9 @@ svg {
 		            <a href="#" data-toggle="dropdown" class="dropdown-toggle">Bookmarks <b class="caret"></b></a>
 		            <ul class="dropdown-menu" id="bookmark_menu">
 		            	{% for bookmark in bookmark_list %}
-		            		<li><a href="#" id="{{bookmark}}">{{bookmark}}</a></li>
+		            	<li>
+		            		<a href="http://localhost:8081/exploratory_analysis/treeex/{{username}}/?bookmark={{bookmark}}" id="{{bookmark}}" class="tree_bookmark_menu">{{bookmark}}</a>
+		            	</li>	
 		            	{% endfor %}
 		            	<li class="divider"></li>
 		                <li><a href="#" id="custom">Custom</a></li>
@@ -188,8 +201,9 @@ svg {
 		        <li class="dropdown">
 		            <a href="#" data-toggle="dropdown" class="dropdown-toggle">Saved Images <b class="caret"></b></a>
 		            <ul class="dropdown-menu" id="bookmark_menu">
+		            <!-- '<a data-toggle="modal" href="#myModal" class="btn btn-primary">View</a>' +  -->
 		            	{% for figure_bookmark in figure_bookmark_list %}
-		            		<li><a href="#" id="{{figure_bookmark}}">{{figure_bookmark}}</a></li>
+		            		<li><a data-toggle="modal" href="#myModal" class="figure_bookmark" id="{{figure_bookmark}}">{{figure_bookmark}}</a></li>
 		            	{% endfor %}
 		            	<!-- 
 		                <li><a href="#" id="b1">Image1</a></li>
@@ -203,6 +217,8 @@ svg {
 
     </div>
     
+    
+	
     <div class="row" style="margin-bottom:10px;display:none;border: 1px solid #000000;padding:10px" id="bookmark_selection"  >
     	<div class="col-lg-12">
 	    	<h4>Variables</h4>
@@ -234,9 +250,81 @@ svg {
 		</div>
     </div>
     
+    
      
-	<div class="row" style="border: 1px solid #000000;padding:10px;">
-		<div class="col-md-9" style="border-right: 1px solid #000000;height:900px;max-height:900px">
+	<!-- <div class="row" style="border: 1px solid #000000;padding:10px;">  -->
+	<div class="row" style="">
+		<div class="col-md-2">
+		
+		
+			<div class="row">
+						<div class="dropdown"  id="dropdown-dataset-container" >
+	               			<a href="#" class="dropdown-toggle" data-toggle="dropdown">CLM Datasets<b class="caret"></b></a>
+	               			<ul class="dropdown-menu dropdown-dataset-menu">
+	               			
+			             	</ul>
+				     	</div>
+					
+			</div>
+			<div class="row" style="margin-top:20px">
+			</div>
+			<div class="row">
+				<div class="dropdown" id="dropdown-variable-container" style="display:none">
+              			<a href="#" class="dropdown-toggle" data-toggle="dropdown">CLM Variables<b class="caret"></b></a>
+              			<ul class="dropdown-menu dropdown-variable-menu">
+              			
+   
+	             	</ul>
+		     	</div>
+			
+			</div>
+			<div class="row" style="margin-top:20px">
+			</div>
+			<div class="row">
+				<div class="dropdown" id="dropdown-time-container" style="display:none">
+              			<a href="#" class="dropdown-toggle" data-toggle="dropdown">CLM Time Series<b class="caret"></b></a>
+              				<ul class="dropdown-menu dropdown-time-menu">
+              			</ul>
+		     	</div>
+			
+			</div>
+			
+			<div class="row" style="margin-top:20px;padding-top:5px;border-top: 10px outset #ffffff">
+				<div style="margin-top:10px;">
+					Dataset: <span id="dataset_name"></span>
+				</div>
+				<div style="margin-top:10px;">
+					Variable: <span id="variable_name"></span>
+				</div>
+				<div style="margin-top:10px;">
+					Time: <span id="time_name"></span>
+				</div>
+				
+			</div>
+			<div class="row" style="margin-top:20px;padding-top:5px;border-top: 10px outset #ffffff" id="viz_button">
+				<button type="button" class="btn btn-default" >Submit</button>
+			</div>
+	
+		
+		</div>
+		
+		<div class="col-md-10">
+			<div class="row" style="border: 1px solid #000000;">
+				<div class="col-md-9" style="border-right: 1px solid #000000;height:900px;max-height:900px">
+				<span style="font-weight:bold"> Tree Name: </span>{{current_bookmark}}
+					<div id="treeimg" style="overflow-x:visible">
+			
+					</div>
+				</div>
+				<div class="col-md-3 scrollable" id="gallery"  style="overflow:scroll;max-height:900px">
+					
+				</div>
+			</div>
+		
+		</div>
+		
+		<!-- 
+		<div class="col-md-7" style="border-right: 1px solid #000000;height:900px;max-height:900px">
 			
 			<div id="treeimg" style="overflow-x:visible">
 			
@@ -251,6 +339,7 @@ svg {
 			
 		
 		</div>
+		 -->
 	</div>
 	 
 	 
@@ -272,6 +361,76 @@ svg {
 
 $(document).ready(function(){
 
+	$('.figure_bookmark').click(function() {
+		
+		
+
+        var figure_bookmark_name = $(this).html();//bookmark_id;
+        var figure_bookmark_datasetname = 'tropics_warming_th_q_co2';
+        var figure_bookmark_realm = 'land';
+        var figure_bookmark_username = 'jfharney';
+		var data = {
+				'csrfmiddlewaretoken': csrftoken,
+				'figure_bookmark_name' : figure_bookmark_name,
+				'figure_bookmark_username' : figure_bookmark_username,
+				'figure_bookmark_datasetname' : figure_bookmark_datasetname,
+				'figure_bookmark_realm' : figure_bookmark_realm
+		}
+		
+		var url = 'http://localhost:8081/exploratory_analysis/figure_bookmarks/';
+		$.ajax({
+			  type: "GET",
+			  url: url,
+			  async: false,
+			  data: data,
+			  dataType: 'json',
+			  success: function(data)
+			  { 
+				  console.log('success');
+				  
+				  for (var key in data) {
+					  console.log('key: ' + key + ' value: ' + data[key]);
+				  }
+				  var bookmark_id = figure_bookmark_name + '.png';
+				  var staticImg = data['figure_cache_url'] + '.png';
+				  
+				  figTitle = bookmark_id;
+				  
+				  console.log('figTitle: ' + figTitle);
+				  console.log('url ' + url);
+				  
+				  
+				  
+				  staticImg = staticImg.replace('/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis','../../..');
+					
+				  
+				  $('#modal-title').empty();
+				  $('.modal-body').empty();
+				  //$('#modal-title').append('<span>TITLE:</span> <div id="' + "figtitle" + '"> ' + reversePath(fullpath) + '</div>');
+				  //$('#modal-title').append('<span>TITLE:</span> <div id="' + "figtitle" + '"> ' + figTitle + '</div>');
+				  $('#modal-title').append('<div id="' + "figtitle" + '"> ' + figTitle + '</div>');
+				  
+				  //$('#modal-title').append('<span>URL:</span> <div id="' + "figurl" + '">' + staticImg + '</div>');
+				  $('.modal-body').append('<div>' + '<img src="' + staticImg + '" style="max-width:600px;max-height:500px;display: block;display: block;margin-left: auto;margin-right: auto" />' + '</div>')
+				  
+				 				  
+				  
+				  
+				  
+				  
+				  
+			  },
+			  error: function(xhr, status, error) {
+				  console.log('error'); 
+			    if(xhr.status==404)
+			    { 
+			    	
+			    }
+			  }
+			});
+		
+	});
+	
 	//show/hide the api checks
 	//$('#api_check').show();
 	
