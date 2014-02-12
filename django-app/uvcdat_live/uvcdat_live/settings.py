@@ -83,7 +83,7 @@ STATICFILES_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
     #"/Users/csg/Desktop/uvcdat-web/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis",
     
-    "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis",
+    "/Users/i7j/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis",
     #"/Users/8xo/esgfWorkspace/UVCDAT_live/WebContent/uvcdat_live/exploratory_analysis/static/exploratory_analysis",
 )
 

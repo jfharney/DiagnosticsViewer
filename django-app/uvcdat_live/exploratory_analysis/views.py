@@ -463,7 +463,7 @@ def visualizations(request):
   
     #statically load the json file from the cache - each file is labelled by variable <variable_name>.json
     
-    file = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/cache/' + variable + '.json' 
+    file = '/Users/i7j/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/cache/' + variable + '.json' 
   
     with open(file , 'r') as myfile:
        data = myfile.read().replace('\n','')
@@ -491,7 +491,7 @@ def treedata(request,user_id):
   
   username = user_id
 
-  file = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/css/tree/flare3.json';
+  file = '/Users/i7j/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/css/tree/flare3.json';
   #file = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/css/tree/flare2.json';
   
 
