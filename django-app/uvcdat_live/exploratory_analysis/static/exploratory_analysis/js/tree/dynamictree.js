@@ -28,35 +28,47 @@ $(document).ready(function(){
 	//treeFile = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/cache/Bookmark3.json';
 	//alert('treeFile: ' + treeFile);
 	//if(checkFile(cache_dir+fileName))
-	if(checkFile(treeFile))
-	{
 	
-		//render the tree
-		
-		d3.json(treeFile, function(error, flare) {
-		
-		//d3.json(cache_dir + fileName, function(error, flare) {
-		
-		///Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/css/tree/flare13.json
-		root = flare;
-		root.x0 = height / 2;
-		root.y0 = 0;
+	//check to see if there was a tree loaded
+	var treeloaded = $('span#treeloaded').html();
 	
-		function collapse(d) {
-		if (d.children) {
-		  d._children = d.children;
-		  d._children.forEach(collapse);
-		  d.children = null;
+	if(treeloaded == 'true') {
+		
+		if(checkFile(treeFile))
+		{
+		
+			//render the tree
+			
+			d3.json(treeFile, function(error, flare) {
+			
+			//d3.json(cache_dir + fileName, function(error, flare) {
+			
+			///Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/css/tree/flare13.json
+			root = flare;
+			root.x0 = height / 2;
+			root.y0 = 0;
+		
+			function collapse(d) {
+			if (d.children) {
+			  d._children = d.children;
+			  d._children.forEach(collapse);
+			  d.children = null;
+			}
+			}
+		
+			root.children.forEach(collapse);
+			update(root);
+			});
+		
+		} else {
+			console.log('leave blank');
 		}
-		}
-	
-		root.children.forEach(collapse);
-		update(root);
-		});
-	
+		
+		
 	} else {
-		console.log('leave blank');
+		//$('#bookmark_selection').show();
 	}
+	
 	
 	
 	

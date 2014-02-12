@@ -65,11 +65,17 @@ svg {
 
 
 .hiddentext {
-	
+	display:none
 }
 
 .hiddenfunctionality {
 	display:none
+}
+
+ul.dropdown-menu-form {
+    padding: 5px 10px 0;
+    max-height: 300px;
+    overflow-y: scroll;
 }
 
 </style>
@@ -112,15 +118,20 @@ svg {
      	
 </div>   
 	<div class="container">
-		<span id="CachedFile" style="display:none">{{ cachedfile }}</span>
-		<span id="treeFile" style="display:none">{{ treefile }}</span>
-		<span id="current_bookmark" style="display:none" >{{ current_bookmark }}</span>
-	
+		<div class="hiddentext">
+			CachedFile: <span id="CachedFile" >{{ cachedfile }}</span>
+			<br>
+			TreeFile: <span id="treeFile">{{ treefile }}</span>
+			<br>
+			CurrentBookmark: <span id="current_bookmark">{{ current_bookmark }}</span>
+			<br>
+			Tree Loaded: <span id="treeloaded">{{ treeloaded }}</span>
+		
+		</div>
      
-    
-     
+   
     <div class="row">
-		<div class="span-12">
+		<div class="col-md-12">
 			
 			       
 			
@@ -168,7 +179,7 @@ svg {
     <div class="row">
 		<div class="col-md-12">
 			<div class="page-header">
-  			<h1>UV-CDAT+ Experimental Prototype</h1>
+  			<h1>Exploratory Analysis - Diagnostics Tree Viewer</h1>
 			</div>
 		
 		</div>
@@ -181,7 +192,10 @@ svg {
    
    		
 		    <ul class="nav nav-pills">
-		        
+		    	<li>
+		    		<button type="button" class="btn btn-default" id="create_tree" >Create Tree</button>
+		    	</li>
+		    <!-- 
 		        <li class="dropdown">
 		            <a href="#" data-toggle="dropdown" class="dropdown-toggle">Bookmarks <b class="caret"></b></a>
 		            <ul class="dropdown-menu" id="bookmark_menu">
@@ -192,10 +206,20 @@ svg {
 		            	{% endfor %}
 		            	<li class="divider"></li>
 		                <li><a href="#" id="custom">Custom</a></li>
-		            <!-- 
-		                <li><a href="#" id="b1">Bookmark1</a></li>
-		                <li><a href="#" id="b2">Bookmark2</a></li>
-		                 -->
+		            </ul>
+		        </li>
+		     -->
+		        <li class="dropdown">
+		            <a href="#" data-toggle="dropdown" class="dropdown-toggle">Bookmarks <b class="caret"></b></a>
+		            <ul class="dropdown-menu" id="bookmark_menu">
+		            	{% for bookmark in bookmark_list %}
+		            	<li>
+		            		<a href="http://localhost:8081/exploratory_analysis/treeex/{{username}}/?bookmark={{bookmark}}" id="{{bookmark}}" class="tree_bookmark_menu">{{bookmark}}</a>
+		            	</li>	
+		            	{% endfor %}
+		            	<li class="divider"></li>
+		                <li><a href="#" id="custom">Custom</a></li>
+		            
 		            </ul>
 		        </li>
 		        <li class="dropdown">
@@ -219,10 +243,25 @@ svg {
     
     
 	
-    <div class="row" style="margin-bottom:10px;display:none;border: 1px solid #000000;padding:10px" id="bookmark_selection"  >
+    <div class="row" style="margin-bottom:10px;display:none;border: 1px solid #000000;padding:10px" id="create_tree_options"  >
     	<div class="col-lg-12">
-	    	<h4>Variables</h4>
+    	
+    		<h4 style="margin-top:5px">Dataset</h4>
+    		{% for dataset in dataset_list %}
+			<input name="{{dataset}}" id="{{dataset}}" type="radio" value="{{dataset}}" class="dataset_list" >
+			<label for="{{dataset}}" class="checkboxselection">{{dataset}}</label>
+			{% endfor %}
+			<hr>
 			
+    		<h4 style="margin-top:5px">Package</h4>
+    		{% for package in package_list %}
+			<input name="{{package}}" id="{{package}}" type="radio" value="{{package}}" class="package_list" >
+			<label for="{{package}}" class="checkboxselection">{{package}}</label>
+			{% endfor %}
+			<hr>
+			
+			
+	    	<h4 style="margin-top:5px">Variables</h4>
 			{% for variable in variable_list %}
 			<input name="{{variable}}" id="{{variable}}" type="checkbox" value="signup" class="variable_list" >
 			<label for="{{variable}}" class="checkboxselection">{{variable}}</label>
@@ -235,14 +274,23 @@ svg {
 			<label for="{{season}}" class="checkboxselection">{{season}}</label>
 			{% endfor %}
 			
+			<hr>
+			<h4 style="margin-top:5px">Sets</h4>
+			{% for set in set_list %}
+			<input name="{{set}}" id="{{set}}" type="checkbox" value="signup" class="sets_list" >
+			<label for="{{set}}" class="checkboxselection">{{set}}</label>
+			{% endfor %}
 		</div>
 		<hr>
 		<div class="col-lg-12">
-			<div class="col-lg-5">
-		    	<input type="text" class="form-control" placeholder="Bookmark Name (optional)">
+		  	<div class="col-lg-1">
+		    	<button type="button" class="btn btn-default" id="save_tree" >Save</button>
+		  	</div>
+			<div class="col-lg-4">
+		    	<input type="text" class="form-control" placeholder="Tree Bookmark Name (optional)" id="tree_name">
 		  	</div>
 		  	<div class="col-lg-1">
-		    	<button type="button" class="btn btn-default" id="bookmark_submit" >Submit</button>
+		    	<button type="button" class="btn btn-default" id="submit_tree" >Submit</button>
 		  	</div>
 		  	<div class="col-lg-1">
 		    	<button type="button" class="btn btn-default" id="bookmark_cancel">Cancel</button>
@@ -251,12 +299,58 @@ svg {
     </div>
     
     
-     
+    
 	<!-- <div class="row" style="border: 1px solid #000000;padding:10px;">  -->
-	<div class="row" style="">
+	<div class="row" style="" id="treeviewer">
 		<div class="col-md-2">
 		
 		
+		
+		<div class="dropdown">
+		    <!-- 
+		    <a class="dropdown-toggle btn" data-toggle="dropdown" href="#">
+		        Toggle dropdown
+		        <b class="caret"></b>
+		    </a>
+		    
+		    
+		    {% for variable in variable_list %}
+			 	<li>
+		            <label class="checkbox">
+		                <input type="checkbox">
+		                {{variable}}
+		            </label>
+		        </li>
+			{% endfor %}
+		     -->
+		     <ul class="dropdown-menu dropdown-menu-form" role="menu">
+		    
+		        <li>
+		            <label class="checkbox">
+		                <input type="checkbox">
+		                Checkbox 1
+		            </label>
+		        </li>
+		        <li>
+		            <label class="checkbox">
+		                <input type="checkbox">
+		                Checkbox 2
+		            </label>
+		        </li>
+		        <li>
+		            <label class="checkbox">
+		                <input type="checkbox">
+		                Checkbox 333333 222222222222
+		            </label>
+		        </li>
+		    </ul>
+		</div>
+		
+		
+		
+
+
+<!-- 
 			<div class="row">
 						<div class="dropdown"  id="dropdown-dataset-container" >
 	               			<a href="#" class="dropdown-toggle" data-toggle="dropdown">CLM Datasets<b class="caret"></b></a>
@@ -288,6 +382,8 @@ svg {
 		     	</div>
 			
 			</div>
+ -->			
+			
 			
 			<div class="row" style="margin-top:20px;padding-top:5px;border-top: 10px outset #ffffff">
 				<div style="margin-top:10px;">
@@ -361,6 +457,282 @@ svg {
 
 $(document).ready(function(){
 
+	//for post requests, need to get the csrf token
+	function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+    
+	console.log('csrftoken ' + csrftoken);
+	
+	
+	$('#submit_tree').click(function() {
+		
+		console.log('tree: ' + $('#tree_name').val());
+		
+		var dataset = '';
+		var pckg = '';
+		var variable_arr = new Array();
+		var season_arr =  new Array();
+		var sets_arr = new Array();
+
+		dataset = $("input[type='radio'].dataset_list").val();
+		pckg = $("input[type='radio'].package_list").val();
+		
+		$("input[type='checkbox'].variable_list").each(function(index, element){
+			//var a = $("input[type='checkbox'].variable_list");
+			
+		    if(element.checked) {
+		    	
+				variable_arr.push(element.id);
+		    }
+		});
+		$("input[type='checkbox'].season_list").each(function(index, element){
+			if(element.checked) {
+				season_arr.push(element.id);
+			}
+		    
+		});
+		$("input[type='checkbox'].sets_list").each(function(index, element){
+			if(element.checked) {
+				sets_arr.push(element.id);
+			}
+		    
+		});
+
+		alert('(variable_arr.length == 0) ' + (variable_arr.length == 0));
+		alert('(season_arr.length == 0) ' + (season_arr.length == 0));
+		alert('(sets_arr.length == 0) ' + (sets_arr.length == 0));
+		
+		//check if all values have been selected
+		if((variable_arr.length == 0) || (season_arr.length == 0) ||
+				(sets_arr.length == 0) || dataset == '' ||
+				pckg == '') 
+		{
+			console.log("can't save");
+		}
+		else if($('#tree_name').val() == '') {
+			console.log('please provide a tree name')
+		}
+		else {
+			console.log('submit tree');
+			
+		}
+		
+		var data = {
+				'csrfmiddlewaretoken': csrftoken ,
+				'dataset': dataset,
+				'package': pckg,
+				'variable_arr': variable_arr,
+				'season_arr':season_arr,
+				'sets_arr':sets_arr
+				};
+		
+		var url = 'http://localhost:8081/exploratory_analysis/treeex/jfharney/';
+		$.ajax({
+			  type: "POST",
+			  url: url,
+			  async: false,
+			  data: data,
+			  dataType: 'json',
+			  success: function(data)
+			  { 
+				  for (var key in data) {
+					  console.log('key: ' + key + ' value: ' + data[key])
+				  }
+				  
+				  //hide the options
+				  $('#create_tree_options').hide();
+				  $('#create_tree').html('Create Tree');
+				  
+				  //show tree
+				  $('#treeviewer').show();
+				  
+				  
+				  
+				  
+				  
+				  	var treeFile = $('span#treeFile').html();
+					//alert('treeFile: ' + treeFile);
+					treeFile = treeFile.replace('/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis','../../..');
+					
+					treeFile = '../../../static/cache/temp.json';
+					console.log('treeFile: ' + treeFile);
+					
+					if(checkFile(treeFile))
+						{
+						
+							//render the tree
+							
+							d3.json(treeFile, function(error, flare) {
+							
+							//d3.json(cache_dir + fileName, function(error, flare) {
+							
+							///Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/css/tree/flare13.json
+							root = flare;
+							root.x0 = height / 2;
+							root.y0 = 0;
+						
+							function collapse(d) {
+							if (d.children) {
+							  d._children = d.children;
+							  d._children.forEach(collapse);
+							  d.children = null;
+							}
+							}
+						
+							root.children.forEach(collapse);
+							update(root);
+							});
+						
+						} else {
+							console.log('leave blank');
+						}
+						
+						
+					//} else {
+						//$('#bookmark_selection').show();
+					//}
+					
+				  
+				  
+				  
+				  
+				  
+				  
+				  
+				  
+			  },
+			  error: function(ts) 
+			  { 
+				  console.log('response text: ' + ts.responseText) 
+			  }
+		});
+		/*
+		$.post( "http://localhost:8081/exploratory_analysis/treeex/maps/",
+				{ 'csrfmiddlewaretoken': csrftoken });
+		*/
+		/*
+		var dataset = '';
+		var pckg = '';
+		var variable_arr = new Array();
+		var season_arr =  new Array();
+		var sets_arr = new Array();
+		*/
+		
+		
+	});
+	
+	
+	$('#save_tree').click(function() {
+		
+
+		var dataset = '';
+		var pckg = '';
+		var variable_arr = new Array();
+		var season_arr =  new Array();
+		var sets_arr = new Array();
+
+		dataset = $("input[type='radio'].dataset_list").val();
+		pckg = $("input[type='radio'].package_list").val();
+		
+		$("input[type='checkbox'].variable_list").each(function(index, element){
+			//var a = $("input[type='checkbox'].variable_list");
+			
+		    if(element.checked) {
+		    	
+				variable_arr.push(element.id);
+		    }
+		});
+		$("input[type='checkbox'].season_list").each(function(index, element){
+			if(element.checked) {
+				season_arr.push(element.id);
+			}
+		    
+		});
+		$("input[type='checkbox'].sets_list").each(function(index, element){
+			if(element.checked) {
+				sets_arr.push(element.id);
+			}
+		    
+		});
+		
+		
+		
+		
+		//check if all values have been selected
+		if((variable_arr.length == 0) || (season_arr.length == 0) ||
+				(sets_arr.length == 0) || dataset == '' ||
+				pckg == '') 
+		{
+			console.log("can't save");
+		} 
+		else if($('#tree_name').val() == '') {
+			console.log('please provide a tree name')
+		} else {
+			console.log('post bookmark');
+			
+		}
+			
+		
+		
+		
+		
+	});
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	$('#create_tree').click(function(){
+		
+		if(this.innerHTML == "Cancel") {
+			$('#create_tree_options').hide();
+			this.innerHTML = "Create New Tree";
+		} else {
+			$('#create_tree_options').show();
+			this.innerHTML = "Cancel";
+		}
+		
+		
+	});
+	
+	
+	$('.dropdown-menu').on('click', function(e) {
+	    if($(this).hasClass('dropdown-menu-form')) {
+	        e.stopPropagation();
+	    }
+	});
+	
+	var treeloaded = $('#treeloaded').html();
+	
+	if(treeloaded == 'false')
+		$('#treeviewer').hide();
+	
+	
 	$('.figure_bookmark').click(function() {
 		
 		
@@ -437,25 +809,6 @@ $(document).ready(function(){
 	
 	
 	
-	//for post requests, need to get the csrf token
-	function getCookie(name) {
-        var cookieValue = null;
-        if (document.cookie && document.cookie != '') {
-            var cookies = document.cookie.split(';');
-            for (var i = 0; i < cookies.length; i++) {
-                var cookie = jQuery.trim(cookies[i]);
-                // Does this cookie string begin with the name we want?
-                if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
-    var csrftoken = getCookie('csrftoken');
-    
-	console.log('csrftoken ' + csrftoken);
 	
 	
 	
@@ -466,7 +819,7 @@ $(document).ready(function(){
 	
 	
 	
-$('#save_plot').click(function() {
+	$('#save_plot').click(function() {
 	
 	
 		console.log('csrftoken in test ' + csrftoken);
@@ -572,14 +925,15 @@ $('#save_plot').click(function() {
 	});
 	
 	
-	
+	/*
 	$('#custom').click(function() {
 		alert('customizing bookmarks');
 		
 		
 		$('div#bookmark_selection').show();
 	});
-
+	*/
+	
 	
 	$('#bookmark_submit').click(function(){
 		var variable_arr = new Array();
@@ -604,11 +958,14 @@ $('#save_plot').click(function() {
 		
 	});
 	
+	/*
 	$('#bookmark_cancel').click(function(){
 		$('div#bookmark_selection').hide();
 	});
+	*/
 	
 });
+
 
 
 
