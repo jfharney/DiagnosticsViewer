@@ -514,25 +514,7 @@ def treedata(request,user_id):
           
   
   return HttpResponse(data_string)
- 
 
-
-  
-  #grabs the timeseries data
-  #http://<host>/exploratory_analysis/timeseries
-def timeseries(request):
-    
-    print ' ... in time series ...'
-    
-    from mapviewhelper import timeseries
-
-    #timeseries_cache_path = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/cache'
-    
-    jsonData = timeseries.timeSeriesHelper1(request,timeseries_cache_path)
-    
-    print ' ... end in time series ...'
-    
-    return HttpResponse(jsonData) 
   
   
   
@@ -1246,4 +1228,51 @@ def variable_names(request,variable_short_name):
     print 'JSON:',data_string
     '''
     
+def timeseries(request):
+   import cdms2, json, cdutil.times
+   # need lat/lon, dataset name, variable from the request
+   variable = str(request.POST['variable'])
+   lat = float(request.POST['lat'])
+   lon = float(request.POST['lon'])
+   dataset = os.join(default_sample_data_dir, 'test.xml')
 
+   # Note: It is assumed that we are given an index into the dataset rather
+   # than actual lat/lon coordinates. This is not a problem currently, but
+   # if this code gets used more, we should probably fix that.
+
+   data = []
+   f = cdms2.open(dataset)
+   thevar = f[variable]
+   timeIndex = thevar.getAxisIndex('time')
+   timeAxis = thevar.getTime()
+   cdutil.times.setAxisTimeBoundsMonthly(timeAxis)
+
+   # This code assumes time is the 0th axis. The slice/subregion methods
+   # in CDAT don't appear to work, so I can't slice out a region based on
+   # naming an axis. There must be a better way to do this, but I don't 
+   # know what it is currently.
+   # Also, for some reason data = thevar.data[:][lat][lon] doesn't work.
+   # This could also be adapted to take subranges pretty trivially
+   if(axisIndex == 0): 
+      for i in range(thevar.shape[axisIndex]):
+         data.append(float(thevar.data[i][lat][lon]))
+   elif:
+      print 'Unsupported timeaxis != 0'
+      quit()
+
+   f.close()
+   # Make the json now
+   # Note - Most of the land datasets we have make it challenging to trivially get the
+   # start/end month/year. They are all encoded as days since 1-1-1, but it is not necessarily
+   # obvious that that is the case. There doesn't appear to be a trivial way to fix that. needs
+   # more thought
+   j = {}
+   j['start_year'] = 151   
+   j['start_month'] = 1
+   j['end_year'] = 165
+   j['end_month'] = 12
+   j['timeseries_data'] = data
+   fname = 'output.json'
+   f = open(fname, 'w')
+   json.dump(j, f, separators=(',',':'), indent=2)
+   f.close()
