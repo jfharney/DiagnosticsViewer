@@ -531,13 +531,42 @@ $(document).ready(function(){
 			
 		}
 		
+		var variable_arr_str = '';
+		for(var i=0;i<variable_arr.length;i++) {
+			if(i < variable_arr.length-1) {
+				variable_arr_str += variable_arr[i] + ';';
+			} else {
+				variable_arr_str += variable_arr[i];
+			}
+			
+		}
+
+		var season_arr_str = '';
+		for(var i=0;i<season_arr.length;i++) {
+			if(i < season_arr.length-1) {
+				season_arr_str += season_arr[i] + ';';
+			} else {
+				season_arr_str += season_arr[i];
+			}
+		}
+
+		var sets_arr_str = '';
+		for(var i=0;i<sets_arr.length;i++) {
+			if(i < sets_arr.length-1) {
+				sets_arr_str += sets_arr[i] + ';';
+			} else {
+				sets_arr_str += sets_arr[i];
+			}
+		}
+		
+		
 		var data = {
 				'csrfmiddlewaretoken': csrftoken ,
 				'dataset': dataset,
 				'package': pckg,
-				'variable_arr': variable_arr,
-				'season_arr':season_arr,
-				'sets_arr':sets_arr
+				'variable_arr_str': variable_arr_str,
+				'season_arr_str':season_arr_str,
+				'sets_arr_str':sets_arr_str
 				};
 		
 		var url = 'http://localhost:8081/exploratory_analysis/treeex/jfharney/';
@@ -714,6 +743,7 @@ $(document).ready(function(){
 			this.innerHTML = "Create New Tree";
 		} else {
 			$('#create_tree_options').show();
+			$('#treeviewer').hide();
 			this.innerHTML = "Cancel";
 		}
 		

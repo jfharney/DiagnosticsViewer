@@ -242,35 +242,33 @@ def treeex(request,user_id):
         username = user_id
     
     
-    #get the bookmarks of the user
+    #get the predefined tree bookmarks of the user
     from exploratory_analysis.models import Tree_Bookmarks
-    bookmark_list_obj = Tree_Bookmarks.objects.filter(tree_bookmark_username='jfharney')
+    bookmark_list_obj = Tree_Bookmarks.objects.filter(tree_bookmark_username=username)
   
     bookmark_list = [] 
     for obj in bookmark_list_obj:
         bookmark_list.append(obj.tree_bookmark_name)
  
  
-         #bookmark_list = None
-    print 'bookmark list: ' + str(bookmark_list)
 
-    #get the bookmarks of the user
+    #get the figure bookmarks of the user
     from exploratory_analysis.models import Figure_Bookmarks
-    figure_bookmark_list_obj = Figure_Bookmarks.objects.filter(figure_bookmark_username='jfharney')
+    figure_bookmark_list_obj = Figure_Bookmarks.objects.filter(figure_bookmark_username=username)
  
     figure_bookmark_list = [] 
     for obj in figure_bookmark_list_obj:
         figure_bookmark_list.append(obj.figure_bookmark_name)
  
+ 
+    print 'bookmark list: ' + str(bookmark_list)
     print 'figure bookmark list ' + str(figure_bookmark_list)
  
     
     #first we check if the request is in the cache or if it is the initial call
     #if it is in the cache, no need to do any back end generation
-    
     bookmark = request.GET.get('bookmark')
     
-    #print '\n\n\nBOOKMARK: ' + bookmark
     
     #no bookmark is being loaded
     if bookmark == None:
@@ -279,22 +277,50 @@ def treeex(request,user_id):
         
         #if something has been posted, then a tree could be built       
         if request.POST:
-            print 'in a post request with parameters'
-            '''
-            dataset = request.GET.get('dataset')
-            package = request.GET.get('package')
-            variable_arr = request.GET.get('variable_arr')
-            season_arr = request.GET.get('season_arr')
-            sets_arr = request.GET.get('sets_arr')
             
-            variable_arr = request.POST['variable_arr']
-            season_arr = request.POST['season_arr']
-            sets_arr = request.POST['sets_arr']
-            '''
+            
+            print 'in a post request with parameters'
+            
+            #defaults here
+            packages = ['lmwg']
+            vars = ['TLAI', 'TG','NPP']
+            path = [default_sample_data_dir]
+            times = ['MAR','APR','MAY','JUNE','JULY']
+        
             
             package = request.POST['package']
             
             print 'package...' + package
+            
+            variable_arr_str = request.POST['variable_arr_str']
+            if variable_arr_str == None:
+                print 'variable_arr_str is None'
+            else:
+                print 'variable_arr_str is not None'
+                print 'variable_arr_str: ' + variable_arr_str
+                variable_arr = variable_arr_str.split(';')
+                
+            
+            season_arr_str = request.POST['season_arr_str']
+            if season_arr_str == None:
+                print 'season_arr_str is None'
+            else:
+                print 'season_arr_str is not None'
+                print 'season_arr_str: ' + season_arr_str
+            
+            sets_arr_str = request.POST['sets_arr_str']
+            if sets_arr_str == None:
+                print 'sets_arr_str is None'
+            else:
+                print 'sets_arr_str is not None'
+                print 'sets_arr_str: ' + sets_arr_str
+                sets_arr = sets_arr_str.split(';')
+                print 's: ' + sets_arr[0]
+            
+            
+            vars = variable_arr
+            
+            print 'var list: ' + str(vars)
             
             #build tree here
             treeFile = cache_dir + 'temp' + '.json'
@@ -306,44 +332,17 @@ def treeex(request,user_id):
             print username
         
             o = Options()
-            #   o.processCmdLine()
-            #   o.verifyOptions()
        
             ##### SET THESE BASED ON USER INPUT FROM THE GUI
        
-            #defaults here
-            packages = ['lmwg']
-            vars = ['TLAI', 'TG','NPP']
-            path = [default_sample_data_dir]
-            times = ['MAR','APR','MAY','JUNE','JULY']
-        
+            
         
             o._opts['packages'] = packages
             o._opts['vars'] = vars
             o._opts['path'] = path
             o._opts['times'] = times
         
-            '''
-            if dataset != None:
-                print 'dataset: ' + dataset
-                
-            if package != None:
-                print 'package: ' + package
-                packages = [package]
-                
-            if variable_arr != None:
-                print 'variable_arr: ' + str(variable_arr)
-                vars = variable_arr
-                
-            if season_arr != None:
-                print 'season_arr: ' + str(season_arr)
-                times = season_arr
-                
-            if sets_arr != None:
-                print 'sets_arr: ' + str(sets_arr)
-            '''    
             
-        
         
             ### NOTE: 'ANN' won't work for times this way, but that shouldn't be a problem
             datafiles = []
@@ -355,14 +354,7 @@ def treeex(request,user_id):
                 print '\ndirtree\n',dirtree_datafiles(o,pathid=p)
                 datafiles.append(dirtree_datafiles(o,pathid=p))
                 filetables.append(basic_filetable(datafiles[p],o))
-                '''
-            index = 0
-            for p in o._opts['path']:
-              print '\ndirtree\n' , dirtree_datafiles(p)
-              datafiles.append(dirtree_datafiles(p))
-              filetables.append(basic_filetable(datafiles[index], o))
-              index = index+1
-            '''
+            
             print 'Creating diags tree view JSON file...'
         
         
@@ -376,26 +368,21 @@ def treeex(request,user_id):
             
             
             
-            
-            
-            
-            
-            
             response_data = {}
             response_data['result'] = 'failed'
             response_data['message'] = 'You messed up'
             return HttpResponse(json.dumps(response_data), content_type="application/json")
             #print 'returning http response'
             #return HttpResponse("hello")
-            
-        if request.POST:
-            print 'a post request'
+        #end if request.POST  
             
         
         template = loader.get_template('exploratory_analysis/treeex.html')
         treeloaded = 'false'
         
         
+        
+        '''
         tree_bookmark_datasetname = None
         
         #if information was relayed in the post, that means a tree is being created
@@ -415,7 +402,7 @@ def treeex(request,user_id):
         else:
             print 'there is a dataset name given, display the new tree'
             treeloaded = 'true'
-            
+        '''   
         
         
         package_list = ['lmwg']
@@ -456,6 +443,7 @@ def treeex(request,user_id):
     
         
     else:
+        
         print '\n\n\n\nretrieving bookmark\n\n\n\n'
         
         #check if bookmark exists
