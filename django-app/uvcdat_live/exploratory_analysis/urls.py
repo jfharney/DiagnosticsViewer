@@ -56,7 +56,7 @@ urlpatterns = patterns('',
   
   
   #grabs the timeseries data
-  url(r'^timeseries/$', views.timeseries, name='timeseries'),
+  url(r'^timeseries/(?P<lat>\w+)/(?P<lon>\w+)/(?P<variable>\w+)$', views.timeseries, name='timeseries'),
   
   ############
   #Tree stuff#

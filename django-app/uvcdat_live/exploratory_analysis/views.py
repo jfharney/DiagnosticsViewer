@@ -1228,13 +1228,14 @@ def variable_names(request,variable_short_name):
     print 'JSON:',data_string
     '''
     
-def timeseries(request):
+def timeseries(request, lat, lon, variable):
    import cdms2, json, cdutil.times
    # need lat/lon, dataset name, variable from the request
-   variable = str(request.POST['variable'])
-   lat = float(request.POST['lat'])
-   lon = float(request.POST['lon'])
-   dataset = os.join(default_sample_data_dir, 'test.xml')
+   #variable = str(request.POST['variable'])
+   #lat = float(request.POST['lat'])
+   #lon = float(request.POST['lon'])
+
+   dataset = os.path.join(default_sample_data_dir, 'test.xml')
 
    # Note: It is assumed that we are given an index into the dataset rather
    # than actual lat/lon coordinates. This is not a problem currently, but
@@ -1242,11 +1243,13 @@ def timeseries(request):
 
    data = []
    f = cdms2.open(dataset)
+   print variable
    thevar = f[variable]
    timeIndex = thevar.getAxisIndex('time')
    timeAxis = thevar.getTime()
+   print timeAxis
    cdutil.times.setAxisTimeBoundsMonthly(timeAxis)
-
+   axisIndex = 0;
    # This code assumes time is the 0th axis. The slice/subregion methods
    # in CDAT don't appear to work, so I can't slice out a region based on
    # naming an axis. There must be a better way to do this, but I don't 
@@ -1256,7 +1259,7 @@ def timeseries(request):
    if(axisIndex == 0): 
       for i in range(thevar.shape[axisIndex]):
          data.append(float(thevar.data[i][lat][lon]))
-   elif:
+   else:
       print 'Unsupported timeaxis != 0'
       quit()
 
