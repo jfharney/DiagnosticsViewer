@@ -69,7 +69,7 @@ svg {
 }
 
 .hiddenfunctionality {
-	display:none
+	display:none 
 }
 
 ul.dropdown-menu-form {
@@ -78,6 +78,56 @@ ul.dropdown-menu-form {
     overflow-y: scroll;
 }
 
+#myModal1 {
+
+margin-top: 150px
+/*
+width:400px;
+height:50px;
+position:absolute;
+top:50%;
+left:50%;
+margin-top:-25px;
+margin-left:-200px;
+padding:20px;
+*/
+
+}
+
+
+/* Start by setting display:none to make this hidden.
+   Then we position it in relation to the viewport window
+   with position:fixed. Width, height, top and left speak
+   speak for themselves. Background we set to 80% white with
+   our animation centered, and no-repeating */
+#modal1 {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .8 ) 
+                url('http://i.stack.imgur.com/FhHRx.gif') 
+                50% 50% 
+                no-repeat;
+}
+
+/* When the body has the loading class, we turn
+   the scrollbar off with overflow:hidden */
+body.loading {
+    overflow: hidden;   
+}
+
+/* Anytime the body has the loading class, our
+   modal element will be visible */
+body.loading #modal1 {
+    display: block;
+}
+
+
+
 </style>
 <body>
 
@@ -85,6 +135,8 @@ ul.dropdown-menu-form {
 {% csrf_token %}
 </div>
 
+<div class="modal" id="modal1"><!-- Place at bottom of page --></div>
+ 
 
 <div id="api_check" class="hiddenfunctionality">
 
@@ -103,6 +155,12 @@ ul.dropdown-menu-form {
 	     
 	</div>
 	<div>
+	     	<button type="button" class="btn btn-default" id="timeseriestest" >Time series test</button>
+	     
+	</div>
+	
+	<!-- 
+	<div>
 			<input class="textbox"type="text" id="variable_short_name"> 
 			<br><br> 
 			<input class="textbox"type="text" id="variable_long_name"> 
@@ -115,7 +173,7 @@ ul.dropdown-menu-form {
 	     	<button type="button" class="btn btn-default" id="test24" >Get variable</button>
 	     
 	</div>
-     	
+      -->
 </div>   
 	<div class="container">
 		<div class="hiddentext">
@@ -138,7 +196,7 @@ ul.dropdown-menu-form {
 			
 			<!-- overlay modal -->
 			<div class="modal" id="myModal">
-				<div class="modal-dialog">
+				<div class="modal-dialog" style="width:800px;">
 			      <div class="modal-content">
 			        <div class="modal-header">
 			          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -166,8 +224,20 @@ ul.dropdown-menu-form {
 			    </div>
 			</div>
 
-			
-			
+
+			<!-- Waiting Modal -->
+			<div class="modal" id="myModal1" data-keyboard="false">
+				<div class="modal-dialog" style="width:300px;">
+			      <div class="modal-content">
+			        <div class="modal-header">
+			        <!-- 
+			          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			         -->
+			        <h4 class="modal-title" id="modal-title">Processing...</h4>
+			        </div>
+			      </div>
+			    </div>
+			</div>
 			
 			
 			
@@ -246,40 +316,57 @@ ul.dropdown-menu-form {
     <div class="row" style="margin-bottom:10px;display:none;border: 1px solid #000000;padding:10px" id="create_tree_options"  >
     	<div class="col-lg-12">
     	
+    		
     		<h4 style="margin-top:5px">Dataset</h4>
+    		<div style="overflow-y: scroll;max-height:150px">
     		{% for dataset in dataset_list %}
 			<input name="{{dataset}}" id="{{dataset}}" type="radio" value="{{dataset}}" class="dataset_list" >
 			<label for="{{dataset}}" class="checkboxselection">{{dataset}}</label>
 			{% endfor %}
+			</div>
+			
 			<hr>
 			
+			
     		<h4 style="margin-top:5px">Package</h4>
+    		<div style="overflow-y: scroll;max-height:150px">
     		{% for package in package_list %}
 			<input name="{{package}}" id="{{package}}" type="radio" value="{{package}}" class="package_list" >
 			<label for="{{package}}" class="checkboxselection">{{package}}</label>
 			{% endfor %}
+			</div>
+			
 			<hr>
 			
-			
-	    	<h4 style="margin-top:5px">Variables</h4>
+			<h4 style="margin-top:5px">Variables</h4>
+			<div style="overflow-y: scroll;max-height:150px">
 			{% for variable in variable_list %}
 			<input name="{{variable}}" id="{{variable}}" type="checkbox" value="signup" class="variable_list" >
 			<label for="{{variable}}" class="checkboxselection">{{variable}}</label>
 			{% endfor %}
-			
+			</div>
+	    	
 			<hr>
+			
 			<h4 style="margin-top:5px">Seasons</h4>
+			<div style="overflow-y: scroll;max-height:150px">
 			{% for season in season_list %}
 			<input name="{{season}}" id="{{season}}" type="checkbox" value="signup" class="season_list" >
 			<label for="{{season}}" class="checkboxselection">{{season}}</label>
 			{% endfor %}
+			</div>
 			
 			<hr>
+			
+			<!-- 
 			<h4 style="margin-top:5px">Sets</h4>
+			<div style="overflow-y: scroll;max-height:150px">
 			{% for set in set_list %}
 			<input name="{{set}}" id="{{set}}" type="checkbox" value="signup" class="sets_list" >
 			<label for="{{set}}" class="checkboxselection">{{set}}</label>
 			{% endfor %}
+			</div>
+			 -->
 		</div>
 		<hr>
 		<div class="col-lg-12">
@@ -307,22 +394,6 @@ ul.dropdown-menu-form {
 		
 		
 		<div class="dropdown">
-		    <!-- 
-		    <a class="dropdown-toggle btn" data-toggle="dropdown" href="#">
-		        Toggle dropdown
-		        <b class="caret"></b>
-		    </a>
-		    
-		    
-		    {% for variable in variable_list %}
-			 	<li>
-		            <label class="checkbox">
-		                <input type="checkbox">
-		                {{variable}}
-		            </label>
-		        </li>
-			{% endfor %}
-		     -->
 		     <ul class="dropdown-menu dropdown-menu-form" role="menu">
 		    
 		        <li>
@@ -348,41 +419,7 @@ ul.dropdown-menu-form {
 		
 		
 		
-
-
-<!-- 
-			<div class="row">
-						<div class="dropdown"  id="dropdown-dataset-container" >
-	               			<a href="#" class="dropdown-toggle" data-toggle="dropdown">CLM Datasets<b class="caret"></b></a>
-	               			<ul class="dropdown-menu dropdown-dataset-menu">
-	               			
-			             	</ul>
-				     	</div>
-					
-			</div>
-			<div class="row" style="margin-top:20px">
-			</div>
-			<div class="row">
-				<div class="dropdown" id="dropdown-variable-container" style="display:none">
-              			<a href="#" class="dropdown-toggle" data-toggle="dropdown">CLM Variables<b class="caret"></b></a>
-              			<ul class="dropdown-menu dropdown-variable-menu">
-              			
-   
-	             	</ul>
-		     	</div>
-			
-			</div>
-			<div class="row" style="margin-top:20px">
-			</div>
-			<div class="row">
-				<div class="dropdown" id="dropdown-time-container" style="display:none">
-              			<a href="#" class="dropdown-toggle" data-toggle="dropdown">CLM Time Series<b class="caret"></b></a>
-              				<ul class="dropdown-menu dropdown-time-menu">
-              			</ul>
-		     	</div>
-			
-			</div>
- -->			
+	
 			
 			
 			<div class="row" style="margin-top:20px;padding-top:5px;border-top: 10px outset #ffffff">
@@ -407,7 +444,7 @@ ul.dropdown-menu-form {
 		<div class="col-md-10">
 			<div class="row" style="border: 1px solid #000000;">
 				<div class="col-md-9" style="border-right: 1px solid #000000;height:900px;max-height:900px">
-				<span style="font-weight:bold"> Tree Name: </span>{{current_bookmark}}
+				<span style="font-weight:bold"> Tree Name: </span><span id="current_treename">{{current_bookmark}}</span>
 					<div id="treeimg" style="overflow-x:visible">
 			
 					</div>
@@ -419,23 +456,7 @@ ul.dropdown-menu-form {
 		
 		</div>
 		
-		<!-- 
-		<div class="col-md-7" style="border-right: 1px solid #000000;height:900px;max-height:900px">
-			
-			<div id="treeimg" style="overflow-x:visible">
-			
-			</div>
-			
-		</div>
-		<div class="col-md-3 scrollable" id="gallery"  style="overflow:scroll;max-height:900px">
-			<ul class='thumbnails1' style="overflow:scroll;list-style-type: none;">
-			
-			
-			</ul>
-			
 		
-		</div>
-		 -->
 	</div>
 	 
 	 
@@ -451,12 +472,28 @@ ul.dropdown-menu-form {
 	<!--  -->
 	<script src="{% static 'exploratory_analysis/js/tree/dynamictree.js' %}"></script>
 	<script src="{% static 'exploratory_analysis/js/tree/bookmarks.js' %}"></script>
+	<script src="{% static 'exploratory_analysis/js/tree/submittree.js' %}"></script>
+	<script src="{% static 'exploratory_analysis/js/tree/savetree.js' %}"></script>
+	<script src="{% static 'exploratory_analysis/js/jquery/overlay.js' %}"></script>
 	
 
 <script>
 
+
+/*
+$(document).on({
+    ajaxStart: function() { 
+    	console.log('ajaxstart...');
+    	$body.addClass("loading");    
+    },
+     ajaxStop: function() { $body.removeClass("loading"); }    
+});
+*/
+
 $(document).ready(function(){
 
+
+	
 	//for post requests, need to get the csrf token
 	function getCookie(name) {
         var cookieValue = null;
@@ -477,255 +514,115 @@ $(document).ready(function(){
     
 	console.log('csrftoken ' + csrftoken);
 	
+
 	
-	$('#submit_tree').click(function() {
+	
+	
+	//$("#prompt").overlay().load();
+	
+	
+	
+	
+	
+	$('#timeseriestest').click(function() {
+		alert('time series test');
+		console.log('time series test');
 		
-		console.log('tree: ' + $('#tree_name').val());
-		
-		var dataset = '';
-		var pckg = '';
-		var variable_arr = new Array();
-		var season_arr =  new Array();
-		var sets_arr = new Array();
-
-		dataset = $("input[type='radio'].dataset_list").val();
-		pckg = $("input[type='radio'].package_list").val();
-		
-		$("input[type='checkbox'].variable_list").each(function(index, element){
-			//var a = $("input[type='checkbox'].variable_list");
-			
-		    if(element.checked) {
-		    	
-				variable_arr.push(element.id);
-		    }
-		});
-		$("input[type='checkbox'].season_list").each(function(index, element){
-			if(element.checked) {
-				season_arr.push(element.id);
-			}
-		    
-		});
-		$("input[type='checkbox'].sets_list").each(function(index, element){
-			if(element.checked) {
-				sets_arr.push(element.id);
-			}
-		    
-		});
-
-		alert('(variable_arr.length == 0) ' + (variable_arr.length == 0));
-		alert('(season_arr.length == 0) ' + (season_arr.length == 0));
-		alert('(sets_arr.length == 0) ' + (sets_arr.length == 0));
-		
-		//check if all values have been selected
-		if((variable_arr.length == 0) || (season_arr.length == 0) ||
-				(sets_arr.length == 0) || dataset == '' ||
-				pckg == '') 
-		{
-			console.log("can't save");
-		}
-		else if($('#tree_name').val() == '') {
-			console.log('please provide a tree name')
-		}
-		else {
-			console.log('submit tree');
-			
+		var input_data = {
+				'csrfmiddlewaretoken': csrftoken,
+				'variable':'variable1',
+				'lat':30,
+				'lon':30
 		}
 		
-		var variable_arr_str = '';
-		for(var i=0;i<variable_arr.length;i++) {
-			if(i < variable_arr.length-1) {
-				variable_arr_str += variable_arr[i] + ';';
-			} else {
-				variable_arr_str += variable_arr[i];
-			}
-			
-		}
-
-		var season_arr_str = '';
-		for(var i=0;i<season_arr.length;i++) {
-			if(i < season_arr.length-1) {
-				season_arr_str += season_arr[i] + ';';
-			} else {
-				season_arr_str += season_arr[i];
-			}
-		}
-
-		var sets_arr_str = '';
-		for(var i=0;i<sets_arr.length;i++) {
-			if(i < sets_arr.length-1) {
-				sets_arr_str += sets_arr[i] + ';';
-			} else {
-				sets_arr_str += sets_arr[i];
-			}
-		}
-		
-		
-		var data = {
-				'csrfmiddlewaretoken': csrftoken ,
-				'dataset': dataset,
-				'package': pckg,
-				'variable_arr_str': variable_arr_str,
-				'season_arr_str':season_arr_str,
-				'sets_arr_str':sets_arr_str
-				};
-		
-		var url = 'http://localhost:8081/exploratory_analysis/treeex/jfharney/';
+		var url = 'http://localhost:8081/exploratory_analysis/timeseries1/';
 		$.ajax({
 			  type: "POST",
 			  url: url,
 			  async: false,
-			  data: data,
-			  dataType: 'json',
+			  data: input_data,
 			  success: function(data)
 			  { 
-				  for (var key in data) {
-					  console.log('key: ' + key + ' value: ' + data[key])
-				  }
-				  
-				  //hide the options
-				  $('#create_tree_options').hide();
-				  $('#create_tree').html('Create Tree');
-				  
-				  //show tree
-				  $('#treeviewer').show();
-				  
-				  
-				  
-				  
-				  
-				  	var treeFile = $('span#treeFile').html();
-					//alert('treeFile: ' + treeFile);
-					treeFile = treeFile.replace('/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis','../../..');
-					
-					treeFile = '../../../static/cache/temp.json';
-					console.log('treeFile: ' + treeFile);
-					
-					if(checkFile(treeFile))
-						{
-						
-							//render the tree
-							
-							d3.json(treeFile, function(error, flare) {
-							
-							//d3.json(cache_dir + fileName, function(error, flare) {
-							
-							///Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/css/tree/flare13.json
-							root = flare;
-							root.x0 = height / 2;
-							root.y0 = 0;
-						
-							function collapse(d) {
-							if (d.children) {
-							  d._children = d.children;
-							  d._children.forEach(collapse);
-							  d.children = null;
-							}
-							}
-						
-							root.children.forEach(collapse);
-							update(root);
-							});
-						
-						} else {
-							console.log('leave blank');
-						}
-						
-						
-					//} else {
-						//$('#bookmark_selection').show();
-					//}
-					
-				  
-				  
-				  
-				  
-				  
-				  
-				  
+				  console.log('success ' + data);
+			  },
+			  error: function(xhr, status, error) {
+				  console.log('error'); 
+			    if(xhr.status==404)
+			    { 
+			    	
+			    }
+			  }
+			});
+		
+		
+	});
+	
+	
+
+	$body = $("body");
+	
+	
+	$('#save_plot').click(function() {
+		
+		
+		console.log('csrftoken in test ' + csrftoken);
+		
+
+		//var figureUrl = '../../../static/exploratory_analysis/img/carousel/set6_turbf_Global.gif';
+		var figureUrl = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/treeex/land_lmwg_set1_MAY_TG.png';
+		console.log('title: ' + $('#modal-title').find('#figtitle').html());
+		console.log('url: ' + $('#modal-title').find('#figurl').html());
+		
+		var figureName = $('#modal-title').find('#figtitle').html();
+		console.log('need to push a figure url (e.g. ' + figureUrl +') with figure name: ' + figureName);
+		
+		var fileUrl = $('#modal-title').find('#figurl').html();
+
+		
+		var description = $('textarea#figure_bookmark_description').val();
+		
+		
+		var figure_bookmark_username = 'jfharney';
+		var figure_bookmark_name = figureName;
+		var figure_bookmark_location = figureUrl;
+		var figure_bookmark_description = description;
+		
+
+		var data = {
+				'csrfmiddlewaretoken': csrftoken,
+				'figure_bookmark_name' : figure_bookmark_name,
+				'figure_bookmark_username' : figure_bookmark_username,
+				'figure_bookmark_location' : figure_bookmark_location,
+				'figure_bookmark_description' : figure_bookmark_description
+		}
+
+
+		$body.addClass("loading");  
+		
+		var url = 'http://localhost:8081/exploratory_analysis/figure_bookmarks/';
+		$.ajax({
+			  type: "POST",
+			  url: url,
+			  //async: false,
+			  data: data,
+			  success: function()
+			  { 
+				  console.log('success');
+
+				  $body.removeClass("loading");  
 				  
 			  },
-			  error: function(ts) 
-			  { 
-				  console.log('response text: ' + ts.responseText) 
+			  error: function(xhr, status, error) {
+				  console.log('error'); 
+			    if(xhr.status==404)
+			    { 
+			    	
+			    }
 			  }
-		});
-		/*
-		$.post( "http://localhost:8081/exploratory_analysis/treeex/maps/",
-				{ 'csrfmiddlewaretoken': csrftoken });
-		*/
-		/*
-		var dataset = '';
-		var pckg = '';
-		var variable_arr = new Array();
-		var season_arr =  new Array();
-		var sets_arr = new Array();
-		*/
+			});
 		
 		
 	});
-	
-	
-	$('#save_tree').click(function() {
-		
-
-		var dataset = '';
-		var pckg = '';
-		var variable_arr = new Array();
-		var season_arr =  new Array();
-		var sets_arr = new Array();
-
-		dataset = $("input[type='radio'].dataset_list").val();
-		pckg = $("input[type='radio'].package_list").val();
-		
-		$("input[type='checkbox'].variable_list").each(function(index, element){
-			//var a = $("input[type='checkbox'].variable_list");
-			
-		    if(element.checked) {
-		    	
-				variable_arr.push(element.id);
-		    }
-		});
-		$("input[type='checkbox'].season_list").each(function(index, element){
-			if(element.checked) {
-				season_arr.push(element.id);
-			}
-		    
-		});
-		$("input[type='checkbox'].sets_list").each(function(index, element){
-			if(element.checked) {
-				sets_arr.push(element.id);
-			}
-		    
-		});
-		
-		
-		
-		
-		//check if all values have been selected
-		if((variable_arr.length == 0) || (season_arr.length == 0) ||
-				(sets_arr.length == 0) || dataset == '' ||
-				pckg == '') 
-		{
-			console.log("can't save");
-		} 
-		else if($('#tree_name').val() == '') {
-			console.log('please provide a tree name')
-		} else {
-			console.log('post bookmark');
-			
-		}
-			
-		
-		
-		
-		
-	});
-	
-	
-	
-	
-	
-	
 	
 	
 	
@@ -849,66 +746,6 @@ $(document).ready(function(){
 	
 	
 	
-	$('#save_plot').click(function() {
-	
-	
-		console.log('csrftoken in test ' + csrftoken);
-		
-
-		//var figureUrl = '../../../static/exploratory_analysis/img/carousel/set6_turbf_Global.gif';
-		var figureUrl = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/treeex/land_lmwg_set1_MAY_TG.png';
-		console.log('title: ' + $('#modal-title').find('#figtitle').html());
-		console.log('url: ' + $('#modal-title').find('#figurl').html());
-		
-		var figureName = $('#modal-title').find('#figtitle').html();
-		console.log('need to push a figure url (e.g. ' + figureUrl +') with figure name: ' + figureName);
-		
-		var fileUrl = $('#modal-title').find('#figurl').html();
-
-		//alert('description: ' + $('.modal-content').find('#figure_bookmark_description').html());
-		
-		//alert('description: ' + $('#myModal').find('.modal-footer').find('textarea#figure_bookmark_description').val());
-		
-		alert('description: ' + $('textarea#figure_bookmark_description').val());
-		var description = $('textarea#figure_bookmark_description').val();
-		
-		
-		var figure_bookmark_username = 'jfharney';
-		var figure_bookmark_name = figureName;
-		var figure_bookmark_location = figureUrl;
-		var figure_bookmark_description = description;
-		
-
-		var data = {
-				'csrfmiddlewaretoken': csrftoken,
-				'figure_bookmark_name' : figure_bookmark_name,
-				'figure_bookmark_username' : figure_bookmark_username,
-				'figure_bookmark_location' : figure_bookmark_location,
-				'figure_bookmark_description' : figure_bookmark_description
-		}
-		
-		var url = 'http://localhost:8081/exploratory_analysis/figure_bookmarks/';
-		$.ajax({
-			  type: "POST",
-			  url: url,
-			  async: false,
-			  data: data,
-			  success: function()
-			  { 
-				  console.log('success');
-			  },
-			  error: function(xhr, status, error) {
-				  console.log('error'); 
-			    if(xhr.status==404)
-			    { 
-			    	
-			    }
-			  }
-			});
-		
-		
-	});
-	
 	
 	
 	
@@ -945,6 +782,7 @@ $(document).ready(function(){
 	$('.dropdown-toggle').dropdown();
 	
 	
+	/*
 
 	$('#b1').click(function() {
 		alert('click');
@@ -954,15 +792,8 @@ $(document).ready(function(){
 		location.href='http://localhost:8081/exploratory_analysis/treeex/jfharney?bookmark='+$(this).html();
 	});
 	
-	
-	/*
-	$('#custom').click(function() {
-		alert('customizing bookmarks');
-		
-		
-		$('div#bookmark_selection').show();
-	});
 	*/
+	
 	
 	
 	$('#bookmark_submit').click(function(){

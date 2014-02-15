@@ -419,23 +419,8 @@ function figure_generator(times,variables,sets,dataset,packages,realms,username,
 	  //"../../../static/exploratory_analysis/css/tree/flare13.json"
 	var staticImg = img_prefix + realms + '_' + packages + '_' + sets + '_' + times + '_' + variables + '.png';//computedImg;
 	  
-	
-    /*
-    var variables = 'TG';
-    var times = 'MAM';
-    
-    var sets = '1';
-    var packages = 'lmwg';
-    var realms = 'land'
-    */
-	
-	/*
-	alert('times: ' + times + 
-		  ' variables: ' + variables + 
-		  ' sets: ' + sets + 
-		  ' packages: ' + packages + 
-		  ' realms: ' + realms);
-    */
+
+	$body = $("body");
 	
     var data = {
     			'csrfmiddlewaretoken': csrftoken,
@@ -445,11 +430,14 @@ function figure_generator(times,variables,sets,dataset,packages,realms,username,
     			'packages':packages,
     			'realms':realms
     };
-	
+
+	$body.addClass("loading");  
+    
+    
 	var get_image_url = 'http://localhost:8081/exploratory_analysis/figure_generator/';
 	$.ajax({
 		url: get_image_url,
-		global: false,
+		//global: false,
 		type: 'POST',
 		data: data,
 		success: function(data) {
@@ -492,21 +480,17 @@ function figure_generator(times,variables,sets,dataset,packages,realms,username,
 			  var appended = '<div class="row"><div class="col-md-12">'+ name + '</div></div>';
 			  $('div#gallery').append(addedListing);
 			
+
+			  $body.removeClass("loading");  
 			
 			
-			/*
-			var datasetList = data['datasets'];
-			$('#dataset_name').empty();
-			for (var i=0;i<datasetList.length;i++) {
-				var dataset = datasetList[i];
-				$('.dropdown-dataset-menu').append('<li class="dataset_menu" id="' + dataset + '"><a href="#">' + dataset + '</a></li>');
-			}
-			*/
 			
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
 			//alert('datasetList textStatus: ' + textStatus + ' errorThrown: ' + errorThrown);
 			alert('error in generating figure');
+			
+			$body.removeClass("loading"); 
 			
 		}
 	  });
