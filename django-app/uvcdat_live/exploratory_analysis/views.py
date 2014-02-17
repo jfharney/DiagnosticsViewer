@@ -1243,13 +1243,13 @@ def timeseries(request, lat, lon, variable):
 
    data = []
    f = cdms2.open(dataset)
-   print variable
-   thevar = f[variable]
-   timeIndex = thevar.getAxisIndex('time')
+   thevar = f(variable)
+   
+   axisIndex = thevar.getAxisIndex('time')
    timeAxis = thevar.getTime()
-   print timeAxis
+   #print timeAxis
    cdutil.times.setAxisTimeBoundsMonthly(timeAxis)
-   axisIndex = 0;
+   #axisIndex = 0;
    # This code assumes time is the 0th axis. The slice/subregion methods
    # in CDAT don't appear to work, so I can't slice out a region based on
    # naming an axis. There must be a better way to do this, but I don't 
@@ -1257,8 +1257,8 @@ def timeseries(request, lat, lon, variable):
    # Also, for some reason data = thevar.data[:][lat][lon] doesn't work.
    # This could also be adapted to take subranges pretty trivially
    if(axisIndex == 0): 
-      for i in range(thevar.shape[axisIndex]):
-         data.append(float(thevar.data[i][lat][lon]))
+     for i in range(thevar.shape[axisIndex]):
+       data.append(float(thevar.data[i][int(lat)][int(lon)]))
    else:
       print 'Unsupported timeaxis != 0'
       quit()
@@ -1275,7 +1275,6 @@ def timeseries(request, lat, lon, variable):
    j['end_year'] = 165
    j['end_month'] = 12
    j['timeseries_data'] = data
-   fname = 'output.json'
-   f = open(fname, 'w')
-   json.dump(j, f, separators=(',',':'), indent=2)
-   f.close()
+
+
+   return HttpResponse(json.dumps(j, separators=(',',':'), indent=2))

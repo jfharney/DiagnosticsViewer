@@ -33,7 +33,7 @@ $(document).ready(function(){
 
         d3.json("/static/exploratory_analysis/json_grid_data/TLAI-geogrid-0151-01.json", function(error, mapdata) {
             
-            d3.json("/static/exploratory_analysis/json_grid_data/TLAI-timeseries-293-546.json", function(error, timedata) {
+            d3.json("http://localhost:8081/exploratory_analysis/timeseries/293/546/TLAI", function(error, timedata) {
                 var current_year = +timedata.start_year;
                 var current_month = +timedata.start_month;
                 var timeseries_objects = [];
