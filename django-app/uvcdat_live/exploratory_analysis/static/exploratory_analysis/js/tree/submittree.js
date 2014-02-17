@@ -38,7 +38,7 @@ $(document).ready(function(){
 	console.log('csrftoken ' + csrftoken);
 	
 
-	$body = $("body");
+	//$body = $("body");
 	
 	
 	$('#submit_tree').click(function() {
@@ -121,9 +121,12 @@ $(document).ready(function(){
 			seasonFlag = false;
 		}
 		
-		$body.addClass("loading");
 		
 		if(variableFlag && seasonFlag) {
+			
+
+			//$body.addClass("loading");
+			
 			var data = {
 					'csrfmiddlewaretoken': csrftoken,
 					'treename': treename,
@@ -147,7 +150,7 @@ $(document).ready(function(){
 				  { 
 					  
 
-					  $body.removeClass("loading");
+					  ///$body.removeClass("loading");
 					  
 					  for (var key in data) {
 						  console.log('key: ' + key + ' value: ' + data[key])
@@ -158,6 +161,9 @@ $(document).ready(function(){
 					  //hide the options
 					  $('#create_tree_options').hide();
 					  $('#create_tree').html('Create Tree');
+					  
+					  //post usermname
+					  //$('#username_posted').append(data['username']);
 					  
 					  //show tree
 					  $('#treeviewer').show();
@@ -209,7 +215,7 @@ $(document).ready(function(){
 				  { 
 					  console.log('response text: ' + ts.responseText);
 
-					  $body.removeClass("loading");
+					  //$body.removeClass("loading");
 				  }
 			});
 			

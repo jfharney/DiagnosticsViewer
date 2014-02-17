@@ -80,18 +80,7 @@ ul.dropdown-menu-form {
 
 #myModal1 {
 
-margin-top: 150px
-/*
-width:400px;
-height:50px;
-position:absolute;
-top:50%;
-left:50%;
-margin-top:-25px;
-margin-left:-200px;
-padding:20px;
-*/
-
+	margin-top: 150px
 }
 
 
@@ -131,50 +120,31 @@ body.loading #modal1 {
 </style>
 <body>
 
-<div id="csrf">
-{% csrf_token %}
-</div>
+	<div id="csrf">
+	{% csrf_token %}
+	</div>
 
-<div class="modal" id="modal1"><!-- Place at bottom of page --></div>
+	<!-- overlay blocking user input while backend is crunching numbers -->
+	<div class="modal" id="modal1"></div>
  
 
-<div id="api_check" class="hiddenfunctionality">
-
-
-	<div>
-	     	<button type="button" class="btn btn-default" id="test2" >Post tree bookmark</button>
-	     	<button type="button" class="btn btn-default" id="test3" >Delete tree bookmark</button>
-	     	<button type="button" class="btn btn-default" id="test4" >Get tree bookmark</button>
-	     
-	     
-	</div>
-	<div>
-	     	<button type="button" class="btn btn-default" id="test12" >Post figure bookmark</button>
-	     	<button type="button" class="btn btn-default" id="test13" >Delete figure bookmark</button>
-	     	<button type="button" class="btn btn-default" id="test14" >Get figure bookmark</button>
-	     
-	</div>
-	<div>
-	     	<button type="button" class="btn btn-default" id="timeseriestest" >Time series test</button>
-	     
-	</div>
+	<div id="api_check" class="hiddenfunctionality">
+		<div>
+		     	<button type="button" class="btn btn-default" id="test2" >Post tree bookmark</button>
+		     	<button type="button" class="btn btn-default" id="test3" >Delete tree bookmark</button>
+		     	<button type="button" class="btn btn-default" id="test4" >Get tree bookmark</button>
+		</div>
+		<div>
+		     	<button type="button" class="btn btn-default" id="test12" >Post figure bookmark</button>
+		     	<button type="button" class="btn btn-default" id="test13" >Delete figure bookmark</button>
+		     	<button type="button" class="btn btn-default" id="test14" >Get figure bookmark</button>
+		     
+		</div>
+		<div>
+		     	<button type="button" class="btn btn-default" id="timeseriestest" >Time series test</button>
+		</div>
+	</div>   
 	
-	<!-- 
-	<div>
-			<input class="textbox"type="text" id="variable_short_name"> 
-			<br><br> 
-			<input class="textbox"type="text" id="variable_long_name"> 
-			<br><br> 
-			<input class="textbox"type="text" id="variable_description"> 
-	 
-	
-	     	<button type="button" class="btn btn-default" id="test22" >Post variable</button>
-	       	<button type="button" class="btn btn-default" id="test23" >Delete variable</button>
-	     	<button type="button" class="btn btn-default" id="test24" >Get variable</button>
-	     
-	</div>
-      -->
-</div>   
 	<div class="container">
 		<div class="hiddentext">
 			CachedFile: <span id="CachedFile" >{{ cachedfile }}</span>
@@ -184,15 +154,14 @@ body.loading #modal1 {
 			CurrentBookmark: <span id="current_bookmark">{{ current_bookmark }}</span>
 			<br>
 			Tree Loaded: <span id="treeloaded">{{ treeloaded }}</span>
+			<br>
+			Username: <span id="username_posted"></span>
 		
 		</div>
      
    
     <div class="row">
 		<div class="col-md-12">
-			
-			       
-			
 			
 			<!-- overlay modal -->
 			<div class="modal" id="myModal">
@@ -260,31 +229,20 @@ body.loading #modal1 {
     <div class="row" style="margin-bottom:10px">
     	<div class="bs-example">
    
-   		
 		    <ul class="nav nav-pills">
 		    	<li>
 		    		<button type="button" class="btn btn-default" id="create_tree" >Create Tree</button>
 		    	</li>
-		    <!-- 
+		    
 		        <li class="dropdown">
 		            <a href="#" data-toggle="dropdown" class="dropdown-toggle">Bookmarks <b class="caret"></b></a>
 		            <ul class="dropdown-menu" id="bookmark_menu">
 		            	{% for bookmark in bookmark_list %}
 		            	<li>
+		            		<a href="./?bookmark={{bookmark}}" id="{{bookmark}}" class="tree_bookmark_menu">{{bookmark}}</a>
+		            	<!--  
 		            		<a href="http://localhost:8081/exploratory_analysis/treeex/{{username}}/?bookmark={{bookmark}}" id="{{bookmark}}" class="tree_bookmark_menu">{{bookmark}}</a>
-		            	</li>	
-		            	{% endfor %}
-		            	<li class="divider"></li>
-		                <li><a href="#" id="custom">Custom</a></li>
-		            </ul>
-		        </li>
-		     -->
-		        <li class="dropdown">
-		            <a href="#" data-toggle="dropdown" class="dropdown-toggle">Bookmarks <b class="caret"></b></a>
-		            <ul class="dropdown-menu" id="bookmark_menu">
-		            	{% for bookmark in bookmark_list %}
-		            	<li>
-		            		<a href="http://localhost:8081/exploratory_analysis/treeex/{{username}}/?bookmark={{bookmark}}" id="{{bookmark}}" class="tree_bookmark_menu">{{bookmark}}</a>
+		            	-->
 		            	</li>	
 		            	{% endfor %}
 		            	<li class="divider"></li>
@@ -356,9 +314,8 @@ body.loading #modal1 {
 			{% endfor %}
 			</div>
 			
-			<hr>
-			
 			<!-- 
+			<hr>
 			<h4 style="margin-top:5px">Sets</h4>
 			<div style="overflow-y: scroll;max-height:150px">
 			{% for set in set_list %}

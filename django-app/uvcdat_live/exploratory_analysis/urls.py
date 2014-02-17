@@ -89,8 +89,5 @@ urlpatterns = patterns('',
   
   
   
-  url(r'^timeseries1/$',views.timeseries1,name='timeseries1'),
-  
-  
 )
 

@@ -25,7 +25,7 @@ $(document).ready(function(){
 	treeFile = treeFile.replace('/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis','../../..');
 	console.log('treeFile: ' + treeFile);
 	
-	//treeFile = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/cache/Bookmark3.json';
+	//treeFile = '../../../static/cache/temp.json';
 	//alert('treeFile: ' + treeFile);
 	//if(checkFile(cache_dir+fileName))
 	
