@@ -349,7 +349,7 @@ function create_cyclone_plot(data, tdata, time_plot_div_id) {
 	}
 
 	function timeplot_onclick() {
-		var row = mapdata.length - d3.mouse(this)[1];
+		var row = parseInt(mapdata.length - d3.mouse(this)[1]);
 		var col = parseInt(d3.mouse(this)[0]);
 		console.log("grid coordinates are row = " + row + " col = " + col);
 
