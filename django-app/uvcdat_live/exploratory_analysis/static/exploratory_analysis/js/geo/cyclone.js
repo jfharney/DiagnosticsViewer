@@ -352,13 +352,14 @@ function create_cyclone_plot(data, tdata, time_plot_div_id) {
 		var row = parseInt(mapdata.length - d3.mouse(this)[1]);
 		var col = parseInt(d3.mouse(this)[0]);
 		console.log("grid coordinates are row = " + row + " col = " + col);
-
+		var longitude = -180.0 + (degreesPerCell * col);
+		var latitude = -90.0 + (degreesPerCell * row);
 		//remove previous time series plot
 		d3.selectAll(".profile").remove();
 
 		gridmarker.style("top", (event.pageY - 5) + "px").style("left", (event.pageX - 5) + "px");
 		//var filename = "/static/exploratory_analysis/json_grid_data/TLAI-timeseries-" + row + "-" + col + ".json";
-		var filename = "http://localhost:8081/exploratory_analysis/timeseries/" + row + "/" + col + "/TLAI";
+		var filename = "http://localhost:8081/exploratory_analysis/timeseries/" + latitude + "/" + longitude + "/TLAI";
 		d3.json(filename, function(error, new_timedata) {
 			var current_year = +new_timedata.start_year;
 			var current_month = +new_timedata.start_month;
@@ -403,10 +404,10 @@ function create_cyclone_plot(data, tdata, time_plot_div_id) {
 				return d3.min(c.values, function(v) {
 					return v.temperature;
 				});
-			}), d3.max(profiles, function(c) {
+			}) - 0.001, d3.max(profiles, function(c) {
 				return d3.max(c.values, function(v) {
 					return v.temperature;
-				});
+				}) + 0.001;
 			})]);
 			d3.selectAll(".x").attr("transform", "translate(0," + timePlotHeight + ")").call(xAxis);
 
