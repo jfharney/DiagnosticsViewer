@@ -112,7 +112,21 @@ def maps(request,user_id):
     return HttpResponse(template.render(context))
 
 
-
+#geo map/time series view
+#corresponds with url: http://<host>/exploratory_analysis/maps
+def heatmap(request,user_id):
+    username = 'jfharney'
+    
+    if user_id != None:
+        username = user_id 
+    
+    template = loader.get_template('exploratory_analysis/heatmapview.html')
+    
+    context = RequestContext(request, {
+      'username' : username,
+    })
+    
+    return HttpResponse(template.render(context))
 
 
 

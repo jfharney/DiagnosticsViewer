@@ -3,193 +3,202 @@
 <!DOCTYPE html PUBLIC"-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-	<meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
-	<meta content="utf-8" http-equiv="encoding" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    
-    <link rel="shortcut icon" href="./ico/favicon.png" />
+	<head>
+		<meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
+		<meta content="utf-8" http-equiv="encoding" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="description" content="" />
+		<meta name="author" content="" />
 
+		<link rel="shortcut icon" href="./ico/favicon.png" />
 
-    <title>UV-CDAT+ Prototype</title>
+		<title>UV-CDAT+ Prototype</title>
 
- 	
-	<!-- Bootstrap core CSS -->
-	<link href="{% static 'exploratory_analysis/css/bootstrap/bootstrap.css' %}" rel="stylesheet" />
-	
-	<link href="{% static 'exploratory_analysis/css/sticky-footer-navbar.css' %}" rel="stylesheet" />
-	<link href="{% static 'exploratory_analysis/css/navbar-fixed-top.css' %}" rel="stylesheet" />
-	<link href="{% static 'exploratory_analysis/css/grid.css' %}" rel="stylesheet" />
-	
-	<link href="{% static 'exploratory_analysis/css/tree/style.css' %}" rel="stylesheet" />
+		<!-- Bootstrap core CSS -->
+		<link href="{% static 'exploratory_analysis/css/bootstrap/bootstrap.css' %}" rel="stylesheet" />
 
+		<link href="{% static 'exploratory_analysis/css/sticky-footer-navbar.css' %}" rel="stylesheet" />
+		<link href="{% static 'exploratory_analysis/css/navbar-fixed-top.css' %}" rel="stylesheet" />
+		<link href="{% static 'exploratory_analysis/css/grid.css' %}" rel="stylesheet" />
 
-    <style type="text/css">
+		<link href="{% static 'exploratory_analysis/css/tree/style.css' %}" rel="stylesheet" />
 
-
-
-		html {
-			overflow-y: scroll;
-		}
+		<link href="{% static 'exploratory_analysis/css/heatmap/colorbrewer.css' %}" rel="stylesheet" />
+		<link href="{% static 'exploratory_analysis/css/heatmap/overlay-apple.css' %}" rel="stylesheet" />
+		<link href="{% static 'exploratory_analysis/css/heatmap/jquery.multiselect.css' %}" rel="stylesheet" />
+		<link href="{% static 'exploratory_analysis/css/heatmap/jquery.multiselect.filter.css' %}" rel="stylesheet" />
 		
-		.node circle {
-		  cursor: pointer;
-		  fill: #fff;
-		  stroke: steelblue;
-		  stroke-width: 1.5px;
-		}
-		
-		.node text {
-		  font-size: 11px;
-		}
-		
-		path.link {
-		  fill: none;
-		  stroke: #ccc;
-		  stroke-width: 1.5px;
-		}
 
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
+		<style type="text/css">
+			html {
+				overflow-y: scroll;
+			}
 
-//.x.axis path {
-//  display: none;
-//}
+			.node circle {
+				cursor: pointer;
+				fill: #fff;
+				stroke: steelblue;
+				stroke-width: 1.5px;
+			}
 
-.line {
-  fill: none;
-  stroke: steelblue;
-  stroke-width: 1.5px;
-}
+			.node text {
+				font-size: 11px;
+			}
 
-.overlay {
-    fill: none;
-    pointer-events: all;
-}
+			path.link {
+				fill: none;
+				stroke: #ccc;
+				stroke-width: 1.5px;
+			}
 
-.focus circle {
-    fill: none;
-    stroke: black;
-}
+			.axis path, .axis line {
+				fill: none;
+				stroke: #000;
+				shape-rendering: crispEdges;
+			}
 
-.focus line {
-    fill: none;
-    stroke: black;
-    stroke-width: 1;
-}
+			//
+			.x.axis path {//
+				display: none;//
+			}
 
+			.line {
+				fill: none;
+				stroke: steelblue;
+				stroke-width: 1.5px;
+			}
 
-    </style>
+			.overlay {
+				fill: none;
+				pointer-events: all;
+			}
 
-</head>
+			.focus circle {
+				fill: none;
+				stroke: black;
+			}
 
-<body>
+			.focus line {
+				fill: none;
+				stroke: black;
+				stroke-width: 1;
+			}
 
-<!-- <div class="greentext">index.htm </div> -->
+		</style>
 
-<!-- Wrap all page content here -->
-    <div id="wrap">
+	</head>
 
-<!-- Fixed navbar -->
-		<div class="navbar navbar-inverse navbar-fixed-top">
+	<body>
 
-			<div class="container">
-          		<div class="navbar-header">
-            		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-              		<span class="icon-bar"></span>
-              		<span class="icon-bar"></span>
-              		<span class="icon-bar"></span>
-            		</button>
-            		<a class="navbar-brand" href="#">UV-CDAT+</a>
-          		</div>
-          		
-          		<div class="collapse navbar-collapse">
+		<!-- <div class="greentext">index.htm </div> -->
 
-            		<ul class="nav navbar-nav">
+		<!-- Wrap all page content here -->
+		<div id="wrap">
 
-	                	<li class="active"><a href="http://localhost:8081/exploratory_analysis">Home</a></li>
-			            <li><a href="http://localhost:8081/exploratory_analysis/login">Login</a></li>
-			            <li><a href="http://localhost:8081/exploratory_analysis/maps/{{username}}">Geo</a></li>
-						<li><a href="http://localhost:8081/exploratory_analysis/treeex/{{username}}">Diagnostics Tree</a></li>
-			            
-            		</ul>
+			<!-- Fixed navbar -->
+			<div class="navbar navbar-inverse navbar-fixed-top">
 
+				<div class="container">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand" href="#">UV-CDAT+</a>
+					</div>
 
-        		</div>
+					<div class="collapse navbar-collapse">
 
-        	</div>
+						<ul class="nav navbar-nav">
+
+							<li class="active">
+								<a href="http://localhost:8081/exploratory_analysis">Home</a>
+							</li>
+							<li>
+								<a href="http://localhost:8081/exploratory_analysis/login">Login</a>
+							</li>
+							<li>
+								<a href="http://localhost:8081/exploratory_analysis/maps/{{username}}">Geo</a>
+							</li>
+							<li>
+								<a href="http://localhost:8081/exploratory_analysis/treeex/{{username}}">Diagnostics Tree</a>
+							</li>
+							<li>
+								<a href="http://localhost:8081/exploratory_analysis/heatmap/{{username}}">Heatmap</a>
+							</li>
+						</ul>
+
+					</div>
+
+				</div>
+
+			</div>
+
+			<!-- <div id="content">  -->
+			{% block content %}{% endblock %}
+			<!-- </div>  -->
 
 		</div>
 
+		<script src="{% static 'exploratory_analysis/js/jquery/jquery-1.10.2.min.js' %}"></script>
+		<script src="{% static 'exploratory_analysis/js/bootstrap/bootstrap.min.js' %}"></script>
+		<script src="{% static 'exploratory_analysis/js/bootstrap/bootstrap-combobox.js' %}"></script>
+		<script src="{% static 'exploratory_analysis/js/d3/d3.min.js' %}"></script>
+
+		<script type="text/javascript" src="{% static 'exploratory_analysis/js/datasets/selection.js' %}"></script>
+		<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/visualize.js' %}"></script>
+		<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/time.js' %}"></script>
+		<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/timeseries.js' %}"></script>
+		<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/map.js' %}"></script>
+		<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/cyclone.js' %}"></script>
+		<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/variablelist.js' %}"></script>
+		<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/timelist.js' %}"></script>
+		<script type="text/javascript" src="{% static 'exploratory_analysis/js/heatmap/cross.js' %}"></script>
 		
 
-		<!-- <div id="content">  -->
-        {% block content %}{% endblock %}
-    	<!-- </div>  -->
 
+<!--
+			<script type="text/javascript" src="{% static 'exploratory_analysis/js/heatmap/d3.js' %}"></script>
+		<script type="text/javascript" src="{% static 'exploratory_analysis/js/heatmap/d3.csv.js' %}"></script>
+	    <script type="text/javascript" src="{% static 'exploratory_analysis/js/heatmap/jquery-1.4.2.min.js' %}"></script>
 
-  	</div>
+		<script type="text/javascript" src="{% static 'exploratory_analysis/js/heatmap/clearbox.js' %}"></script>
+		<script src="http://cdn.jquerytools.org/1.2.6/full/jquery.tools.min.js"></script>
 
+		<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/ui-lightness/jquery-ui.css" />
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script> -->
 
+		<script type="text/javascript" src="{% static 'exploratory_analysis/js/heatmap/ui.multiselect.js' %}"></script>
+		<script type="text/javascript" src="{% static 'exploratory_analysis/js/heatmap/jquery.multiselect.js' %}"></script>
+		<script type="text/javascript" src="{% static 'exploratory_analysis/js/heatmap/jquery.multiselect.filter.js' %}"></script>
+		<script type="text/javascript" src="{% static 'exploratory_analysis/js/heatmap/jquery.tipsy.js' %}"></script>
 
-	
-	<script src="{% static 'exploratory_analysis/js/jquery/jquery-1.10.2.min.js' %}"></script>
-	<script src="{% static 'exploratory_analysis/js/bootstrap/bootstrap.min.js' %}"></script>
-	<script src="{% static 'exploratory_analysis/js/bootstrap/bootstrap-combobox.js' %}"></script>
-	<script src="{% static 'exploratory_analysis/js/d3/d3.min.js' %}"></script>
-	
+		<script type="text/javascript" src="{% static 'exploratory_analysis/js/heatmap/heatmap.js' %}"></script>
 
-	<script type="text/javascript" src="{% static 'exploratory_analysis/js/datasets/selection.js' %}"></script>
-	<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/visualize.js' %}"></script>
-	<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/time.js' %}"></script>
-	<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/timeseries.js' %}"></script>
-	<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/map.js' %}"></script>
-	<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/cyclone.js' %}"></script>
-	<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/variablelist.js' %}"></script>
-	<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/timelist.js' %}"></script>
-	
-	
-	<script type="text/javascript">
-	
-	
-
-
-	</script>
-
-
-</body>
-
+	</body>
 
 </html>
 
-<!--  
-    <script type="text/javascript">
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-39778348-1']);
-        _gaq.push(['_trackPageview']);
+<!--
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-39778348-1']);
+_gaq.push(['_trackPageview']);
 
-        (function() {
-            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-        })();
-        
-        
-    </script>
+(function() {
+var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+
+</script>
 -->
-   
 
- 
- <!--  
-   	<div id="footer">
-     	<div class="container">
-         	<p class="text-muted credit"><a href="http://cda.ornl.gov/steed/personal/">Chad A.&nbspSteed</a>, Oak Ridge National Lab, Computational Sciences and Engineering Division.</p>
-     	</div>
-   	</div>
+<!--
+<div id="footer">
+<div class="container">
+<p class="text-muted credit"><a href="http://cda.ornl.gov/steed/personal/">Chad A.&nbspSteed</a>, Oak Ridge National Lab, Computational Sciences and Engineering Division.</p>
+</div>
+</div>
 -->
