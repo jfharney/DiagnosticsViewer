@@ -531,30 +531,52 @@ $(document).ready(function(){
 		console.log('url: ' + $('#modal-title').find('#figurl').html());
 		
 		var figureName = $('#modal-title').find('#figtitle').html();
+		
 		console.log('need to push a figure url (e.g. ' + figureUrl +') with figure name: ' + figureName);
 		
-		var fileUrl = $('#modal-title').find('#figurl').html();
+		
+		var indexOf = figureName.indexOf('.png');
+		
+		console.log('substring: ' + figureName.substr(0,indexOf).trim() + ' length: ' + figureName.substr(0,indexOf).trim().length) ;
+		
+		figureName = figureName.substr(0,indexOf).trim();
+		
+		var fileUrl = $('#modal-title').find('#fig_url').html();
 
+		console.log('fileUrl: ' + fileUrl);
 		
 		var description = $('textarea#figure_bookmark_description').val();
+		
 		
 		
 		var figure_bookmark_username = 'jfharney';
 		var figure_bookmark_name = figureName;
 		var figure_bookmark_location = figureUrl;
 		var figure_bookmark_description = description;
-		
 
+		//var figure_bookmark_name = 'land_lmwg_set1_MAY_NPP';
+		
+		//console.log('trythis--->' + figure_bookmark_name + figureName );
+		//console.log('fig name sent(length): ' + figure_bookmark_name.length + ' fig name replace(length): ' + figureName.length);
+		
+		var figure_bookmark_realm = 'land';
+		var figure_bookmark_datasetname = 'tropics_warming_th_q_co2';
+		var figure_cache_url = fileUrl;
+
+		//console.log('figure_bookmark_name: ' + figure_bookmark_name);
+		
 		var data = {
 				'csrfmiddlewaretoken': csrftoken,
 				'figure_bookmark_name' : figure_bookmark_name,
+				'figure_bookmark_realm' : figure_bookmark_realm,
+				'figure_bookmark_datasetname' : figure_bookmark_datasetname,
 				'figure_bookmark_username' : figure_bookmark_username,
-				'figure_bookmark_location' : figure_bookmark_location,
-				'figure_bookmark_description' : figure_bookmark_description
+				'figure_bookmark_description' : figure_bookmark_description,
+				'figure_cache_url' : '../figure_cache_url.html'
 		}
 
 
-		$body.addClass("loading");  
+		//$body.addClass("loading");  
 		
 		var url = 'http://localhost:8081/exploratory_analysis/figure_bookmarks/';
 		$.ajax({
@@ -566,7 +588,7 @@ $(document).ready(function(){
 			  { 
 				  console.log('success');
 
-				  $body.removeClass("loading");  
+				  //$body.removeClass("loading");  
 				  
 			  },
 			  error: function(xhr, status, error) {
