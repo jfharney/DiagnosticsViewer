@@ -26,8 +26,9 @@ $(document).ready(function(){
 	$('#test4').click(function() {
 		//alert('test 2 submit');
 		
-		var fileUrl = 'http://localhost:8081/exploratory_analysis/tree_bookmarks/';
-
+		
+		//var fileUrl = 'http://localhost:8081/exploratory_analysis/tree_bookmarks/';
+		var fileUrl = 'http://' + EA.host + ':' + EA.port + "/exploratory_analysis/tree_bookmarks/";
 		
 
 	    var data = getSampleDataTree(csrftoken);
@@ -46,8 +47,9 @@ $(document).ready(function(){
 	$('#test3').click(function() {
 		//alert('test 2 submit');
 		
-		var fileUrl = 'http://localhost:8081/exploratory_analysis/tree_bookmarks/';
-
+		//var fileUrl = 'http://localhost:8081/exploratory_analysis/tree_bookmarks/';
+		var fileUrl = 'http://' + EA.host + ':' + EA.port + "/exploratory_analysis/tree_bookmarks/";
+		
 	    
 
 	    var data = getSampleDataTree(csrftoken);
@@ -66,8 +68,9 @@ $(document).ready(function(){
 	$('#test2').click(function() {
 		//alert('test 2 submit');
 		
-		var fileUrl = 'http://localhost:8081/exploratory_analysis/tree_bookmarks/';
-
+		//var fileUrl = 'http://localhost:8081/exploratory_analysis/tree_bookmarks/';
+		var fileUrl = 'http://' + EA.host + ':' + EA.port + "/exploratory_analysis/tree_bookmarks/";
+		
 		
 		
 	    var data = getSampleDataTree(csrftoken);
@@ -83,8 +86,9 @@ $(document).ready(function(){
 	$('#test14').click(function() {
 		//alert('test 2 submit');
 		
-		var fileUrl = 'http://localhost:8081/exploratory_analysis/figure_bookmarks/';
-
+		//var fileUrl = 'http://localhost:8081/exploratory_analysis/figure_bookmarks/';
+		var fileUrl = 'http://' + EA.host + ':' + EA.port + "/exploratory_analysis/tree_bookmarks/";
+		
 		
 		
 		var data = getSampleDataFigure(csrftoken);
@@ -104,8 +108,9 @@ $(document).ready(function(){
 	$('#test13').click(function() {
 		//alert('test 2 submit');
 		
-		var fileUrl = 'http://localhost:8081/exploratory_analysis/figure_bookmarks/';
-
+		//var fileUrl = 'http://localhost:8081/exploratory_analysis/figure_bookmarks/';
+		var fileUrl = 'http://' + EA.host + ':' + EA.port + "/exploratory_analysis/tree_bookmarks/";
+		
 		
 		var data = getSampleDataFigure(csrftoken);
 		var querystring = getSampleQueryStringFigure();
@@ -122,8 +127,9 @@ $(document).ready(function(){
 	$('#test12').click(function() {
 		//alert('test 2 submit');
 		
-		var fileUrl = 'http://localhost:8081/exploratory_analysis/figure_bookmarks/';
-
+		//var fileUrl = 'http://localhost:8081/exploratory_analysis/figure_bookmarks/';
+		var fileUrl = 'http://' + EA.host + ':' + EA.port + "/exploratory_analysis/tree_bookmarks/";
+		
 		
 	    var data = getSampleDataFigure(csrftoken);
 		var querystring = getSampleQueryStringFigure();
@@ -379,60 +385,6 @@ function getSampleQueryStringFigure() {
 }
 
 
-
-
-/*
-$('#test3').click(function() {
-	alert('test 3 submit');
-	
-	var data = {'csrfmiddlewaretoken': csrftoken};
-	var fileUrl = 'http://localhost:8081/exploratory_analysis/figure_bookmarks/';
-	$.ajax({
-		  type: "POST",
-		  url: fileUrl,
-		  async: false,
-		  data: data,
-		  success: function()
-		  { 
-			  console.log('success');
-		  },
-		  error: function(xhr, status, error) {
-			  console.log('error'); 
-		    if(xhr.status==404)
-		    { 
-		    	
-		    }
-		  }
-		});
-	
-});
-
-
-$('#test4').click(function() {
-	alert('test 4 submit');
-	
-	var data = {'csrfmiddlewaretoken': csrftoken};
-	var fileUrl = 'http://localhost:8081/exploratory_analysis/tree_bookmarks/';
-	$.ajax({
-		  type: "POST",
-		  url: fileUrl,
-		  async: false,
-		  data: data,
-		  success: function()
-		  { 
-			  console.log('success');
-		  },
-		  error: function(xhr, status, error) {
-			  console.log('error'); 
-		    if(xhr.status==404)
-		    { 
-		    	
-		    }
-		  }
-		});
-	
-});
-*/
 
 
 

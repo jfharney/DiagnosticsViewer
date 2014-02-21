@@ -1227,22 +1227,33 @@ def figure_bookmarks(request):
 
     
     figure_bookmark_name = None
-    figure_bookmark_datasetname = None
     figure_bookmark_realm = None
+    figure_bookmark_datasetname = None
     figure_bookmark_username = None
     figure_bookmark_description = None
     figure_cache_url = None
     
+    '''
+    'figure_bookmark_name' : figure_bookmark_name,
+    'figure_bookmark_realm' : figure_bookmark_realm,
+    'figure_bookmark_datasetname' : figure_bookmark_datasetname,
+    'figure_bookmark_username' : figure_bookmark_username,
+    'figure_bookmark_description' : figure_bookmark_description,
+    'figure_cache_url' : '../figure_cache_url.html'
+    '''
     
     if request.method == 'POST':
         
         
+        
         figure_bookmark_name = request.POST['figure_bookmark_name']
-        figure_bookmark_datasetname = request.POST['figure_bookmark_datasetname']
         figure_bookmark_realm = request.POST['figure_bookmark_realm']
+        figure_bookmark_datasetname = request.POST['figure_bookmark_datasetname']
         figure_bookmark_username = request.POST['figure_bookmark_username']
         figure_bookmark_description = request.POST['figure_bookmark_description']
         figure_cache_url = request.POST['figure_cache_url']
+        
+        
         
         figure_bookmark_record = Figure_Bookmarks(
                                             figure_bookmark_name = figure_bookmark_name,

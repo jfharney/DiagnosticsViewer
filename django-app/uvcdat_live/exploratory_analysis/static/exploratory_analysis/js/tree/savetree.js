@@ -25,6 +25,13 @@ $(document).ready(function(){
 	$body = $("body");
 	
 	
+	$('#alt_save_tree').click(function() {
+		
+		alert('save tree');
+		
+	});
+	
+	
 	$('#save_tree').click(function() {
 		
 
@@ -167,7 +174,8 @@ $(document).ready(function(){
 			//var url = 'http://localhost:8081/exploratory_analysis/treeex/jfharney/';
 		
 			
-			var url = 'http://localhost:8081/exploratory_analysis/tree_bookmarks/';
+			//var url = 'http://localhost:8081/exploratory_analysis/tree_bookmarks/';
+			var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/tree_bookmarks/';
 			
 			
 			$.ajax({
@@ -196,8 +204,11 @@ $(document).ready(function(){
 				  
 				  
 				  
-				  var url = 'http://localhost:8081/exploratory_analysis/treeex/jfharney/';
+				  //var url = 'http://localhost:8081/exploratory_analysis/treeex/jfharney/';
+				  var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/treeex/jfharney/';
 					
+				  
+				  console.log('save tree url-----> ' + url);
 					
 					$.ajax({
 						  type: "POST",
