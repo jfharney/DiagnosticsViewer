@@ -205,8 +205,10 @@ $(document).ready(function(){
 				  
 				  
 				  //var url = 'http://localhost:8081/exploratory_analysis/treeex/jfharney/';
-				  var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis//treeex/jfharney/';
+				  var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/treeex/jfharney/';
 					
+				  
+				  console.log('save tree url-----> ' + url);
 					
 					$.ajax({
 						  type: "POST",

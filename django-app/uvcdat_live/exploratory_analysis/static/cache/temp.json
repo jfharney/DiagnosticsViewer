@@ -15,8 +15,17 @@
                   "name":"GPP",
                   "children":[
                     {
-                      "url":"baseurl:|lmwg|set1|SON|GPP|dataset0",
-                      "name":"SON"
+                      "url":"baseurl:|lmwg|set1|JAN|GPP|dataset0",
+                      "name":"JAN"
+                    }
+                  ]
+                },
+                {
+                  "name":"NEE",
+                  "children":[
+                    {
+                      "url":"baseurl:|lmwg|set1|JAN|NEE|dataset0",
+                      "name":"JAN"
                     }
                   ]
                 }
@@ -29,8 +38,17 @@
                   "name":"GPP",
                   "children":[
                     {
-                      "url":"baseurl:|lmwg|set2|SON|GPP|dataset0",
-                      "name":"SON"
+                      "url":"baseurl:|lmwg|set2|JAN|GPP|dataset0",
+                      "name":"JAN"
+                    }
+                  ]
+                },
+                {
+                  "name":"NEE",
+                  "children":[
+                    {
+                      "url":"baseurl:|lmwg|set2|JAN|NEE|dataset0",
+                      "name":"JAN"
                     }
                   ]
                 }
@@ -43,8 +61,17 @@
                   "name":"GPP",
                   "children":[
                     {
-                      "url":"baseurl:|lmwg|set3|SON|GPP|dataset0",
-                      "name":"SON"
+                      "url":"baseurl:|lmwg|set3|JAN|GPP|dataset0",
+                      "name":"JAN"
+                    }
+                  ]
+                },
+                {
+                  "name":"NEE",
+                  "children":[
+                    {
+                      "url":"baseurl:|lmwg|set3|JAN|NEE|dataset0",
+                      "name":"JAN"
                     }
                   ]
                 }
@@ -57,8 +84,17 @@
                   "name":"GPP",
                   "children":[
                     {
-                      "url":"baseurl:|lmwg|set4|SON|GPP|dataset0",
-                      "name":"SON"
+                      "url":"baseurl:|lmwg|set4|JAN|GPP|dataset0",
+                      "name":"JAN"
+                    }
+                  ]
+                },
+                {
+                  "name":"NEE",
+                  "children":[
+                    {
+                      "url":"baseurl:|lmwg|set4|JAN|NEE|dataset0",
+                      "name":"JAN"
                     }
                   ]
                 }
@@ -71,8 +107,17 @@
                   "name":"GPP",
                   "children":[
                     {
-                      "url":"baseurl:|lmwg|set5|SON|GPP|dataset0",
-                      "name":"SON"
+                      "url":"baseurl:|lmwg|set5|JAN|GPP|dataset0",
+                      "name":"JAN"
+                    }
+                  ]
+                },
+                {
+                  "name":"NEE",
+                  "children":[
+                    {
+                      "url":"baseurl:|lmwg|set5|JAN|NEE|dataset0",
+                      "name":"JAN"
                     }
                   ]
                 }
@@ -85,8 +130,17 @@
                   "name":"GPP",
                   "children":[
                     {
-                      "url":"baseurl:|lmwg|set6|SON|GPP|dataset0",
-                      "name":"SON"
+                      "url":"baseurl:|lmwg|set6|JAN|GPP|dataset0",
+                      "name":"JAN"
+                    }
+                  ]
+                },
+                {
+                  "name":"NEE",
+                  "children":[
+                    {
+                      "url":"baseurl:|lmwg|set6|JAN|NEE|dataset0",
+                      "name":"JAN"
                     }
                   ]
                 }
@@ -99,8 +153,17 @@
                   "name":"GPP",
                   "children":[
                     {
-                      "url":"baseurl:|lmwg|set7|SON|GPP|dataset0",
-                      "name":"SON"
+                      "url":"baseurl:|lmwg|set7|JAN|GPP|dataset0",
+                      "name":"JAN"
+                    }
+                  ]
+                },
+                {
+                  "name":"NEE",
+                  "children":[
+                    {
+                      "url":"baseurl:|lmwg|set7|JAN|NEE|dataset0",
+                      "name":"JAN"
                     }
                   ]
                 }
@@ -113,8 +176,17 @@
                   "name":"GPP",
                   "children":[
                     {
-                      "url":"baseurl:|lmwg|set8|SON|GPP|dataset0",
-                      "name":"SON"
+                      "url":"baseurl:|lmwg|set8|JAN|GPP|dataset0",
+                      "name":"JAN"
+                    }
+                  ]
+                },
+                {
+                  "name":"NEE",
+                  "children":[
+                    {
+                      "url":"baseurl:|lmwg|set8|JAN|NEE|dataset0",
+                      "name":"JAN"
                     }
                   ]
                 }
@@ -127,8 +199,17 @@
                   "name":"GPP",
                   "children":[
                     {
-                      "url":"baseurl:|lmwg|set9|SON|GPP|dataset0",
-                      "name":"SON"
+                      "url":"baseurl:|lmwg|set9|JAN|GPP|dataset0",
+                      "name":"JAN"
+                    }
+                  ]
+                },
+                {
+                  "name":"NEE",
+                  "children":[
+                    {
+                      "url":"baseurl:|lmwg|set9|JAN|NEE|dataset0",
+                      "name":"JAN"
                     }
                   ]
                 }
