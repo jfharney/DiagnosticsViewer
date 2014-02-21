@@ -125,7 +125,7 @@ $(document).ready(function(){
 		if(variableFlag && seasonFlag) {
 			
 
-			//$body.addClass("loading");
+			$body.addClass("loading");
 			
 			var data = {
 					'csrfmiddlewaretoken': csrftoken,
@@ -137,20 +137,21 @@ $(document).ready(function(){
 					'sets_arr_str':sets_arr_str
 					};
 			
-			var url = 'http://localhost:8081/exploratory_analysis/treeex/jfharney/';
+			//var url = 'http://localhost:8081/exploratory_analysis/treeex/jfharney/';
+			var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/treeex/jfharney/';
 			
 			
 			$.ajax({
 				  type: "POST",
 				  url: url,
-				  async: false,
+				  //async: false,
 				  data: data,
 				  dataType: 'json',
 				  success: function(data)
 				  { 
 					  
 
-					  ///$body.removeClass("loading");
+					  $body.removeClass("loading");
 					  
 					  for (var key in data) {
 						  console.log('key: ' + key + ' value: ' + data[key])

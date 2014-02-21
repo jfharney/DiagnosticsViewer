@@ -434,7 +434,11 @@ function figure_generator(times,variables,sets,dataset,packages,realms,username,
 	$body.addClass("loading");  
     
     
-	var get_image_url = 'http://localhost:8081/exploratory_analysis/figure_generator/';
+	//var get_image_url = 'http://localhost:8081/exploratory_analysis/figure_generator/';
+	
+	var get_image_url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/figure_generator/';
+	
+	
 	$.ajax({
 		url: get_image_url,
 		//global: false,
@@ -455,8 +459,9 @@ function figure_generator(times,variables,sets,dataset,packages,realms,username,
 			  
 			  //$('#modal-title').append('<span>URL:</span> <div id="' + "figurl" + '">' + staticImg + '</div>');
 			  $('.modal-body').append('<div>' + '<img src="' + staticImg + '" style="max-width:600px;max-height:500px;display: block;display: block;margin-left: auto;margin-right: auto" />' + '</div>')
-			  $('.modal-body').append('<div id="fig_url" style="display:none">' + staticImg + '</div>');
+			  $('.modal-body').append('<div id="fig_url" >' + staticImg + '</div>');
 			  
+			  //$('#figure_bookmark_description').
 			  
 			  console.log('figTitle: ' + figTitle);
 			  //alert('strip pipe: ' + stripPipe(fullpath))

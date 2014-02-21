@@ -401,7 +401,9 @@ body.loading #modal1 {
 		<div class="col-md-10">
 			<div class="row" style="border: 1px solid #000000;">
 				<div class="col-md-9" style="border-right: 1px solid #000000;height:900px;max-height:900px">
-				<span style="font-weight:bold"> Tree Name: </span><span id="current_treename">{{current_bookmark}}</span>
+				<span> <button type="button" class="btn btn-default" id="alt_save_tree">Save Tree</button> </span>
+				<span style="margin-left:10px;font-weight:bold"> Tree Name: </span><span id="current_treename">{{current_bookmark}}</span>
+				
 					<div id="treeimg" style="overflow-x:visible">
 			
 					</div>
@@ -431,6 +433,8 @@ body.loading #modal1 {
 	<script src="{% static 'exploratory_analysis/js/tree/bookmarks.js' %}"></script>
 	<script src="{% static 'exploratory_analysis/js/tree/submittree.js' %}"></script>
 	<script src="{% static 'exploratory_analysis/js/tree/savetree.js' %}"></script>
+	<script src="{% static 'exploratory_analysis/js/tree/saveplot.js' %}"></script>
+	<script src="{% static 'exploratory_analysis/js/tree/retrieveplot.js' %}"></script>
 	<script src="{% static 'exploratory_analysis/js/jquery/overlay.js' %}"></script>
 	
 
@@ -516,93 +520,6 @@ $(document).ready(function(){
 	
 	
 
-	$body = $("body");
-	
-	
-	$('#save_plot').click(function() {
-		
-		
-		console.log('csrftoken in test ' + csrftoken);
-		
-
-		//var figureUrl = '../../../static/exploratory_analysis/img/carousel/set6_turbf_Global.gif';
-		var figureUrl = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/treeex/land_lmwg_set1_MAY_TG.png';
-		console.log('title: ' + $('#modal-title').find('#figtitle').html());
-		console.log('url: ' + $('#modal-title').find('#figurl').html());
-		
-		var figureName = $('#modal-title').find('#figtitle').html();
-		
-		console.log('need to push a figure url (e.g. ' + figureUrl +') with figure name: ' + figureName);
-		
-		
-		var indexOf = figureName.indexOf('.png');
-		
-		console.log('substring: ' + figureName.substr(0,indexOf).trim() + ' length: ' + figureName.substr(0,indexOf).trim().length) ;
-		
-		figureName = figureName.substr(0,indexOf).trim();
-		
-		var fileUrl = $('#modal-title').find('#fig_url').html();
-
-		console.log('fileUrl: ' + fileUrl);
-		
-		var description = $('textarea#figure_bookmark_description').val();
-		
-		
-		
-		var figure_bookmark_username = 'jfharney';
-		var figure_bookmark_name = figureName;
-		var figure_bookmark_location = figureUrl;
-		var figure_bookmark_description = description;
-
-		//var figure_bookmark_name = 'land_lmwg_set1_MAY_NPP';
-		
-		//console.log('trythis--->' + figure_bookmark_name + figureName );
-		//console.log('fig name sent(length): ' + figure_bookmark_name.length + ' fig name replace(length): ' + figureName.length);
-		
-		var figure_bookmark_realm = 'land';
-		var figure_bookmark_datasetname = 'tropics_warming_th_q_co2';
-		var figure_cache_url = fileUrl;
-
-		//console.log('figure_bookmark_name: ' + figure_bookmark_name);
-		
-		var data = {
-				'csrfmiddlewaretoken': csrftoken,
-				'figure_bookmark_name' : figure_bookmark_name,
-				'figure_bookmark_realm' : figure_bookmark_realm,
-				'figure_bookmark_datasetname' : figure_bookmark_datasetname,
-				'figure_bookmark_username' : figure_bookmark_username,
-				'figure_bookmark_description' : figure_bookmark_description,
-				'figure_cache_url' : '../figure_cache_url.html'
-		}
-
-
-		//$body.addClass("loading");  
-		
-		var url = 'http://localhost:8081/exploratory_analysis/figure_bookmarks/';
-		$.ajax({
-			  type: "POST",
-			  url: url,
-			  //async: false,
-			  data: data,
-			  success: function()
-			  { 
-				  console.log('success');
-
-				  //$body.removeClass("loading");  
-				  
-			  },
-			  error: function(xhr, status, error) {
-				  console.log('error'); 
-			    if(xhr.status==404)
-			    { 
-			    	
-			    }
-			  }
-			});
-		
-		
-	});
-	
 	
 	
 	
@@ -639,75 +556,6 @@ $(document).ready(function(){
 		$('#treeviewer').hide();
 	
 	
-	$('.figure_bookmark').click(function() {
-		
-		
-
-        var figure_bookmark_name = $(this).html();//bookmark_id;
-        var figure_bookmark_datasetname = 'tropics_warming_th_q_co2';
-        var figure_bookmark_realm = 'land';
-        var figure_bookmark_username = 'jfharney';
-		var data = {
-				'csrfmiddlewaretoken': csrftoken,
-				'figure_bookmark_name' : figure_bookmark_name,
-				'figure_bookmark_username' : figure_bookmark_username,
-				'figure_bookmark_datasetname' : figure_bookmark_datasetname,
-				'figure_bookmark_realm' : figure_bookmark_realm
-		}
-		
-		var url = 'http://localhost:8081/exploratory_analysis/figure_bookmarks/';
-		$.ajax({
-			  type: "GET",
-			  url: url,
-			  async: false,
-			  data: data,
-			  dataType: 'json',
-			  success: function(data)
-			  { 
-				  console.log('success');
-				  
-				  for (var key in data) {
-					  console.log('key: ' + key + ' value: ' + data[key]);
-				  }
-				  var bookmark_id = figure_bookmark_name + '.png';
-				  var staticImg = data['figure_cache_url'] + '.png';
-				  
-				  figTitle = bookmark_id;
-				  
-				  console.log('figTitle: ' + figTitle);
-				  console.log('url ' + url);
-				  
-				  
-				  
-				  staticImg = staticImg.replace('/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis','../../..');
-					
-				  
-				  $('#modal-title').empty();
-				  $('.modal-body').empty();
-				  //$('#modal-title').append('<span>TITLE:</span> <div id="' + "figtitle" + '"> ' + reversePath(fullpath) + '</div>');
-				  //$('#modal-title').append('<span>TITLE:</span> <div id="' + "figtitle" + '"> ' + figTitle + '</div>');
-				  $('#modal-title').append('<div id="' + "figtitle" + '"> ' + figTitle + '</div>');
-				  
-				  //$('#modal-title').append('<span>URL:</span> <div id="' + "figurl" + '">' + staticImg + '</div>');
-				  $('.modal-body').append('<div>' + '<img src="' + staticImg + '" style="max-width:600px;max-height:500px;display: block;display: block;margin-left: auto;margin-right: auto" />' + '</div>')
-				  
-				 				  
-				  
-				  
-				  
-				  
-				  
-			  },
-			  error: function(xhr, status, error) {
-				  console.log('error'); 
-			    if(xhr.status==404)
-			    { 
-			    	
-			    }
-			  }
-			});
-		
-	});
 	
 	//show/hide the api checks
 	//$('#api_check').show();

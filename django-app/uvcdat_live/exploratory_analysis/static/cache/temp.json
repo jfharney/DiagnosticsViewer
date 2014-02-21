@@ -12,11 +12,11 @@
               "name":"set1",
               "children":[
                 {
-                  "name":"NEE",
+                  "name":"GPP",
                   "children":[
                     {
-                      "url":"baseurl:|lmwg|set1|FEB|NEE|dataset0",
-                      "name":"FEB"
+                      "url":"baseurl:|lmwg|set1|SON|GPP|dataset0",
+                      "name":"SON"
                     }
                   ]
                 }
@@ -26,11 +26,11 @@
               "name":"set2",
               "children":[
                 {
-                  "name":"NEE",
+                  "name":"GPP",
                   "children":[
                     {
-                      "url":"baseurl:|lmwg|set2|FEB|NEE|dataset0",
-                      "name":"FEB"
+                      "url":"baseurl:|lmwg|set2|SON|GPP|dataset0",
+                      "name":"SON"
                     }
                   ]
                 }
@@ -40,11 +40,11 @@
               "name":"set3",
               "children":[
                 {
-                  "name":"NEE",
+                  "name":"GPP",
                   "children":[
                     {
-                      "url":"baseurl:|lmwg|set3|FEB|NEE|dataset0",
-                      "name":"FEB"
+                      "url":"baseurl:|lmwg|set3|SON|GPP|dataset0",
+                      "name":"SON"
                     }
                   ]
                 }
@@ -54,11 +54,11 @@
               "name":"set4",
               "children":[
                 {
-                  "name":"NEE",
+                  "name":"GPP",
                   "children":[
                     {
-                      "url":"baseurl:|lmwg|set4|FEB|NEE|dataset0",
-                      "name":"FEB"
+                      "url":"baseurl:|lmwg|set4|SON|GPP|dataset0",
+                      "name":"SON"
                     }
                   ]
                 }
@@ -68,11 +68,11 @@
               "name":"set5",
               "children":[
                 {
-                  "name":"NEE",
+                  "name":"GPP",
                   "children":[
                     {
-                      "url":"baseurl:|lmwg|set5|FEB|NEE|dataset0",
-                      "name":"FEB"
+                      "url":"baseurl:|lmwg|set5|SON|GPP|dataset0",
+                      "name":"SON"
                     }
                   ]
                 }
@@ -82,11 +82,11 @@
               "name":"set6",
               "children":[
                 {
-                  "name":"NEE",
+                  "name":"GPP",
                   "children":[
                     {
-                      "url":"baseurl:|lmwg|set6|FEB|NEE|dataset0",
-                      "name":"FEB"
+                      "url":"baseurl:|lmwg|set6|SON|GPP|dataset0",
+                      "name":"SON"
                     }
                   ]
                 }
@@ -96,11 +96,11 @@
               "name":"set7",
               "children":[
                 {
-                  "name":"NEE",
+                  "name":"GPP",
                   "children":[
                     {
-                      "url":"baseurl:|lmwg|set7|FEB|NEE|dataset0",
-                      "name":"FEB"
+                      "url":"baseurl:|lmwg|set7|SON|GPP|dataset0",
+                      "name":"SON"
                     }
                   ]
                 }
@@ -110,11 +110,11 @@
               "name":"set8",
               "children":[
                 {
-                  "name":"NEE",
+                  "name":"GPP",
                   "children":[
                     {
-                      "url":"baseurl:|lmwg|set8|FEB|NEE|dataset0",
-                      "name":"FEB"
+                      "url":"baseurl:|lmwg|set8|SON|GPP|dataset0",
+                      "name":"SON"
                     }
                   ]
                 }
@@ -124,11 +124,11 @@
               "name":"set9",
               "children":[
                 {
-                  "name":"NEE",
+                  "name":"GPP",
                   "children":[
                     {
-                      "url":"baseurl:|lmwg|set9|FEB|NEE|dataset0",
-                      "name":"FEB"
+                      "url":"baseurl:|lmwg|set9|SON|GPP|dataset0",
+                      "name":"SON"
                     }
                   ]
                 }

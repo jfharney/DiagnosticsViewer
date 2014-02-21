@@ -1261,14 +1261,12 @@ def figure_bookmarks(request):
         
         
         figure_bookmark_name = request.POST['figure_bookmark_name']
-        #figure_bookmark_name = 'land_lmwg_set1_JUNE_NPP'
         figure_bookmark_realm = request.POST['figure_bookmark_realm']
         figure_bookmark_datasetname = request.POST['figure_bookmark_datasetname']
         figure_bookmark_username = request.POST['figure_bookmark_username']
         figure_bookmark_description = request.POST['figure_bookmark_description']
         figure_cache_url = request.POST['figure_cache_url']
         
-        print 'figure_bookmark_datasetname: ' + figure_bookmark_name
         
         
         figure_bookmark_record = Figure_Bookmarks(
