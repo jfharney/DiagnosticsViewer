@@ -112,7 +112,21 @@ def maps(request,user_id):
     return HttpResponse(template.render(context))
 
 
-
+#geo map/time series view
+#corresponds with url: http://<host>/exploratory_analysis/maps
+def heatmap(request,user_id):
+    username = 'jfharney'
+    
+    if user_id != None:
+        username = user_id 
+    
+    template = loader.get_template('exploratory_analysis/heatmapview.html')
+    
+    context = RequestContext(request, {
+      'username' : username,
+    })
+    
+    return HttpResponse(template.render(context))
 
 
 
@@ -1426,6 +1440,28 @@ def timeseries(request, lat, lon, variable):
    #lat = float(request.POST['lat'])
    #lon = float(request.POST['lon'])
 
+   lon = int(lon)
+   lat = int(lat)
+
+   # To make URL values positive integers, we add +90 to lat and multiply by 60
+   # And +180 to lon and multiply by 60. Need to undo that first.
+   print 'values passed in: ',lat, lon
+   mylat = lat/60
+   mylat = mylat - 90
+   mylon = lon/60
+   mylon = mylon - 180
+
+   # THIS NEEDS GREPPED FROM DATASET BUT FINE FOR NOW
+   xf = 2
+   yf = 2
+   mylat = (mylat+90) * yf
+
+   if(mylon < 0):
+      mylon = (mylon+360)*xf
+   elif(mylon >= 0):
+      mylon = mylon*xf
+
+   print 'my new coordinates: ', mylat, mylon
 
    dataset = os.path.join(default_sample_data_dir, 'test.xml')
 
@@ -1436,6 +1472,7 @@ def timeseries(request, lat, lon, variable):
    data = []
    f = cdms2.open(dataset)
    thevar = f(variable)
+#   thevar = thevar(latitude=(-90,90), longitude=(-180, 180, 'cob'))
    
    axisIndex = thevar.getAxisIndex('time')
    timeAxis = thevar.getTime()
@@ -1449,17 +1486,13 @@ def timeseries(request, lat, lon, variable):
    # Also, for some reason data = thevar.data[:][lat][lon] doesn't work.
    # This could also be adapted to take subranges pretty trivially
    if(axisIndex == 0): 
-#<<<<<<< HEAD
-#      for i in range(thevar.shape[axisIndex]):
-#         data.append(float(thevar.data[i][lat][lon]))
-#=======
      for i in range(thevar.shape[axisIndex]):
-       data.append(float(thevar.data[i][int(lat)][int(lon)]))
-#>>>>>>> 14aec8d2278871946e6616e5424378ef15ed49fe
+       data.append(float(thevar.data[i][int(mylat)][int(mylon)]))
    else:
       print 'Unsupported timeaxis != 0'
       quit()
 
+   print data
    f.close()
    # Make the json now
    # Note - Most of the land datasets we have make it challenging to trivially get the
@@ -1475,6 +1508,7 @@ def timeseries(request, lat, lon, variable):
 
 
    return HttpResponse(json.dumps(j, separators=(',',':'), indent=2))
+
 
 
 
