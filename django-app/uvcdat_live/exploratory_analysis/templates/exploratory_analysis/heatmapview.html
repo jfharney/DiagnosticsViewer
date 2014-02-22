@@ -1,118 +1,117 @@
 {% extends "base.html" %}
 
+{% load staticfiles %}
+
 {% block content %}
 
-<div class="container">
-	<div class="row">
+<div class="container-fluid">
+	<div class="row-fluid">
 
 	</div>
 
-	<span id="mapview_username" style="display:none">{{username}}</span>
+	<span id="heatmapview_username" style="display:none">{{username}}</span>
 
-	<div class="row">
+	<div class="row-fluid">
 
-		<div class="col-md-2">
-
-			<div class="row">
+		<div class="well col-md-2">
+			<div class="row-fluid">
+				<h2><font style="color:darkgrey">Heatmap</font></h2>
+			</div>
+			<hr>
+			<div class="row-fluid">
+				<label for="selectD">Dataset:</label>
+				<br>
+				<select id="selectD" multiple="multiple"></select>
+				<br>
+				<!--
 				<div class="dropdown"  id="dropdown-dataset-container" >
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">CLM Datasets<b class="caret"></b></a>
 					<ul class="dropdown-menu dropdown-dataset-menu">
 
 					</ul>
 				</div>
+				-->
 
 			</div>
 
-			<div class="row" style="margin-top:20px;padding-top:5px;border-top: 10px outset #ffffff">
-				<div style="margin-top:10px;">
-					Dataset: <span id="dataset_name"></span>
-				</div>
+			<hr>
 
-			</div>
-			<div class="row" style="margin-top:20px;padding-top:5px;border-top: 10px outset #ffffff" >
+			<div class="row-fluid" >
 
-				<div id="buttons" class="demo" style="float: left">
-
-					<a rel="#mies4" id="mies4b" style="display: none"<br>
-					<button type="button" class="btn btn-default" ><a rel="#mies1" id="mies1b"> Select View </a> </button><br>
-					<button type="button" class="btn btn-default" ><a rel="#mies2" id="mies3b"> Focus </a></button><br>
-					<button type="button" class="btn btn-default" ><a rel="#mies3" id="mies2b"> Help </a></button>
-					</div>
-					</div>
-					</div>
-
-					<div class="col-md-10">
-
-					<div class="row">
-					<div class="col-md-12">
-
-					<div class="apple_overlay" style="demo" id="mies1">
-					<h3><font color="white">Custom View</font></h3>
-					<label for="selectXX"><font color="white">Column:</font></label>
-					<br>
-					<select id="selectXX" multiple="true" style="width:540px"></select>
-					<br>
-					<br>
-					<br>
-					<label for="selectYY"><font color="white">Row:</font></label>
-					<br>
-					<select id="selectYY" multiple="true" style="width:540px"></select>
-					<br>
-					<br>
-					<br>
-					<button class="first last" onclick="editview()">
-						Apply
-					</button>
-				</div>
-
-				<div id="mies4" class="apple_overlay">
-
-				</div>
-
-				<div class="apple_overlay" style="demo" id="mies2">
-					<h3><font color="white">Go to:</font></h3>
-					<label for="selectX"><font color="white">Column:</font></label>
-					<br>
-					<select id="selectX" multiple="multiple" style="width:540px"></select>
-					<br>
-					<br>
-					<br>
-					<label for="selectY"><font color="white">Row:</font></label>
-					<br>
-					<select id="selectY" multiple="multiple" style="width:540px"></select>
-					<br>
-					<br>
-					<br>
-					<button class="first last" onclick="gotoselected()">
-						Go
-					</button>
-				</div>
-
+				<label for="selectXX">Column Variables:</label>
+				<br>
+				<select id="selectXX" multiple="true" ></select>
+				<br>
+				<br>
+				<label for="selectYY">Row Variables:</label>
+				<br>
+				<select id="selectYY" multiple="true" ></select>
+				<br>
 				<br>
 
-				<div id="container" style="float: none">
+				<button class="btn btn-default" onclick="editview()">
+					Apply
+				</button>
 
-					<div id="chart" sytle="float: left;width: 80%;"></div>
+			</div>
+			<!--
+			<hr>
+			<div class="row-fluid" >
 
-				</div>
+			<h3>Goto:</h3>
+			<label for="selectX">Column:</label>
+			<br>
+			<select id="selectX" multiple="multiple"></select>
+			<br>
 
-				<div class="apple_overlay" id="mies3">
+			<label for="selectY"><font>Row:</font></label>
+			<br>
+			<select id="selectY" multiple="multiple"></select>
+			<br>
+			<br>
 
-					<img src="Slide1.jpg" />
+			<button class="btn btn-default" onclick="gotoselected()">
+			Go
+			</button>
+			</div>
+			-->
+		</div>
 
-				</div>
+		<div class="col-md-10">
+
+			<div class="row-fluid">
+
+				<div id="chart"></div>
 
 				<br>
 				<div id="spinner"></div>
 
 			</div>
+
 		</div>
 
 	</div>
 
 </div>
 
-</div>
+<script type="text/javascript" src="{% static 'exploratory_analysis/js/heatmap/cross.js' %}"></script>
 
+<script type="text/javascript" src="{% static 'exploratory_analysis/js/heatmap/d3.js' %}"></script>
+<script type="text/javascript" src="{% static 'exploratory_analysis/js/heatmap/d3.csv.js' %}"></script>
+
+<script src="http://cdn.jquerytools.org/1.2.6/full/jquery.tools.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/ui-lightness/jquery-ui.css" />
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+
+<script type="text/javascript" src="{% static 'exploratory_analysis/js/heatmap/ui.multiselect.js' %}"></script>
+<script type="text/javascript" src="{% static 'exploratory_analysis/js/heatmap/jquery.multiselect.js' %}"></script>
+<script type="text/javascript" src="{% static 'exploratory_analysis/js/heatmap/jquery.multiselect.filter.js' %}"></script>
+<script type="text/javascript" src="{% static 'exploratory_analysis/js/heatmap/jquery.tipsy.js' %}"></script>
+
+
+
+<script type="text/javascript" src="{% static 'exploratory_analysis/js/heatmap/heatmap.js' %}"></script>
+<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/variablelist.js' %}"></script>
 {% endblock %}
 

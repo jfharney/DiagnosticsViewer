@@ -232,16 +232,16 @@ function create_cyclone_plot(data, tdata, time_plot_div_id) {
 				});
 				//iterate
 				current_month++;
-				if(current_month == 12) {
+				if (current_month == 12) {
 					current_month = 1;
 					current_year++;
 				} else {
 					current_month++;
 				}
-				if(current_year == 166) {
+				if (current_year == 166) {
 					current_year = 151;
 				}
-				if(stop != 1)
+				if (stop != 1)
 					setTimeout(interval(current_month, current_year), 10);
 			});
 		}
@@ -253,13 +253,13 @@ function create_cyclone_plot(data, tdata, time_plot_div_id) {
 		}
 	}
 	// map drawing stuff ////////////////////////////
-	//    var svg2 = d3.select(time_plot_div_id).append("svg")
-	//        .attr("width", timePlotWidth + margin.left + margin.right + sideBarSize.width)
-	//        //.attr("height", timePlotHeight + margin.top + margin.bottom)
-	//        .attr("height", timePlotHeight + margin.top + margin.bottom + mapPlotSize.height + statusBarSize.height)
-	//      .append("g")
-	//        //.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-	//        .attr("transform", "translate(" + margin.left + "," + (mapPlotSize.height + margin.top) + ")");
+	// var svg2 = d3.select(time_plot_div_id).append("svg")
+	// .attr("width", timePlotWidth + margin.left + margin.right + sideBarSize.width)
+	// //.attr("height", timePlotHeight + margin.top + margin.bottom)
+	// .attr("height", timePlotHeight + margin.top + margin.bottom + mapPlotSize.height + statusBarSize.height)
+	// .append("g")
+	// //.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+	// .attr("transform", "translate(" + margin.left + "," + (mapPlotSize.height + margin.top) + ")");
 
 	statusText = d3.select(time_plot_div_id).select("svg").insert("g")
 	//.attr("width", statusBarSize.width)
@@ -289,11 +289,11 @@ function create_cyclone_plot(data, tdata, time_plot_div_id) {
 
 	var tooltip = d3.select("body").append("div").style("position", "absolute").style("z-index", "10").style("visibility", "hidden").text("tooltip");
 
-	var gridmarker = d3.select("body").append("div").style("top", (mapdata.length - 293) + "px").style("left", "546px").style("position", "absolute").style("z-index", "10").text("o");
+	var gridmarker = d3.select("body").append("div").style("top", "0px").style("left", "0px").style("position", "absolute").style("z-index", "10").text("o");
 
-	//   d3.select(time_plot_div_id)
-	//       .style("width", (mapPlotSize.width + timePlotSize.width) + "px")
-	//       .style("height", mapPlotSize.height + "px");
+	// d3.select(time_plot_div_id)
+	// .style("width", (mapPlotSize.width + timePlotSize.width) + "px")
+	// .style("height", mapPlotSize.height + "px");
 
 	var degreesPerCell = 360.0 / dx;
 
@@ -310,9 +310,9 @@ function create_cyclone_plot(data, tdata, time_plot_div_id) {
 		var context = canvas.node().getContext("2d"), image = context.createImageData(dx, dy);
 
 		//for (var y = 0, p = -1; y < dy; ++y) {
-		for(var y = dy - 1, p = -1; y >= 0; --y) {
-			for(var x = 0; x < dx; ++x) {
-				if(mapdata[y][x] < 0.) {
+		for (var y = dy - 1, p = -1; y >= 0; --y) {
+			for (var x = 0; x < dx; ++x) {
+				if (mapdata[y][x] < 0.) {
 					image.data[++p] = 200;
 					image.data[++p] = 200;
 					image.data[++p] = 210;
@@ -333,7 +333,7 @@ function create_cyclone_plot(data, tdata, time_plot_div_id) {
 	function timeplot_mousemove() {
 		var row = parseInt(mapdata.length - d3.mouse(this)[1]);
 		var col = parseInt(d3.mouse(this)[0]);
-		//console.log("here " + d3.mouse(this) + " " +  mapdata[row][d3.mouse(this)[0]]);
+		//console.log("here " + d3.mouse(this) + " " + mapdata[row][d3.mouse(this)[0]]);
 		tooltip.style("top", (event.pageY - 10) + "px").style("left", (event.pageX + 10) + "px");
 		tooltip.text(mapdata[row][col]);
 		var longitude = -180.0 + (degreesPerCell * col);
@@ -352,13 +352,16 @@ function create_cyclone_plot(data, tdata, time_plot_div_id) {
 		var row = parseInt(mapdata.length - d3.mouse(this)[1]);
 		var col = parseInt(d3.mouse(this)[0]);
 		console.log("grid coordinates are row = " + row + " col = " + col);
-
+		var longitude = (degreesPerCell * col);
+		var latitude = (degreesPerCell * row);
+		var minute_lon = longitude * 60;
+		var minute_lat = latitude * 60;
 		//remove previous time series plot
 		d3.selectAll(".profile").remove();
 
 		gridmarker.style("top", (event.pageY - 5) + "px").style("left", (event.pageX - 5) + "px");
 		//var filename = "/static/exploratory_analysis/json_grid_data/TLAI-timeseries-" + row + "-" + col + ".json";
-		var filename = "http://localhost:8081/exploratory_analysis/timeseries/" + row + "/" + col + "/TLAI";
+		var filename = "http://localhost:8081/exploratory_analysis/timeseries/" + minute_lat + "/" + minute_lon + "/TLAI";
 		d3.json(filename, function(error, new_timedata) {
 			var current_year = +new_timedata.start_year;
 			var current_month = +new_timedata.start_month;
@@ -371,7 +374,7 @@ function create_cyclone_plot(data, tdata, time_plot_div_id) {
 				obj.value = d;
 				timeseries_objects.push(obj);
 				//console.log(obj);
-				if(current_month == 12) {
+				if (current_month == 12) {
 					current_month = 1;
 					current_year++;
 				} else {
@@ -403,10 +406,10 @@ function create_cyclone_plot(data, tdata, time_plot_div_id) {
 				return d3.min(c.values, function(v) {
 					return v.temperature;
 				});
-			}), d3.max(profiles, function(c) {
+			}) - 0.001, d3.max(profiles, function(c) {
 				return d3.max(c.values, function(v) {
 					return v.temperature;
-				});
+				}) + 0.001;
 			})]);
 			d3.selectAll(".x").attr("transform", "translate(0," + timePlotHeight + ")").call(xAxis);
 
