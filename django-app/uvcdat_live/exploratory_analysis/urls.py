@@ -61,6 +61,9 @@ urlpatterns = patterns('',
   #grabs the timeseries data
   url(r'^timeseries/(?P<lat>\w+)/(?P<lon>\w+)/(?P<variable>\w+)$', views.timeseries, name='timeseries'),
   
+  #grabs the geo view maps data
+  url(r'^avgmap/(?P<time>\w+)/(?P<variable>\w+)$', views.avgmap, name='avgmap'),
+  
   ############
   #Tree stuff#
   ############
