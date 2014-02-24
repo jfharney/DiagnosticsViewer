@@ -67,7 +67,7 @@ svg {
 
 
 .hiddentext {
-	display:none
+	display:none 
 }
 
 .hiddenfunctionality {
@@ -142,9 +142,7 @@ body.loading #modal1 {
 		     	<button type="button" class="btn btn-default" id="test14" >Get figure bookmark</button>
 		     
 		</div>
-		<div>
-		     	<button type="button" class="btn btn-default" id="timeseriestest" >Time series test</button>
-		</div>
+		
 	</div>   
 	
 	<div class="container">
@@ -158,6 +156,8 @@ body.loading #modal1 {
 			Tree Loaded: <span id="treeloaded">{{ treeloaded }}</span>
 			<br>
 			Username: <span id="username_posted"></span>
+			<br>
+			Saved?: <span id="posttype">{{ posttype }}</span>
 		
 		</div>
      
@@ -237,18 +237,22 @@ body.loading #modal1 {
 		    	</li>
 		    
 		        <li class="dropdown">
-		            <a href="#" data-toggle="dropdown" class="dropdown-toggle">Bookmarks <b class="caret"></b></a>
+		            <a href="#" data-toggle="dropdown" class="dropdown-toggle">Saved Trees <b class="caret"></b></a>
 		            <ul class="dropdown-menu" id="bookmark_menu">
-		            	{% for bookmark in bookmark_list %}
+		            	{% for tree_bookmark in bookmark_list %}
 		            	<li>
-		            		<a href="./?bookmark={{bookmark}}" id="{{bookmark}}" class="tree_bookmark_menu">{{bookmark}}</a>
+		            		<a href="./?bookmark={{tree_bookmark}}" id="{{tree_bookmark}}" class="tree_bookmark_menu">{{tree_bookmark}}</a>
 		            	<!--  
 		            		<a href="http://localhost:8081/exploratory_analysis/treeex/{{username}}/?bookmark={{bookmark}}" id="{{bookmark}}" class="tree_bookmark_menu">{{bookmark}}</a>
 		            	-->
 		            	</li>	
-		            	{% endfor %}
+		            	{% empty %}
+    					<li>No trees saved</li>
+    					{% endfor %}
+		            	<!-- 
 		            	<li class="divider"></li>
 		                <li><a href="#" id="custom">Custom</a></li>
+		                 -->
 		            
 		            </ul>
 		        </li>
@@ -258,7 +262,10 @@ body.loading #modal1 {
 		            <!-- '<a data-toggle="modal" href="#myModal" class="btn btn-primary">View</a>' +  -->
 		            	{% for figure_bookmark in figure_bookmark_list %}
 		            		<li><a data-toggle="modal" href="#myModal" class="figure_bookmark" id="{{figure_bookmark}}">{{figure_bookmark}}</a></li>
-		            	{% endfor %}
+		            	
+		            	{% empty %}
+    					<li>No figures saved</li>
+    					{% endfor %}
 		            	<!-- 
 		                <li><a href="#" id="b1">Image1</a></li>
 		                <li><a href="#" id="b2">Image2</a></li>
@@ -280,7 +287,7 @@ body.loading #modal1 {
     		<h4 style="margin-top:5px">Dataset</h4>
     		<div style="overflow-y: scroll;max-height:150px">
     		{% for dataset in dataset_list %}
-			<input name="{{dataset}}" id="{{dataset}}" type="radio" value="{{dataset}}" class="dataset_list" >
+			<input name="{{dataset}}" id="{{dataset}}" type="radio" value="{{dataset}}" class="dataset_list" checked>
 			<label for="{{dataset}}" class="checkboxselection">{{dataset}}</label>
 			{% endfor %}
 			</div>
@@ -291,7 +298,7 @@ body.loading #modal1 {
     		<h4 style="margin-top:5px">Package</h4>
     		<div style="overflow-y: scroll;max-height:150px">
     		{% for package in package_list %}
-			<input name="{{package}}" id="{{package}}" type="radio" value="{{package}}" class="package_list" >
+			<input name="{{package}}" id="{{package}}" type="radio" value="{{package}}" class="package_list" checked>
 			<label for="{{package}}" class="checkboxselection">{{package}}</label>
 			{% endfor %}
 			</div>
@@ -333,11 +340,13 @@ body.loading #modal1 {
 		    	<button type="button" class="btn btn-default" id="save_tree" >Save</button>
 		  	</div>
 			<div class="col-lg-4">
-		    	<input type="text" class="form-control" placeholder="Tree Bookmark Name (optional)" id="tree_name">
+		    	<input type="text" class="form-control" placeholder="Tree Name" id="tree_name">
 		  	</div>
+		  	<!-- 
 		  	<div class="col-lg-1">
 		    	<button type="button" class="btn btn-default" id="submit_tree" >Submit</button>
 		  	</div>
+		  	 -->
 		  	<div class="col-lg-1">
 		    	<button type="button" class="btn btn-default" id="bookmark_cancel">Cancel</button>
 		  	</div>
@@ -403,7 +412,13 @@ body.loading #modal1 {
 		<div class="col-md-10">
 			<div class="row" style="border: 1px solid #000000;">
 				<div class="col-md-9" style="border-right: 1px solid #000000;height:900px;max-height:900px">
+				{% if posttype == "submit" %}
 				<span> <button type="button" class="btn btn-default" id="alt_save_tree">Save Tree</button> </span>
+				{% else %}
+				<!--  
+				<span> <button type="button" class="btn btn-default" id="alt_remove_tree">Remove Tree</button> </span>
+				-->
+				{% endif %}
 				<span style="margin-left:10px;font-weight:bold"> Tree Name: </span><span id="current_treename">{{current_bookmark}}</span>
 				
 					<div id="treeimg" style="overflow-x:visible">
@@ -481,46 +496,6 @@ $(document).ready(function(){
 	
 	
 	
-	//$("#prompt").overlay().load();
-	
-	
-	
-	
-	
-	$('#timeseriestest').click(function() {
-		alert('time series test');
-		console.log('time series test');
-		
-		var input_data = {
-				'csrfmiddlewaretoken': csrftoken,
-				'variable':'variable1',
-				'lat':30,
-				'lon':30
-		}
-		
-		var url = 'http://localhost:8081/exploratory_analysis/timeseries1/';
-		$.ajax({
-			  type: "POST",
-			  url: url,
-			  async: false,
-			  data: input_data,
-			  success: function(data)
-			  { 
-				  console.log('success ' + data);
-			  },
-			  error: function(xhr, status, error) {
-				  console.log('error'); 
-			    if(xhr.status==404)
-			    { 
-			    	
-			    }
-			  }
-			});
-		
-		
-	});
-	
-	
 
 	
 	
@@ -546,11 +521,6 @@ $(document).ready(function(){
 	});
 	
 	
-	$('.dropdown-menu').on('click', function(e) {
-	    if($(this).hasClass('dropdown-menu-form')) {
-	        e.stopPropagation();
-	    }
-	});
 	
 	var treeloaded = $('#treeloaded').html();
 	
@@ -559,100 +529,28 @@ $(document).ready(function(){
 	
 	
 	
-	//show/hide the api checks
-	//$('#api_check').show();
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	$('#test').click(function() {
+	$('#alt_remove_tree').click(function() {
 		
-
-		console.log('csrftoken in test ' + csrftoken);
-		
-		var data = {'csrfmiddlewaretoken': csrftoken};
-		var fileUrl = 'http://localhost:8081/exploratory_analysis/test/';
-		$.ajax({
-			  type: "POST",
-			  url: fileUrl,
-			  async: false,
-			  data: data,
-			  success: function()
-			  { 
-				  console.log('success');
-			  },
-			  error: function(xhr, status, error) {
-				  console.log('error'); 
-			    if(xhr.status==404)
-			    { 
-			    	
-			    }
-			  }
-			});
-		
+		var tree_name = $('#tree_name').html();
+		alert('removing tree ' + tree_name);
 		
 	});
 	
 	
 	
-	$('.dropdown-toggle').dropdown();
-	
-	
-	/*
-
-	$('#b1').click(function() {
-		alert('click');
-	});
-	$('#b2').click(function() {
-		alert('redirecting to...' + $(this).html());
-		location.href='http://localhost:8081/exploratory_analysis/treeex/jfharney?bookmark='+$(this).html();
-	});
-	
-	*/
 	
 	
 	
-	$('#bookmark_submit').click(function(){
-		var variable_arr = new Array();
-		var time_arr = new Array();
-		
-		$("input[type='checkbox'].variable_list").each(function(index, element){
-			//var a = $("input[type='checkbox'].variable_list");
-			
-		    if(element.checked) {
-		    	
-				variable_arr.push(element.id);
-		    }
-		});
-		$("input[type='checkbox'].time_list").each(function(index, element){
-			if(element.checked) {
-				time_arr.push(element.id);
-			}
-		    
-		});
-		console.log('Sending variables ' + variable_arr);
-		console.log('Sending times ' + time_arr);
-		
-	});
 	
-	/*
-	$('#bookmark_cancel').click(function(){
-		$('div#bookmark_selection').hide();
-	});
-	*/
+	
+	
+	
+	
+	//$('.dropdown-toggle').dropdown();
+	
 	
 });
 

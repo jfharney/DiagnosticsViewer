@@ -134,8 +134,9 @@ $(document).ready(function(){
 					'package': pckg,
 					'variable_arr_str': variable_arr_str,
 					'season_arr_str':season_arr_str,
-					'sets_arr_str':sets_arr_str
-					};
+					'sets_arr_str':sets_arr_str,
+					'posttype':'submit'
+			};
 			
 			//var url = 'http://localhost:8081/exploratory_analysis/treeex/jfharney/';
 			var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/treeex/jfharney/';

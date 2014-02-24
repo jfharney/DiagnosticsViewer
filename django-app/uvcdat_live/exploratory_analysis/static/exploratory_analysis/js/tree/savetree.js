@@ -38,6 +38,7 @@ $(document).ready(function(){
 		console.log('tree: ' + $('#tree_name').val());
 		
 		
+		
 		var dataset = '';
 		var pckg = '';
 		var variable_arr = new Array();
@@ -121,11 +122,13 @@ $(document).ready(function(){
 			nameFlag = false;
 		}
 		
-
+		
 		if(variableFlag && seasonFlag && nameFlag) {
 			
-
-			$body.addClass("loading");  
+			if (EA.spinnerFlag) {
+				$body.addClass("loading");  
+			}
+			
 			
 			
 			var realm = 'land';
@@ -175,6 +178,8 @@ $(document).ready(function(){
 		
 			
 			//var url = 'http://localhost:8081/exploratory_analysis/tree_bookmarks/';
+			
+			//This address will save the tree to the database
 			var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/tree_bookmarks/';
 			
 			
@@ -185,11 +190,8 @@ $(document).ready(function(){
 			  data: data,
 			  success: function(response_data)
 			  { 
-
 					
 				  console.log('success');
-				  
-				  //console.log('data; ' + data['tree_cache_url']);
 				  
 				  
 				  var data = {
@@ -199,8 +201,9 @@ $(document).ready(function(){
 							'package': pckg,
 							'variable_arr_str': variable_arr_str,
 							'season_arr_str':season_arr_str,
-							'sets_arr_str':sets_arr_str
-							};
+							'sets_arr_str':sets_arr_str,
+							'posttype':'save'
+				  };
 				  
 				  
 				  
@@ -238,11 +241,13 @@ $(document).ready(function(){
 							  
 							  
 							  var treeFile = $('span#treeFile').html();
+							  treeFile = tree_cache_url;
 							  //alert('treeFile: ' + treeFile);
 							  treeFile = treeFile.replace('/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis','../../..');
-								
-							  treeFile = '../../../static/cache/temp.json';
-							  console.log('treeFile: ' + treeFile);
+
+							  console.log('treeFile before: ' + treeFile);
+							  //treeFile = '../../../static/cache/temp.json';
+							  //console.log('treeFile after: ' + treeFile);
 								
 							  if(checkFile(treeFile)) {
 									
@@ -273,31 +278,30 @@ $(document).ready(function(){
 									console.log('leave blank');
 								}
 									
-
-								$body.removeClass("loading");  
+							  	if (EA.spinnerFlag) {
+							  		$body.removeClass("loading");  
+							  	}
 							  
 						  },
 						  error: function(ts) 
 						  { 
 							  console.log('response text: ' + ts.responseText);
-							  $body.removeClass("loading"); 
+							  
+							  if (EA.spinnerFlag) {
+								  $body.removeClass("loading"); 
+							  }
 						  }
 					});
 				  
 				  	
 				  
 				  
-				  
-				  
-				  
-				  
-				  
-				  
 			  },
 			  error: function(xhr, status, error) {
 				  console.log('error'); 
-
-					$body.removeClass("loading");  
+				  if (EA.spinnerFlag) {
+					  $body.removeClass("loading"); 
+				  } 
 			    if(xhr.status==404)
 			    { 
 			    	
@@ -309,6 +313,22 @@ $(document).ready(function(){
 			
 			
 			
+		} else {
+			if(!variableFlag && !seasonFlag && !nameFlag) { 
+				alert('Please enter values for variables, seasons, and a valid tree name');
+			} else if(!variableFlag && !seasonFlag && nameFlag) { 
+				alert('Please enter values for variables and seasons');
+			} else if(!variableFlag && seasonFlag && !nameFlag) { 
+				alert('Please enter values for variables and a valid tree name');
+			} else if(!variableFlag && seasonFlag && nameFlag) { 
+				alert('Please enter values for variables');
+			} else if(variableFlag && !seasonFlag && !nameFlag) { 
+				alert('Please enter values for seasons and a valid tree name');
+			} else if(variableFlag && seasonFlag && !nameFlag) { 
+				alert('Please enter a valid tree name');
+			} else if(variableFlag && !seasonFlag && nameFlag) { 
+				alert('Please enter values for seasons');
+			}
 		}
 		
 		

@@ -122,7 +122,7 @@ def figureGenerator(request):
       print 'in figure generator'
     
       #hard coded
-      path = default_sample_data_dir
+      #path = default_sample_data_dir + 'tropics_warming_th_q_co2'
       
       
         
@@ -180,7 +180,7 @@ def figureGenerator(request):
           o._opts['realms']=['land']
           '''
         
-          o._opts['path']=[default_sample_data_dir]
+          o._opts['path']=[default_sample_data_dir + 'tropics_warming_th_q_co2']
           o._opts['vars']=variables
           o._opts['times']=times
           #Note: only use 1 or 2 
@@ -239,6 +239,9 @@ def figureGenerator(request):
 #New tree view
 def treeex(request,user_id):
     
+    
+    
+    
     #need a flag to indicated whether a tree 
     
     
@@ -295,64 +298,79 @@ def treeex(request,user_id):
         #if something has been posted, then a tree could be built       
         if request.POST:
             
+            posttype = request.POST['posttype']
+            
+            tree_bookmark_datasetname = request.POST['dataset']
+            
+            print 'tree_bookmark_datasetname----->' + tree_bookmark_datasetname + '\n\n\n\n'
             
             print 'in a post request with parameters'
             
-            #defaults here
-            packages = ['lmwg']
-            vars = ['TLAI', 'TG','NPP']
-            path = [default_sample_data_dir]
-            times = ['MAR','APR','MAY','JUNE','JULY']
-            dataset = 'tropics_warming_th_q_co2'
             
             treename = request.POST['treename']
             
-            #give the tree a default name based on the timestamp
+            #if there is no tree name give the tree a default name based on the timestamp
             if treename == None or treename == '':
                 import time
                 millis = int(round(time.time() * 1000))
                 treename = 'tree' + str(millis)
-                
-            print 'treename->' + treename
             
-            package = request.POST['package']
             
-            if package == None:
-                print 'package is None'
+            
+            packages = ''
+            #defaults here
+            if request.POST['package'] == None:
+                packages = ['lmwg']
             else:
-                print 'package: ' + package
+                packages = [request.POST['package'] ]
             
             
-            if request.POST['dataset'] == None:
-                dataset = request.POST['dataset']
             
+            vars= ''
             variable_arr_str = request.POST['variable_arr_str']
             if variable_arr_str == None:
                 print 'variable_arr_str is None'
+                vars = ['TLAI', 'TG','NPP']
             else:
                 print 'variable_arr_str: ' + variable_arr_str
                 variable_arr = variable_arr_str.split(';')
                 vars = variable_arr
                 
-            
+            times = ''
             season_arr_str = request.POST['season_arr_str']
             if season_arr_str == None:
                 print 'season_arr_str is None'
+                times = ['MAR','APR','MAY','JUNE','JULY']
             else:
                 season_arr = season_arr_str.split(';')
                 times = season_arr
             
+            sets_arr = ''
             sets_arr_str = request.POST['sets_arr_str']
             if sets_arr_str == None:
                 print 'sets_arr_str is None'
             else:
                 sets_arr = sets_arr_str.split(';')
-                print 's: ' + sets_arr[0]
+                print 's: ' + sets_arr[0] 
+                
             
+            dataset = ''
+            path = ''
+            if request.POST['dataset'] == None:
+                dataset = 'tropics_warming_th_q_co2'
+                path = [default_sample_data_dir + 'tropics_warming_th_q_co2']
+            else:
+                dataset = request.POST['dataset']
+                path = path = [default_sample_data_dir + request.POST['dataset']]
             
-            #build tree here (in a replaceable temp.json file in the cache)
-            treeFile = cache_dir + 'temp' + '.json'
+                
             
+            #build tree here 
+            #if the post type is "submit" then grab "temp.json", otherwise it is a saved bookmark
+            if posttype == 'submit':
+                treeFile = cache_dir + 'temp' + '.json'
+            else:
+                treeFile = cache_dir + treename + '.json'
             
             #### Start diagnostics generation here...
             #username = user_id
@@ -372,6 +390,9 @@ def treeex(request,user_id):
             filetables = []
             vars = o._opts['vars']
             #   print vars
+    
+            print 'packages--->' + str(packages)
+            print 'dataset_list[0]--->' + dataset_list[0]
     
             for p in range(len(o._opts['path'])):
                 print '\ndirtree\n',dirtree_datafiles(o,pathid=p)
@@ -434,6 +455,7 @@ def treeex(request,user_id):
             'set_list' : set_list,
             'bookmark_list' : bookmark_list,
             'figure_bookmark_list' : figure_bookmark_list,
+            'posttype':'save'
                                           
         })
         
@@ -517,7 +539,8 @@ def treeex(request,user_id):
             'bookmark_list' : bookmark_list,
             'figure_bookmark_list' : figure_bookmark_list,
             'treefile': treeFile,
-            'current_bookmark': bookmark
+            'current_bookmark': bookmark,
+            'posttype':'save'
             #'treeFile' : treeFile,
             })
         
@@ -758,7 +781,7 @@ def diagsHelper(user_id,bookmark_name):
         #defaults here
         packages = ['lmwg']
         vars = ['TLAI', 'TG','NPP']
-        path = [default_sample_data_dir]
+        path = [default_sample_data_dir + 'tropics_warming_th_q_co2']
         times = ['MAR','APR','MAY','JUNE','JULY']
         
         
@@ -821,7 +844,7 @@ def tree(request):
  
   
   
- 
+'''
 def treedataBrian(request,user_id):
     
     username = user_id
@@ -833,7 +856,7 @@ def treedataBrian(request,user_id):
    ##### SET THESE BASED ON USER INPUT FROM THE GUI
     o._opts['packages'] = ['lmwg'] 
     o._opts['vars'] = ['TG']
-    o._opts['path'] = [default_sample_data_dir]
+    o._opts['path'] = [default_sample_data_dir + 'tropics_warming_th_q_co2']
     o._opts['times'] = ['JAN']
     ### NOTE: 'ANN' won't work for times this way, but that shouldn't be a problem
     datafiles = []
@@ -876,7 +899,7 @@ def treedataBrian(request,user_id):
             
     
     return HttpResponse(data_string)
-  
+'''  
  
 
 
@@ -891,6 +914,7 @@ def treedataBrian(request,user_id):
 '''
 http://
 '''
+'''
 def visualizationsBrian(request):
     
    print 'in visualizations Brian'
@@ -902,7 +926,7 @@ def visualizationsBrian(request):
    ##### SET THESE BASED ON USER INPUT FROM THE GUI
    o._opts['vars'] = ['PBOT'] 
   # o._opts['path'] = ['/path/to/a/dataset'] 
-   o._opts['path'] = [default_sample_data_dir] 
+   o._opts['path'] = [default_sample_data_dir + 'tropics_warming_th_q_co2'] 
    o._opts['times'] = ['DJF']
    ### NOTE: 'ANN' won't work for times this way, but that shouldn't be a problem
    #####
@@ -950,12 +974,6 @@ def visualizationsBrian(request):
   
   
   
-  
-  
-  
-  
-  
-  
    print request.GET.get('variable')
   
    variable = ''
@@ -980,7 +998,7 @@ def visualizationsBrian(request):
   
    return HttpResponse(jsonData)
 
-
+'''
 
 
 
@@ -1112,8 +1130,11 @@ def tree_bookmarks(request):
         
         print 'tree_cache_url ' + tree_cache_url
         
+        #save to the database
         tree_bookmark_record.save()
-        ''''''
+        
+        #save the json file
+        
         
         
         print 'POST'
@@ -1278,7 +1299,13 @@ def figure_bookmarks(request):
                                             figure_cache_url = figure_cache_url
                                               )
         
-        figure_bookmark_record.save()
+        p = Figure_Bookmarks.objects.filter(
+                                            figure_bookmark_name = request.POST['figure_bookmark_name'],
+                                            figure_bookmark_datasetname = request.POST['figure_bookmark_datasetname']
+                                            )
+        
+        if not p:
+            figure_bookmark_record.save()
         
         
         #print tree_bookmark_record

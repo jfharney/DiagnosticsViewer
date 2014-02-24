@@ -6,7 +6,7 @@ databases_name = '/Users/8xo/sqlite3/11-3/mydb.db'
 uvcdat_live_root = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/' 
 
 #directory holding netcdf datasets
-default_sample_data_dir = '/Users/8xo/sampledatalens/tropics_warming_th_q_co2'
+default_sample_data_dir = '/Users/8xo/sampledatalens/'#tropics_warming_th_q_co2'
 
 
 
