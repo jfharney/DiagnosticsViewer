@@ -145,7 +145,7 @@ body.loading #modal1 {
 		
 	</div>   
 	
-	<div class="container">
+	<div class="container-fluid">
 		<div class="hiddentext">
 			CachedFile: <span id="CachedFile" >{{ cachedfile }}</span>
 			<br>
@@ -162,8 +162,54 @@ body.loading #modal1 {
 		</div>
      
    
-    <div class="row">
-		<div class="col-md-12">
+    <div class="row-fluid">
+    			<div class="well col-md-2">
+			<div class="row-fluid">
+				<h2><font style="color:darkgrey">Diagnostic Tree</font></h2>
+			</div>
+			<hr>
+			
+			<div class="row-fluid">
+				<label for="selectD">Dataset:</label>
+				<br>
+				<select id="selectD" multiple="multiple"></select>
+				<br>
+
+			</div>
+			<br>
+			<div class="row-fluid">
+				<label for="selectP">Package:</label>
+				<br>
+				<select id="selectP" multiple="multiple"></select>
+				<br>
+
+			</div>
+			<br>
+			<div class="row-fluid">
+				<label for="selectV">Variables:</label>
+				<br>
+				<select id="selectV" multiple="multiple"></select>
+				<br>
+
+			</div>
+			<br>
+			<div class="row-fluid">
+				<label for="selectT">Seasons:</label>
+				<br>
+				<select id="selectT" multiple="multiple"></select>
+				<br>
+
+			</div>
+			<br>
+			<div class="row-fluid" id="viz_button">
+				<button type="button" class="btn btn-default" >
+					Submit
+				</button>
+			</div>
+			<hr>
+
+		</div>
+		<div class="col-md-10">
 			
 			<!-- overlay modal -->
 			<div class="modal" id="myModal">
@@ -217,7 +263,8 @@ body.loading #modal1 {
 	    		
 	</div>
     	
-    <div class="row">
+    <!--
+    <div class="row-fluid">
 		<div class="col-md-12">
 			<div class="page-header">
   			<h1>Exploratory Analysis - Diagnostics Tree Viewer</h1>
@@ -225,10 +272,10 @@ body.loading #modal1 {
 		
 		</div>
 	    		
-	</div>	
+	</div>-->
 	
     
-    <div class="row" style="margin-bottom:10px">
+    <div class="row-fluid" style="margin-bottom:10px">
     	<div class="bs-example">
    
 		    <ul class="nav nav-pills">
@@ -280,8 +327,8 @@ body.loading #modal1 {
     
     
 	
-    <div class="row" style="margin-bottom:10px;display:none;border: 1px solid #000000;padding:10px" id="create_tree_options"  >
-    	<div class="col-lg-12">
+    <div class="row-fluid" style="margin-bottom:10px;display:none;border: 1px solid #000000;padding:10px" id="create_tree_options"  >
+    	<div class="col-lg-10">
     	
     		
     		<h4 style="margin-top:5px">Dataset</h4>
@@ -355,8 +402,8 @@ body.loading #modal1 {
     
     
     
-	<!-- <div class="row" style="border: 1px solid #000000;padding:10px;">  -->
-	<div class="row" style="" id="treeviewer">
+	<!-- <div class="row-fluid" style="border: 1px solid #000000;padding:10px;">  -->
+	<div class="row-fluid" style="" id="treeviewer">
 		<div class="col-md-2">
 		
 		
@@ -390,7 +437,7 @@ body.loading #modal1 {
 	
 			
 			
-			<div class="row" style="margin-top:20px;padding-top:5px;border-top: 10px outset #ffffff">
+			<div class="row-fluid" style="margin-top:20px;padding-top:5px;border-top: 10px outset #ffffff">
 				<div style="margin-top:10px;">
 					Dataset: <span id="dataset_name"></span>
 				</div>
@@ -402,7 +449,7 @@ body.loading #modal1 {
 				</div>
 				
 			</div>
-			<div class="row" style="margin-top:20px;padding-top:5px;border-top: 10px outset #ffffff" id="viz_button">
+			<div class="row-fluid" style="margin-top:20px;padding-top:5px;border-top: 10px outset #ffffff" id="viz_button">
 				<button type="button" class="btn btn-default" >Submit</button>
 			</div>
 	
@@ -410,7 +457,7 @@ body.loading #modal1 {
 		</div>
 		
 		<div class="col-md-10">
-			<div class="row" style="border: 1px solid #000000;">
+			<div class="row-fluid" style="border: 1px solid #000000;">
 				<div class="col-md-9" style="border-right: 1px solid #000000;height:900px;max-height:900px">
 				{% if posttype == "submit" %}
 				<span> <button type="button" class="btn btn-default" id="alt_save_tree">Save Tree</button> </span>
@@ -453,8 +500,14 @@ body.loading #modal1 {
 	<script src="{% static 'exploratory_analysis/js/tree/saveplot.js' %}"></script>
 	<script src="{% static 'exploratory_analysis/js/tree/retrieveplot.js' %}"></script>
 	<script src="{% static 'exploratory_analysis/js/jquery/overlay.js' %}"></script>
-	
 
+<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/ui-lightness/jquery-ui.css" />
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+
+<script type="text/javascript" src="{% static 'exploratory_analysis/js/heatmap/ui.multiselect.js' %}"></script>
+<script type="text/javascript" src="{% static 'exploratory_analysis/js/heatmap/jquery.multiselect.js' %}"></script>
+<script type="text/javascript" src="{% static 'exploratory_analysis/js/heatmap/jquery.multiselect.filter.js' %}"></script>
+<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/variablelist.js' %}"></script>
 <script>
 
 

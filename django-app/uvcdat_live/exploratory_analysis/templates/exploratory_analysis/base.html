@@ -12,7 +12,7 @@
 
 		<link rel="shortcut icon" href="./ico/favicon.png" />
 
-		<title>UV-CDAT+ Prototype</title>
+		<title>UV-CDAT:EA Prototype</title>
 
 		<!-- Bootstrap core CSS -->
 		<link href="{% static 'exploratory_analysis/css/bootstrap/bootstrap.css' %}" rel="stylesheet" />
@@ -23,6 +23,7 @@
 
 		<link href="{% static 'exploratory_analysis/css/heatmap/colorbrewer.css' %}" rel="stylesheet" />
 		<link href="{% static 'exploratory_analysis/css/heatmap/overlay-apple.css' %}" rel="stylesheet" />
+		<script src="{% static 'exploratory_analysis/js/jquery/jquery-1.10.2.min.js' %}"></script>
 		<link href="{% static 'exploratory_analysis/css/heatmap/jquery.multiselect.css' %}" rel="stylesheet" />
 		<link href="{% static 'exploratory_analysis/css/heatmap/jquery.multiselect.filter.css' %}" rel="stylesheet" />
 		
@@ -96,7 +97,7 @@
 			<!-- Fixed navbar -->
 			<div class="navbar navbar-inverse navbar-fixed-top">
 
-				<div class="container">
+				<div class="container-fluid">
 					<div class="navbar-header">
 						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 							<span class="icon-bar"></span>
@@ -139,10 +140,11 @@
 
 		</div>
 
-		<script src="{% static 'exploratory_analysis/js/jquery/jquery-1.10.2.min.js' %}"></script>
+
+
 		<script src="{% static 'exploratory_analysis/js/bootstrap/bootstrap.min.js' %}"></script>
 		<script src="{% static 'exploratory_analysis/js/bootstrap/bootstrap-combobox.js' %}"></script>
-		<script src="{% static 'exploratory_analysis/js/d3/d3.min.js' %}"></script>
+
 
 		<script src="{% static 'exploratory_analysis/js/tree/core.js' %}"></script>
 		<script type="text/javascript" src="{% static 'exploratory_analysis/js/datasets/selection.js' %}"></script>
@@ -151,41 +153,11 @@
 		<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/timeseries.js' %}"></script>
 		<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/map.js' %}"></script>
 		<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/cyclone.js' %}"></script>
-		<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/variablelist.js' %}"></script>
-		<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/timelist.js' %}"></script>
-		<script type="text/javascript" src="{% static 'exploratory_analysis/js/heatmap/cross.js' %}"></script>
-		
 
+	    <script src="{% static 'exploratory_analysis/js/tree/core.js' %}"></script>
 
-<!--
-			<script type="text/javascript" src="{% static 'exploratory_analysis/js/heatmap/d3.js' %}"></script>
-		<script type="text/javascript" src="{% static 'exploratory_analysis/js/heatmap/d3.csv.js' %}"></script>
-	    <script type="text/javascript" src="{% static 'exploratory_analysis/js/heatmap/jquery-1.4.2.min.js' %}"></script>
-
-<<<<<<< HEAD
-	
-	<script src="{% static 'exploratory_analysis/js/jquery/jquery-1.10.2.min.js' %}"></script>
-	<script src="{% static 'exploratory_analysis/js/bootstrap/bootstrap.min.js' %}"></script>
-	<script src="{% static 'exploratory_analysis/js/bootstrap/bootstrap-combobox.js' %}"></script>
-	
-	
-	<script src="{% static 'exploratory_analysis/js/tree/core.js' %}"></script>
-	 
-=======
-		<script type="text/javascript" src="{% static 'exploratory_analysis/js/heatmap/clearbox.js' %}"></script>
-		<script src="http://cdn.jquerytools.org/1.2.6/full/jquery.tools.min.js"></script>
->>>>>>> jewell-heatmapdevel
-
-		<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/ui-lightness/jquery-ui.css" />
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script> -->
-
-		<script type="text/javascript" src="{% static 'exploratory_analysis/js/heatmap/ui.multiselect.js' %}"></script>
-		<script type="text/javascript" src="{% static 'exploratory_analysis/js/heatmap/jquery.multiselect.js' %}"></script>
-		<script type="text/javascript" src="{% static 'exploratory_analysis/js/heatmap/jquery.multiselect.filter.js' %}"></script>
-		<script type="text/javascript" src="{% static 'exploratory_analysis/js/heatmap/jquery.tipsy.js' %}"></script>
-
-		<script type="text/javascript" src="{% static 'exploratory_analysis/js/heatmap/heatmap.js' %}"></script>
-
+<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/ui-lightness/jquery-ui.css" />
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
 	</body>
 
 </html>

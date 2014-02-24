@@ -401,7 +401,7 @@ setTimeout(function() {
 			}
 			window.gotoselected = function() {
 
-				CB_Close();
+				//CB_Close();
 				var selectedArrayX = new Array();
 				var selectedArrayY = new Array();
 				selectedArrayX = $("#selectX").val();
@@ -642,7 +642,7 @@ setTimeout(function() {
 
 			window.editview = function() {
 
-				CB_Close();
+				//CB_Close();
 
 				var selX = document.getElementById('selectXX');
 				var selY = document.getElementById('selectYY');
