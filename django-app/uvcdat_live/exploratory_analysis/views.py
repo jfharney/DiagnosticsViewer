@@ -112,7 +112,21 @@ def maps(request,user_id):
     return HttpResponse(template.render(context))
 
 
-
+#geo map/time series view
+#corresponds with url: http://<host>/exploratory_analysis/maps
+def heatmap(request,user_id):
+    username = 'jfharney'
+    
+    if user_id != None:
+        username = user_id 
+    
+    template = loader.get_template('exploratory_analysis/heatmapview.html')
+    
+    context = RequestContext(request, {
+      'username' : username,
+    })
+    
+    return HttpResponse(template.render(context))
 
 
 
@@ -376,6 +390,9 @@ def treeex(request,user_id):
             #username = user_id
         
             o = Options()
+       
+       
+            print 'varsssss---->' + str(vars)
        
             ##### SET THESE BASED ON USER INPUT FROM THE GUI
             o._opts['packages'] = packages
@@ -645,8 +662,12 @@ def visualizations(request):
   
     #statically load the json file from the cache - each file is labelled by variable <variable_name>.json
     
-    file = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/cache/' + variable + '.json' 
+    #file = '/Users/i7j/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/cache/' + variable + '.json' 
   
+  
+    file = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/cache/' + variable + '.json' 
+    
+    
     with open(file , 'r') as myfile:
        data = myfile.read().replace('\n','')
       
@@ -673,7 +694,7 @@ def treedata(request,user_id):
   
   username = user_id
 
-  file = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/css/tree/flare3.json';
+  file = '/Users/i7j/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/css/tree/flare3.json';
   #file = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/css/tree/flare2.json';
   
 
@@ -696,25 +717,7 @@ def treedata(request,user_id):
           
   
   return HttpResponse(data_string)
- 
 
-
-  
-  #grabs the timeseries data
-  #http://<host>/exploratory_analysis/timeseries
-def timeseries(request):
-    
-    print ' ... in time series ...'
-    
-    from mapviewhelper import timeseries
-
-    #timeseries_cache_path = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/cache'
-    
-    jsonData = timeseries.timeSeriesHelper1(request,timeseries_cache_path)
-    
-    print ' ... end in time series ...'
-    
-    return HttpResponse(jsonData) 
   
   
   
@@ -1460,6 +1463,88 @@ def variable_names(request,variable_short_name):
     print 'JSON:',data_string
     '''
     
+def timeseries(request, lat, lon, variable):
+   import cdms2, json, cdutil.times
+   # need lat/lon, dataset name, variable from the request
+   #variable = str(request.POST['variable'])
+   #lat = float(request.POST['lat'])
+   #lon = float(request.POST['lon'])
+
+   lon = int(lon)
+   lat = int(lat)
+
+   # To make URL values positive integers, we add +90 to lat and multiply by 60
+   # And +180 to lon and multiply by 60. Need to undo that first.
+   print 'values passed in: ',lat, lon
+   mylat = lat/60
+   mylat = mylat - 90
+   mylon = lon/60
+   mylon = mylon - 180
+
+   # THIS NEEDS GREPPED FROM DATASET BUT FINE FOR NOW
+   xf = 2
+   yf = 2
+   mylat = (mylat+90) * yf
+
+   if(mylon < 0):
+      mylon = (mylon+360)*xf
+   elif(mylon >= 0):
+      mylon = mylon*xf
+
+   print 'my new coordinates: ', mylat, mylon
+
+   dataset = os.path.join(default_sample_data_dir, 'test.xml')
+
+   # Note: It is assumed that we are given an index into the dataset rather
+   # than actual lat/lon coordinates. This is not a problem currently, but
+   # if this code gets used more, we should probably fix that.
+
+   data = []
+   f = cdms2.open(dataset)
+   thevar = f(variable)
+#   thevar = thevar(latitude=(-90,90), longitude=(-180, 180, 'cob'))
+   
+   axisIndex = thevar.getAxisIndex('time')
+   timeAxis = thevar.getTime()
+   #print timeAxis
+   cdutil.times.setAxisTimeBoundsMonthly(timeAxis)
+   #axisIndex = 0;
+   # This code assumes time is the 0th axis. The slice/subregion methods
+   # in CDAT don't appear to work, so I can't slice out a region based on
+   # naming an axis. There must be a better way to do this, but I don't 
+   # know what it is currently.
+   # Also, for some reason data = thevar.data[:][lat][lon] doesn't work.
+   # This could also be adapted to take subranges pretty trivially
+   if(axisIndex == 0): 
+     for i in range(thevar.shape[axisIndex]):
+       data.append(float(thevar.data[i][int(mylat)][int(mylon)]))
+   else:
+      print 'Unsupported timeaxis != 0'
+      quit()
+
+   print data
+   f.close()
+   # Make the json now
+   # Note - Most of the land datasets we have make it challenging to trivially get the
+   # start/end month/year. They are all encoded as days since 1-1-1, but it is not necessarily
+   # obvious that that is the case. There doesn't appear to be a trivial way to fix that. needs
+   # more thought
+   j = {}
+   j['start_year'] = 151   
+   j['start_month'] = 1
+   j['end_year'] = 165
+   j['end_month'] = 12
+   j['timeseries_data'] = data
+
+
+   return HttpResponse(json.dumps(j, separators=(',',':'), indent=2))
+
+
+
+
+
+
+
 
 '''
 'username' : username,
@@ -1472,7 +1557,6 @@ def variable_names(request,variable_short_name):
 'current_bookmark': bookmark
 #'treeFile' : treeFile,
 '''
-    
     
 '''
 package_list = ['lmwg']

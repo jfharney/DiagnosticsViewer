@@ -20,6 +20,9 @@ urlpatterns = patterns('',
   #points to the geo view
   url(r'^maps/(?P<user_id>\w+)/$', views.maps, name='maps'),
   
+  #points to the heatmap view
+  url(r'^heatmap/(?P<user_id>\w+)/$', views.heatmap, name='heatmap'),
+  
   #the diagnostic tree view
   #example url: http://localhost:8081/exploratory_analysis/treex/jfharney
   url(r'^treeex/(?P<user_id>\w+)/$', views.treeex, name='treeex'),
@@ -56,7 +59,7 @@ urlpatterns = patterns('',
   
   
   #grabs the timeseries data
-  url(r'^timeseries/$', views.timeseries, name='timeseries'),
+  url(r'^timeseries/(?P<lat>\w+)/(?P<lon>\w+)/(?P<variable>\w+)$', views.timeseries, name='timeseries'),
   
   ############
   #Tree stuff#
