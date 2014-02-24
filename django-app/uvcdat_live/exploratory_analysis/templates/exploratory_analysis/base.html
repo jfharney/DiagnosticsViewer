@@ -112,19 +112,34 @@
 						<ul class="nav navbar-nav">
 
 							<li class="active">
-								<a href="http://acme-ui.ornl.gov:8081/exploratory_analysis">Home</a>
+								<a id="home_link" href="http://localhost:8081/exploratory_analysis">Home</a>
+							<!-- 
+								<a id="home_link">Home</a>
+								 -->
 							</li>
 							<li>
-								<a href="http://acme-ui.ornl.gov:8081/exploratory_analysis/login">Login</a>
+							<!-- 
+								<a id="login_link">Login</a>
+								 -->
+								<a id="login_link" href="http://localhost:8081/exploratory_analysis/login">Login</a>
 							</li>
 							<li>
-								<a href="http://acme-ui.ornl.gov:8081/exploratory_analysis/maps/jfharney">Geo</a>
+							<!--  
+								<a id="geo_link">Geo</a>
+								-->
+								<a id="geo_link" href="http://localhost:8081/exploratory_analysis/maps/jfharney">Geo</a>
 							</li>
 							<li>
-								<a href="http://acme-ui.ornl.gov:8081/exploratory_analysis/treeex/jfharney">Diagnostics Tree</a>
+							<!-- 
+								<a id="tree_link">Diagnostics Tree</a>
+							 -->
+								<a id="tree_link" href="http://localhost:8081/exploratory_analysis/treeex/jfharney">Diagnostics Tree</a>
 							</li>
 							<li>
-								<a href="http://acme-ui.ornl.gov:8081/exploratory_analysis/heatmap/jfharney">Heatmap</a>
+								<a id="heatmap_link"  href="http://localhost:8081/exploratory_analysis/heatmap/jfharney">Heatmap</a>
+							<!--
+								<a id="heatmap_link">Heatmap</a>
+							  -->
 							</li>
 						</ul>
 
@@ -158,6 +173,37 @@
 
 <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/ui-lightness/jquery-ui.css" />
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+	
+	
+<script type="text/javascript">
+
+$(document).ready(function(){
+	
+	/*
+	$('#heatmap_link').click(Function(){
+		location.href = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/heatmap/jfharney';
+	};
+	
+	$('#login_link').click(Function(){
+		location.href = "http://" + EA.host + ":" + EA.port + "/exploratory_analysis/login";
+	};
+	
+	$('#home_link').click(Function(){
+		location.href = "http://" + EA.host + ":" + EA.port + "/exploratory_analysis";
+	};
+	
+	$('#tree_link').click(Function(){
+		location.href = "http://" + EA.host + ":" + EA.port + "/exploratory_analysis/treeex/jfharney";
+	};
+	
+	$('#geo_link').click(function() {
+		
+		location.href = "http://" + EA.host + ":" + EA.port + "exploratory_analysis/maps/jfharney";
+	});
+	*/
+});
+
+</script>
 	</body>
 
 </html>

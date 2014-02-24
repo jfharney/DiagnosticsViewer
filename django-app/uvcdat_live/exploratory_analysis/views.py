@@ -409,6 +409,8 @@ def treeex(request,user_id):
             #   print vars
     
             print 'packages--->' + str(packages)
+            print 'vars--->' + str(vars)
+            print 'times--->' + str(times)
             print 'dataset_list[0]--->' + dataset_list[0]
     
             for p in range(len(o._opts['path'])):

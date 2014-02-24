@@ -361,7 +361,8 @@ function create_cyclone_plot(data, tdata, time_plot_div_id) {
 
 		gridmarker.style("top", (event.pageY - 5) + "px").style("left", (event.pageX - 5) + "px");
 		//var filename = "/static/exploratory_analysis/json_grid_data/TLAI-timeseries-" + row + "-" + col + ".json";
-		var filename = "http://localhost:8081/exploratory_analysis/timeseries/" + minute_lat + "/" + minute_lon + "/TLAI";
+		//var filename = "http://localhost:8081/exploratory_analysis/timeseries/" + minute_lat + "/" + minute_lon + "/TLAI";
+		var filename = "http://" + EA.host + ":" + EA.port + "exploratory_analysis/timeseries/" + minute_lat + "/" + minute_lon + "/TLAI";
 		d3.json(filename, function(error, new_timedata) {
 			var current_year = +new_timedata.start_year;
 			var current_month = +new_timedata.start_month;
