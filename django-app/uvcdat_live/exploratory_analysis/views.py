@@ -1512,7 +1512,16 @@ def timeseries(request, lat, lon, variable):
 
 
 
+def avgmap(request, time, variable):
+   dataset = os.path.join(default_sample_data_dir,"tropics_warming_th_q_co2")
+   dataset = dataset+time+'.nc'
+   f = cdms2.open(dataset)
+   thevar = f(variable)
 
+   j = {}
+   j['geo_data'] = thevar.data.tolist()
+   f.close()
+   return HttpResponse(json.dumps(j, separators=(',',':'), indent=2))
 
 
 
