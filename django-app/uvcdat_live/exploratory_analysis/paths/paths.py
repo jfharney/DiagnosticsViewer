@@ -43,7 +43,6 @@ front_end_cache_dir = '../../../static/cache/'
 
 
 #directory holding netcdf datasets
-#<<<<<<< HEAD
 #default_sample_data_dir = '/Users/i7j/sampledatalens/tropics_warming_th_q_co2'
 default_sample_data_dir = '/data/tropics/'#tropics_warming_th_q_co2'
 
