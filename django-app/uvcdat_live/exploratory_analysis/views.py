@@ -1495,7 +1495,7 @@ def timeseries(request, lat, lon, variable):
 
    print 'my new coordinates: ', mylat, mylon
 
-   dataset = os.path.join(default_sample_data_dir, 'test.xml')
+   dataset = os.path.join(default_sample_data_dir+'tropics_warming_th_q_co2', 'test.xml')
 
    # Note: It is assumed that we are given an index into the dataset rather
    # than actual lat/lon coordinates. This is not a problem currently, but
@@ -1544,7 +1544,16 @@ def timeseries(request, lat, lon, variable):
 
 
 
+def avgmap(request, time, variable):
+   dataset = os.path.join(default_sample_data_dir,"tropics_warming_th_q_co2")
+   dataset = dataset+time+'.nc'
+   f = cdms2.open(dataset)
+   thevar = f(variable)
 
+   j = {}
+   j['geo_data'] = thevar.data.tolist()
+   f.close()
+   return HttpResponse(json.dumps(j, separators=(',',':'), indent=2))
 
 
 

@@ -247,9 +247,10 @@ body.loading #modal1 {
 		            	-->
 		            	</li>	
 		            	{% endfor %}
+		            	<!--
 		            	<li class="divider"></li>
 		                <li><a href="#" id="custom">Custom</a></li>
-		            
+		              	-->
 		            </ul>
 		        </li>
 		        <li class="dropdown">
@@ -351,7 +352,7 @@ body.loading #modal1 {
 		<div class="col-md-2">
 		
 		
-		
+		<!--  
 		<div class="dropdown">
 		     <ul class="dropdown-menu dropdown-menu-form" role="menu">
 		    
@@ -375,12 +376,13 @@ body.loading #modal1 {
 		        </li>
 		    </ul>
 		</div>
-		
+		-->
 		
 		
 	
 			
-			
+		<!--  	
+>>>>>>> harney-devel-check
 			<div class="row" style="margin-top:20px;padding-top:5px;border-top: 10px outset #ffffff">
 				<div style="margin-top:10px;">
 					Dataset: <span id="dataset_name"></span>
@@ -396,14 +398,19 @@ body.loading #modal1 {
 			<div class="row" style="margin-top:20px;padding-top:5px;border-top: 10px outset #ffffff" id="viz_button">
 				<button type="button" class="btn btn-default" >Submit</button>
 			</div>
+		-->
 	
 		
 		</div>
 		
+		
 		<div class="col-md-10">
 			<div class="row" style="border: 1px solid #000000;">
 				<div class="col-md-9" style="border-right: 1px solid #000000;height:900px;max-height:900px">
+
+				<!-- 
 				<span> <button type="button" class="btn btn-default" id="alt_save_tree">Save Tree</button> </span>
+				 -->
 				<span style="margin-left:10px;font-weight:bold"> Tree Name: </span><span id="current_treename">{{current_bookmark}}</span>
 				
 					<div id="treeimg" style="overflow-x:visible">
@@ -438,9 +445,10 @@ body.loading #modal1 {
 	<script src="{% static 'exploratory_analysis/js/tree/saveplot.js' %}"></script>
 	<script src="{% static 'exploratory_analysis/js/tree/retrieveplot.js' %}"></script>
 	<script src="{% static 'exploratory_analysis/js/jquery/overlay.js' %}"></script>
-	
 
+</body>
 <script>
+
 
 
 /*
@@ -479,14 +487,6 @@ $(document).ready(function(){
 	
 
 	
-	
-	
-	//$("#prompt").overlay().load();
-	
-	
-	
-	
-	
 	$('#timeseriestest').click(function() {
 		alert('time series test');
 		console.log('time series test');
@@ -521,15 +521,6 @@ $(document).ready(function(){
 	});
 	
 	
-
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	$('#create_tree').click(function(){
 		
@@ -556,23 +547,6 @@ $(document).ready(function(){
 	
 	if(treeloaded == 'false')
 		$('#treeviewer').hide();
-	
-	
-	
-	//show/hide the api checks
-	//$('#api_check').show();
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
@@ -608,23 +582,9 @@ $(document).ready(function(){
 	
 	
 	
-	$('.dropdown-toggle').dropdown();
 	
 	
 	/*
-
-	$('#b1').click(function() {
-		alert('click');
-	});
-	$('#b2').click(function() {
-		alert('redirecting to...' + $(this).html());
-		location.href='http://localhost:8081/exploratory_analysis/treeex/jfharney?bookmark='+$(this).html();
-	});
-	
-	*/
-	
-	
-	
 	$('#bookmark_submit').click(function(){
 		var variable_arr = new Array();
 		var time_arr = new Array();
@@ -647,12 +607,8 @@ $(document).ready(function(){
 		console.log('Sending times ' + time_arr);
 		
 	});
-	
-	/*
-	$('#bookmark_cancel').click(function(){
-		$('div#bookmark_selection').hide();
-	});
 	*/
+	
 	
 });
 

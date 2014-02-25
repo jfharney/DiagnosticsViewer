@@ -144,6 +144,11 @@ function create_cyclone_plot(data, tdata, time_plot_div_id) {
 	//focus3.append("circle").attr("r", 4.5);
 	//focus3.append("text").attr("x", 9).attr("dy", ".35em");
 
+
+	if (EA.spinnerFlag) {
+		$body.removeClass("loading"); 
+	}
+	
 	var focusLine = svg.append("g").attr("class", "focus").style("display", "none");
 	focusLine.append("line").attr("x1", 0).attr("y1", 0).attr("x2", 0).attr("y2", timePlotHeight + (margin.bottom / 2));
 	focusLine.append("text").attr("x", 9).attr("y", timePlotHeight - 8).attr("dy", ".35em");
