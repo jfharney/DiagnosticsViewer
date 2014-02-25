@@ -354,6 +354,10 @@ function create_cyclone_plot(data, tdata, time_plot_div_id) {
 	}
 
 	function timeplot_onclick() {
+		$body=$("body");
+		if(EA.spinnerFlag) {
+			$body.addClass("loading"); }
+		
 		var row = parseInt(mapdata.length - d3.mouse(this)[1]);
 		var col = parseInt(d3.mouse(this)[0]);
 		console.log("grid coordinates are row = " + row + " col = " + col);
@@ -426,6 +430,10 @@ function create_cyclone_plot(data, tdata, time_plot_div_id) {
 			}).style("stroke", function(d) {
 				return timePlotColor(d.name);
 			});
+			if(EA.spinnerFlag)
+			{
+				$body.removeClass("loading");
+			}
 		});
 	}
 

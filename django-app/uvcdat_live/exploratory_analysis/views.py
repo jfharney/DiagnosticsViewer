@@ -508,9 +508,11 @@ def treeex(request,user_id):
         #/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/cache/
         #../../../static/cache/Bookmark2.json
         #
-        mapped_file_name = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/'
+        mapped_file_name = paths.uvcdat_live_root + 'exploratory_analysis/'
         p = re.compile('../../../')
         check_file_name = p.sub( mapped_file_name, cached_file_name)
+	
+	print 'cfn: ',check_file_name
         
         treeFile = None
         
@@ -769,6 +771,7 @@ def diagsHelper(user_id,bookmark_name):
     print '\n\ntreeFile: ' + treeFile + '\n\texists? ' + str(os.path.exists(treeFile)) + '\n\n'
     
     treeFileExists = os.path.exists(treeFile)
+    print 'tfe:', str(treeFileExists)
     
     #if the file is not in the cache already, then we have to generate the file
     if not treeFileExists:
@@ -825,6 +828,7 @@ def diagsHelper(user_id,bookmark_name):
         
         
     #return the file and the location of the file
+    print 'tf: ' ,treeFile
     return treeFile
 
 
