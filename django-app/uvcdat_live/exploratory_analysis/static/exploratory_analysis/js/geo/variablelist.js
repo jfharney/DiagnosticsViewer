@@ -7,7 +7,7 @@ var url = 'http://' + hostname + ':' + port + '/exploratory_analysis/variables/'
 
 var dataList = ["tropics_warming_th_q_co2"]
 var packList = ["lmwg"]
-var varList = ["GPP","NEE","HR","ER","NPP","QVEGT","QVEGE","QSOIL","GROSSNMIN"]
+var varList = ["GPP","NEE","HR","ER","NPP","TLAI", "QVEGT","QVEGE","QSOIL","GROSSNMIN"]
 var timeList = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC","DJF","MAM","JJA","SON","ANN"]
 
 $(document).ready(function() {
