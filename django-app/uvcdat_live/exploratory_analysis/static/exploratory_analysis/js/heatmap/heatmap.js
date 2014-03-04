@@ -1,8 +1,8 @@
-var dotcolor = "#660099";
-var zoomedRectOpactiy = 1;
+var dotcolor = "black";
+var zoomedRectOpacity = 0.2;
 var gridOpacity = 1;
 var gridColor = "#B0B0B0";
-var dotOpacity = 1;
+var dotOpacity = .6;
 var rectColor = "#383838";
 
 var GlobalX = 0;
@@ -81,11 +81,11 @@ setTimeout(function() {
 			});
 
 			// Y-ticks. TODO Cross the field into the tick data?
-				// Frame.
-				row.append("svg:rect").attr("x", padding / 2).attr("y", padding / 2).attr("width", size - padding).attr("height", size - padding).style("stroke", rectColor).style("stroke-width", 1.5);
-				//.style("class", "Blues")
+			// Frame.
+			row.append("svg:rect").attr("x", padding / 2).attr("y", padding / 2).attr("width", size - padding).attr("height", size - padding).style("stroke", rectColor).style("stroke-width", 1.5);
+			//.style("class", "Blues")
 
-				//.attr("class", quantize);
+			//.attr("class", quantize);
 			// Dot plot.
 			//var dot = row.selectAll("circle")
 
@@ -493,7 +493,7 @@ setTimeout(function() {
 						return position[d.x.x](d.y[d.x.x]);
 					}).attr("cy", function(d) {
 						return size - position[d.x.y](d.y[d.x.y]);
-					}).attr("r", 1).attr("location", function(d) {
+					}).attr("r", .5).attr("location", function(d) {
 						return d.y.locations;
 					}).style("fill", dotcolor).on("click", function(d) {
 						click(d.x.x + ", " + d.x.y + " " + d.y.locations);
@@ -510,7 +510,7 @@ setTimeout(function() {
 
 						svg.selectAll("circle").filter(function(d) {
 							return d3.select(this).attr("location") == locale;
-						}).attr("r", "1").style("stroke", null);
+						}).attr("r", ".5").style("stroke", null);
 
 					});
 
@@ -520,7 +520,7 @@ setTimeout(function() {
 					});
 
 					region.selectAll("circle").style("font", "24px sans-serif").append('svg:title').text(function(d, i) {
-						return "<font size=2 face=\"Helvetica\" color=white>" + d.y[d.x.y] + ", " + d.y[d.x.x] + " " + d.y.locations + "</font>" + "";
+						return "<font size=2 face=\"Helvetica\" color=white>" + d.y[d.x.y] + "<br> " + d.y[d.x.x] + " " + d.y.locations + "</font>" + "";
 					});
 
 				} else {
@@ -789,7 +789,7 @@ setTimeout(function() {
 			///////////////////////////////////////////////////////////////////////////////////////////////////
 
 			function quantize(d, i) {
-						
+
 				return "q" + heatcolor(data[i][d.i]) + "-9";
 
 			}
@@ -814,155 +814,167 @@ setTimeout(function() {
 				var iX = translate[0] / size / scale * -1;
 				var iY = translate[1] / size / scale * -1;
 
-				setTimeout(function() {
-					if (scale < .5 && hide == false) {
-						ctex.attr("display", "none");
-						tex.attr("display", "none");
-						hide = true;
+				if (scale < .5 && hide == false) {
+					ctex.attr("display", "none");
+					tex.attr("display", "none");
+					hide = true;
+				}
+				if (scale > 1 && hide == true) {
+					ctex.attr("display", null);
+					tex.attr("display", null);
+					hide = false;
+				}
+
+				if (scale < 3 && mode == "heat") {
+
+					svg.attr("transform", "translate(" + translate + ")" + "scale(" + scale + ")");
+
+					GlobalX = translate[1];
+					GlobalY = translate[0];
+					if (GlobalX < size)
+						ctex.attr("transform", "translate(0," + (translate[1] * -1) / scale + ")");
+					else
+						ctex.attr("transform", "translate(0," + (size * -1) + ")");
+					if (GlobalY < size)
+						tex.attr("transform", "translate(" + (translate[0] * -1) / scale + ",0)");
+					else
+						tex.attr("transform", "translate(" + (size * -1) + ",0)");
+				} else if (scale < 3 && mode == "splom") {
+
+					var regions = row.filter(function(d, i) {
+						return d3.select(this).attr("graphmode") == "splom";
+					});
+
+					regions.selectAll("rect").style("fill", function() {
+						return $(this).css("stroke");
+					});
+					regions.selectAll("rect").style("stroke", "black");
+
+					mode = "heat";
+					svg.attr("transform", "translate(" + translate + ")" + "scale(" + scale + ")");
+					regions.selectAll("circle").remove();
+					regions.selectAll("line.y").remove();
+					regions.selectAll("line.x").remove();
+					regions.attr("graphmode", "heat");
+					//row.selectAll("text")
+					if (GlobalX < size)
+						ctex.attr("transform", "translate(0," + (translate[1] * -1) / scale + ")");
+					else
+						ctex.attr("transform", "translate(0," + (size * -1) + ")");
+					if (GlobalY < size)
+						tex.attr("transform", "translate(" + (translate[0] * -1) / scale + ",0)");
+					else
+						tex.attr("transform", "translate(" + (size * -1) + ",0)");
+
+				} else if (scale >= 3) {
+					mode = "splom";
+					svg.attr("transform", "translate(" + translate + ")" + "scale(" + scale + ")");
+
+					var regionl = row.filter(function(d, i) {
+						return (d.i <= iX + 5 && d.i >= iX - 0 && i <= iY + 5 && i >= iY - 0);
+					});
+					var region = regionl.filter(function(d, i) {
+						return d3.select(this).attr("graphmode") == "heat";
+					});
+
+					region.attr("graphmode", "splom");
+
+					region.selectAll("line.y").data(function(d) {
+						return position[d.y].ticks(5).map(position[d.y]);
+					}).enter().append("svg:line").attr("class", "y").attr("x1", padding / 2).attr("x2", size - padding / 2).style("stroke", gridColor).style("stroke-width", .2).style("fill-opacity", gridOpacity).attr("y1", function(d) {
+						return d;
+					}).attr("y2", function(d) {
+						return d;
+					});
+
+					region.selectAll("rect").style("stroke", function() {
+						return $(this).css("fill");
+					});
+					region.selectAll("rect").style("fill", "white");
+					//region.selectAll("rect").style("fill-opacity", zoomedRectOpacity);
+
+					// X-ticks. TODO Cross the field into the tick data?
+					region.selectAll("line.x").data(function(d) {
+						return position[d.x].ticks(5).map(position[d.x]);
+					}).enter().append("svg:line").attr("class", "x").attr("x1", function(d) {
+						return d;
+					}).attr("x2", function(d) {
+						return d;
+					}).attr("y1", padding / 2).style("stroke-width", .2).style("stroke", gridColor).attr("y2", size - padding / 2);
+
+					region.selectAll("circle").data(crossValues).enter().append("svg:circle").attr("cx", function(d) {
+						return position[d.x.x](d.y[d.x.x]);
+					}).attr("cy", function(d) {
+						return size - position[d.x.y](d.y[d.x.y]);
+					}).attr("r", .5).on("click", function(d) {
+						click(d.x.x + ", " + d.x.y + " " + d.y.locations, this);
+					}).attr("location", function(d) {
+						return d.y.locations;
+					}).style("fill", dotcolor)
+					//.attr("class", quantize)
+
+					.on("mouseover", function(d, i) {
+
+						var locale = d3.select(this).attr("location");
+
+						svg.selectAll("circle").filter(function(d) {
+							return d3.select(this).attr("location") == locale;
+						}).attr("r", "1.5").style("stroke", "yellow");
+
+					}).on("mouseout", function(d, i) {
+						var locale = d3.select(this).attr("location");
+
+						svg.selectAll("circle").filter(function(d) {
+							return d3.select(this).attr("location") == locale;
+						}).attr("r", ".5").style("stroke", null);
+
+					});
+
+					var timer;
+
+					$('circle').tipsy({
+						html : true,
+						gravity : 's',
+					});
+
+					region.selectAll("circle").style("font", "24px sans-serif").append('svg:title').text(function(d, i) {
+			
+						return "<font size=2 face=\"Helvetica\" color=white>" + d.x.y + " : " + d.y[d.x.y] + "<br> " + d.x.x + " : " + d.y[d.x.x] + "</font>";
+						//+ "</font><br><b>Comments:</b><br/><TEXTAREA  name=\'filedata\' id=\'txtbox\'  ROWS=2 COLS=8 WRAP></TEXTAREA><br><button onclick=\"save()\">Submit</button>";
+
+					});
+					window.save = function(d) {
+						var txt = document.getElementById('txtbox');
+
+						alert(txt.value + " " + d);
 					}
-					if (scale > 1 && hide == true) {
-						ctex.attr("display", null);
-						tex.attr("display", null);
-						hide = false;
-					}
+					if (GlobalX < size)
+						ctex.attr("transform", "translate(0," + (translate[1] * -1) / scale + ")");
+					else
+						ctex.attr("transform", "translate(0," + (size * -1) + ")");
+					if (GlobalY < size)
+						tex.attr("transform", "translate(" + (translate[0] * -1) / scale + ",0)");
+					else
+						tex.attr("transform", "translate(" + (size * -1) + ",0)");
 
-					if (scale < 3 && mode == "heat") {
+				}//end else
+				else {
+					if (scale < .5 && hide == false)
+						ctex.style("display", "none");
+					if (scale > .5 && hide == true)
+						ctex.styel("display", null);
 
-						svg.attr("transform", "translate(" + translate + ")" + "scale(" + scale + ")");
+					if (GlobalX < size)
+						ctex.attr("transform", "translate(0," + (translate[1] * -1) / scale + ")");
+					else
+						ctex.attr("transform", "translate(0," + (size * -1) + ")");
+					if (GlobalY < size)
+						tex.attr("transform", "translate(" + (translate[0] * -1) / scale + ",0)");
+					else
+						tex.attr("transform", "translate(" + (size * -1) + ",0)");
 
-						GlobalX = translate[1];
-						GlobalY = translate[0];
-						if (GlobalX < size)
-							ctex.attr("transform", "translate(0," + (translate[1] * -1) / scale + ")");
-						else
-							ctex.attr("transform", "translate(0," + (size * -1) + ")");
-						if (GlobalY < size)
-							tex.attr("transform", "translate(" + (translate[0] * -1) / scale + ",0)");
-						else
-							tex.attr("transform", "translate(" + (size * -1) + ",0)");
-					} else if (scale < 3 && mode == "splom") {
-						var regions = row.filter(function(d, i) {
-							return d3.select(this).attr("graphmode") == "splom";
-						});
-						mode = "heat";
-						svg.attr("transform", "translate(" + translate + ")" + "scale(" + scale + ")");
-						regions.selectAll("circle").remove();
-						regions.selectAll("line.y").remove();
-						regions.selectAll("line.x").remove();
-						regions.attr("graphmode", "heat");
-						//row.selectAll("text")
-						if (GlobalX < size)
-							ctex.attr("transform", "translate(0," + (translate[1] * -1) / scale + ")");
-						else
-							ctex.attr("transform", "translate(0," + (size * -1) + ")");
-						if (GlobalY < size)
-							tex.attr("transform", "translate(" + (translate[0] * -1) / scale + ",0)");
-						else
-							tex.attr("transform", "translate(" + (size * -1) + ",0)");
+				}
 
-					} else if (scale >= 3) {
-						mode = "splom";
-						svg.attr("transform", "translate(" + translate + ")" + "scale(" + scale + ")");
-
-						var regionl = row.filter(function(d, i) {
-							return (d.i <= iX + 5 && d.i >= iX - 0 && i <= iY + 5 && i >= iY - 0);
-						});
-						var region = regionl.filter(function(d, i) {
-							return d3.select(this).attr("graphmode") == "heat";
-						});
-
-						region.attr("graphmode", "splom");
-
-						region.selectAll("line.y").data(function(d) {
-							return position[d.y].ticks(5).map(position[d.y]);
-						}).enter().append("svg:line").attr("class", "y").attr("x1", padding / 2).attr("x2", size - padding / 2).style("stroke", gridColor).style("stroke-width", .2).style("fill-opacity", gridOpacity).attr("y1", function(d) {
-							return d;
-						}).attr("y2", function(d) {
-							return d;
-						});
-
-						// X-ticks. TODO Cross the field into the tick data?
-						region.selectAll("line.x").data(function(d) {
-							return position[d.x].ticks(5).map(position[d.x]);
-						}).enter().append("svg:line").attr("class", "x").attr("x1", function(d) {
-							return d;
-						}).attr("x2", function(d) {
-							return d;
-						}).attr("y1", padding / 2).style("stroke-width", .2).style("stroke", gridColor).attr("y2", size - padding / 2);
-
-						region.selectAll("circle").data(crossValues).enter().append("svg:circle").attr("cx", function(d) {
-							return position[d.x.x](d.y[d.x.x]);
-						}).attr("cy", function(d) {
-							return size - position[d.x.y](d.y[d.x.y]);
-						}).attr("r", 1).on("click", function(d) {
-							click(d.x.x + ", " + d.x.y + " " + d.y.locations, this);
-						}).attr("location", function(d) {
-							return d.y.locations;
-						}).style("fill", dotcolor)
-						//.attr("class", quantize)
-
-						.on("mouseover", function(d, i) {
-
-							var locale = d3.select(this).attr("location");
-
-							svg.selectAll("circle").filter(function(d) {
-								return d3.select(this).attr("location") == locale;
-							}).attr("r", "1.5").style("stroke", "yellow");
-
-						}).on("mouseout", function(d, i) {
-							var locale = d3.select(this).attr("location");
-
-							svg.selectAll("circle").filter(function(d) {
-								return d3.select(this).attr("location") == locale;
-							}).attr("r", "1").style("stroke", null);
-
-						});
-
-						var timer;
-
-						$('circle').tipsy({
-							html : true,
-							gravity : 's',
-						});
-
-						region.selectAll("circle").style("font", "24px sans-serif").append('svg:title').text(function(d, i) {
-
-							return "<font size=2 face=\"Helvetica\" color=white>" + d.y[d.x.y] + ", " + d.y[d.x.x] + " " + d.y.locations;
-							//+ "</font><br><b>Comments:</b><br/><TEXTAREA  name=\'filedata\' id=\'txtbox\'  ROWS=2 COLS=8 WRAP></TEXTAREA><br><button onclick=\"save()\">Submit</button>";
-
-						});
-						window.save = function(d) {
-							var txt = document.getElementById('txtbox');
-
-							alert(txt.value + " " + d);
-						}
-						if (GlobalX < size)
-							ctex.attr("transform", "translate(0," + (translate[1] * -1) / scale + ")");
-						else
-							ctex.attr("transform", "translate(0," + (size * -1) + ")");
-						if (GlobalY < size)
-							tex.attr("transform", "translate(" + (translate[0] * -1) / scale + ",0)");
-						else
-							tex.attr("transform", "translate(" + (size * -1) + ",0)");
-
-					}//end else
-					else {
-						if (scale < .5 && hide == false)
-							ctex.style("display", "none");
-						if (scale > .5 && hide == true)
-							ctex.styel("display", null);
-
-						if (GlobalX < size)
-							ctex.attr("transform", "translate(0," + (translate[1] * -1) / scale + ")");
-						else
-							ctex.attr("transform", "translate(0," + (size * -1) + ")");
-						if (GlobalY < size)
-							tex.attr("transform", "translate(" + (translate[0] * -1) / scale + ",0)");
-						else
-							tex.attr("transform", "translate(" + (size * -1) + ",0)");
-
-					}
-				}, 0);
 				function quantize(d, i) {
 					return "q" + heatcolor(data[i][d.i]) + "-9";
 
@@ -982,10 +994,11 @@ setTimeout(function() {
 			}// end redraw()
 
 			function click(d, dot) {
-
+				/*
 				d3.select(dot).style("fill", "yellow");
 				fcload(d);
 				$("#mies4b").click();
+				*/
 			}
 
 
@@ -993,8 +1006,10 @@ setTimeout(function() {
 				alert(d);
 			}
 			function clickb(d) {
+				/*
 				CB_Open("href=htmlcontent,, html=<!-- Google Conversation Element Code --><iframe frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" border=\"0\" style=\"border:0;margin:0;width:250px;height:440px;\" src=\"http://www.google.com/friendconnect/discuss?scope=site&topic=" + d + "\" scrolling=\"no\" allowtransparency=\"true\"></iframe>");
 				this.attr("fill", "red");
+				*/
 			}
 
 			function quantize(d, i) {

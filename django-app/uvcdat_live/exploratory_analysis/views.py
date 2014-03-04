@@ -1512,9 +1512,9 @@ def timeseries(request, lat, lon, variable):
 
 
 
-def avgmap(request, time, variable):
-   dataset = os.path.join(default_sample_data_dir,"tropics_warming_th_q_co2")
-   dataset = dataset+time+'.nc'
+def avgmap(request, year, month, variable):
+   dataset = os.path.join(default_sample_data_dir,"tropics_warming_th_q.clm2.h0.")
+   dataset = dataset+year+'-'+month+'.nc'
    f = cdms2.open(dataset)
    thevar = f(variable)
 
