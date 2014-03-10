@@ -1,15 +1,17 @@
 ####related to settings.py####
 #databases_name = '/Users/i7j/sqlite3/11-3/mydb.db'
-databases_name = '/SNS/users/bs1/uvcdat/sqlite3/11-3/mydb.db'
-
+#databases_name = '/SNS/users/bs1/uvcdat/sqlite3/11-3/mydb.db'
+databases_name = '/Users/8xo/sqlite3/11-3/mydb.db'
 
 #location of the cloned project 
 #${DiagnosticsViewer_home}/django-app/uvcdat-live
 #uvcdat_live_root = '/Users/i7j/DiagnosticsViewer/django-app/uvcdat_live/' 
-uvcdat_live_root = '/SNS/users/bs1/uvcdat/DiagnosticsViewer/django-app/uvcdat_live/' 
+#uvcdat_live_root = '/SNS/users/bs1/uvcdat/DiagnosticsViewer/django-app/uvcdat_live/' 
+uvcdat_live_root = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live'
 
 #directory holding netcdf datasets
-default_sample_data_dir = '/data/tropics'
+#default_sample_data_dir = '/data/tropics'
+default_sample_data_dir = '/Users/8xo/sampledatalens/'
 
 
 #staticfiles_dirs = "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis",
@@ -40,11 +42,6 @@ cache_dir = uvcdat_live_root + 'exploratory_analysis/static/cache/'
 
 #path for front end to access cache (can't be a local path)
 front_end_cache_dir = '../../../static/cache/'
-
-
-#directory holding netcdf datasets
-#default_sample_data_dir = '/Users/i7j/sampledatalens/tropics_warming_th_q_co2'
-default_sample_data_dir = '/data/tropics/'#tropics_warming_th_q_co2'
 
 #img_cache_path = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/cache/'
 img_cache_path = uvcdat_live_root + 'exploratory_analysis/static/exploratory_analysis/cache/'
