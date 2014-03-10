@@ -511,7 +511,7 @@ def treeex(request,user_id):
         mapped_file_name = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/'
         p = re.compile('../../../')
         check_file_name = p.sub( mapped_file_name, cached_file_name)
-        
+        print 'check_file_name: ' + check_file_name
         treeFile = None
         
         '''
@@ -532,8 +532,9 @@ def treeex(request,user_id):
             treeloaded = 'false'
         
         
+        print 'treeFile---->: ' + treeFile
         
-        
+        treeFile = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/cache/sdfasf.json'
         
         #else return nothing
         

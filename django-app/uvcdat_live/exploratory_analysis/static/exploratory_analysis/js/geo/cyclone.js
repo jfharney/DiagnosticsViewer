@@ -354,6 +354,15 @@ function create_cyclone_plot(data, tdata, time_plot_div_id) {
 	}
 
 	function timeplot_onclick() {
+
+		$body = $("body");
+		
+
+		if (EA.spinnerFlag) {
+			$body.addClass("loading");  
+		}
+		
+		
 		var row = parseInt(mapdata.length - d3.mouse(this)[1]);
 		var col = parseInt(d3.mouse(this)[0]);
 		console.log("grid coordinates are row = " + row + " col = " + col);
@@ -367,7 +376,7 @@ function create_cyclone_plot(data, tdata, time_plot_div_id) {
 		gridmarker.style("top", (event.pageY - 5) + "px").style("left", (event.pageX - 5) + "px");
 		//var filename = "/static/exploratory_analysis/json_grid_data/TLAI-timeseries-" + row + "-" + col + ".json";
 		//var filename = "http://localhost:8081/exploratory_analysis/timeseries/" + minute_lat + "/" + minute_lon + "/TLAI";
-		var filename = "http://" + EA.host + ":" + EA.port + "exploratory_analysis/timeseries/" + minute_lat + "/" + minute_lon + "/TLAI";
+		var filename = "http://" + EA.host + ":" + EA.port + "/exploratory_analysis/timeseries/" + minute_lat + "/" + minute_lon + "/TLAI";
 		d3.json(filename, function(error, new_timedata) {
 			var current_year = +new_timedata.start_year;
 			var current_month = +new_timedata.start_month;
@@ -426,7 +435,14 @@ function create_cyclone_plot(data, tdata, time_plot_div_id) {
 			}).style("stroke", function(d) {
 				return timePlotColor(d.name);
 			});
+			
+
+			if (EA.spinnerFlag) {
+				$body.removeClass("loading");  
+			}
 		});
+		
+		
 	}
 
 }

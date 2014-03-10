@@ -21,7 +21,7 @@ $(document).ready(function(){
 	//var fileName = "flare25.json";
 	
 	var treeFile = $('span#treeFile').html();
-	//alert('treeFile: ' + treeFile);
+	console.log('treeFile: ' + treeFile);
 	treeFile = treeFile.replace('/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis','../../..');
 	console.log('treeFile: ' + treeFile);
 	
@@ -31,7 +31,8 @@ $(document).ready(function(){
 	
 	//check to see if there was a tree loaded
 	var treeloaded = $('span#treeloaded').html();
-	
+	console.log('treeloaded: ' + tree);
+	console.log('chk: ' + checkFile(treeFile));
 	if(treeloaded == 'true') {
 		
 		if(checkFile(treeFile))
