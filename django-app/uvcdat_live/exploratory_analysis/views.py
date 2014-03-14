@@ -790,42 +790,9 @@ def diagplot(request):
 #Tree Figures BookmarksAPI
 #http://<host>/exploratory_analysis/login
 #Need to store Bookmark name, bookmark variables, bookmark time periods, bookmark description
-def login(request):
-    template = loader.get_template('exploratory_analysis/login.html')
-
-    context = RequestContext(request, {
-        
-    })
-
-    return HttpResponse(template.render(context))
-
-#Tree Figures BookmarksAPI
-#http://<host>/exploratory_analysis/logout
-#Need to store Bookmark name, bookmark variables, bookmark time periods, bookmark description
-def logout(request):
-    
-    
-    from django.contrib.auth import logout
-    logout(request)
-    
-    template = loader.get_template('exploratory_analysis/logout.html')
-
-    context = RequestContext(request, {
-        
-    })
-
-    return HttpResponse(template.render(context))
-
-
-
-    
-#Tree Figures BookmarksAPI
-#http://<host>/exploratory_analysis/login
-#Need to store Bookmark name, bookmark variables, bookmark time periods, bookmark description
 def login1(request):
     template = loader.get_template('exploratory_analysis/login1.html')
 
-    print 'going to login1.html...'
     context = RequestContext(request, {
         
     })
@@ -842,6 +809,39 @@ def logout1(request):
     logout(request)
     
     template = loader.get_template('exploratory_analysis/logout1.html')
+
+    context = RequestContext(request, {
+        
+    })
+
+    return HttpResponse(template.render(context))
+
+
+
+    
+#Tree Figures BookmarksAPI
+#http://<host>/exploratory_analysis/login
+#Need to store Bookmark name, bookmark variables, bookmark time periods, bookmark description
+def login(request):
+    template = loader.get_template('exploratory_analysis/login.html')
+
+    print 'going to login1.html...'
+    context = RequestContext(request, {
+        
+    })
+
+    return HttpResponse(template.render(context))
+
+#Tree Figures BookmarksAPI
+#http://<host>/exploratory_analysis/logout
+#Need to store Bookmark name, bookmark variables, bookmark time periods, bookmark description
+def logout(request):
+    
+    
+    from django.contrib.auth import logout
+    logout(request)
+    
+    template = loader.get_template('exploratory_analysis/logout.html')
 
     context = RequestContext(request, {
         
