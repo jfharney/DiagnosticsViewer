@@ -29,8 +29,11 @@ $(document).ready(function(){
         var figure_bookmark_name = $(this).html();//bookmark_id;
         var figure_bookmark_datasetname = 'tropics_warming_th_q_co2';
         var figure_bookmark_realm = 'land';
-        var figure_bookmark_username = 'jfharney';
-		var data = {
+        //var figure_bookmark_username = 'jfharney';
+        
+        var figure_bookmark_username =  $('#username_posted').html();
+		
+        var data = {
 				'csrfmiddlewaretoken': csrftoken,
 				'figure_bookmark_name' : figure_bookmark_name,
 				'figure_bookmark_username' : figure_bookmark_username,

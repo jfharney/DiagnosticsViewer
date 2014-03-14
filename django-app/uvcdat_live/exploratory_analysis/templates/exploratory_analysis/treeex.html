@@ -67,7 +67,7 @@ svg {
 
 
 .hiddentext {
-	display:none
+	display:none 
 }
 
 .hiddenfunctionality {
@@ -157,7 +157,7 @@ body.loading #modal1 {
 			<br>
 			Tree Loaded: <span id="treeloaded">{{ treeloaded }}</span>
 			<br>
-			Username: <span id="username_posted"></span>
+			Username: <span id="username_posted">{{username}}</span>
 		
 		</div>
      
@@ -281,7 +281,7 @@ body.loading #modal1 {
     		<h4 style="margin-top:5px">Dataset</h4>
     		<div style="overflow-y: scroll;max-height:150px">
     		{% for dataset in dataset_list %}
-			<input name="{{dataset}}" id="{{dataset}}" type="radio" value="{{dataset}}" class="dataset_list" >
+			<input name="{{dataset}}" id="{{dataset}}" type="radio" value="{{dataset}}" class="dataset_list" checked>
 			<label for="{{dataset}}" class="checkboxselection">{{dataset}}</label>
 			{% endfor %}
 			</div>
@@ -292,7 +292,7 @@ body.loading #modal1 {
     		<h4 style="margin-top:5px">Package</h4>
     		<div style="overflow-y: scroll;max-height:150px">
     		{% for package in package_list %}
-			<input name="{{package}}" id="{{package}}" type="radio" value="{{package}}" class="package_list" >
+			<input name="{{package}}" id="{{package}}" type="radio" value="{{package}}" class="package_list" checked>
 			<label for="{{package}}" class="checkboxselection">{{package}}</label>
 			{% endfor %}
 			</div>

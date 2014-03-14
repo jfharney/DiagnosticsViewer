@@ -111,21 +111,32 @@
 
 						<ul class="nav navbar-nav">
 
+							
+							{% if loggedIn == "True" %}
+								<li class="active">
+									<a href="http://localhost:8081/exploratory_analysis">Home</a>
+								</li>
+								<li>
+									<a href="http://localhost:8081/exploratory_analysis/maps/{{username}}">Geo</a>
+								</li>
+								<li>
+									<a href="http://localhost:8081/exploratory_analysis/treeex/{{username}}">Diagnostics Tree</a>
+								</li>
+								<li>
+									<a href="http://localhost:8081/exploratory_analysis/heatmap/{{username}}">Heatmap</a>
+								</li>
+								<li>
+								<a href="http://localhost:8081/exploratory_analysis/logout1">Logout</a>
+								
+								</li>
+							{% else %}
 							<li class="active">
-								<a href="http://localhost:8081/exploratory_analysis">Home</a>
-							</li>
-							<li>
-								<a href="http://localhost:8081/exploratory_analysis/login">Login</a>
-							</li>
-							<li>
-								<a href="http://localhost:8081/exploratory_analysis/maps/jfharney">Geo</a>
-							</li>
-							<li>
-								<a href="http://localhost:8081/exploratory_analysis/treeex/jfharney">Diagnostics Tree</a>
-							</li>
-							<li>
-								<a href="http://localhost:8081/exploratory_analysis/heatmap/jfharney">Heatmap</a>
-							</li>
+									<a href="http://localhost:8081/exploratory_analysis">Home</a>
+								</li>
+								<li>
+									<a href="http://localhost:8081/exploratory_analysis/login1">Login</a>
+								</li>
+							{% endif %}
 						</ul>
 
 					</div>
@@ -146,7 +157,7 @@
 		<script src="{% static 'exploratory_analysis/js/bootstrap/bootstrap-combobox.js' %}"></script>
 
 
-		<script src="{% static 'exploratory_analysis/js/tree/core.js' %}"></script>
+		<script type="text/javascript" src="{% static 'exploratory_analysis/js/core.js' %}"></script>
 		<script type="text/javascript" src="{% static 'exploratory_analysis/js/datasets/selection.js' %}"></script>
 		<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/visualize.js' %}"></script>
 		<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/time.js' %}"></script>
@@ -154,7 +165,6 @@
 		<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/map.js' %}"></script>
 		<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/cyclone.js' %}"></script>
 
-	    <script src="{% static 'exploratory_analysis/js/tree/core.js' %}"></script>
 
 <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/ui-lightness/jquery-ui.css" />
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>

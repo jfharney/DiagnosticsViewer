@@ -81,12 +81,20 @@ def index(request):
 #corresponds with url: http://<host>/exploratory_analysis
 def main(request,user_id):
     
-    print request.GET.get('q')
+    
+    print '\n\n\n\n\n\n\n\t\t\tuser_id: ' + str(user_id)
+    print 'user: ' + str(request.user)
+    
+    loggedIn = False
+    
+    if (str(request.user) == str(user_id)):
+        loggedIn = True
     
     template = loader.get_template('exploratory_analysis/index.html')
     
     context = RequestContext(request, {
-        'username' : user_id,
+        'username' : str(user_id),
+        'loggedIn' : str(loggedIn)
     })
 
     return HttpResponse(template.render(context))
@@ -98,14 +106,29 @@ def main(request,user_id):
 #geo map/time series view
 #corresponds with url: http://<host>/exploratory_analysis/maps
 def maps(request,user_id):
+    print '\n\n\n\n\nrequest user authenticate: ' + str(request.user.is_authenticated()) + '\n\n\n\n'
+    
+    
+    #need a flag to indicated whether a tree 
+    print '\n\n\n\n\n\n\n\t\t\tuser_id: ' + str(user_id)
+    print 'user: ' + str(request.user)
+    
+    loggedIn = False
+    
+    if (str(request.user) == str(user_id)):
+        loggedIn = True
+    
     username = 'jfharney'
     
+    #grab the username
     if user_id != None:
-        username = user_id 
+        username = user_id
+    
     
     template = loader.get_template('exploratory_analysis/mapview.html')
     
     context = RequestContext(request, {
+      'loggedIn' : str(loggedIn),
       'username' : username,
     })
     
@@ -115,14 +138,29 @@ def maps(request,user_id):
 #geo map/time series view
 #corresponds with url: http://<host>/exploratory_analysis/maps
 def heatmap(request,user_id):
+    print '\n\n\n\n\nrequest user authenticate: ' + str(request.user.is_authenticated()) + '\n\n\n\n'
+    
+    
+    #need a flag to indicated whether a tree 
+    print '\n\n\n\n\n\n\n\t\t\tuser_id: ' + str(user_id)
+    print 'user: ' + str(request.user)
+    
+    loggedIn = False
+    
+    if (str(request.user) == str(user_id)):
+        loggedIn = True
+    
     username = 'jfharney'
     
+    #grab the username
     if user_id != None:
-        username = user_id 
+        username = user_id
+    
     
     template = loader.get_template('exploratory_analysis/heatmapview.html')
     
     context = RequestContext(request, {
+      'loggedIn' : str(loggedIn),
       'username' : username,
     })
     
@@ -253,11 +291,17 @@ def figureGenerator(request):
 #New tree view
 def treeex(request,user_id):
     
-    
+    print '\n\n\n\n\nrequest user authenticate: ' + str(request.user.is_authenticated()) + '\n\n\n\n'
     
     
     #need a flag to indicated whether a tree 
+    print '\n\n\n\n\n\n\n\t\t\tuser_id: ' + str(user_id)
+    print 'user: ' + str(request.user)
     
+    loggedIn = False
+    
+    if (str(request.user) == str(user_id)):
+        loggedIn = True
     
     username = 'jfharney'
     
@@ -466,6 +510,8 @@ def treeex(request,user_id):
        
         
         context = RequestContext(request, {
+            'loggedIn' : str(loggedIn),
+            'username' : username,
             'treeloaded' : treeloaded,
             'package_list' : package_list,
             'dataset_list' : dataset_list,
@@ -479,6 +525,7 @@ def treeex(request,user_id):
         })
         
 
+        print '\n\t\t\tloggedIn: ' + str(loggedIn) 
         return HttpResponse(template.render(context))
 
         
@@ -534,7 +581,7 @@ def treeex(request,user_id):
         
         print 'treeFile---->: ' + treeFile
         
-        treeFile = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/cache/sdfasf.json'
+        #treeFile = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/cache/sdfasf.json'
         
         #else return nothing
         
@@ -548,8 +595,9 @@ def treeex(request,user_id):
     
     
         context = RequestContext(request, {
-            'treeloaded' : treeloaded,
+            'loggedIn' : str(loggedIn),
             'username' : username,
+            'treeloaded' : treeloaded,
             'cachedfile' : cached_file_name,
             'package_list' : package_list,
             'dataset_list' : dataset_list,
@@ -565,6 +613,7 @@ def treeex(request,user_id):
             })
         
 
+        print '\n\n\n\t\t\t\t\t\t\tloggedIn: ' + str(loggedIn) 
         return HttpResponse(template.render(context))
 
 
@@ -738,9 +787,6 @@ def diagplot(request):
 
 
 
-
-
-    
 #Tree Figures BookmarksAPI
 #http://<host>/exploratory_analysis/login
 #Need to store Bookmark name, bookmark variables, bookmark time periods, bookmark description
@@ -753,8 +799,125 @@ def login(request):
 
     return HttpResponse(template.render(context))
 
+#Tree Figures BookmarksAPI
+#http://<host>/exploratory_analysis/logout
+#Need to store Bookmark name, bookmark variables, bookmark time periods, bookmark description
+def logout(request):
+    
+    
+    from django.contrib.auth import logout
+    logout(request)
+    
+    template = loader.get_template('exploratory_analysis/logout.html')
+
+    context = RequestContext(request, {
+        
+    })
+
+    return HttpResponse(template.render(context))
 
 
+
+    
+#Tree Figures BookmarksAPI
+#http://<host>/exploratory_analysis/login
+#Need to store Bookmark name, bookmark variables, bookmark time periods, bookmark description
+def login1(request):
+    template = loader.get_template('exploratory_analysis/login1.html')
+
+    print 'going to login1.html...'
+    context = RequestContext(request, {
+        
+    })
+
+    return HttpResponse(template.render(context))
+
+#Tree Figures BookmarksAPI
+#http://<host>/exploratory_analysis/logout
+#Need to store Bookmark name, bookmark variables, bookmark time periods, bookmark description
+def logout1(request):
+    
+    
+    from django.contrib.auth import logout
+    logout(request)
+    
+    template = loader.get_template('exploratory_analysis/logout1.html')
+
+    context = RequestContext(request, {
+        
+    })
+
+    return HttpResponse(template.render(context))
+
+
+def auth(request):
+    
+    from django.contrib.auth import authenticate, login
+    
+    if request.POST['username'] == None or request.POST['password'] == None:
+        return HttpResponse("Error")
+    
+    
+    username = request.POST['username']
+    password = request.POST['password']
+    
+    ######DONT NEED THIS
+    if request.user.is_authenticated():
+        # Do something for authenticated users.
+        print 'user is authenticated'
+        from django.contrib.auth import logout
+        logout(request)
+        if request.user.is_authenticated():
+            print 'user is still logged in'
+        else:
+            print 'user is not authenticated'
+    else:
+        # Do something for anonymous users.
+        print 'user is anonymous'
+    ######END DONT NEED THIS
+    
+    user = authenticate(username=username, password=password)
+    
+    print 'username: ' + username
+    print 'password: ' + password
+    print 'user: ' + str(user)
+    if user is not None:
+        if user.is_active:
+            #redirect to a success page
+            login(request,user)
+            return HttpResponse('Authenticated')
+        else:
+            #return a 'disabled account'
+            #print 'disabled account'
+            return HttpResponse('Disabled')
+    else:
+        #return an 'invalid login error
+        return HttpResponse('InvalidLogin')
+    
+    
+
+
+def register(request):
+    
+    username = ''
+    password = ''
+    email = ''
+    if request.POST['register_username'] == None or request.POST['register_password'] == None:
+        return HttpResponse("Error")
+    else:
+        username = request.POST['register_username']
+        password = request.POST['register_password']
+    
+    if request.POST['register_email'] == None:
+        email = 'N/A'
+    
+    print 'username: ' + username + ' password: ' + password + ' email: ' + email
+    
+    from django.contrib.auth.models import User
+    user = User.objects.create_user(username,email,password)
+    user.save()
+    
+    return HttpResponse("Registered")
 
 def diagsHelper(user_id,bookmark_name):
     print 'in diags helper'
@@ -1121,6 +1284,7 @@ def tree_bookmarks(request):
         tree_bookmark_description = request.POST['tree_bookmark_description']
         tree_cache_url = request.POST['tree_cache_url']
         
+        print 'tree_cache_url: ' + tree_cache_url
         
         tree_bookmark_record = Tree_Bookmarks(
                                               tree_bookmark_name=tree_bookmark_name,

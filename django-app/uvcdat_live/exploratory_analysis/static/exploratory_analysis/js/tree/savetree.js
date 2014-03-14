@@ -19,17 +19,9 @@ $(document).ready(function(){
     }
     var csrftoken = getCookie('csrftoken');
     
-	console.log('csrftoken ' + csrftoken);
-	
 
 	$body = $("body");
 	
-	
-	$('#alt_save_tree').click(function() {
-		
-		alert('save tree');
-		
-	});
 	
 	
 	$('#save_tree').click(function() {
@@ -130,9 +122,10 @@ $(document).ready(function(){
 			}
 			
 			
-			
 			var realm = 'land';
-			var username = 'jfharney';
+			
+			
+			var username = $('#username_posted').html();
 			
 			var tree_bookmark_name = treename;
 			var tree_bookmark_datasetname = dataset;
@@ -144,8 +137,8 @@ $(document).ready(function(){
 			var tree_bookmark_description = '';
 			
 			
-			var front_end_cache_dir = '../../../static/cache/';
-			var tree_cache_url = front_end_cache_dir + tree_bookmark_name + '.json';
+			//var front_end_cache_dir = '../../../static/cache/';
+			var tree_cache_url = EA.front_end_tree_cache_dir + tree_bookmark_name + '.json';
 
 			console.log('tree_bookmark_name: ' + tree_bookmark_name);
 			console.log('tree_bookmark_datasetname: ' + tree_bookmark_datasetname);
@@ -174,13 +167,11 @@ $(document).ready(function(){
 			
 			
 			
-			//var url = 'http://localhost:8081/exploratory_analysis/treeex/jfharney/';
-		
-			
-			//var url = 'http://localhost:8081/exploratory_analysis/tree_bookmarks/';
 			
 			//This address will save the tree to the database
 			var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/tree_bookmarks/';
+			
+			
 			
 			
 			$.ajax({
@@ -192,6 +183,7 @@ $(document).ready(function(){
 			  { 
 					
 				  console.log('success');
+				  
 				  
 				  
 				  var data = {
@@ -208,11 +200,12 @@ $(document).ready(function(){
 				  
 				  
 				  //var url = 'http://localhost:8081/exploratory_analysis/treeex/jfharney/';
-				  var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/treeex/jfharney/';
+				  var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/treeex/u1/';
 					
 				  
 				  console.log('save tree url-----> ' + url);
-					
+				  
+				    
 					$.ajax({
 						  type: "POST",
 						  url: url,
@@ -222,6 +215,7 @@ $(document).ready(function(){
 						  success: function(data)
 						  { 
 							  
+							  console.log('success');
 							  
 							  for (var key in data) {
 								  console.log('key: ' + key + ' value: ' + data[key])
@@ -229,6 +223,7 @@ $(document).ready(function(){
 							  
 							  
 							  
+							   
 							  //hide the options
 							  $('#create_tree_options').hide();
 							  $('#create_tree').html('Create Tree');
@@ -242,10 +237,11 @@ $(document).ready(function(){
 							  
 							  var treeFile = $('span#treeFile').html();
 							  treeFile = tree_cache_url;
-							  //alert('treeFile: ' + treeFile);
-							  treeFile = treeFile.replace('/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis','../../..');
+							  
+							  treeFile = treeFile.replace(EA.uvcdat_live_root + '/exploratory_analysis','../../..');
+							  //treeFile = treeFile.replace('/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis','../../..');
 
-							  console.log('treeFile before: ' + treeFile);
+							  //console.log('treeFile before: ' + treeFile);
 							  //treeFile = '../../../static/cache/temp.json';
 							  //console.log('treeFile after: ' + treeFile);
 								
@@ -281,7 +277,7 @@ $(document).ready(function(){
 							  	if (EA.spinnerFlag) {
 							  		$body.removeClass("loading");  
 							  	}
-							  
+							  	
 						  },
 						  error: function(ts) 
 						  { 

@@ -22,7 +22,12 @@ $(document).ready(function(){
 	
 	var treeFile = $('span#treeFile').html();
 	console.log('treeFile: ' + treeFile);
-	treeFile = treeFile.replace('/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis','../../..');
+	
+	
+	//EA.uvcdat_live_root = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live';
+	
+	
+	treeFile = treeFile.replace(EA.uvcdat_live_root + '/exploratory_analysis','../../..');
 	console.log('treeFile: ' + treeFile);
 	
 	//treeFile = '../../../static/cache/temp.json';
