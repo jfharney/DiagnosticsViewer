@@ -1,17 +1,16 @@
 $(document).ready(function() {
 
 	$('#viz_button').click(function() {
-
+	    $('#marker').remove();
 		$('#map-canvas').empty();
-
 		var parseDate = d3.time.format("%Y%m").parse;
 
 		var variable = $("#selectV").val();
 		if (variable == null)
 			return;
 
-		//d3.json("http://" + EA.host + ":" + EA.port + "/exploratory_analysis/avgmap/0151/01/" + variable, function(error, mapdata) {
-		d3.json("/static/exploratory_analysis/json_grid_data/TLAI-geogrid-0151-01.json", function(error, mapdata) {
+		d3.json("http://" + EA.host + ":" + EA.port + "/exploratory_analysis/avgmap/0151/01/" + variable, function(error, mapdata) {
+		//d3.json("/static/exploratory_analysis/json_grid_data/TLAI-geogrid-0151-01.json", function(error, mapdata) {
 
 			d3.json("http://" + EA.host + ":" + EA.port + "/exploratory_analysis/timeseries/0/0/" + variable, function(error, timedata) {
 				var current_year = +timedata.start_year;
@@ -31,7 +30,7 @@ $(document).ready(function() {
 						current_month++;
 					}
 				});
-				create_cyclone_plot(mapdata.geo_data, timeseries_objects, "#map-canvas");
+				create_cyclone_plot(mapdata.geo_data[0], timeseries_objects, "#map-canvas");
 			});
 		});
 
