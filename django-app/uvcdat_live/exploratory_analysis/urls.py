@@ -49,7 +49,7 @@ urlpatterns = patterns('',
   url(r'^times/(?P<variable_id>\w+)/$',views.times,name='times'),
   
   #grabs the map
-  url(r'^visualizations/$', views.visualizations, name='visualizations'),
+  #url(r'^visualizations/$', views.visualizations, name='visualizations'),
   
   
   
@@ -57,7 +57,7 @@ urlpatterns = patterns('',
   url(r'^figure_generator/$', views.figureGenerator, name='figureGenerator'),
   
   #grabs the tree data
-  url(r'^treedata/(?P<user_id>\w+)/$', views.treedata, name='treedata'),
+  #url(r'^treedata/(?P<user_id>\w+)/$', views.treedata, name='treedata'),
   
   
   #grabs the timeseries data

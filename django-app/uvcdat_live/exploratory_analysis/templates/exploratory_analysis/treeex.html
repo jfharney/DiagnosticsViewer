@@ -270,15 +270,6 @@ body.loading #modal1 {
 			</div>
 			<br class="create_tree_options">
 			
-			<!-- 
-			<h4 style="margin-top:5px">Dataset</h4>
-    		<div style="overflow-y: scroll;max-height:150px">
-    		{% for dataset in dataset_list %}
-			<input name="{{dataset}}" id="{{dataset}}" type="radio" value="{{dataset}}" class="dataset_list" checked>
-			<label for="{{dataset}}" class="checkboxselection">{{dataset}}</label>
-			{% endfor %}
-			</div>
-			 -->
 			<hr class="create_tree_options">
 			
 			<input type="text" class="form-control create_tree_options" placeholder="Tree Bookmark Name (optional)" id="tree_name">
@@ -377,6 +368,7 @@ body.loading #modal1 {
 <script src="{% static 'exploratory_analysis/js/d3/d3.min.js' %}"></script>
 	<script src="{% static 'exploratory_analysis/js/tree/dynamictree.js' %}"></script>
 	<script src="{% static 'exploratory_analysis/js/tree/bookmarks.js' %}"></script>
+	<script src="{% static 'exploratory_analysis/js/tree/saveplot.js' %}"></script>
 	<script src="{% static 'exploratory_analysis/js/tree/retrieveplot.js' %}"></script>
 	<script src="{% static 'exploratory_analysis/js/jquery/overlay.js' %}"></script>
 
