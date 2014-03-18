@@ -6,6 +6,8 @@ $(document).ready(function() {
 	
 	$('#viz_button').click(function() {
 
+		/*
+<<<<<<< HEAD
 		
 		console.log('dataset id: ' + $('span#dataset_name').html());
 		console.log('variable id: ' + $('span#variable_name').html());
@@ -19,6 +21,9 @@ $(document).ready(function() {
 
 		$('.page-header').empty();
 		$('.lead').empty();
+=======
+>>>>>>> harney-devel-jewellintegration
+*/
 		$('#map-canvas').empty();
 
 		if (EA.spinnerFlag) {
@@ -29,11 +34,21 @@ $(document).ready(function() {
 		
 		var parseDate = d3.time.format("%Y%m").parse;
 
-		d3.json("/static/exploratory_analysis/json_grid_data/TLAI-geogrid-0151-01.json", function(error, mapdata) {
+		var variable = $("#selectV").val();
+		if (variable == null)
+			return;
 
+		//d3.json("http://" + EA.host + ":" + EA.port + "/exploratory_analysis/avgmap/0151/01/" + variable, function(error, mapdata) {
+		d3.json("/static/exploratory_analysis/json_grid_data/TLAI-geogrid-0151-01.json", function(error, mapdata) {
+/*
+<<<<<<< HEAD
 			//d3.json("http://localhost:8081/exploratory_analysis/timeseries/0/0/TLAI", function(error, timedata) {
 			d3.json("http://" + EA.host + ":" + EA.port + "/exploratory_analysis/timeseries/0/0/TLAI", function(error, timedata) {
 				
+=======
+	*/
+			d3.json("http://" + EA.host + ":" + EA.port + "/exploratory_analysis/timeseries/0/0/" + variable, function(error, timedata) {
+
 				var current_year = +timedata.start_year;
 				var current_month = +timedata.start_month;
 				var timeseries_objects = [];
@@ -56,12 +71,17 @@ $(document).ready(function() {
 				
 			});
 		});
+		/*
+<<<<<<< HEAD
 		//create_map_canvas(mapdata, "#map-canvas", 720, 360);
 
 		
 		$('.page-header').append('<h3>' + variable_id + 'Average Map</h3>');
 		//$('#map-canvas').append('<div>Data for: ' + variable_id + '</div>');
 		//$('#map-canvas').append('<div>' + data + '</div>');
+=======
+>>>>>>> harney-devel-jewellintegration
+*/
 
 	});
 

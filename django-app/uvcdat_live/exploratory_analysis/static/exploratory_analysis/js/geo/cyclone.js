@@ -1,7 +1,12 @@
 function create_cyclone_plot(data, tdata, time_plot_div_id) {
-	d3.selectAll("button").style("display", null);
+	//d3.selectAll("button").style("display", null);
+	
+	var variable = $("#selectV").val();
+	if(variable == null) return;
+
 	var mapdata = data;
 	var timedata = tdata;
+	var endyear = 0;
 	var mapPlotSize = {
 		width : 720,
 		height : 360
@@ -194,6 +199,7 @@ function create_cyclone_plot(data, tdata, time_plot_div_id) {
 			d3.select("canvas").remove();
 			//call(drawImage);
 			d3.select(time_plot_div_id).append("canvas").attr("width", dx).attr("height", dy)
+
 			//.style("width", mapPlotSize.width + "px")
 			//.style("height", mapPlotSize.height + "px")
 			.call(drawImage).on("mouseover", function() {
@@ -201,6 +207,24 @@ function create_cyclone_plot(data, tdata, time_plot_div_id) {
 			}).on("mousemove", timeplot_mousemove).on("click", timeplot_onclick).on("mouseout", function() {
 				return tooltip.style("visibility", "hidden");
 			});
+
+			var color = d3.scale.linear().domain([min, max])
+			//.range(["white", "steelblue"]);
+			.range(["hsl(62,100%,90%)", "hsl(228,30%,20%)"]);
+			var legend_offset_x = 25;
+			var legend_offset_y = 15;
+			var numTicks = 6;
+			var legend_block_size = 10;
+			var legend_top = (dy - legend_offset_y) - ((numTicks + 1) * legend_block_size);
+			var legendsvg = d3.select(time_plot_div_id).append("svg").attr("width", dx).attr("height", dy).style("pointer-events","none");
+
+			var legend = legendsvg.selectAll(".legend").data(color.ticks(numTicks).slice(1).reverse()).enter().append("g").attr("class", "legend").attr("z", 500).attr("transform", function(d, i) {
+				return "translate(10," + (legend_top + i * legend_block_size) + ")";
+			});
+
+			legend.append("rect").attr("width", legend_block_size).attr("height", legend_block_size).style("fill", color);
+
+			legend.append("text").attr("x", (legend_block_size + 4)).attr("y", legend_block_size / 2).attr("dy", ".35em").text(String);
 		});
 		//d3.select("canvas").append("g").append("text").text(dateOutput(d.date));
 
@@ -211,6 +235,7 @@ function create_cyclone_plot(data, tdata, time_plot_div_id) {
 		var cmonth = 1;
 		var cyear = 151;
 		var stop = 0;
+		var step = 2;
 		playLine.style("display", null);
 		var interval = function(current_month, current_year) {
 
@@ -235,16 +260,36 @@ function create_cyclone_plot(data, tdata, time_plot_div_id) {
 				}).on("mousemove", timeplot_mousemove).on("click", timeplot_onclick).on("mouseout", function() {
 					return tooltip.style("visibility", "hidden");
 				});
+
+				var color = d3.scale.linear().domain([min, max])
+				//.range(["white", "steelblue"]);
+				.range(["hsl(62,100%,90%)", "hsl(228,30%,20%)"]);
+				var legend_offset_x = 25;
+				var legend_offset_y = 15;
+				var numTicks = 6;
+				var legend_block_size = 10;
+				var legend_top = (dy - legend_offset_y) - ((numTicks + 1) * legend_block_size);
+				var legendsvg = d3.select(time_plot_div_id).append("svg").attr("width", dx).attr("height", dy).style("pointer-events", "none");
+
+				var legend = legendsvg.selectAll(".legend").data(color.ticks(numTicks).slice(1).reverse()).enter().append("g").attr("class", "legend").attr("z", 500).attr("transform", function(d, i) {
+					return "translate(10," + (legend_top + i * legend_block_size) + ")";
+				});
+
+				legend.append("rect").attr("width", legend_block_size).attr("height", legend_block_size).style("fill", color);
+
+				legend.append("text").attr("x", (legend_block_size + 4)).attr("y", legend_block_size / 2).attr("dy", ".35em").text(String);
 				//iterate
-				current_month++;
+				step++;
 				if (current_month == 12) {
 					current_month = 1;
 					current_year++;
 				} else {
 					current_month++;
 				}
-				if (current_year == 166) {
+				if (current_year == 166 || step > timedata.length) {
 					current_year = 151;
+					current_month = 1;
+					step = 1;
 				}
 				if (stop != 1)
 					setTimeout(interval(current_month, current_year), 10);
@@ -302,6 +347,10 @@ function create_cyclone_plot(data, tdata, time_plot_div_id) {
 
 	var degreesPerCell = 360.0 / dx;
 
+	// legend stuff
+
+	//var svg = d3.select("body").append("svg")
+
 	d3.select(time_plot_div_id).append("canvas").attr("width", dx).attr("height", dy)
 	//.style("width", mapPlotSize.width + "px")
 	//.style("height", mapPlotSize.height + "px")
@@ -310,6 +359,24 @@ function create_cyclone_plot(data, tdata, time_plot_div_id) {
 	}).on("mousemove", timeplot_mousemove).on("click", timeplot_onclick).on("mouseout", function() {
 		return tooltip.style("visibility", "hidden");
 	});
+
+	var color = d3.scale.linear().domain([min, max])
+	//.range(["white", "steelblue"]);
+	.range(["hsl(62,100%,90%)", "hsl(228,30%,20%)"]);
+	var legend_offset_x = 25;
+	var legend_offset_y = 15;
+	var numTicks = 6;
+	var legend_block_size = 10;
+	var legend_top = (dy - legend_offset_y) - ((numTicks + 1) * legend_block_size);
+	var legendsvg = d3.select(time_plot_div_id).append("svg").attr("width", 35).attr("height", dy).style("pointer-events", "none");
+
+	var legend = legendsvg.selectAll(".legend").data(color.ticks(numTicks).slice(1).reverse()).enter().append("g").attr("class", "legend").attr("z", 500).attr("transform", function(d, i) {
+		return "translate(10," + (legend_top + i * legend_block_size) + ")";
+	});
+
+	legend.append("rect").attr("width", legend_block_size).attr("height", legend_block_size).style("fill", color);
+
+	legend.append("text").attr("x", (legend_block_size + 4)).attr("y", legend_block_size / 2).attr("dy", ".35em").text(String);
 	// Compute the pixel colors; scaled by CSS.
 	function drawImage(canvas) {
 		var context = canvas.node().getContext("2d"), image = context.createImageData(dx, dy);
@@ -375,7 +442,12 @@ function create_cyclone_plot(data, tdata, time_plot_div_id) {
 
 		gridmarker.style("top", (event.pageY - 5) + "px").style("left", (event.pageX - 5) + "px");
 		//var filename = "/static/exploratory_analysis/json_grid_data/TLAI-timeseries-" + row + "-" + col + ".json";
+		/*
+<<<<<<< HEAD
 		//var filename = "http://localhost:8081/exploratory_analysis/timeseries/" + minute_lat + "/" + minute_lon + "/TLAI";
+=======
+>>>>>>> harney-devel-jewellintegration
+*/
 		var filename = "http://" + EA.host + ":" + EA.port + "/exploratory_analysis/timeseries/" + minute_lat + "/" + minute_lon + "/TLAI";
 		d3.json(filename, function(error, new_timedata) {
 			var current_year = +new_timedata.start_year;
