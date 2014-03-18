@@ -953,8 +953,6 @@ setTimeout(function() {
 						return d;
 					}).attr("y1", padding / 2).style("stroke-width", .2).style("stroke", gridColor).attr("y2", size - padding / 2);
 
-				    region.forEach(function(d, i){console.log(i)});
-					/*
 					region.selectAll("circle").data(crossValues).enter().append("svg:circle").attr("cx", function(d) {
 						return position[d.x.x](d.y[d.x.x]);
 					}).attr("cy", function(d) {
@@ -982,7 +980,7 @@ setTimeout(function() {
 						}).attr("r", ".5").style("stroke", null);
 
 					});
-					*/
+
 					var timer;
 
 					$('circle').tipsy({
