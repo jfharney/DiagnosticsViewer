@@ -27,6 +27,9 @@ $(document).ready(function(){
 	$('#save_tree').click(function() {
 		
 
+		
+		
+		/*
 		console.log('tree: ' + $('#tree_name').val());
 		
 		
@@ -327,7 +330,7 @@ $(document).ready(function(){
 			}
 		}
 		
-		
+		*/
 		
 	});
 	

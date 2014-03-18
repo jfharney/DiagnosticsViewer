@@ -507,7 +507,7 @@ def treeex(request,user_id):
             treeloaded = 'true'
         '''   
         
-       
+        print 'figure bookmark list -> ' + str(figure_bookmark_list)
         
         context = RequestContext(request, {
             'loggedIn' : str(loggedIn),
@@ -592,7 +592,8 @@ def treeex(request,user_id):
     
         
         
-    
+        print 'figure bookmark list -> ' + str(figure_bookmark_list)
+       
     
         context = RequestContext(request, {
             'loggedIn' : str(loggedIn),
