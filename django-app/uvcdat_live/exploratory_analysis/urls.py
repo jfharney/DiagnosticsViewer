@@ -41,12 +41,26 @@ urlpatterns = patterns('',
   
   #grabs datasets given a user id (used in an ajax call)
   url(r'^datasets/(?P<user_id>\w+)/$',views.datasets,name='datasets'),
+  url(r'^datasets1/(?P<user_id>\w+)/$',views.datasets1,name='datasets1'),
+  
+  
   
   #grabs variables given a dataset
   url(r'^variables/(?P<dataset_id>\w+)/$',views.variables,name='variables'),
   
+  url(r'^variables1/$',views.variables1,name='variables1'),
+  
+  
+  
+  
   #grabs time info given a variable
   url(r'^times/(?P<variable_id>\w+)/$',views.times,name='times'),
+  
+  url(r'^times1/$',views.times1,name='times1'),
+  
+  
+  
+  url(r'^packages1/$',views.packages1,name='packages1'),
   
   #grabs the map
   #url(r'^visualizations/$', views.visualizations, name='visualizations'),

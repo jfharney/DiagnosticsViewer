@@ -1,6 +1,23 @@
 
 import json
 
+def variableListHelper1(request):
+    print 'in variable list helper1'
+    
+    
+    #variables = ['BTRAN','NPP','TLAI']
+  
+    variables = ["TLAI","GPP","NEE","HR","ER","NPP","QVEGT","QVEGE","QSOIL","GROSSNMIN"]
+  
+    data =  { 'variables' : variables }
+    data_string = json.dumps(data,sort_keys=True,indent=2)
+
+    jsonStr = json.loads(data_string)
+
+    return data_string
+    #return HttpResponse(data_string)
+
+
 def variableListHelper(request,dataset_id):
     print 'in variable list helper'
     

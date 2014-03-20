@@ -588,6 +588,16 @@ def datasets(request,user_id):
     return HttpResponse(data_string)
 
 
+def datasets1(request,user_id):
+    
+    print '\n\nIn datasets'
+    
+    from menuhelper import datasets
+    
+    data_string = datasets.datasetListHelper1(request,user_id)
+    
+    return HttpResponse(data_string)
+
   #grabs variables given a dataset
   #http://<host>/exploratory_analysis/variables/dataset_id
 def variables(request,dataset_id):
@@ -598,6 +608,14 @@ def variables(request,dataset_id):
     
     return HttpResponse(data_string)
  
+
+def variables1(request):
+    
+    from menuhelper import variablelist
+    
+    data_string = variablelist.variableListHelper1(request)
+    
+    return HttpResponse(data_string)
   
   
 #times service
@@ -611,8 +629,23 @@ def times(request,variable_id):
     return HttpResponse(data_string)
 
   
-  
+def times1(request):  
 
+    from menuhelper import times
+    
+    data_string = times.timesHelper1(request)
+    
+    return HttpResponse(data_string)
+
+
+
+def packages1(request):  
+
+    from menuhelper import packages
+    
+    data_string = packages.packagesHelper1(request)
+    
+    return HttpResponse(data_string)
 
 
 
