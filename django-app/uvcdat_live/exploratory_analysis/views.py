@@ -1295,7 +1295,9 @@ def timeseries(request, lat, lon, variable):
 
    print 'my new coordinates: ', mylat, mylon
 
-   dataset = os.path.join(default_sample_data_dir+'tropics_warming_th_q_co2', 'test.xml')
+   #   might need to be changed on other machines. I'm not really sure why there is a problem with this
+   #   dataset = os.path.join(default_sample_data_dir+'tropics_warming_th_q_co2', 'test.xml')
+   dataset = os.path.join(default_sample_data_dir, 'test.xml')
 
    # Note: It is assumed that we are given an index into the dataset rather
    # than actual lat/lon coordinates. This is not a problem currently, but

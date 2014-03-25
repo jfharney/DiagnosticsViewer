@@ -1,5 +1,5 @@
 ####related to settings.py####
-databases_name = '/Users/i7j/sqlite3/11-3/mydb.db'
+databases_name = '/Users/i7j/sqlite3/mydb.db'
 #databases_name = '/Users/8xo/sqlite3/11-3/mydb.db'
 
 
@@ -10,7 +10,7 @@ uvcdat_live_root = '/Users/i7j/DiagnosticsViewer/django-app/uvcdat_live/'
 
 #directory holding netcdf datasets
 #default_sample_data_dir = '/Users/8xo/sampledatalens/tropics_warming_th_q_co2'
-
+default_sample_data_dir = '/Users/i7j/Dropbox/data/' 
 
 
 
@@ -45,12 +45,7 @@ front_end_cache_dir = '../../../static/cache/'
 
 
 #directory holding netcdf datasets
-#<<<<<<< HEAD
-default_sample_data_dir = '/Users/i7j/sampledatalens/tropics_warming_th_q_co2'
-#default_sample_data_dir = '/Users/8xo/sampledatalens/tropics_warming_th_q_co2'
-#=======
-#default_sample_data_dir = '/Users/i7j/Dropbox/data/' #tropics_warming_th_q_clm2'
-#>>>>>>> 14aec8d2278871946e6616e5424378ef15ed49fe
+default_sample_data_dir = '/Users/i7j/Dropbox/data/' #tropics_warming_th_q_clm2'
 
 
 #img_cache_path = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/cache/'
