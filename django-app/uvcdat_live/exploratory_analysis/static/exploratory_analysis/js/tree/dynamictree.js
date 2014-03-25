@@ -25,38 +25,50 @@ $(document).ready(function(){
 	treeFile = treeFile.replace('/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis','../../..');
 	console.log('treeFile: ' + treeFile);
 	
-	//treeFile = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/cache/Bookmark3.json';
+	//treeFile = '../../../static/cache/temp.json';
 	//alert('treeFile: ' + treeFile);
 	//if(checkFile(cache_dir+fileName))
-	if(checkFile(treeFile))
-	{
 	
-		//render the tree
-		
-		d3.json(treeFile, function(error, flare) {
-		
-		//d3.json(cache_dir + fileName, function(error, flare) {
-		
-		///Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/css/tree/flare13.json
-		root = flare;
-		root.x0 = height / 2;
-		root.y0 = 0;
+	//check to see if there was a tree loaded
+	var treeloaded = $('span#treeloaded').html();
 	
-		function collapse(d) {
-		if (d.children) {
-		  d._children = d.children;
-		  d._children.forEach(collapse);
-		  d.children = null;
+	if(treeloaded == 'true') {
+		
+		if(checkFile(treeFile))
+		{
+		
+			//render the tree
+			
+			d3.json(treeFile, function(error, flare) {
+			
+			//d3.json(cache_dir + fileName, function(error, flare) {
+			
+			///Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/css/tree/flare13.json
+			root = flare;
+			root.x0 = height / 2;
+			root.y0 = 0;
+		
+			function collapse(d) {
+			if (d.children) {
+			  d._children = d.children;
+			  d._children.forEach(collapse);
+			  d.children = null;
+			}
+			}
+		
+			root.children.forEach(collapse);
+			update(root);
+			});
+		
+		} else {
+			console.log('leave blank');
 		}
-		}
-	
-		root.children.forEach(collapse);
-		update(root);
-		});
-	
+		
+		
 	} else {
-		console.log('leave blank');
+		//$('#bookmark_selection').show();
 	}
+	
 	
 	
 	
@@ -407,23 +419,8 @@ function figure_generator(times,variables,sets,dataset,packages,realms,username,
 	  //"../../../static/exploratory_analysis/css/tree/flare13.json"
 	var staticImg = img_prefix + realms + '_' + packages + '_' + sets + '_' + times + '_' + variables + '.png';//computedImg;
 	  
-	
-    /*
-    var variables = 'TG';
-    var times = 'MAM';
-    
-    var sets = '1';
-    var packages = 'lmwg';
-    var realms = 'land'
-    */
-	
-	/*
-	alert('times: ' + times + 
-		  ' variables: ' + variables + 
-		  ' sets: ' + sets + 
-		  ' packages: ' + packages + 
-		  ' realms: ' + realms);
-    */
+
+	$body = $("body");
 	
     var data = {
     			'csrfmiddlewaretoken': csrftoken,
@@ -433,11 +430,18 @@ function figure_generator(times,variables,sets,dataset,packages,realms,username,
     			'packages':packages,
     			'realms':realms
     };
+
+	$body.addClass("loading");  
+    
+    
+	//var get_image_url = 'http://localhost:8081/exploratory_analysis/figure_generator/';
 	
-	var get_image_url = 'http://localhost:8081/exploratory_analysis/figure_generator/';
+	var get_image_url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/figure_generator/';
+	
+	
 	$.ajax({
 		url: get_image_url,
-		global: false,
+		//global: false,
 		type: 'POST',
 		data: data,
 		success: function(data) {
@@ -455,6 +459,9 @@ function figure_generator(times,variables,sets,dataset,packages,realms,username,
 			  
 			  //$('#modal-title').append('<span>URL:</span> <div id="' + "figurl" + '">' + staticImg + '</div>');
 			  $('.modal-body').append('<div>' + '<img src="' + staticImg + '" style="max-width:600px;max-height:500px;display: block;display: block;margin-left: auto;margin-right: auto" />' + '</div>')
+			  $('.modal-body').append('<div id="fig_url" >' + staticImg + '</div>');
+			  
+			  //$('#figure_bookmark_description').
 			  
 			  console.log('figTitle: ' + figTitle);
 			  //alert('strip pipe: ' + stripPipe(fullpath))
@@ -480,21 +487,17 @@ function figure_generator(times,variables,sets,dataset,packages,realms,username,
 			  var appended = '<div class="row"><div class="col-md-12">'+ name + '</div></div>';
 			  $('div#gallery').append(addedListing);
 			
+
+			  $body.removeClass("loading");  
 			
 			
-			/*
-			var datasetList = data['datasets'];
-			$('#dataset_name').empty();
-			for (var i=0;i<datasetList.length;i++) {
-				var dataset = datasetList[i];
-				$('.dropdown-dataset-menu').append('<li class="dataset_menu" id="' + dataset + '"><a href="#">' + dataset + '</a></li>');
-			}
-			*/
 			
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
 			//alert('datasetList textStatus: ' + textStatus + ' errorThrown: ' + errorThrown);
 			alert('error in generating figure');
+			
+			$body.removeClass("loading"); 
 			
 		}
 	  });

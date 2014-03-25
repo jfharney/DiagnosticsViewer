@@ -1,4 +1,4 @@
-$(document).ready(function(){
+/*$(document).ready(function(){
 	
 		$('.dropdown-time-menu').on('click','a',function() {
 
@@ -53,5 +53,5 @@ $(document).ready(function(){
 			$('#variable_name').append(this.innerHTML);
 			
 		});
-});
+});/*
 		
