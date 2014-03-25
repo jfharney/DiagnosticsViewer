@@ -1,22 +1,14 @@
+
+{% extends "base.html" %}
+
 {% load staticfiles %}
 
-<!DOCTYPE html PUBLIC"-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-	<meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
-	<meta content="utf-8" http-equiv="encoding" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    
-    <link rel="shortcut icon" href="./ico/favicon.png" />
 
 
-    <title>Login</title>
+{% block content %}
 
- 	
-	<!-- Bootstrap core CSS -->
+
+<!-- Bootstrap core CSS -->
 	<link href="{% static 'exploratory_analysis/css/bootstrap/bootstrap.css' %}" rel="stylesheet" />
 	
 	<link href="{% static 'exploratory_analysis/css/sticky-footer-navbar.css' %}" rel="stylesheet" />
@@ -75,164 +67,210 @@
 		  stroke-width: 1.5px;
 		}
 
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-
-//.x.axis path {
-//  display: none;
-//}
-
-.line {
-  fill: none;
-  stroke: steelblue;
-  stroke-width: 1.5px;
-}
-
-.overlay {
-    fill: none;
-    pointer-events: all;
-}
-
-.focus circle {
-    fill: none;
-    stroke: black;
-}
-
-.focus line {
-    fill: none;
-    stroke: black;
-    stroke-width: 1;
-}
-
+		.axis path,
+		.axis line {
+		  fill: none;
+		  stroke: #000;
+		  shape-rendering: crispEdges;
+		}
+		
+		//.x.axis path {
+		//  display: none;
+		//}
+		
+		.line {
+		  fill: none;
+		  stroke: steelblue;
+		  stroke-width: 1.5px;
+		}
+		
+		.overlay {
+		    fill: none;
+		    pointer-events: all;
+		}
+		
+		.focus circle {
+		    fill: none;
+		    stroke: black;
+		}
+		
+		.focus line {
+		    fill: none;
+		    stroke: black;
+		    stroke-width: 1;
+		}
+		
 
     </style>
-
-</head>
-
-<body>
+    
+    
+    <body>
 
 <!-- <div class="greentext">index.htm </div> -->
 
-<!-- Wrap all page content here -->
-    <div id="wrap">
 
 <!-- Fixed navbar -->
-		<div class="navbar navbar-inverse navbar-fixed-top">
-
-			<div class="container">
-          		<div class="navbar-header">
-            		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-              		<span class="icon-bar"></span>
-              		<span class="icon-bar"></span>
-              		<span class="icon-bar"></span>
-            		</button>
-            		<a class="navbar-brand" href="#">UV-CDAT+</a>
-          		</div>
-          		
-          		<div class="collapse navbar-collapse">
-
-            		<ul class="nav navbar-nav">
-
-	                	<li class="active"><a href="http://localhost:8081/exploratory_analysis">Home</a></li>
-			            <li><a href="http://localhost:8081/exploratory_analysis/login">Login</a></li>
-			            <!--  
-			            <li><a href="http://localhost:8081/exploratory_analysis/maps">Geo</a></li>
-						<li><a href="http://localhost:8081/exploratory_analysis/treeex/jfharney">Diagnostics Tree</a></li>
-			            -->
-            		</ul>
-
-
-        		</div>
-
-        	</div>
-
-		</div>
+		
 
 	 <div class="form-signin">
-     <!-- <form class="form-signin">  --> 
-        <h2 class="form-signin-heading">Please sign in</h2>
-        <input type="text" class="input-block-level" id='username' placeholder="Username">
-        <input type="password" class="input-block-level" id='password' placeholder="Password">
-        <!--  
-        <label class="checkbox">
-          <input type="checkbox" value="remember-me"> Remember me
-        </label>
-        -->
-        <button class="btn btn-large btn-primary" type="submit" id="signin">Sign in</button>
-      <!-- </form>  -->
+	        <h2 class="form-signin-heading">Please sign in</h2>
+	        <input type="text" class="input-block-level" id='username' placeholder="Username">
+	        <input type="password" class="input-block-level" id='password' placeholder="Password">
+	        
+	        <label class="checkbox">
+	          <input type="checkbox" value="remember-me"> Remember me
+	        </label>
+	        <button class="btn btn-large btn-primary" type="submit" id="signin">Sign in</button>
+	        <button class="btn btn-large btn-primary" type="submit" id="register">Register</button>
+	     
+	     	<div id="registration_form" style="display:none">
+		     	<br>
+		        </br>
+		        
+		     	<input type="text" class="input-block-level" id='register_username' placeholder="Username">
+		        <input type="password" class="input-block-level" id='register_password' placeholder="Password">
+		        <input type="text" class="input-block-level" id='register_email' placeholder="email">
+		        
+	     	</div>
+	     	
 	</div>	
-
-		<!-- <div id="content">  -->
-        {% block content %}{% endblock %}
-    	<!-- </div>  -->
-
-
-  	</div>
-
-
-
 	
-	<script src="{% static 'exploratory_analysis/js/jquery/jquery-1.10.2.min.js' %}"></script>
+    <script src="{% static 'exploratory_analysis/js/jquery/jquery-1.10.2.min.js' %}"></script>
 	<script src="{% static 'exploratory_analysis/js/bootstrap/bootstrap.min.js' %}"></script>
 	<script src="{% static 'exploratory_analysis/js/bootstrap/bootstrap-combobox.js' %}"></script>
 	<script src="{% static 'exploratory_analysis/js/d3/d3.min.js' %}"></script>
 	
 
-	<script type="text/javascript" src="{% static 'exploratory_analysis/js/datasets/selection.js' %}"></script>
-	<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/visualize.js' %}"></script>
-	<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/time.js' %}"></script>
-	<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/timeseries.js' %}"></script>
-	<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/map.js' %}"></script>
-	<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/variablelist.js' %}"></script>
-	<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/timelist.js' %}"></script>
-	
-	
 	<script type="text/javascript">
 	
 	$(document).ready(function(){
 
+		
+		//for post requests, need to get the csrf token
+		function getCookie(name) {
+	        var cookieValue = null;
+	        if (document.cookie && document.cookie != '') {
+	            var cookies = document.cookie.split(';');
+	            for (var i = 0; i < cookies.length; i++) {
+	                var cookie = jQuery.trim(cookies[i]);
+	                // Does this cookie string begin with the name we want?
+	                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+	                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+	                    break;
+	                }
+	            }
+	        }
+	        return cookieValue;
+	    }
+	    var csrftoken = getCookie('csrftoken');
+	    
+		console.log('csrftoken ' + csrftoken);
+		
+		
 		$('#signin').click(function(){
+			
 			var username = $('#username').val();
-			location.href='http://localhost:8081/exploratory_analysis/main/'+username;
+	        var password = $('#password').val();
+	        var email = $('#email').val();
+			
+			
+			var input_data = {
+					'csrfmiddlewaretoken': csrftoken,
+					'username':username,
+					'password':password,
+					'email':email
+			}
+			
+			
+			//var url = 'http://localhost:8081/exploratory_analysis/timeseries1/';
+			var url = 'http://localhost:8081/exploratory_analysis/auth/';
+			
+			
+			$.ajax({
+				  type: "POST",
+				  url: url,
+				  data: input_data,
+				  success: function(data)
+				  { 
+					  console.log(data);
+					  if(data == 'Authenticated') {
+						  console.log('Authenticated - go to the main page with the username');
+						  window.location = 'http://localhost:8081/exploratory_analysis/main/' + username;
+					  } else {
+						  console.log('Not authenticated - stay on page');
+					  }
+					  
+				  },
+				  error: function(xhr, status, error) {
+					  console.log('error'); 
+				    if(xhr.status==404)
+				    { 
+				    	
+				    }
+				  }
+				});
+			
+			
 		});
+		
+		
+		$('#register').click(function(){
+
+			if(this.innerHTML == 'Register') {
+				this.innerHTML = 'Save';
+				$('#registration_form').show('slow');
+				
+			} else {
+				
+		        var register_username = $('#register_username').val();
+		        var register_password = $('#register_password').val();
+		        var register_email = $('#register_email').val();
+				
+				
+				var input_data = {
+						'csrfmiddlewaretoken': csrftoken,
+						'register_username':register_username,
+						'register_password':register_password,
+						'register_email':register_email
+				}
+				
+				
+				//var url = 'http://localhost:8081/exploratory_analysis/timeseries1/';
+				var url = 'http://localhost:8081/exploratory_analysis/register/';
+				
+				
+				$.ajax({
+					  type: "POST",
+					  url: url,
+					  data: input_data,
+					  success: function(data)
+					  { 
+						  console.log('success ' + data);
+					  },
+					  error: function(xhr, status, error) {
+						  console.log('error'); 
+					    if(xhr.status==404)
+					    { 
+					    	
+					    }
+					  }
+				});
+				
+				
+				this.innerHTML = 'Register';
+				$('#registration_form').hide();
+			}
+			
+			
+		})
 		
 	});
 
 
 	</script>
 
-
+    
 </body>
 
 
-</html>
-
-<!--  
-    <script type="text/javascript">
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-39778348-1']);
-        _gaq.push(['_trackPageview']);
-
-        (function() {
-            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-        })();
-        
-        
-    </script>
--->
-   
-
- 
- <!--  
-   	<div id="footer">
-     	<div class="container">
-         	<p class="text-muted credit"><a href="http://cda.ornl.gov/steed/personal/">Chad A.&nbspSteed</a>, Oak Ridge National Lab, Computational Sciences and Engineering Division.</p>
-     	</div>
-   	</div>
--->
+{% endblock %}

@@ -21,8 +21,13 @@ $(document).ready(function(){
 	//var fileName = "flare25.json";
 	
 	var treeFile = $('span#treeFile').html();
-	//alert('treeFile: ' + treeFile);
-	treeFile = treeFile.replace('/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis','../../..');
+	console.log('treeFile: ' + treeFile);
+	
+	
+	//EA.uvcdat_live_root = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live';
+	
+	
+	treeFile = treeFile.replace(EA.uvcdat_live_root + '/exploratory_analysis','../../..');
 	console.log('treeFile: ' + treeFile);
 	
 	//treeFile = '../../../static/cache/temp.json';
@@ -31,7 +36,8 @@ $(document).ready(function(){
 	
 	//check to see if there was a tree loaded
 	var treeloaded = $('span#treeloaded').html();
-	
+	console.log('treeloaded: ' + tree);
+	console.log('chk: ' + checkFile(treeFile));
 	if(treeloaded == 'true') {
 		
 		if(checkFile(treeFile))
@@ -172,7 +178,7 @@ function update(source) {
 	      links = tree.links(nodes);
 
 	  // Normalize for fixed-depth.
-	  nodes.forEach(function(d) { d.y = d.depth * 100; });
+	  nodes.forEach(function(d) { d.y = d.depth * EA.treeDepthFactor; });
 
 	  // Update the nodes…
 	  var node = svg.selectAll("g.node")
@@ -258,10 +264,11 @@ function update(source) {
   });
 }
 
+//console.log('ea: ' + EA.tree_margin_right);
 
-var margin = {top: 20, right: 120, bottom: 20, left: 90},
-width = 960 - margin.right - margin.left,
-height = 800 - margin.top - margin.bottom;
+var margin = {top: EA.tree_margin_top, right: EA.tree_margin_right, bottom: EA.tree_margin_bottom, left: EA.tree_margin_left},
+width = EA.tree_width - margin.right - margin.left,
+height = EA.tree_height - margin.top - margin.bottom;
 
 var i = 0,
 duration = 750,
@@ -459,13 +466,16 @@ function figure_generator(times,variables,sets,dataset,packages,realms,username,
 			  
 			  //$('#modal-title').append('<span>URL:</span> <div id="' + "figurl" + '">' + staticImg + '</div>');
 			  $('.modal-body').append('<div>' + '<img src="' + staticImg + '" style="max-width:600px;max-height:500px;display: block;display: block;margin-left: auto;margin-right: auto" />' + '</div>')
-			  $('.modal-body').append('<div id="fig_url" >' + staticImg + '</div>');
+			  $('.modal-body').append('<div id="fig_url" style="display:none" >' + staticImg + '</div>');
 			  
 			  //$('#figure_bookmark_description').
 			  
 			  console.log('figTitle: ' + figTitle);
-			  //alert('strip pipe: ' + stripPipe(fullpath))
-			  //alert('figTitle: ' + figTitle);
+			  
+			  
+			  
+			  
+			  
 			  var addedListing = ' <li style="padding:10px;border: 1px solid #000000;list-style-type: none;margin-bottom:10px" id="' + stripPeriod(figTitle) + '">' +
 			  	'<a class="thumbnail">' +
 			  	'<img src="' + staticImg + '" style="max-width:150px;display: block;" />' +
@@ -481,11 +491,13 @@ function figure_generator(times,variables,sets,dataset,packages,realms,username,
 			  	'</li>';
 			  	
 			  	
+
+			  $('div#gallery').append(addedListing);
+			  
 			  
 			  
 			  //add an image
 			  var appended = '<div class="row"><div class="col-md-12">'+ name + '</div></div>';
-			  $('div#gallery').append(addedListing);
 			
 
 			  $body.removeClass("loading");  

@@ -51,16 +51,14 @@ def timeSeriesHelper1(request,cache_path):
          variable = 'AR'
     
     #grab the variable average json file from the cache
-    average_file_path = '/Users/8xo/some_variable.json'
     
     #if not in the cache, then generate it and then put it in the cache
-    if(not os.path.exists(average_file_path)):
+    #if(not os.path.exists(average_file_path)):
     
         #do generations here
         
         
-        #average_file_path = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/cache/time/TLAI-avg.json'
-        average_file_path = cache_path + '/time/' + 'TLAI-avg' + '.json'
+    average_file_path = cache_path + '/time/' + 'TLAI-avg' + '.json'
         
     
     

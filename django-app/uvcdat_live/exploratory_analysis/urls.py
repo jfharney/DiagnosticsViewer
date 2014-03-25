@@ -13,6 +13,8 @@ urlpatterns = patterns('',
   #points to the main page view
   url(r'^$', views.index, name='index'),
   
+
+  
   url(r'^main/(?P<user_id>\w+)/$',views.main,name='main'),
   
   
@@ -47,7 +49,7 @@ urlpatterns = patterns('',
   url(r'^times/(?P<variable_id>\w+)/$',views.times,name='times'),
   
   #grabs the map
-  url(r'^visualizations/$', views.visualizations, name='visualizations'),
+  #url(r'^visualizations/$', views.visualizations, name='visualizations'),
   
   
   
@@ -55,7 +57,7 @@ urlpatterns = patterns('',
   url(r'^figure_generator/$', views.figureGenerator, name='figureGenerator'),
   
   #grabs the tree data
-  url(r'^treedata/(?P<user_id>\w+)/$', views.treedata, name='treedata'),
+  #url(r'^treedata/(?P<user_id>\w+)/$', views.treedata, name='treedata'),
   
   
   #grabs the timeseries data
@@ -91,7 +93,17 @@ urlpatterns = patterns('',
   
   #login view
   url(r'^login/$',views.login,name='login'),
+  url(r'^logout/$',views.logout,name='logout'),
+  url(r'^login1/$',views.login1,name='login1'),
+  url(r'^logout1/$',views.logout1,name='logout1'),
   
+  
+  
+  #authenticate function
+  url(r'^auth/$',views.auth,name='auth'),
+  
+  #register a user
+  url(r'^register/$',views.register,name='register'),
   
   
   

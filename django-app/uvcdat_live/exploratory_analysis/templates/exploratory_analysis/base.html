@@ -28,6 +28,8 @@
 		<link href="{% static 'exploratory_analysis/css/heatmap/jquery.multiselect.css' %}" rel="stylesheet" />
 		<link href="{% static 'exploratory_analysis/css/heatmap/jquery.multiselect.filter.css' %}" rel="stylesheet" />
 		
+		<script type="text/javascript" src="{% static 'exploratory_analysis/js/core.js' %}"></script>
+		
 
 		<style type="text/css">
 			html {
@@ -84,13 +86,23 @@
 				stroke-width: 1;
 			}
 
+
+			.hiddentext {
+				display:none 
+			}
 		</style>
 
 	</head>
 
 	<body>
 
-		<!-- <div class="greentext">index.htm </div> -->
+		
+		<div class="hiddentext">
+			<br>
+			Username: <span id="username_posted">{{username}}</span>
+		
+		</div>
+     
 
 		<!-- Wrap all page content here -->
 		<div id="wrap">
@@ -112,25 +124,37 @@
 
 						<ul class="nav navbar-nav">
 
-							<li class="active">
-								<a href="http://localhost:8081/exploratory_analysis">Home</a>
-							</li>
-							<li>
-								<a href="http://localhost:8081/exploratory_analysis/login">Login</a>
-							</li>
-							<li>
-								<a href="http://localhost:8081/exploratory_analysis/maps/{{username}}">Geo</a>
-							</li>
-							<li>
-								<a href="http://localhost:8081/exploratory_analysis/treeex/{{username}}">Diagnostics Tree</a>
-							</li>
-							<li>
-								<a href="http://localhost:8081/exploratory_analysis/heatmap/{{username}}">Heatmap</a>
-							</li>
+							
+								<li class="active">
+									<a href="#" id="home_link">Home</a>
+								</li>
+								
+							{% if loggedIn == "True" %}
+							
+								<li>
+									<a href="#" id="geo_link">Geo</a>
+								</li>
+								<li>
+									<a href="#" id="tree_link">Diagnostics Tree</a>
+								</li>
+								<li>
+									<a href="#" id="heatmap_link">Heatmap</a>
+								</li>
+								<li>
+									<a href="#" id="logout_link">Logout</a>
+								</li> 
+							{% else %}
+							
+								<li>
+									<a href="#" id="login_link">Login</a>
+								</li> 
+							
+							
+							{% endif %}
 						</ul>
 
 					</div>
-
+					
 				</div>
 
 			</div>
@@ -147,20 +171,62 @@
 		<script src="{% static 'exploratory_analysis/js/bootstrap/bootstrap-combobox.js' %}"></script>
 
 
-		<script type="text/javascript" src="{% static 'exploratory_analysis/js/datasets/selection.js' %}"></script>
-		<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/visualize.js' %}"></script>
-		<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/time.js' %}"></script>
-		<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/timeseries.js' %}"></script>
-		<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/map.js' %}"></script>
-		<script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/cyclone.js' %}"></script>
 
-	    <script src="{% static 'exploratory_analysis/js/tree/core.js' %}"></script>
 
+<!-- 
 <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/ui-lightness/jquery-ui.css" />
+ -->
+<link rel="stylesheet" type="text/css" href="{% static 'exploratory_analysis/css/jquery/jquery-ui.css' %}" />
+ 
+<!-- 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+  -->
+<script type="text/javascript" src="{% static 'exploratory_analysis/js/jquery/jquery-ui.min.js' %}"></script>
+	
+	
+<script type="text/javascript">
 
-<script>		</script>
+$(document).ready(function(){
 
+	
+	var username = $('#username_posted').html();
+	
+	$('#heatmap_link').click(function(){
+		location.href = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/heatmap/' + username;
+	});
+	
+	$('#login_link').click(function(){
+		
+		location.href = "http://" + EA.host + ":" + EA.port + "/exploratory_analysis/login";
+	});
+	
+	$('#logout_link').click(function(){
+		location.href = "http://" + EA.host + ":" + EA.port + "/exploratory_analysis/logout";
+	});
+	
+	$('#home_link').click(function(){
+		location.href = "http://" + EA.host + ":" + EA.port + "/exploratory_analysis";
+	});
+	
+	
+	
+	$('#geo_link').click(function() {
+		
+		location.href='http://' + EA.host + ':' + EA.port + '/exploratory_analysis/maps/' + username;
+	});
+	
+	
+	$('#tree_link').click(function(){
+		
+		location.href = "http://" + EA.host + ":" + EA.port + "/exploratory_analysis/treeex/" + username;
+		
+	});
+	
+});
+	
+
+
+</script>
 	</body>
 
 </html>

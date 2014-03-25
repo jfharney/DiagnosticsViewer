@@ -1,22 +1,10 @@
-
 {% extends "base.html" %}
 
+
 {% load staticfiles %}
-
-
+	
 
 {% block content %}
-<!DOCTYPE html>
-<meta charset="utf-8">
-
-
-	<link href="{% static 'exploratory_analysis/css/bootstrap/bootstrap.css' %}" rel="stylesheet" />
-	
-	<link href="{% static 'exploratory_analysis/css/tree/style.css' %}" rel="stylesheet" />
-	
-	<!--  
-	<link href="{% static 'exploratory_analysis/css/tree/style.css' %}" rel="stylesheet" />
-	-->
 <style>
 
 .node {
@@ -120,34 +108,16 @@ body.loading #modal1 {
 
 
 </style>
+
 <body>
-
-	<div id="csrf">
-	{% csrf_token %}
-	</div>
-
 	<!-- overlay blocking user input while backend is crunching numbers -->
 	<div class="modal" id="modal1"></div>
  
 
-	<div id="api_check" class="hiddenfunctionality">
-		<div>
-		     	<button type="button" class="btn btn-default" id="test2" >Post tree bookmark</button>
-		     	<button type="button" class="btn btn-default" id="test3" >Delete tree bookmark</button>
-		     	<button type="button" class="btn btn-default" id="test4" >Get tree bookmark</button>
-		</div>
-		<div>
-		     	<button type="button" class="btn btn-default" id="test12" >Post figure bookmark</button>
-		     	<button type="button" class="btn btn-default" id="test13" >Delete figure bookmark</button>
-		     	<button type="button" class="btn btn-default" id="test14" >Get figure bookmark</button>
-		     
-		</div>
-		<div>
-		     	<button type="button" class="btn btn-default" id="timeseriestest" >Time series test</button>
-		</div>
-	</div>   
+<div class="container-fluid">
 	
-	<div class="container">
+	<div class="row-fluid">
+	
 		<div class="hiddentext">
 			CachedFile: <span id="CachedFile" >{{ cachedfile }}</span>
 			<br>
@@ -157,15 +127,17 @@ body.loading #modal1 {
 			<br>
 			Tree Loaded: <span id="treeloaded">{{ treeloaded }}</span>
 			<br>
-			Username: <span id="username_posted"></span>
+			Username: <span id="username_posted">{{username}}</span>
 		
 		</div>
-     
-   
-    <div class="row">
+     </div>
+
+	<span id="mapview_username" style="display:none">{{username}}</span>
+
+
+	<div class="row">
 		<div class="col-md-12">
 			
-			<!-- overlay modal -->
 			<div class="modal" id="myModal">
 				<div class="modal-dialog" style="width:800px;">
 			      <div class="modal-content">
@@ -196,14 +168,10 @@ body.loading #modal1 {
 			</div>
 
 
-			<!-- Waiting Modal -->
 			<div class="modal" id="myModal1" data-keyboard="false">
 				<div class="modal-dialog" style="width:300px;">
 			      <div class="modal-content">
 			        <div class="modal-header">
-			        <!-- 
-			          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-			         -->
 			        <h4 class="modal-title" id="modal-title">Processing...</h4>
 			        </div>
 			      </div>
@@ -216,246 +184,584 @@ body.loading #modal1 {
 		</div>
 	    		
 	</div>
-    	
-    <div class="row">
-		<div class="col-md-12">
-			<div class="page-header">
-  			<h1>Exploratory Analysis - Diagnostics Tree Viewer</h1>
-			</div>
-		
-		</div>
-	    		
-	</div>	
-	
-    
-    <div class="row" style="margin-bottom:10px">
-    	<div class="bs-example">
-   
-		    <ul class="nav nav-pills">
-		    	<li>
-		    		<button type="button" class="btn btn-default" id="create_tree" >Create Tree</button>
-		    	</li>
-		    
-		        <li class="dropdown">
-		            <a href="#" data-toggle="dropdown" class="dropdown-toggle">Bookmarks <b class="caret"></b></a>
-		            <ul class="dropdown-menu" id="bookmark_menu">
-		            	{% for bookmark in bookmark_list %}
-		            	<li>
-		            		<a href="./?bookmark={{bookmark}}" id="{{bookmark}}" class="tree_bookmark_menu">{{bookmark}}</a>
-		            	<!--  
-		            		<a href="http://localhost:8081/exploratory_analysis/treeex/{{username}}/?bookmark={{bookmark}}" id="{{bookmark}}" class="tree_bookmark_menu">{{bookmark}}</a>
-		            	-->
-		            	</li>	
-		            	{% endfor %}
-		            	<li class="divider"></li>
-		                <li><a href="#" id="custom">Custom</a></li>
-		            
-		            </ul>
-		        </li>
-		        <li class="dropdown">
-		            <a href="#" data-toggle="dropdown" class="dropdown-toggle">Saved Images <b class="caret"></b></a>
-		            <ul class="dropdown-menu" id="bookmark_menu">
-		            <!-- '<a data-toggle="modal" href="#myModal" class="btn btn-primary">View</a>' +  -->
-		            	{% for figure_bookmark in figure_bookmark_list %}
-		            		<li><a data-toggle="modal" href="#myModal" class="figure_bookmark" id="{{figure_bookmark}}">{{figure_bookmark}}</a></li>
-		            	{% endfor %}
-		            	<!-- 
-		                <li><a href="#" id="b1">Image1</a></li>
-		                <li><a href="#" id="b2">Image2</a></li>
-		                 -->
-		            </ul>
-		        </li>
-		    </ul>
-    
-		</div>
 
-    </div>
-    
-    
-	
-    <div class="row" style="margin-bottom:10px;display:none;border: 1px solid #000000;padding:10px" id="create_tree_options"  >
-    	<div class="col-lg-12">
-    	
-    		
-    		<h4 style="margin-top:5px">Dataset</h4>
-    		<div style="overflow-y: scroll;max-height:150px">
-    		{% for dataset in dataset_list %}
-			<input name="{{dataset}}" id="{{dataset}}" type="radio" value="{{dataset}}" class="dataset_list" >
-			<label for="{{dataset}}" class="checkboxselection">{{dataset}}</label>
-			{% endfor %}
-			</div>
-			
-			<hr>
-			
-			
-    		<h4 style="margin-top:5px">Package</h4>
-    		<div style="overflow-y: scroll;max-height:150px">
-    		{% for package in package_list %}
-			<input name="{{package}}" id="{{package}}" type="radio" value="{{package}}" class="package_list" >
-			<label for="{{package}}" class="checkboxselection">{{package}}</label>
-			{% endfor %}
-			</div>
-			
-			<hr>
-			
-			<h4 style="margin-top:5px">Variables</h4>
-			<div style="overflow-y: scroll;max-height:150px">
-			{% for variable in variable_list %}
-			<input name="{{variable}}" id="{{variable}}" type="checkbox" value="signup" class="variable_list" >
-			<label for="{{variable}}" class="checkboxselection">{{variable}}</label>
-			{% endfor %}
-			</div>
-	    	
-			<hr>
-			
-			<h4 style="margin-top:5px">Seasons</h4>
-			<div style="overflow-y: scroll;max-height:150px">
-			{% for season in season_list %}
-			<input name="{{season}}" id="{{season}}" type="checkbox" value="signup" class="season_list" >
-			<label for="{{season}}" class="checkboxselection">{{season}}</label>
-			{% endfor %}
+
+	<div class="row-fluid">
+
+		<div class="well col-md-2">
+			<div class="row-fluid">
+				<h2><font style="color:darkgrey">Diagnostics Tree</font></h2>
 			</div>
 			
 			<!-- 
-			<hr>
-			<h4 style="margin-top:5px">Sets</h4>
-			<div style="overflow-y: scroll;max-height:150px">
-			{% for set in set_list %}
-			<input name="{{set}}" id="{{set}}" type="checkbox" value="signup" class="sets_list" >
-			<label for="{{set}}" class="checkboxselection">{{set}}</label>
-			{% endfor %}
+			<div class="row-fluid selection_items">
+			
+			 
+				<ul class="nav nav-pills">
+			        <li class="dropdown">
+			            <a href="#" data-toggle="dropdown" class="dropdown-toggle">Bookmarks <b class="caret"></b></a>
+			            <ul class="dropdown-menu" id="bookmark_menu">
+			            	{% for bookmark in bookmark_list %}
+			            	<li>
+			            		<a href="./?bookmark={{bookmark}}" id="{{bookmark}}" class="tree_bookmark_menu">{{bookmark}}</a>
+			            	
+			            	</li>	
+			            	{% endfor %}
+			            	
+			            </ul>
+			        </li>
+			        <li class="dropdown">
+			            <a href="#" data-toggle="dropdown" class="dropdown-toggle">Images <b class="caret"></b></a>
+			            <ul class="dropdown-menu" id="bookmark_menu">
+			            	{% for figure_bookmark in figure_bookmark_list %}
+			            		<li><a data-toggle="modal" href="#myModal" class="figure_bookmark" id="{{figure_bookmark}}">{{figure_bookmark}}</a></li>
+			            	{% endfor %}
+			            	
+			            </ul>
+			        </li>
+		   		</ul>
+		   	 
+				<ul class="nav nav-pills">
+			    	<li>
+			    		<button type="button" class="btn btn-default" id="create_tree" >Create Tree</button>
+			    	</li>
+			    
+		   		</ul>
+			
 			</div>
 			 -->
-		</div>
-		<hr>
-		<div class="col-lg-12">
-		  	<div class="col-lg-1">
-		    	<button type="button" class="btn btn-default" id="save_tree" >Save</button>
-		  	</div>
-			<div class="col-lg-4">
-		    	<input type="text" class="form-control" placeholder="Tree Bookmark Name (optional)" id="tree_name">
-		  	</div>
-		  	<div class="col-lg-1">
-		    	<button type="button" class="btn btn-default" id="submit_tree" >Submit</button>
-		  	</div>
-		  	<div class="col-lg-1">
-		    	<button type="button" class="btn btn-default" id="bookmark_cancel">Cancel</button>
-		  	</div>
-		</div>
-    </div>
-    
-    
-    
-	<!-- <div class="row" style="border: 1px solid #000000;padding:10px;">  -->
-	<div class="row" style="" id="treeviewer">
-		<div class="col-md-2">
-		
-		
-		
-		<div class="dropdown">
-		     <ul class="dropdown-menu dropdown-menu-form" role="menu">
-		    
-		        <li>
-		            <label class="checkbox">
-		                <input type="checkbox">
-		                Checkbox 1
-		            </label>
-		        </li>
-		        <li>
-		            <label class="checkbox">
-		                <input type="checkbox">
-		                Checkbox 2
-		            </label>
-		        </li>
-		        <li>
-		            <label class="checkbox">
-		                <input type="checkbox">
-		                Checkbox 333333 222222222222
-		            </label>
-		        </li>
-		    </ul>
-		</div>
-		
-		
-		
-	
+			 
 			
+			<hr class="create_tree_options">
 			
-			<div class="row" style="margin-top:20px;padding-top:5px;border-top: 10px outset #ffffff">
-				<div style="margin-top:10px;">
-					Dataset: <span id="dataset_name"></span>
-				</div>
-				<div style="margin-top:10px;">
-					Variable: <span id="variable_name"></span>
-				</div>
-				<div style="margin-top:10px;">
-					Time: <span id="time_name"></span>
-				</div>
+			 
+			<div class="row-fluid create_tree_options">
+				<label for="selectD">Dataset:</label>
+				<br>
+				<select id="selectD" multiple="multiple"></select>
+				<br>
+			</div>
+			<br>
+			
+			<div class="row-fluid create_tree_options">
+				<label for="selectP">Package:</label>
+				<br>
+				<select id="selectP" multiple="multiple"></select>
+				<br>
+			</div>
+			<br>
+			 
+			 
+			<div class="row-fluid create_tree_options">
+				<label for="selectV">Variables:</label>
+				<br>
+				<select id="selectV" multiple="multiple"></select>
+				<br>
+
+			</div>
+			<br class="create_tree_options">
+			
+			<div class="row-fluid create_tree_options">
+				<label for="selectT">Times:</label>
+				<br>
+				<select id="selectT" multiple="multiple"></select>
+				<br>
+
+			</div>
+			<br class="create_tree_options">
+			
+			<hr class="create_tree_options">
+			
+			<input type="text" class="form-control create_tree_options" placeholder="Tree Bookmark Name (optional)" id="tree_name">
+			<br>
+			<div class="row-fluid create_tree_options" id="viz_button">
 				
+				<button type="button" class="btn btn-default" id="save_tree" >Save</button>
 			</div>
-			<div class="row" style="margin-top:20px;padding-top:5px;border-top: 10px outset #ffffff" id="viz_button">
-				<button type="button" class="btn btn-default" >Submit</button>
-			</div>
-	
-		
 		</div>
-		
+
 		<div class="col-md-10">
-			<div class="row" style="border: 1px solid #000000;">
-				<div class="col-md-9" style="border-right: 1px solid #000000;height:900px;max-height:900px">
-				<span> <button type="button" class="btn btn-default" id="alt_save_tree">Save Tree</button> </span>
-				<span style="margin-left:10px;font-weight:bold"> Tree Name: </span><span id="current_treename">{{current_bookmark}}</span>
-				
-					<div id="treeimg" style="overflow-x:visible">
+
+			<div class="row-fluid">
+				<ul class="nav nav-pills">
+			    
+			    	<li>
+			    		<button type="button" class="btn btn-default" id="create_tree" >Create Tree</button>
+			    	</li>
+			    
+					<li class="dropdown">
+			            <a href="#" data-toggle="dropdown" class="dropdown-toggle">Bookmarks <b class="caret"></b></a>
+			            <ul class="dropdown-menu" id="bookmark_menu">
+			            	{% for bookmark in bookmark_list %}
+			            	<li>
+			            		<a href="./?bookmark={{bookmark}}" id="{{bookmark}}" class="tree_bookmark_menu">{{bookmark}}</a>
+			            	
+			            	</li>	
+			            	{% endfor %}
+			            	
+			            </ul>
+			        </li>
+			        <li class="dropdown">
+			            <a href="#" data-toggle="dropdown" class="dropdown-toggle">Saved Images <b class="caret"></b></a>
+			            <ul class="dropdown-menu" id="bookmark_menu">
+			            	{% for figure_bookmark in figure_bookmark_list %}
+			            		<li><a data-toggle="modal" href="#myModal" class="figure_bookmark" id="{{figure_bookmark}}">{{figure_bookmark}}</a></li>
+			            	{% endfor %}
+			            	
+			            </ul>
+			        </li>
+				</ul>
+			</div>
+
+			<div class="row-fluid">
 			
+				<div class="row" style="border: 1px solid #000000;" id="treeviewer">
+					<div class="col-md-10" style="border-right: 1px solid #000000;height:900px;max-height:900px;">
+	
+						<span style="margin-left:10px;font-weight:bold"> Tree Name: </span><span id="current_treename">{{current_bookmark}}</span>
+					
+						<div id="treeimg" style="overflow-x:visible">
+				
+						</div>
+					</div>
+					<div class="col-md-2 scrollable" id="gallery"  style="overflow:scroll;max-height:900px">
+						
 					</div>
 				</div>
-				<div class="col-md-3 scrollable" id="gallery"  style="overflow:scroll;max-height:900px">
-					
-				</div>
+			
+			
 			</div>
-		
+			<!-- 
+
+			<div class="row-fluid">
+				<div class="col-md-12">
+					<div id="map-canvas" class="map-canvas-panel"></div>
+					<div id="map_plot_canvas1"></div>
+				</div>
+			</div> 
+			 -->
+
 		</div>
-		
-		
-	</div>
-	 
-	 
-	 
+
 	</div>
 
-	<script src="{% static 'exploratory_analysis/js/jquery/jquery-1.10.2.min.js' %}"></script>
-	<script src="{% static 'exploratory_analysis/js/bootstrap/bootstrap.min.js' %}"></script>
-	<script src="{% static 'exploratory_analysis/js/bootstrap/bootstrap-combobox.js' %}"></script>
-	<script src="{% static 'exploratory_analysis/js/bootstrap/bootstrap-popover.js' %}"></script>
-	<script src="{% static 'exploratory_analysis/js/bootstrap/bootstrap-dropdown.js' %}"></script>
-	<script src="{% static 'exploratory_analysis/js/d3/d3.min.js' %}"></script>
-	<!--  -->
+</div>
+</body>
+
+
+<!-- 
+<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/ui-lightness/jquery-ui.css" />
+ -->
+<link rel="stylesheet" type="text/css" href="{% static 'exploratory_analysis/css/jquery/jquery-ui.css' %}" />
+ 
+
+
+<!-- 
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+  -->
+  
+<script type="text/javascript" src="{% static 'exploratory_analysis/js/jquery/jquery-ui.min.js' %}"></script>
+
+<script type="text/javascript" src="{% static 'exploratory_analysis/js/heatmap/ui.multiselect.js' %}"></script>
+<script type="text/javascript" src="{% static 'exploratory_analysis/js/heatmap/jquery.multiselect.js' %}"></script>
+<script type="text/javascript" src="{% static 'exploratory_analysis/js/heatmap/jquery.multiselect.filter.js' %}"></script>
+<script src="{% static 'exploratory_analysis/js/d3/d3.min.js' %}"></script>
 	<script src="{% static 'exploratory_analysis/js/tree/dynamictree.js' %}"></script>
 	<script src="{% static 'exploratory_analysis/js/tree/bookmarks.js' %}"></script>
-	<script src="{% static 'exploratory_analysis/js/tree/submittree.js' %}"></script>
-	<script src="{% static 'exploratory_analysis/js/tree/savetree.js' %}"></script>
 	<script src="{% static 'exploratory_analysis/js/tree/saveplot.js' %}"></script>
 	<script src="{% static 'exploratory_analysis/js/tree/retrieveplot.js' %}"></script>
 	<script src="{% static 'exploratory_analysis/js/jquery/overlay.js' %}"></script>
-	
 
 <script>
 
 
-/*
-$(document).on({
-    ajaxStart: function() { 
-    	console.log('ajaxstart...');
-    	$body.addClass("loading");    
-    },
-     ajaxStop: function() { $body.removeClass("loading"); }    
-});
-*/
 
 $(document).ready(function(){
 
 
+	$body = $("body");
+	
+	
+	
+	var dataList = ["tropics_warming_th_q_co2"];
+	var packList = ["lmwg"];
+	var varList = ["GPP","NEE","HR","ER","NPP","QVEGT","QVEGE","QSOIL","GROSSNMIN"];
+	var timeList = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC","DJF","MAM","JJA","SON","ANN"]
+
+	
+	$("#selectD").multiselect().multiselectfilter();
+	
+	$("#selectD").multiselect({
+		multiple : false,
+		header : "Select a dataset",
+		//noneSelectedText : "tropics_warming_th_q_co2",
+		selectedList : 1
+	});
+
+	d3.select("#selectD").selectAll("option").data(dataList).enter().append("option").attr("value", String).text(String);
+
+	$("#selectD").multiselect("refresh");
+	
+	
+
+	$("#selectP").multiselect().multiselectfilter();
+	
+	$("#selectP").multiselect({
+		multiple : false,
+		header : "Select a package",
+		//noneSelectedText : "tropics_warming_th_q_co2",
+		selectedList : 1
+	});
+
+	d3.select("#selectP").selectAll("option").data(packList).enter().append("option").attr("value", String).text(String);
+
+	$("#selectP").multiselect("refresh");
+	
+	
+	
+
+	
+	$("#selectV").multiselect().multiselectfilter();
+	
+	$("#selectV").multiselect({
+		multiple : true,
+		header : "Select variables",
+		noneSelectedText : "Select variables",
+		selectedList : 1
+	});
+
+	d3.select("#selectV").selectAll("option").data(varList).enter().append("option").attr("value", String).text(String);
+
+
+	$("#selectV").multiselect("refresh");
+	
+	
+
+	
+	$("#selectT").multiselect().multiselectfilter();
+	
+	$("#selectT").multiselect({
+		multiple : true,
+		header : "Select times",
+		noneSelectedText : "Select times",
+		selectedList : 1
+	});
+
+	d3.select("#selectT").selectAll("option").data(timeList).enter().append("option").attr("value", String).text(String);
+
+
+	$("#selectT").multiselect("refresh");
+	
+	
+	
+	$('#save_tree').click(function() {
+		
+
+		
+		//sanity checks
+		var datasetFlag = true;
+		var packageFlag = true;
+		var variableFlag = true;
+		var seasonFlag = true;
+		var nameFlag = true;
+		
+		
+		
+
+		var dataset = '';
+		var pckg = '';
+		var variable_arr = new Array();
+		var season_arr =  new Array();
+		var sets_arr = new Array();
+
+		
+		dataset = $('#selectD').val();
+		pckg = $('#selectP').val();
+		variable_arr = $("#selectV").val();
+		season_arr = $('#selectT').val();
+		
+		if( variable_arr == undefined ||
+		   season_arr == undefined) {
+			
+			if(variable_arr == undefined) {
+				alert('Please select variables for the tree');
+			} else if(season_arr == undefined) {
+				alert('Please select times for the tree');
+			}
+			
+		} else {
+			
+		
+		
+			var variable_arr_str = '';
+			for(var i=0;i<variable_arr.length;i++) {
+				if(i < variable_arr.length-1) {
+					variable_arr_str += variable_arr[i] + ';';
+				} else {
+					variable_arr_str += variable_arr[i];
+				}
+				
+			}
+	
+			var season_arr_str = '';
+			for(var i=0;i<season_arr.length;i++) {
+				if(i < season_arr.length-1) {
+					season_arr_str += season_arr[i] + ';';
+				} else {
+					season_arr_str += season_arr[i];
+				}
+			}
+	
+			var sets_arr_str = '';
+			for(var i=0;i<sets_arr.length;i++) {
+				if(i < sets_arr.length-1) {
+					sets_arr_str += sets_arr[i] + ';';
+				} else {
+					sets_arr_str += sets_arr[i];
+				}
+			}
+			
+			var treename = $('#tree_name').val();
+			
+			//if()
+			if(variable_arr_str == '') {
+				variableFlag = false;
+			}
+			if(season_arr_str == '') {
+				seasonFlag = false;
+			}
+			if(treename == '') {
+				nameFlag = false;
+			}
+			
+			
+			if(variableFlag && seasonFlag && nameFlag) {
+				
+				if (EA.spinnerFlag) {
+					$body.addClass("loading");  
+				}
+				
+				
+				var realm = 'land';
+				
+				
+				var username = $('#username_posted').html();
+				
+				var tree_bookmark_name = treename;
+				var tree_bookmark_datasetname = dataset;
+				var tree_bookmark_realm = realm;
+				var tree_bookmark_username = username;
+				var tree_bookmark_variables = variable_arr_str;
+				var tree_bookmark_times = season_arr_str;
+				var tree_bookmark_sets = sets_arr_str;
+				var tree_bookmark_description = '';
+				
+				
+				//var front_end_cache_dir = '../../../static/cache/';
+				var tree_cache_url = EA.front_end_tree_cache_dir + tree_bookmark_name + '.json';
+	
+				console.log('tree_bookmark_name: ' + tree_bookmark_name);
+				console.log('tree_bookmark_datasetname: ' + tree_bookmark_datasetname);
+				console.log('tree_bookmark_realm: ' + tree_bookmark_realm);
+				console.log('tree_bookmark_username: ' + tree_bookmark_username);
+				console.log('tree_bookmark_variables: ' + tree_bookmark_variables);
+				console.log('tree_bookmark_times: ' + tree_bookmark_times);
+				console.log('tree_bookmark_sets: ' + tree_bookmark_sets);
+				console.log('tree_bookmark_description: ' + tree_bookmark_description);
+				console.log('tree_cache_url: ' + tree_cache_url);
+				
+				
+				var data = {
+		    			'csrfmiddlewaretoken': csrftoken,
+		    			'tree_bookmark_name': tree_bookmark_name,
+		    			'tree_bookmark_datasetname':tree_bookmark_datasetname,
+		    			'tree_bookmark_realm':tree_bookmark_realm,
+		    			'tree_bookmark_username':tree_bookmark_username,
+		    			'tree_bookmark_variables':tree_bookmark_variables,
+		    			'tree_bookmark_times':tree_bookmark_times,
+		    			'tree_bookmark_sets':tree_bookmark_sets,
+		    			'tree_bookmark_description':tree_bookmark_description,
+		    			'tree_cache_url':tree_cache_url
+				};
+		    
+				
+				
+				
+				
+				//This address will save the tree to the database
+				var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/tree_bookmarks/';
+				
+				
+				
+				
+				$.ajax({
+				  type: "POST",
+				  url: url,
+				  //async: false,
+				  data: data,
+				  success: function(response_data)
+				  { 
+						
+					  console.log('success');
+					  
+					  
+					  
+					  var data = {
+								'csrfmiddlewaretoken': csrftoken,
+								'treename': treename,
+								'dataset': dataset,
+								'package': pckg,
+								'variable_arr_str': variable_arr_str,
+								'season_arr_str':season_arr_str,
+								'sets_arr_str':sets_arr_str,
+								'posttype':'save'
+					  };
+					  
+					  
+					  
+					  //var url = 'http://localhost:8081/exploratory_analysis/treeex/jfharney/';
+					  var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/treeex/u1/';
+						
+					  
+					  console.log('save tree url-----> ' + url);
+					  
+					    
+						$.ajax({
+							  type: "POST",
+							  url: url,
+							  //async: false,
+							  data: data,
+							  dataType: 'json',
+							  success: function(data)
+							  { 
+								  
+								  console.log('success');
+								  
+								  for (var key in data) {
+									  console.log('key: ' + key + ' value: ' + data[key])
+								  }
+								  
+								  
+								  
+								   
+								  //hide the options
+								  $('#create_tree_options').hide();
+								  $('#create_tree').html('Create Tree');
+								  
+								  //show tree
+								  $('#treeviewer').show();
+								  
+								  $('#current_treename').empty();
+								  $('#current_treename').html(data['treename']);
+								  
+								  
+								  var treeFile = $('span#treeFile').html();
+								  treeFile = tree_cache_url;
+								  
+								  treeFile = treeFile.replace(EA.uvcdat_live_root + '/exploratory_analysis','../../..');
+								  //treeFile = treeFile.replace('/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis','../../..');
+	
+								  //console.log('treeFile before: ' + treeFile);
+								  //treeFile = '../../../static/cache/temp.json';
+								  //console.log('treeFile after: ' + treeFile);
+									
+								  if(checkFile(treeFile)) {
+										
+								    //render the tree
+											
+									d3.json(treeFile, function(error, flare) {
+											
+										//d3.json(cache_dir + fileName, function(error, flare) {
+											
+										///Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/css/tree/flare13.json
+										root = flare;
+										root.x0 = height / 2;
+										root.y0 = 0;
+										
+										function collapse(d) {
+											if (d.children) {
+											  d._children = d.children;
+											  d._children.forEach(collapse);
+											  d.children = null;
+											}
+										}
+										
+										root.children.forEach(collapse);
+										update(root);
+									});
+										
+									} else {
+										console.log('leave blank');
+									}
+										
+								  	if (EA.spinnerFlag) {
+								  		$body.removeClass("loading");  
+								  	}
+								  	
+							  },
+							  error: function(ts) 
+							  { 
+								  console.log('response text: ' + ts.responseText);
+								  
+								  if (EA.spinnerFlag) {
+									  $body.removeClass("loading"); 
+								  }
+							  }
+						});
+					  
+					  	
+					  
+					  
+				  },
+				  error: function(xhr, status, error) {
+					  console.log('error'); 
+					  if (EA.spinnerFlag) {
+						  $body.removeClass("loading"); 
+					  } 
+				    if(xhr.status==404)
+				    { 
+				    	
+				    }
+				  }
+				});
+				
+				
+				
+				
+				
+			} else {
+				if(!variableFlag && !seasonFlag && !nameFlag) { 
+					alert('Please enter values for variables, seasons, and a valid tree name');
+				} else if(!variableFlag && !seasonFlag && nameFlag) { 
+					alert('Please enter values for variables and seasons');
+				} else if(!variableFlag && seasonFlag && !nameFlag) { 
+					alert('Please enter values for variables and a valid tree name');
+				} else if(!variableFlag && seasonFlag && nameFlag) { 
+					alert('Please enter values for variables');
+				} else if(variableFlag && !seasonFlag && !nameFlag) { 
+					alert('Please enter values for seasons and a valid tree name');
+				} else if(variableFlag && seasonFlag && !nameFlag) { 
+					alert('Please enter a valid tree name');
+				} else if(variableFlag && !seasonFlag && nameFlag) { 
+					alert('Please enter values for seasons');
+				}
+			}
+			
+			
+		
+		
+		
+		}
+		
+		
+		
+		
+		
+		
+	});
+	
+
+	var treeloaded = $('#treeloaded').html();
 	
 	//for post requests, need to get the csrf token
 	function getCookie(name) {
@@ -478,15 +784,9 @@ $(document).ready(function(){
 	console.log('csrftoken ' + csrftoken);
 	
 
+	$('.create_tree_options').hide();
 	
-	
-	
-	//$("#prompt").overlay().load();
-	
-	
-	
-	
-	
+	/*
 	$('#timeseriestest').click(function() {
 		alert('time series test');
 		console.log('time series test');
@@ -519,14 +819,7 @@ $(document).ready(function(){
 		
 		
 	});
-	
-	
-
-	
-	
-	
-	
-	
+	*/
 	
 	
 	
@@ -534,10 +827,10 @@ $(document).ready(function(){
 	$('#create_tree').click(function(){
 		
 		if(this.innerHTML == "Cancel") {
-			$('#create_tree_options').hide();
+			$('.create_tree_options').hide();
 			this.innerHTML = "Create New Tree";
 		} else {
-			$('#create_tree_options').show();
+			$('.create_tree_options').show();
 			$('#treeviewer').hide();
 			this.innerHTML = "Cancel";
 		}
@@ -546,33 +839,21 @@ $(document).ready(function(){
 	});
 	
 	
+	/*
+	
 	$('.dropdown-menu').on('click', function(e) {
 	    if($(this).hasClass('dropdown-menu-form')) {
 	        e.stopPropagation();
 	    }
 	});
+	*/
 	
-	var treeloaded = $('#treeloaded').html();
+	console.log('treeloaded: ' + treeloaded);
+
+	
 	
 	if(treeloaded == 'false')
 		$('#treeviewer').hide();
-	
-	
-	
-	//show/hide the api checks
-	//$('#api_check').show();
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
@@ -608,23 +889,9 @@ $(document).ready(function(){
 	
 	
 	
-	$('.dropdown-toggle').dropdown();
 	
 	
 	/*
-
-	$('#b1').click(function() {
-		alert('click');
-	});
-	$('#b2').click(function() {
-		alert('redirecting to...' + $(this).html());
-		location.href='http://localhost:8081/exploratory_analysis/treeex/jfharney?bookmark='+$(this).html();
-	});
-	
-	*/
-	
-	
-	
 	$('#bookmark_submit').click(function(){
 		var variable_arr = new Array();
 		var time_arr = new Array();
@@ -647,22 +914,12 @@ $(document).ready(function(){
 		console.log('Sending times ' + time_arr);
 		
 	});
-	
-	/*
-	$('#bookmark_cancel').click(function(){
-		$('div#bookmark_selection').hide();
-	});
 	*/
 	
+	
 });
-
-
-
-
-
 
 
 </script>
 
 {% endblock %}
-
