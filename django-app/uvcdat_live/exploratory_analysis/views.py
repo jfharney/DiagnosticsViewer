@@ -448,7 +448,8 @@ def treeex(request,user_id):
             
             print 'Creating diags tree view JSON file...'
         
-            
+            print 'ftnames->' + dataset_list[0]
+            print 'filetables->' + str(filetables)
         
             tv = TreeView()
             dtree = tv.makeTree(o, filetables,None,user=username,ftnames=[dataset_list[0]])
@@ -1335,8 +1336,10 @@ def timeseries(request, lat, lon, variable):
 
    print 'my new coordinates: ', mylat, mylon
 
-   dataset = os.path.join(default_sample_data_dir+'tropics_warming_th_q_co2', 'test.xml')
+   print 'default_sample_data_dir: ' + default_sample_data_dir
+   dataset = os.path.join(default_sample_data_dir, 'test.xml')
 
+   print 'dataset: ' + dataset
    # Note: It is assumed that we are given an index into the dataset rather
    # than actual lat/lon coordinates. This is not a problem currently, but
    # if this code gets used more, we should probably fix that.
