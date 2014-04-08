@@ -799,11 +799,18 @@ def register(request):
     
     print 'username: ' + username + ' password: ' + password + ' email: ' + email
     
-    from django.contrib.auth.models import User
-    user = User.objects.create_user(username,email,password)
-    user.save()
+    from django.db import IntegrityError
     
-    return HttpResponse("Registered")
+    try:
+        from django.contrib.auth.models import User
+        user = User.objects.create_user(username,email,password)
+        user.save()
+        return HttpResponse("Registered")
+    except IntegrityError:
+        return HttpResponse("Duplicate")
+    
+    
+    
 
 def diagsHelper(user_id,bookmark_name):
     print 'in diags helper'

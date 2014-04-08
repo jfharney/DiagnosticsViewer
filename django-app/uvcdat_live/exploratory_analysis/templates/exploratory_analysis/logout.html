@@ -128,6 +128,7 @@
 		     	<input type="text" class="input-block-level" id='register_username' placeholder="Username">
 		        <input type="password" class="input-block-level" id='register_password' placeholder="Password">
 		        <input type="text" class="input-block-level" id='register_email' placeholder="email">
+	        	<button class="btn btn-large btn-primary" type="submit" id="cancel_register">Cancel</button>
 		        
 	     	</div>
 	     	
@@ -145,131 +146,13 @@
 	<script src="{% static 'exploratory_analysis/js/d3/d3.min.js' %}"></script>
 	
 
+	<script src="{% static 'exploratory_analysis/js/security/signin.js' %}"></script>
+	<script src="{% static 'exploratory_analysis/js/security/user_registration.js' %}"></script>
+	
+	
 	<script type="text/javascript">
 	
-	$(document).ready(function(){
-
-		
-		//for post requests, need to get the csrf token
-		function getCookie(name) {
-	        var cookieValue = null;
-	        if (document.cookie && document.cookie != '') {
-	            var cookies = document.cookie.split(';');
-	            for (var i = 0; i < cookies.length; i++) {
-	                var cookie = jQuery.trim(cookies[i]);
-	                // Does this cookie string begin with the name we want?
-	                if (cookie.substring(0, name.length + 1) == (name + '=')) {
-	                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-	                    break;
-	                }
-	            }
-	        }
-	        return cookieValue;
-	    }
-	    var csrftoken = getCookie('csrftoken');
-	    
-		console.log('csrftoken ' + csrftoken);
-		
-		
-		$('#signin').click(function(){
-			
-			var username = $('#username').val();
-	        var password = $('#password').val();
-	        var email = $('#email').val();
-			
-			
-			var input_data = {
-					'csrfmiddlewaretoken': csrftoken,
-					'username':username,
-					'password':password,
-					'email':email
-			}
-			
-			
-			//var url = 'http://localhost:8081/exploratory_analysis/timeseries1/';
-			var url = 'http://localhost:8081/exploratory_analysis/auth/';
-			
-			
-			$.ajax({
-				  type: "POST",
-				  url: url,
-				  data: input_data,
-				  success: function(data)
-				  { 
-					  console.log(data);
-					  if(data == 'Authenticated') {
-						  console.log('Authenticated - go to the main page with the username');
-						  window.location = 'http://localhost:8081/exploratory_analysis/main/' + username;
-					  } else {
-						  console.log('Not authenticated - stay on page');
-					  }
-					  
-				  },
-				  error: function(xhr, status, error) {
-					  console.log('error'); 
-				    if(xhr.status==404)
-				    { 
-				    	
-				    }
-				  }
-				});
-			
-			
-		});
-		
-		
-		$('#register').click(function(){
-
-			if(this.innerHTML == 'Register') {
-				this.innerHTML = 'Save';
-				$('#registration_form').show('slow');
-				
-			} else {
-				
-		        var register_username = $('#register_username').val();
-		        var register_password = $('#register_password').val();
-		        var register_email = $('#register_email').val();
-				
-				
-				var input_data = {
-						'csrfmiddlewaretoken': csrftoken,
-						'register_username':username,
-						'register_password':password,
-						'register_email':email
-				}
-				
-				
-				//var url = 'http://localhost:8081/exploratory_analysis/timeseries1/';
-				var url = 'http://localhost:8081/exploratory_analysis/register/';
-				
-				
-				$.ajax({
-					  type: "POST",
-					  url: url,
-					  data: input_data,
-					  success: function(data)
-					  { 
-						  console.log('success ' + data);
-					  },
-					  error: function(xhr, status, error) {
-						  console.log('error'); 
-					    if(xhr.status==404)
-					    { 
-					    	
-					    }
-					  }
-				});
-				
-				
-				this.innerHTML = 'Register';
-				$('#registration_form').hide();
-			}
-			
-			
-		})
-		
-	});
-
+	
 
 	</script>
 

@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-	
+	console.log('in visualize');
 
 	$body = $("body");
 	
@@ -35,8 +35,13 @@ $(document).ready(function() {
 		var parseDate = d3.time.format("%Y%m").parse;
 
 		var variable = $("#selectV").val();
-		if (variable == null)
+		if (variable == null) {
+			if (EA.spinnerFlag) {
+				$body.removeClass("loading");  
+			}
+			alert('please select a variable');
 			return;
+		}
 
 		//d3.json("http://" + EA.host + ":" + EA.port + "/exploratory_analysis/avgmap/0151/01/" + variable, function(error, mapdata) {
 		d3.json("/static/exploratory_analysis/json_grid_data/TLAI-geogrid-0151-01.json", function(error, mapdata) {
