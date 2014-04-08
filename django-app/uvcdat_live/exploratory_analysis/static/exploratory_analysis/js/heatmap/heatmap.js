@@ -82,7 +82,19 @@ setTimeout(function() {
 
 			// Y-ticks. TODO Cross the field into the tick data?
 			// Frame.
-			row.append("svg:rect").attr("x", padding / 2).attr("y", padding / 2).attr("width", size - padding).attr("height", size - padding).style("stroke", rectColor).style("stroke-width", 1.5);
+			row.append("svg:rect").attr("x", padding / 2).attr("y", padding / 2).attr("width", size - padding).attr("height", size - padding).style("stroke", rectColor).style("stroke-width", 1.5).on("click", function(d, i) {
+				//console.log(d.x + " " + d.i);
+				gotoselected2(d.x, d.y);
+
+			}).append('svg:title').text(function(d, i) {
+				return d.x + " " + d.y
+			});
+
+			$('rect').tipsy({
+				html : true,
+				gravity : 's'
+			});
+
 			//.style("class", "Blues")
 
 			//.attr("class", quantize);
@@ -400,12 +412,19 @@ setTimeout(function() {
 
 			}
 			window.gotoselected = function() {
-
-				//CB_Close();
 				var selectedArrayX = new Array();
 				var selectedArrayY = new Array();
 				selectedArrayX = $("#selectX").val();
 				selectedArrayY = $("#selectY").val();
+				gotoselected2(selectedArrayX, selectedArrayY);
+			}
+			window.gotoselected2 = function(sax, say) {
+
+				//CB_Close();
+				var selectedArrayX = new Array();
+				var selectedArrayY = new Array();
+				selectedArrayX = [sax];
+				selectedArrayY = [say];
 				var countX = selectedArrayX.length;
 				var countY = selectedArrayY.length;
 
@@ -464,6 +483,7 @@ setTimeout(function() {
 						hide = false;
 					}
 					mode = "splom";
+
 					var regionl = row.filter(function(d, i) {
 						return (d.i <= iX + 7 && d.i >= iX - 0 && i <= iY + 7 && i >= iY - 0);
 					});
@@ -472,6 +492,11 @@ setTimeout(function() {
 					});
 
 					region.attr("graphmode", "splom");
+
+					region.selectAll("rect").style("stroke", function() {
+						return $(this).css("fill");
+					});
+					region.selectAll("rect").style("fill", "white");
 
 					region.selectAll("line.y").data(function(d) {
 						return position[d.y].ticks(5).map(position[d.y]);
@@ -544,10 +569,18 @@ setTimeout(function() {
 					// One row per field.
 					row = column.selectAll("g").data(cross(selectedArrayY)).enter().append("svg:g").style("class", "Blues").attr("class", quantize).attr("x", padding / 2).attr("y", padding / 2).attr("width", size - padding).attr("graphmode", "heat").attr("height", size - padding).attr("transform", function(d, i) {
 						return "translate(0," + i * size + ")";
+					}).append('svg:title').text(function(d, i) {
+						return d.x + " " + d.y
 					});
 
 					// Frame.
 					row.append("svg:rect").attr("x", padding / 2).attr("y", padding / 2).attr("width", size - padding).attr("height", size - padding).style("stroke", rectColor).style("stroke-width", 1.5);
+
+					$('rect').tipsy({
+						html : true,
+						gravity : 's'
+					});
+
 					//.style("class", "Blues")
 
 					//.attr("class", quantize);
@@ -641,11 +674,17 @@ setTimeout(function() {
 			};
 
 			window.editview = function() {
+				var selX = document.getElementById('selectXX');
+				var selY = document.getElementById('selectYY');
+				heatZoomTo(selX, selY);
+			}
+
+			window.heatZoomTo = function(selx, sely) {
 
 				//CB_Close();
 
-				var selX = document.getElementById('selectXX');
-				var selY = document.getElementById('selectYY');
+				var selX = selx;
+				var selY = sely;
 				selectedArrayX = new Array();
 				selectedArrayY = new Array();
 				var i;
@@ -688,7 +727,19 @@ setTimeout(function() {
 				// Y-ticks. TODO Cross the field into the tick data?
 
 				// Frame.
-				row.append("svg:rect").attr("x", padding / 2).attr("y", padding / 2).attr("width", size - padding).attr("height", size - padding).style("stroke", rectColor).style("stroke-width", 1.5);
+				row.append("svg:rect").attr("x", padding / 2).attr("y", padding / 2).attr("width", size - padding).attr("height", size - padding).style("stroke", rectColor).style("stroke-width", 1.5).on("click", function(d, i) {
+					//console.log(d.x + " " + d.i);
+					gotoselected2(d.x, d.y);
+
+				}).append('svg:title').text(function(d, i) {
+					return d.x + " " + d.y
+				});
+
+				$('rect').tipsy({
+					html : true,
+					gravity : 's'
+				});
+				;
 				//.style("class", "Blues")
 
 				//.attr("class", quantize);
@@ -938,7 +989,7 @@ setTimeout(function() {
 					});
 
 					region.selectAll("circle").style("font", "24px sans-serif").append('svg:title').text(function(d, i) {
-			
+
 						return "<font size=2 face=\"Helvetica\" color=white>" + d.x.y + " : " + d.y[d.x.y] + "<br> " + d.x.x + " : " + d.y[d.x.x] + "</font>";
 						//+ "</font><br><b>Comments:</b><br/><TEXTAREA  name=\'filedata\' id=\'txtbox\'  ROWS=2 COLS=8 WRAP></TEXTAREA><br><button onclick=\"save()\">Submit</button>";
 
@@ -995,10 +1046,10 @@ setTimeout(function() {
 
 			function click(d, dot) {
 				/*
-				d3.select(dot).style("fill", "yellow");
-				fcload(d);
-				$("#mies4b").click();
-				*/
+				 d3.select(dot).style("fill", "yellow");
+				 fcload(d);
+				 $("#mies4b").click();
+				 */
 			}
 
 
@@ -1007,9 +1058,9 @@ setTimeout(function() {
 			}
 			function clickb(d) {
 				/*
-				CB_Open("href=htmlcontent,, html=<!-- Google Conversation Element Code --><iframe frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" border=\"0\" style=\"border:0;margin:0;width:250px;height:440px;\" src=\"http://www.google.com/friendconnect/discuss?scope=site&topic=" + d + "\" scrolling=\"no\" allowtransparency=\"true\"></iframe>");
-				this.attr("fill", "red");
-				*/
+				 CB_Open("href=htmlcontent,, html=<!-- Google Conversation Element Code --><iframe frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" border=\"0\" style=\"border:0;margin:0;width:250px;height:440px;\" src=\"http://www.google.com/friendconnect/discuss?scope=site&topic=" + d + "\" scrolling=\"no\" allowtransparency=\"true\"></iframe>");
+				 this.attr("fill", "red");
+				 */
 			}
 
 			function quantize(d, i) {
