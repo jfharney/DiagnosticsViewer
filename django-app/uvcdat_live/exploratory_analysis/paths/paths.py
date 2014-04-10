@@ -54,6 +54,8 @@ default_sample_data_dir = '/Users/8xo/sampledatalens/'
 #default_sample_data_dir = '/Users/i7j/Dropbox/data/' #tropics_warming_th_q_clm2'
 #>>>>>>> 14aec8d2278871946e6616e5424378ef15ed49fe
 
+default_tree_sample_data_dir = default_sample_data_dir
+default_map_sample_data_dir = default_sample_data_dir + 'tropics_warming_th_q'
 
 #img_cache_path = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/cache/'
 img_cache_path = uvcdat_live_root + 'exploratory_analysis/static/exploratory_analysis/cache/'

@@ -189,9 +189,9 @@ $(document).ready(function(){
 					  
 					  
 					  //var url = 'http://localhost:8081/exploratory_analysis/treeex/jfharney/';
-					  var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/treeex/u1/';
+					  var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/treeex/' + username + '/';
 						
-					  
+					  console.log('username----->' + username);
 					  console.log('save tree url-----> ' + url);
 					  
 					    

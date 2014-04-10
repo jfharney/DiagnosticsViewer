@@ -51,8 +51,10 @@ $(document).ready(function(){
 				}
 				
 				
-				var url = 'http://localhost:8081/exploratory_analysis/register/';
+				//var url = 'http://localhost:8081/exploratory_analysis/register/';
+				var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/register/';
 				
+				console.log('url--->' + url);
 				
 				$.ajax({
 					  type: "POST",

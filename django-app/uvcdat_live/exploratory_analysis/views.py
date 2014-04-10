@@ -19,6 +19,9 @@ paths_cache_dir = paths.cache_dir
 paths_front_end_cache_dir = paths.front_end_cache_dir
 
 default_sample_data_dir = paths.default_sample_data_dir
+default_tree_sample_data_dir = paths.default_tree_sample_data_dir
+default_map_sample_data_dir = paths.default_map_sample_data_dir
+
 img_cache_path = paths.img_cache_path
 
 timeseries_cache_path = paths.timeseries_cache_path
@@ -218,7 +221,7 @@ def figureGenerator(request):
           o._opts['realms']=['land']
           '''
         
-          o._opts['path']=[default_sample_data_dir + 'tropics_warming_th_q_co2']
+          o._opts['path']=[default_tree_sample_data_dir + 'tropics_warming_th_q_co2']
           o._opts['vars']=variables
           o._opts['times']=times
           #Note: only use 1 or 2 
@@ -400,10 +403,10 @@ def treeex(request,user_id):
             path = ''
             if request.POST['dataset'] == None:
                 dataset = 'tropics_warming_th_q_co2'
-                path = [default_sample_data_dir + 'tropics_warming_th_q_co2']
+                path = [default_tree_sample_data_dir + 'tropics_warming_th_q_co2']
             else:
                 dataset = request.POST['dataset']
-                path = path = [default_sample_data_dir + request.POST['dataset']]
+                path = path = [default_tree_sample_data_dir + request.POST['dataset']]
             
                 
             
@@ -844,7 +847,7 @@ def diagsHelper(user_id,bookmark_name):
         #defaults here
         packages = ['lmwg']
         vars = ['TLAI', 'TG','NPP']
-        path = [default_sample_data_dir + 'tropics_warming_th_q_co2']
+        path = [default_tree_sample_data_dir + 'tropics_warming_th_q_co2']
         times = ['MAR','APR','MAY','JUNE','JULY']
         
         
@@ -1336,8 +1339,8 @@ def timeseries(request, lat, lon, variable):
 
    print 'my new coordinates: ', mylat, mylon
 
-   print 'default_sample_data_dir: ' + default_sample_data_dir
-   dataset = os.path.join(default_sample_data_dir, 'test.xml')
+   print 'default_sample_data_dir: ' + default_map_sample_data_dir
+   dataset = os.path.join(default_map_sample_data_dir, 'test.xml')
 
    print 'dataset: ' + dataset
    # Note: It is assumed that we are given an index into the dataset rather
@@ -1388,7 +1391,7 @@ def timeseries(request, lat, lon, variable):
 
 
 def avgmap(request, year, month, variable):
-   dataset = os.path.join(default_sample_data_dir,"tropics_warming_th_q.clm2.h0.")
+   dataset = os.path.join(default_map_sample_data_dir,"tropics_warming_th_q.clm2.h0.")
    dataset = dataset+year+'-'+month+'.nc'
    f = cdms2.open(dataset)
    thevar = f(variable)

@@ -7,7 +7,8 @@ EA.cache_location = '../../../static/exploratory_analysis/img/treeex/';
 
 EA.host = 'localhost';
 
-EA.port = '8081';
+EA.port = document.location.port
+//EA.port = '8081';
 
 EA.spinnerFlag = true;
 

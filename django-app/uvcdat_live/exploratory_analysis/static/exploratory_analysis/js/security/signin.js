@@ -36,9 +36,9 @@ $(document).ready(function(){
 					'email':email
 			}
 			
-			
 			//var url = 'http://localhost:8081/exploratory_analysis/timeseries1/';
-			var url = 'http://localhost:8081/exploratory_analysis/auth/';
+			//var url = 'http://localhost:8081/exploratory_analysis/auth/';
+			var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/auth/';
 			
 			
 			$.ajax({
@@ -50,7 +50,8 @@ $(document).ready(function(){
 					  console.log(data);
 					  if(data == 'Authenticated') {
 						  console.log('Authenticated - go to the main page with the username');
-						  window.location = 'http://localhost:8081/exploratory_analysis/main/' + username;
+						  //window.location = 'http://localhost:8081/exploratory_analysis/main/' + username;
+						  window.location = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/main/' + username;
 					  } else {
 						  console.log('Not authenticated - stay on page');
 					  }
