@@ -124,8 +124,13 @@ def maps(request,user_id):
     if user_id != None:
         username = user_id
     
+    if(loggedIn == True):
+        template = loader.get_template('exploratory_analysis/mapview.html')
+    else:
+        print 'username: ' + username
+        template = loader.get_template('exploratory_analysis/not_logged_in.html')
+        
     
-    template = loader.get_template('exploratory_analysis/mapview.html')
     
     context = RequestContext(request, {
       'loggedIn' : str(loggedIn),
@@ -472,8 +477,14 @@ def treeex(request,user_id):
             
         #end if request.POST  
             
+        if(loggedIn == True):
+            template = loader.get_template('exploratory_analysis/treeex.html')
+        else:
+            print 'username: ' + username
+            template = loader.get_template('exploratory_analysis/not_logged_in.html')
+    
         
-        template = loader.get_template('exploratory_analysis/treeex.html')
+        
         treeloaded = 'false'
         
         
