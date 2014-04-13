@@ -156,9 +156,14 @@ def heatmap(request,user_id):
     if user_id != None:
         username = user_id
     
+    print 'LoggedIn: ' + str(loggedIn)
     
-    template = loader.get_template('exploratory_analysis/heatmapview.html')
-    
+    if(loggedIn == True):
+        template = loader.get_template('exploratory_analysis/heatmapview.html')
+    else:
+        print 'username: ' + username
+        template = loader.get_template('exploratory_analysis/not_logged_in.html')
+        
     context = RequestContext(request, {
       'loggedIn' : str(loggedIn),
       'username' : username,
