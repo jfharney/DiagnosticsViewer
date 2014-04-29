@@ -637,6 +637,8 @@ def variables(request,dataset_id):
 
 def variables1(request):
     
+    print '\n\nIn variables'
+    
     from menuhelper import variablelist
     
     data_string = variablelist.variableListHelper1(request)

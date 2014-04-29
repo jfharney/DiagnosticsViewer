@@ -181,7 +181,12 @@ body.loading #modal1 {
 </div>
 </body>
 
+ 
 <script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/variablelist.js' %}"></script>
+ 
+<!-- 
+<script type="text/javascript" src="{% static 'exploratory_analysis/js/parameters.js' %}"></script>
+ --> 
 <script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/timelist.js' %}"></script>
 
 <!-- 
@@ -210,5 +215,32 @@ body.loading #modal1 {
 <script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/timeseries.js' %}"></script>
 <script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/map.js' %}"></script>
 <script type="text/javascript" src="{% static 'exploratory_analysis/js/geo/cyclone.js' %}"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+
+	$body = $("body");
+	
+	/*
+	
+	
+	
+	var current_username = 'u1';
+	
+	getDatasets(current_username);
+	
+	getPackages(current_username);
+	
+	getVariables(current_username);
+	
+	getTimes(current_username);
+	*/
+	
+
+});
+
+</script>
+
 
 {% endblock %}

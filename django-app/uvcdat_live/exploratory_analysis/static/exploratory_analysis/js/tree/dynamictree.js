@@ -48,7 +48,9 @@ $(document).ready(function(){
 			d3.json(treeFile, function(error, flare) {
 			
 			//d3.json(cache_dir + fileName, function(error, flare) {
-			
+			for (var key in flare) {
+				console.log('flare key: ' + key);
+			}
 			///Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/css/tree/flare13.json
 			root = flare;
 			root.x0 = height / 2;
@@ -64,11 +66,14 @@ $(document).ready(function(){
 		
 			root.children.forEach(collapse);
 			update(root);
+			
 			});
 		
 		} else {
 			console.log('leave blank');
 		}
+		
+		
 		
 		
 	} else {
@@ -177,10 +182,26 @@ function update(source) {
 	  var nodes = tree.nodes(root).reverse(),
 	      links = tree.links(nodes);
 
+	  console.log('--------updated tree state--------');
+	  for(var key in nodes) {
+		  console.log('nodessss key: ' + key + ' node ' + nodes[key]);
+		  var node = nodes[key];
+		  for (var nodekey in node) {
+			  console.log('  node key: ' + nodekey + ' value: ' + node[nodekey]);
+		  }
+	  }
+	  for(var key in links) {
+		  console.log('links key: ' + key + ' link: ' + links[key]);
+	  }
+	  
+	  //console.log('****\n' + JSON.stringify(nodes) + '\n*******');
+	  
+	  //EA.tree_state = nodes;
+	  
 	  // Normalize for fixed-depth.
 	  nodes.forEach(function(d) { d.y = d.depth * EA.treeDepthFactor; });
 
-	  // Update the nodesÉ
+	  // Update the nodesï¿½
 	  var node = svg.selectAll("g.node")
 	      .data(nodes, function(d) { return d.id || (d.id = ++i); });
 
@@ -231,7 +252,7 @@ function update(source) {
   nodeExit.select("text")
       .style("fill-opacity", 1e-6);
 
-  // Update the linksÉ
+  // Update the linksï¿½
   var link = svg.selectAll("path.link")
       .data(links, function(d) { return d.target.id; });
 
@@ -327,19 +348,22 @@ function hover(d) {
 //Toggle children on click.
 function click(d) {
 if (d.children) {
+	console.log('in if d.children ');
   d._children = d.children;
   d.children = null;
 } else {
-  //alert('in else ');
+  console.log('in else ');
   
   if(d['_children'] == undefined) {
 	  var name = d['name'];
 	  console.log('name: ' + name);
 	  
+	  
+	  /*
 	  for(var key in d) {
 		  console.log('key: ' + key + ' val: ' + d[key]);
 	  }
-	  
+	  */
 	  
 	  
 	  

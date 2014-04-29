@@ -21,13 +21,14 @@ $(document).ready(function(){
 			data: queryStringParams,
 			success: function(data) {
 				
+				/*
 				var datasetList = data['datasets'];
 				$('#dataset_name').empty();
 				for (var i=0;i<datasetList.length;i++) {
 					var dataset = datasetList[i];
 					$('.dropdown-dataset-menu').append('<li class="dataset_menu" id="' + dataset + '"><a href="#">' + dataset + '</a></li>');
 				}
-				
+				*/
 			},
 			error: function( jqXHR, textStatus, errorThrown ) {
 				alert('datasetList textStatus: ' + textStatus + ' errorThrown: ' + errorThrown);
