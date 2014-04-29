@@ -12,6 +12,8 @@ from paths import paths
 
 from defaults import parameter_defaults
 
+from treeviewer import treeviewer_treeex
+
 syspath_append_uvcmetrics = paths.syspath_append_uvcmetrics
 syspath_append_cdscan = paths.syspath_append_cdscan
 
@@ -288,6 +290,7 @@ def figureGenerator(request):
 #New tree view
 def treeex(request,user_id):
     
+    
     print '\nrequest user authenticate: ' + str(request.user.is_authenticated()) + '\n'
     
     
@@ -481,6 +484,9 @@ def treeex(request,user_id):
             template = loader.get_template('exploratory_analysis/treeex.html')
         else:
             print 'username: ' + username
+            #print 'func: ' + str(func)
+            
+            func = treeviewer_treeex.func()
             template = loader.get_template('exploratory_analysis/not_logged_in.html')
     
         
