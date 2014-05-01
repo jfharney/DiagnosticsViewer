@@ -180,7 +180,7 @@ function update(source) {
 	  // Normalize for fixed-depth.
 	  nodes.forEach(function(d) { d.y = d.depth * EA.treeDepthFactor; });
 
-	  // Update the nodesÉ
+	  // Update the nodesï¿½
 	  var node = svg.selectAll("g.node")
 	      .data(nodes, function(d) { return d.id || (d.id = ++i); });
 
@@ -231,7 +231,7 @@ function update(source) {
   nodeExit.select("text")
       .style("fill-opacity", 1e-6);
 
-  // Update the linksÉ
+  // Update the linksï¿½
   var link = svg.selectAll("path.link")
       .data(links, function(d) { return d.target.id; });
 
@@ -377,7 +377,7 @@ if (d.children) {
 		  }
 		  
 	  }
-	  //alert('fullpath: ' + fullpath);
+	  
 	  figure_generator(times,variables,sets,dataset,packages,realms,username,fullpath);
 	  
   }
@@ -415,9 +415,15 @@ function reversePath(path) {
 function figure_generator(times,variables,sets,dataset,packages,realms,username,fullpath) {
 	var csrftoken = getCookie('csrftoken');
 	
+	
+	console.log('*&^(^*%^*&^%*&^%*^%*^%*' + dataset);
+	
 	//var computedImg = "../../../static/exploratory_analysis/img/carousel/set6_turbf_Global.gif";
 	  
-	var img_prefix = '../../../static/exploratory_analysis/img/treeex/';
+	//var img_prefix = '../../../static/exploratory_analysis/img/treeex/';
+	
+	var img_prefix = '../../../static/exploratory_analysis/img/tree/' + dataset + '/';//tropics_warming_th_q_co222/';
+	
 	//alert('computedIMG: ' + img_prefix + realms + '_' + packages + '_' + sets + '_' + times + '_' + variables + '.png');
 	
 	  var computedImg = '../../../static/exploratory_analysis/img/treeex/land_lmwg_set1_MAY_TG.png';
