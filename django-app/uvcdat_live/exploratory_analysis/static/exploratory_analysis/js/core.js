@@ -32,3 +32,13 @@ EA.tree_margin_bottom = 20;
 EA.front_end_tree_cache_dir = '../../../static/cache/';
 
 EA.front_end_figure_cache_dir = '../../../static/exploratory_analysis/img/treeex/';
+
+
+
+//--------Default Parameters------------//
+EA.packList = ["lmwg"];
+EA.timeList = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC","DJF","MAM","JJA","SON","ANN"];
+EA.varList = ["GPP","NEE","HR","ER","NPP","QVEGT","QVEGE","QSOIL","GROSSNMIN"];
+
+
+EA.tree_state = '';

@@ -48,7 +48,9 @@ $(document).ready(function(){
 			d3.json(treeFile, function(error, flare) {
 			
 			//d3.json(cache_dir + fileName, function(error, flare) {
-			
+			for (var key in flare) {
+				console.log('flare key: ' + key);
+			}
 			///Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/css/tree/flare13.json
 			root = flare;
 			root.x0 = height / 2;
@@ -64,11 +66,14 @@ $(document).ready(function(){
 		
 			root.children.forEach(collapse);
 			update(root);
+			
 			});
 		
 		} else {
 			console.log('leave blank');
 		}
+		
+		
 		
 		
 	} else {
@@ -177,6 +182,74 @@ function update(source) {
 	  var nodes = tree.nodes(root).reverse(),
 	      links = tree.links(nodes);
 
+	  console.log('--------updated tree state--------');
+	  for(var key in nodes) {
+		  console.log('nodessss key: ' + key + ' node ' + nodes[key]);
+		  var node = nodes[key];
+		  for (var nodekey in node) {
+			  console.log('  node key: ' + nodekey + ' value: ' + node[nodekey]);
+		  }
+	  }
+	  for(var key in links) {
+		  console.log('links key: ' + key + ' link: ' + links[key]);
+	  }
+	  
+	  //postStateExample
+	  
+	  var url = 'http://' + 'localhost' + ':' + '8081' + '/exploratory_analysis/postStateExample/';
+		
+	//for post requests, need to get the csrf token
+		function getCookie(name) {
+	        var cookieValue = null;
+	        if (document.cookie && document.cookie != '') {
+	            var cookies = document.cookie.split(';');
+	            for (var i = 0; i < cookies.length; i++) {
+	                var cookie = jQuery.trim(cookies[i]);
+	                // Does this cookie string begin with the name we want?
+	                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+	                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+	                    break;
+	                }
+	            }
+	        }
+	        return cookieValue;
+	    }
+	    var csrftoken = getCookie('csrftoken');
+	    
+		console.log('csrftoken ' + csrftoken);
+		
+		
+		var data = {
+    			'csrfmiddlewaretoken': csrftoken,
+    			'links': links
+    			
+		};
+    
+		
+		
+		
+	  $.ajax({
+			url: url,
+			type: 'POST',
+			//dataType: 'json',
+			data: data,
+			success: function(data) {
+				
+				console.log('post example success');
+				
+			},
+			error: function( jqXHR, textStatus, errorThrown ) {
+				alert('timeseries textStatus: ' + textStatus + ' errorThrown: ' + errorThrown);
+				
+			}
+		});
+		
+	  
+	  console.log('--------end updated tree state--------');
+	  //console.log('****\n' + JSON.stringify(nodes) + '\n*******');
+	  
+	  //EA.tree_state = nodes;
+	  
 	  // Normalize for fixed-depth.
 	  nodes.forEach(function(d) { d.y = d.depth * EA.treeDepthFactor; });
 
@@ -327,19 +400,22 @@ function hover(d) {
 //Toggle children on click.
 function click(d) {
 if (d.children) {
+	console.log('in if d.children ');
   d._children = d.children;
   d.children = null;
 } else {
-  //alert('in else ');
+  console.log('in else ');
   
   if(d['_children'] == undefined) {
 	  var name = d['name'];
 	  console.log('name: ' + name);
 	  
+	  
+	  /*
 	  for(var key in d) {
 		  console.log('key: ' + key + ' val: ' + d[key]);
 	  }
-	  
+	  */
 	  
 	  
 	  

@@ -17,6 +17,7 @@ function getDatasets(username) {
 		  var dataList = response_data['datasets'];
 		  
 		  
+		  
 		  //var dataList = ["tropics_warming_th_q_co2"];
 			
 		  $("#selectD").multiselect().multiselectfilter();
@@ -120,11 +121,9 @@ function getVariables(current_username) {
 			  
 			  varList = response_data['variables'];
 			  
-			  /*
 			  for(var i=0;i<varList.length;i++) {
 				  console.log('times: ' + varList[i]);
 			  }
-			  */
 			  
 			  //var dataList = ["tropics_warming_th_q_co2"];
 				
@@ -175,13 +174,13 @@ function getTimes(current_username) {
 		  success: function(response_data)
 		  { 
 				
+			  console.log('success in getting datasets');
+			  
 			  var timeList = response_data['times'];
 			  
-			  /*
 			  for(var i=0;i<timeList.length;i++) {
 				  console.log('times: ' + timeList[i]);
 			  }
-			  */
 			  
 			  //var dataList = ["tropics_warming_th_q_co2"];
 				
