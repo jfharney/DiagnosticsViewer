@@ -1427,3 +1427,13 @@ def avgmap(request, year, month, variable):
 
 
 
+
+
+
+
+####Example...
+def postStateExample(request):
+    
+    print 'in post state example'
+    a = {'a' : 'hello'}
+    return HttpResponse('hello')

@@ -194,6 +194,58 @@ function update(source) {
 		  console.log('links key: ' + key + ' link: ' + links[key]);
 	  }
 	  
+	  //postStateExample
+	  
+	  var url = 'http://' + 'localhost' + ':' + '8081' + '/exploratory_analysis/postStateExample/';
+		
+	//for post requests, need to get the csrf token
+		function getCookie(name) {
+	        var cookieValue = null;
+	        if (document.cookie && document.cookie != '') {
+	            var cookies = document.cookie.split(';');
+	            for (var i = 0; i < cookies.length; i++) {
+	                var cookie = jQuery.trim(cookies[i]);
+	                // Does this cookie string begin with the name we want?
+	                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+	                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+	                    break;
+	                }
+	            }
+	        }
+	        return cookieValue;
+	    }
+	    var csrftoken = getCookie('csrftoken');
+	    
+		console.log('csrftoken ' + csrftoken);
+		
+		
+		var data = {
+    			'csrfmiddlewaretoken': csrftoken,
+    			'links': links
+    			
+		};
+    
+		
+		
+		
+	  $.ajax({
+			url: url,
+			type: 'POST',
+			//dataType: 'json',
+			data: data,
+			success: function(data) {
+				
+				console.log('post example success');
+				
+			},
+			error: function( jqXHR, textStatus, errorThrown ) {
+				alert('timeseries textStatus: ' + textStatus + ' errorThrown: ' + errorThrown);
+				
+			}
+		});
+		
+	  
+	  console.log('--------end updated tree state--------');
 	  //console.log('****\n' + JSON.stringify(nodes) + '\n*******');
 	  
 	  //EA.tree_state = nodes;
