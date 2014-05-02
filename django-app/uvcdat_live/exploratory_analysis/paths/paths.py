@@ -38,7 +38,8 @@ syspath_append_cdscan = '/Users/8xo/software/exploratory_analysis/uvcdat_light/b
 
 #path to "cache", i.e. place to store figures and json files for d3 renderings
 #cache_dir = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/cache/'
-cache_dir = uvcdat_live_root + 'exploratory_analysis/static/cache/'
+#cache_dir = uvcdat_live_root + 'exploratory_analysis/static/cache/'
+cache_dir = uvcdat_live_root + 'exploratory_analysis/static/exploratory_analysis/cache/tree/'
 
 #path for front end to access cache (can't be a local path)
 front_end_cache_dir = '../../../static/cache/'

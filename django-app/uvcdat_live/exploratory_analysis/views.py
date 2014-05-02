@@ -421,14 +421,26 @@ def treeex(request,user_id):
                 dataset = request.POST['dataset']
                 path = path = [default_tree_sample_data_dir + request.POST['dataset']]
             
-                
             
+            
+            
+            #    username
+                
+            #static/exploratory_analysis/cache/tree/' username + '/json/' + dataset_name
             #build tree here 
             #if the post type is "submit" then grab "temp.json", otherwise it is a saved bookmark
+            
+            #old
+            #if posttype == 'submit':
+            #    treeFile = cache_dir + 'temp' + '.json'
+            #else:
+            #    treeFile = cache_dir + treename + '.json'
+            
             if posttype == 'submit':
-                treeFile = cache_dir + 'temp' + '.json'
+                treeFile = cache_dir + username + '/json/' + 'temp' + '.json'
             else:
-                treeFile = cache_dir + treename + '.json'
+                treeFile = cache_dir + username + '/json/' + dataset + '/' + treename + '.json'
+            
             
             #### Start diagnostics generation here...
             #username = user_id
@@ -466,6 +478,8 @@ def treeex(request,user_id):
         
             print 'ftnames->' + dataset_list[0]
             print 'filetables->' + str(filetables)
+        
+            print '\n\n\n\nFILENAME!!!! ' + treeFile
         
             tv = TreeView()
             dtree = tv.makeTree(o, filetables,None,user=username,ftnames=[dataset_list[0]])
@@ -791,6 +805,8 @@ def auth(request):
     ######END DONT NEED THIS
     
     user = authenticate(username=username, password=password)
+    
+    print '\n\nIS active? ' + str(user.is_active) + '\n\n'
     
     print 'username: ' + username
     print 'password: ' + password

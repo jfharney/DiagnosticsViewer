@@ -183,6 +183,8 @@ function update(source) {
 	      links = tree.links(nodes);
 
 	  console.log('--------updated tree state--------');
+	  
+	  /*
 	  for(var key in nodes) {
 		  console.log('nodessss key: ' + key + ' node ' + nodes[key]);
 		  var node = nodes[key];
@@ -244,6 +246,8 @@ function update(source) {
 			}
 		});
 		
+	  
+	  */
 	  
 	  console.log('--------end updated tree state--------');
 	  //console.log('****\n' + JSON.stringify(nodes) + '\n*******');
@@ -434,7 +438,7 @@ if (d.children) {
 	  var dataset = '';
 	  var packages = '';
 	  var realms = 'land';
-	  var username = 'jfharney';
+	  var username = '';
 	  
 	  for(var i=0;i<params.length;i++) {
 		  console.log('param: ' + params[i]);

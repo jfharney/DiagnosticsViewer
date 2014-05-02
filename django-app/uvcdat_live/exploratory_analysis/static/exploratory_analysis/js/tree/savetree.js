@@ -127,8 +127,10 @@ $(document).ready(function(){
 				
 				
 				//var front_end_cache_dir = '../../../static/cache/';
-				var tree_cache_url = EA.front_end_tree_cache_dir + tree_bookmark_name + '.json';
-	
+				//var tree_cache_url = EA.front_end_tree_cache_dir + tree_bookmark_name + '.json';
+				alert('save tree line 131');
+				var tree_cache_url = EA.front_end_tree_cache_dir + tree_bookmark_username + '/json/' + tree_bookmark_datasetname + '/' + tree_bookmark_name + '.json';
+				
 				console.log('tree_bookmark_name: ' + tree_bookmark_name);
 				console.log('tree_bookmark_datasetname: ' + tree_bookmark_datasetname);
 				console.log('tree_bookmark_realm: ' + tree_bookmark_realm);
@@ -160,7 +162,7 @@ $(document).ready(function(){
 				//This address will save the tree to the database
 				var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/tree_bookmarks/';
 				
-				
+				//alert('')
 				
 				
 				$.ajax({
@@ -230,10 +232,12 @@ $(document).ready(function(){
 								  treeFile = treeFile.replace(EA.uvcdat_live_root + '/exploratory_analysis','../../..');
 								  //treeFile = treeFile.replace('/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis','../../..');
 	
-								  //console.log('treeFile before: ' + treeFile);
+								  console.log('treeFile before: ' + treeFile);
 								  //treeFile = '../../../static/cache/temp.json';
 								  //console.log('treeFile after: ' + treeFile);
 									
+								  console.log('treeFile check: ' + checkFile(treeFile));
+								  
 								  if(checkFile(treeFile)) {
 										
 								    //render the tree

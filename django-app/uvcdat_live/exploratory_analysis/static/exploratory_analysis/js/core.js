@@ -29,7 +29,8 @@ EA.tree_margin_bottom = 20;
 
 
 //used in savetree.js
-EA.front_end_tree_cache_dir = '../../../static/cache/';
+//EA.front_end_tree_cache_dir = '../../../static/cache/';
+EA.front_end_tree_cache_dir = '../../../static/exploratory_analysis/cache/tree/';
 
 EA.front_end_figure_cache_dir = '../../../static/exploratory_analysis/img/treeex/';
 
