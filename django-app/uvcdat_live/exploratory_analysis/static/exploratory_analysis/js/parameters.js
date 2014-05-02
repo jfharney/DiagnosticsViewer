@@ -121,9 +121,10 @@ function getVariables(current_username) {
 			  
 			  varList = response_data['variables'];
 			  
-			  for(var i=0;i<varList.length;i++) {
-				  console.log('times: ' + varList[i]);
-			  }
+			  
+			  //for(var i=0;i<varList.length;i++) {
+			  //	  console.log('times: ' + varList[i]);
+			  //}
 			  
 			  //var dataList = ["tropics_warming_th_q_co2"];
 				
@@ -178,9 +179,9 @@ function getTimes(current_username) {
 			  
 			  var timeList = response_data['times'];
 			  
-			  for(var i=0;i<timeList.length;i++) {
-				  console.log('times: ' + timeList[i]);
-			  }
+			  //for(var i=0;i<timeList.length;i++) {
+			  //	  console.log('times: ' + timeList[i]);
+			  //}
 			  
 			  //var dataList = ["tropics_warming_th_q_co2"];
 				

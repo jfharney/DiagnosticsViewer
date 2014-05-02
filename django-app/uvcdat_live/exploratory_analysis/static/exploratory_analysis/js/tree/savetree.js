@@ -128,7 +128,7 @@ $(document).ready(function(){
 				
 				//var front_end_cache_dir = '../../../static/cache/';
 				//var tree_cache_url = EA.front_end_tree_cache_dir + tree_bookmark_name + '.json';
-				alert('save tree line 131');
+				//alert('save tree line 131');
 				var tree_cache_url = EA.front_end_tree_cache_dir + tree_bookmark_username + '/json/' + tree_bookmark_datasetname + '/' + tree_bookmark_name + '.json';
 				
 				console.log('tree_bookmark_name: ' + tree_bookmark_name);
