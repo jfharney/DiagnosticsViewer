@@ -441,12 +441,20 @@ def treeex(request,user_id):
             else:
                 treeFile = cache_dir + username + '/json/' + dataset + '/' + treename + '.json'
             
+            import os
+            import os.path
+            print 'created tree bookmark file: ' + (cache_dir + username + '/json/' + dataset)
+            print 'treeFile exists? ' + str(os.path.isdir(cache_dir + username + '/json/' + dataset))
+            if not os.path.isdir(cache_dir + username + '/json/' + dataset):
+                print 'create dir'
+                os.makedirs(cache_dir + username + '/json/' + dataset)
             
             #### Start diagnostics generation here...
             #username = user_id
         
             o = Options()
        
+            
        
             print 'varsssss---->' + str(vars)
        
@@ -545,7 +553,8 @@ def treeex(request,user_id):
         fileName = bookmark + ".json"
     
         cached_file_name = front_end_cache_dir + fileName
-           
+        
+        #cached_file_name = exploratory_analysis/static/exploratory_analysis/cache/tree/u1/json/tropics_warming_th_q_co2
            
         #check if bookmark exists
         #mapping
@@ -554,22 +563,33 @@ def treeex(request,user_id):
         #../../../static/cache/Bookmark2.json
         #
         mapped_file_name = paths.uvcdat_live_root + '/exploratory_analysis/'
+        #exploratory_analysis/static/exploratory_analysis/cache/tree/u1/json/tropics_warming_th_q_co2
+        
+        
         p = re.compile('../../../')
+        
+        print '\ncached_file_name: ' + cached_file_name
+        print '\nmapped_file_name: ' + mapped_file_name
         check_file_name = p.sub( mapped_file_name, cached_file_name)
-        print 'check_file_name: ' + check_file_name
+        print '\n\n\ncheck_file_name: ' + check_file_name + '\n\n\n'
+        
         treeFile = None
        
+        import os
+        
+        #GET RID OF THIS
+        #temp_file = 
         
         #if exists then return the tree state of that bookmark
         if os.path.exists(check_file_name):
             print 'Bookmark is there - proceed'   
-            treeFile = diagsHelper(user_id,bookmark_name)
+            treeFile = diagsHelper(user_id,bookmark_name,check_file_name)
         else:
             print 'Bookmark is not there - do not proceed'
             treeloaded = 'false'
         
         
-        print 'treeFile---->: ' + treeFile
+        print 'treeFile---->: ' + str(treeFile)
         
         template = loader.get_template('exploratory_analysis/treeex.html')
     
@@ -856,14 +876,16 @@ def register(request):
     
     
 
-def diagsHelper(user_id,bookmark_name):
+def diagsHelper(user_id,bookmark_name,treeFile):
     print 'in diags helper'
     
     
     #check the bookmark name
     
     
-    treeFile = cache_dir + bookmark_name + '.json'
+    #treeFile = cache_dir + bookmark_name + '.json'
+    
+    #cache_dir + username + '/json/' + dataset + '/' + treename + '.json
     
     import os
     

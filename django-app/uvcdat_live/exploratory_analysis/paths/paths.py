@@ -42,8 +42,8 @@ syspath_append_cdscan = '/Users/8xo/software/exploratory_analysis/uvcdat_light/b
 cache_dir = uvcdat_live_root + 'exploratory_analysis/static/exploratory_analysis/cache/tree/'
 
 #path for front end to access cache (can't be a local path)
-front_end_cache_dir = '../../../static/cache/'
-
+#old front_end_cache_dir = '../../../static/cache/'
+front_end_cache_dir = '../../../static/exploratory_analysis/cache/tree/u1/json/tropics_warming_th_q_co2/'
 
 #directory holding netcdf datasets
 #<<<<<<< HEAD
