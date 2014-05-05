@@ -2,7 +2,7 @@
 import json
 
 def variableListHelper1(request):
-    print 'in variable list helper1'
+    #print 'in variable list helper1'
     
     
     #variables = ['BTRAN','NPP','TLAI']
@@ -19,7 +19,7 @@ def variableListHelper1(request):
 
 
 def variableListHelper(request,dataset_id):
-    print 'in variable list helper'
+    #print 'in variable list helper'
     
     #dataset_id = 'dataset1'
     if(dataset_id == None):
@@ -33,7 +33,7 @@ def variableListHelper(request,dataset_id):
     variables = ['BTRAN','NPP','TLAI']
   
     data =  { 'dataset_id' : dataset_id, 'variables' : variables }
-    print 'DATA:',repr(data)
+    #print 'DATA:',repr(data)
     data_string = json.dumps(data,sort_keys=True,indent=2)
     #print 'JSON:',data_string
     #data_string = json.dumps(data,sort_keys=False,indent=2)

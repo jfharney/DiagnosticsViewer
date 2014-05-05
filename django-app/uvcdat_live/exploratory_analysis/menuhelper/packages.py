@@ -2,7 +2,7 @@ import json
 
 def packagesHelper1(request):
 
-    print 'in packageListHelper1'
+    #print 'in packageListHelper1'
     packages = ["lmwg"]
     data =  { 'packages' : packages }
     data_string = json.dumps(data,sort_keys=False,indent=2)

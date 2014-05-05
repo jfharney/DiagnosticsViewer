@@ -23,10 +23,13 @@ $(document).ready(function(){
 	var treeFile = $('span#treeFile').html();
 	console.log('treeFile: ' + treeFile);
 	
+	var cachedfile = $('span#CachedFile').html();
+	console.log('cachefile: ' + cachedfile);
 	
 	//EA.uvcdat_live_root = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live';
 	
-	
+	console.log('EA---> ' + EA.uvcdat_live_root + '/exploratory_analysis');
+	console.log('$treeFile---> ' + treeFile);
 	treeFile = treeFile.replace(EA.uvcdat_live_root + '/exploratory_analysis','../../..');
 	console.log('treeFile: ' + treeFile);
 	
@@ -36,8 +39,10 @@ $(document).ready(function(){
 	
 	//check to see if there was a tree loaded
 	var treeloaded = $('span#treeloaded').html();
-	console.log('treeloaded: ' + tree);
+	//console.log('treeloaded: ' + tree);
 	console.log('chk: ' + checkFile(treeFile));
+	treeFile = cachedfile;
+	console.log('after conversion chk: ' + checkFile(treeFile));
 	if(treeloaded == 'true') {
 		
 		if(checkFile(treeFile))

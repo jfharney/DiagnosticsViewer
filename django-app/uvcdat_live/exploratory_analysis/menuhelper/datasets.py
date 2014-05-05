@@ -2,7 +2,7 @@ import json
 
 def datasetListHelper1(request,user_id):
 
-    print 'in datasetListHelper1 for user_id: ' + user_id
+    #print 'in datasetListHelper1 for user_id: ' + user_id
     datasets = ['tropics_warming_th_q_co2']
     data =  { 'datasets' : datasets }
     data_string = json.dumps(data,sort_keys=False,indent=2)
@@ -15,7 +15,7 @@ def datasetListHelper1(request,user_id):
 
 def datasetListHelper(request,user_id):
     
-    print '\n\n\nUSERr:' + user_id
+    #print '\n\n\nUSERr:' + user_id
   
     #grab the username
     username = 'jfharney'

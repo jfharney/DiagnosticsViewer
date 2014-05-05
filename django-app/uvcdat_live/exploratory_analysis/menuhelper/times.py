@@ -16,7 +16,7 @@ def timesHelper1(request):
 
 
 def timesHelper(request,variable_id):
-    print '\n\n\ntimes for variable ', variable_id
+    #print '\n\n\ntimes for variable ', variable_id
   
     #dataset_id = 'dataset1'
     if(variable_id == None):

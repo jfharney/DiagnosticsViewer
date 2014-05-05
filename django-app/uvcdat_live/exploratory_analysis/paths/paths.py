@@ -43,7 +43,7 @@ cache_dir = uvcdat_live_root + 'exploratory_analysis/static/exploratory_analysis
 
 #path for front end to access cache (can't be a local path)
 #old front_end_cache_dir = '../../../static/cache/'
-front_end_cache_dir = '../../../static/exploratory_analysis/cache/tree/u1/json/tropics_warming_th_q_co2/'
+#front_end_cache_dir = '../../../static/exploratory_analysis/cache/tree/uu1/json/tropics_warming_th_q_co2/'
 
 #directory holding netcdf datasets
 #<<<<<<< HEAD
