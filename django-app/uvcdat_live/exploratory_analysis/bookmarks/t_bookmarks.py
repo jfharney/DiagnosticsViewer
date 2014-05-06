@@ -64,10 +64,8 @@ def bookmarkHandler(request,user_id):
   print '\nin bookmarkHandler'
   #print '\nrequest user authenticate: ' + str(request.user.is_authenticated()) + '\n'
     
-  #need a flag to indicated whether a tree 
-  #print '\n\n\t\tuser_id: ' + str(user_id)
-  #print 'user: ' + str(request.user)
     
+  # get the user name  
   loggedIn = False
     
   if (str(request.user) == str(user_id)):
@@ -80,6 +78,7 @@ def bookmarkHandler(request,user_id):
     username = user_id
     
     
+    
   #get the predefined tree bookmarks of the user
   from exploratory_analysis.models import Tree_Bookmarks
   bookmark_list_obj = Tree_Bookmarks.objects.filter(tree_bookmark_username=username)
@@ -88,6 +87,7 @@ def bookmarkHandler(request,user_id):
   for obj in bookmark_list_obj:
     bookmark_list.append(obj.tree_bookmark_name)
  
+  
  
 
   #get the figure bookmarks of the user
@@ -99,8 +99,6 @@ def bookmarkHandler(request,user_id):
     figure_bookmark_list.append(obj.figure_bookmark_name)
  
  
-  print 'bookmark list: ' + str(bookmark_list)
-  #print 'figure bookmark list ' + str(figure_bookmark_list)
  
   
   #defaults = parameter_defaults.get_parameter_defaults()
@@ -112,19 +110,17 @@ def bookmarkHandler(request,user_id):
   set_list = defaults['set_list']
     
  
-    
-  #first we check if the request is in the cache or if it is the initial call
-  #if it is in the cache, no need to do any back end generation
-  bookmark = request.GET.get('bookmark')
-    
-  #print '\nbookmark: ' + str(bookmark)  
-      
 
-        
+  
+  #not sure why this is here - closer look when refining      
   treeloaded = 'true'
+  
+  
+  #grab the bookmark name
+  bookmark = request.GET.get('bookmark')
   bookmark_name = bookmark
     
-    
+  #convert the bookmark name to the bookmark file name
   fileName = bookmark + ".json"
     
   #cached_file_name = front_end_cache_dir + fileName
@@ -133,38 +129,43 @@ def bookmarkHandler(request,user_id):
   dataset = ''
   path = ''
   
-  '''
-  if request.GET['dataset'] == None:
-    dataset = 'tropics_warming_th_q_co2'
-    path = [default_tree_sample_data_dir + 'tropics_warming_th_q_co2']
-  else:
-    dataset = request.GET['dataset']
-    path = path = [default_tree_sample_data_dir + request.POST['dataset']]
-  '''
   #MUST REPLACE!!!!!!
-  dataset = 'tropics_warming_th_q_co2'          
+  #base_dir = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/cache/tree' 
+  
+  #the root directory of the tree files
+  tree_cache_root_dir = '../../../static/exploratory_analysis/cache/tree/' + username
+  
+  #convert to the physical location
+  tree_cache_root_dir = convertRelToAbsPath(tree_cache_root_dir)
+  
+  #find the location of the tree file 
+  f = findTreeFile(fileName, tree_cache_root_dir)
+  
+  #if the file was found then the bookmark exists and set it equal to the dataset
+  if f:
+      print 'the bookmark was found!'
+      #print str(f)
+      dataset = findTreeDataset(str(f))
+      #print '\tdataset returned...\n' + dataset
+  #something is really wrong if is false
+  else:
+      print 'the bookmark wasnt found???'
+  
+          
       
   cached_file_name = '../../../static/exploratory_analysis/cache/tree/' + username + '/json/' + dataset + '/' + fileName  
-    
-  mapped_file_name = paths.uvcdat_live_root + 'exploratory_analysis/'
-        #exploratory_analysis/static/exploratory_analysis/cache/tree/u1/json/tropics_warming_th_q_co2
-        
-        
-  p = re.compile('../../../')
-        
-  print '\ncached_file_name: ' + cached_file_name
-  print '\nmapped_file_name: ' + mapped_file_name
-  check_file_name = p.sub( mapped_file_name, cached_file_name)
-  print '\n\n\ncheck_file_name: ' + check_file_name + '\n\n\n'
-        
+  #print 'before---> ' + cached_file_name
+  check_file_name = convertRelToAbsPath(cached_file_name)
+  #print 'after---> ' + check_file_name
+  
+  
   treeFile = None
        
   import os
         
-        #GET RID OF THIS
-        #temp_file = 
-  
-  print 'treeFile----> ' + str(check_file_name)      
+    
+  treeFile = str(check_file_name)
+  '''
         #if exists then return the tree state of that bookmark
   if os.path.exists(check_file_name):
     #print 'Bookmark is there - proceed'   
@@ -172,14 +173,13 @@ def bookmarkHandler(request,user_id):
   else:
     #print 'Bookmark is not there - do not proceed'
     treeloaded = 'false'
+  '''
+          
         
-        
-  print 'treeFile---->: ' + str(treeFile)
+  #print 'treeFile---->: ' + str(treeFile)
         
   template = loader.get_template('exploratory_analysis/treeex.html')
     
-  #print 'figure bookmark list -> ' + str(figure_bookmark_list)
-       
     
   context = RequestContext(request, {
             'loggedIn' : str(loggedIn),
@@ -200,7 +200,6 @@ def bookmarkHandler(request,user_id):
   })
         
 
-  #print '\n\n\t\tloggedIn: ' + str(loggedIn) 
   return HttpResponse(template.render(context))
 
 
@@ -243,8 +242,8 @@ def noBookmarkHandler(request,user_id):
     figure_bookmark_list.append(obj.figure_bookmark_name)
  
  
-  print 'bookmark list: ' + str(bookmark_list)
-  print 'figure bookmark list ' + str(figure_bookmark_list)
+  #print 'bookmark list: ' + str(bookmark_list)
+  #print 'figure bookmark list ' + str(figure_bookmark_list)
  
  
   #defaults = parameter_defaults.get_parameter_defaults()
@@ -264,7 +263,7 @@ def noBookmarkHandler(request,user_id):
   #print '\nbookmark: ' + str(bookmark)  
       
 
-  print '\nin noBookmarkHandler'
+  #print '\nin noBookmarkHandler'
 
 
   #if something has been posted, then a tree could be built       
@@ -274,7 +273,7 @@ def noBookmarkHandler(request,user_id):
             
       tree_bookmark_datasetname = request.POST['dataset']
             
-      print 'tree_bookmark_datasetname----->' + tree_bookmark_datasetname + '\n\n\n\n'
+      #print 'tree_bookmark_datasetname----->' + tree_bookmark_datasetname + '\n\n\n\n'
             
       #print 'in a post request with parameters'
             
@@ -336,7 +335,8 @@ def noBookmarkHandler(request,user_id):
         path = path = [default_tree_sample_data_dir + request.POST['dataset']]
             
             
-            
+      #print '\n\n\t\t\tDATASET: ' + dataset 
+      #print 'DATASET LIST: ' + dataset_list[0] + '\n\n\n'    
             
       #    username
                 
@@ -360,7 +360,7 @@ def noBookmarkHandler(request,user_id):
       #print 'created tree bookmark file: ' + (cache_dir + username + '/json/' + dataset)
       #print 'treeFile exists? ' + str(os.path.isdir(cache_dir + username + '/json/' + dataset))
       if not os.path.isdir(cache_dir + username + '/json/' + dataset):
-        print 'create dir'
+        #print 'create dir'
         os.makedirs(cache_dir + username + '/json/' + dataset)
             
       #### Start diagnostics generation here...
@@ -370,6 +370,8 @@ def noBookmarkHandler(request,user_id):
        
             
       #print 'varsssss---->' + str(vars)
+       
+      #print 'str(path)--->' + str(path) 
        
       ##### SET THESE BASED ON USER INPUT FROM THE GUI
       o._opts['packages'] = packages
@@ -400,10 +402,11 @@ def noBookmarkHandler(request,user_id):
       #print 'ftnames->' + dataset_list[0]
       #print 'filetables->' + str(filetables)
         
-      print '\n\n\n\nFILENAME!!!! ' + treeFile
+      #print '\n\n\n\nFILENAME!!!! ' + treeFile
         
       tv = TreeView()
-      dtree = tv.makeTree(o, filetables,None,user=username,ftnames=[dataset_list[0]])
+      #dtree = tv.makeTree(o, filetables,None,user=username,ftnames=[dataset_list[0]])
+      dtree = tv.makeTree(o, filetables,None,user=username,ftnames=[dataset])
       tv.dump(filename=treeFile)
             
             
@@ -418,10 +421,10 @@ def noBookmarkHandler(request,user_id):
   if(loggedIn == True):
     template = loader.get_template('exploratory_analysis/treeex.html')
   else:
-    print 'username: ' + username
+    #print 'username: ' + username
         #print 'func: ' + str(func)
             
-    func = treeviewer_treeex.func()
+    #func = treeviewer_treeex.func()
     template = loader.get_template('exploratory_analysis/not_logged_in.html')
     
         
@@ -431,9 +434,9 @@ def noBookmarkHandler(request,user_id):
         
         
         
-  print 'figure bookmark list -> ' + str(figure_bookmark_list)
+  #print 'figure bookmark list -> ' + str(figure_bookmark_list)
         
-  print '\n\t\t\tloggedIn: ' + str(loggedIn) 
+  #print '\n\t\t\tloggedIn: ' + str(loggedIn) 
         
   context = RequestContext(request, {
             'loggedIn' : str(loggedIn),
@@ -486,7 +489,7 @@ def get_parameter_defaults():
     return defaults
 
 
-
+'''
 def diagsHelper(user_id,bookmark_name,treeFile):
     print 'in diags helper'
     
@@ -540,14 +543,14 @@ def diagsHelper(user_id,bookmark_name,treeFile):
             print '\ndirtree\n',dirtree_datafiles(o,pathid=p)
             datafiles.append(dirtree_datafiles(o,pathid=p))
             filetables.append(basic_filetable(datafiles[p],o))
-        '''
-        index = 0
-        for p in o._opts['path']:
-          print '\ndirtree\n' , dirtree_datafiles(p)
-          datafiles.append(dirtree_datafiles(p))
-          filetables.append(basic_filetable(datafiles[index], o))
-          index = index+1
-        '''
+        
+        #index = 0
+        ##for p in o._opts['path']:
+        #  print '\ndirtree\n' , dirtree_datafiles(p)
+        #  datafiles.append(dirtree_datafiles(p))
+        #  filetables.append(basic_filetable(datafiles[index], o))
+        #  index = index+1
+        #
         print 'Creating diags tree view JSON file...'
         
         
@@ -560,8 +563,36 @@ def diagsHelper(user_id,bookmark_name,treeFile):
         
     #return the file and the location of the file
     return treeFile
+'''
+
+
+def findTreeFile(name, path):
+  #print 'in findTreeFile for name: ' + name + ' and path: ' + path
+  import os
+  for root, dirs, files in os.walk(path):
+    if name in files:
+      return os.path.join(root, name)
+      #return True
+  
+  return False
+  
+  
+def findTreeDataset(f):
+  f_arr = f.split('/')
+
+  return f_arr[len(f_arr)-2]
 
 
 
-
+def convertRelToAbsPath(name):
+  p = re.compile('../../../')
+  
+  base_dir = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/' 
+  
+  check_file_name = p.sub( base_dir, name)
+  
+  #print '\t\t\tchck_file_name: ' + check_file_name
+  
+  return check_file_name
+  
         

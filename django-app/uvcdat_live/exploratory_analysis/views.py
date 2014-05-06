@@ -146,12 +146,12 @@ def maps(request,user_id):
 #geo map/time series view
 #corresponds with url: http://<host>/exploratory_analysis/maps
 def heatmap(request,user_id):
-    print '\n\n\n\n\nrequest user authenticate: ' + str(request.user.is_authenticated()) + '\n\n\n\n'
+    #print '\n\n\n\n\nrequest user authenticate: ' + str(request.user.is_authenticated()) + '\n\n\n\n'
     
     
     #need a flag to indicated whether a tree 
-    print '\n\n\n\n\n\n\n\t\t\tuser_id: ' + str(user_id)
-    print 'user: ' + str(request.user)
+    #print '\n\n\n\n\n\n\n\t\t\tuser_id: ' + str(user_id)
+    #print 'user: ' + str(request.user)
     
     loggedIn = False
     
@@ -199,23 +199,24 @@ def figureGenerator(request):
       
       sets = ['1']
     
+      '''
       print 'variables: ' + str(variables)
       print 'times: ' + str(times)
       print 'sets: ' + str(sets)
       print 'packages: ' + str(packages)
       print 'realms: ' + str(realms)
-        
+      '''
     
       inCache = False
       
       cachedFile = realms[0] + '_' + packages[0] + '_set' + sets[0] + '_' + times[0] + '_' + variables[0] + '.png'
       
-      print 'cachedFile: ' + cachedFile
+      #print 'cachedFile: ' + cachedFile
       
       path = './' +  'exploratory_analysis/static/exploratory_analysis/img/treeex/' + cachedFile
-      print 'path: ' + path
-      print 'absolute path: ' + os.path.abspath(path)
-      print 'not in cache: ' + str(not inCache) + ' os isfile: ' + str(os.path.exists(path))
+      #print 'path: ' + path
+      #print 'absolute path: ' + os.path.abspath(path)
+      #print 'not in cache: ' + str(not inCache) + ' os isfile: ' + str(os.path.exists(path))
       
       if(os.path.exists(path)):
           inCache = True
@@ -249,7 +250,7 @@ def figureGenerator(request):
           dtree1 = fi.dirtree_datafiles(o, pathid=0)
           filetable1 = ft.basic_filetable(dtree1, o)
           filetable2 = None
-          print 'No second dataset for comparison'
+          #print 'No second dataset for comparison'
              
           package=o._opts['packages']
     
@@ -291,12 +292,12 @@ def figureGenerator(request):
 #New tree view
 def treeex(request,user_id):
     
-    print '\nrequest user authenticate: ' + str(request.user.is_authenticated()) + '\n'
+    #print '\nrequest user authenticate: ' + str(request.user.is_authenticated()) + '\n'
     
     
     #need a flag to indicated whether a tree 
-    print '\n\n\t\tuser_id: ' + str(user_id)
-    print 'user: ' + str(request.user)
+    #print '\n\n\t\tuser_id: ' + str(user_id)
+    #print 'user: ' + str(request.user)
     
     loggedIn = False
     
@@ -310,6 +311,7 @@ def treeex(request,user_id):
         username = user_id
     
     
+    '''
     #get the predefined tree bookmarks of the user
     from exploratory_analysis.models import Tree_Bookmarks
     bookmark_list_obj = Tree_Bookmarks.objects.filter(tree_bookmark_username=username)
@@ -329,8 +331,8 @@ def treeex(request,user_id):
         figure_bookmark_list.append(obj.figure_bookmark_name)
  
  
-    print 'bookmark list: ' + str(bookmark_list)
-    print 'figure bookmark list ' + str(figure_bookmark_list)
+    ##print 'bookmark list: ' + str(bookmark_list)
+    #print 'figure bookmark list ' + str(figure_bookmark_list)
  
  
     defaults = parameter_defaults.get_parameter_defaults()
@@ -339,14 +341,14 @@ def treeex(request,user_id):
     variable_list = defaults['variable_list']
     season_list = defaults['season_list']
     set_list = defaults['set_list']
-    
+    '''
  
     
     #first we check if the request is in the cache or if it is the initial call
     #if it is in the cache, no need to do any back end generation
     bookmark = request.GET.get('bookmark')
     
-    print '\nbookmark: ' + str(bookmark)  
+    #print '\nbookmark: ' + str(bookmark)  
     
     
     from bookmarks import t_bookmarks
@@ -354,7 +356,7 @@ def treeex(request,user_id):
 
     #no bookmark is being loaded
     if bookmark == None:
-        print '\n\n\n\nbookmark is none\n\n\n\n'
+        #print '\n\n\n\nbookmark is none\n\n\n\n'
         
         response = t_bookmarks.noBookmarkHandler(request,user_id)
         
@@ -364,465 +366,13 @@ def treeex(request,user_id):
     #otherwise there are bookmarks
     else:
         
-        print '\n\n\n\nbookmark is something\n\n\n\n'
+        #print '\n\n\n\nbookmark is something\n\n\n\n'
         
-        print dir(tree_bookmarks)
         
         response = t_bookmarks.bookmarkHandler(request,user_id)
         
         return response
         
-        '''
-        treeloaded = 'true'
-        bookmark_name = bookmark
-    
-    
-        fileName = bookmark + ".json"
-    
-        cached_file_name = front_end_cache_dir + fileName
-        
-        #cached_file_name = exploratory_analysis/static/exploratory_analysis/cache/tree/u1/json/tropics_warming_th_q_co2
-           
-        #check if bookmark exists
-        #mapping
-        #/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/cache/
-        #----------->
-        #../../../static/cache/Bookmark2.json
-        #
-        mapped_file_name = paths.uvcdat_live_root + '/exploratory_analysis/'
-        #exploratory_analysis/static/exploratory_analysis/cache/tree/u1/json/tropics_warming_th_q_co2
-        
-        
-        p = re.compile('../../../')
-        
-        print '\ncached_file_name: ' + cached_file_name
-        print '\nmapped_file_name: ' + mapped_file_name
-        check_file_name = p.sub( mapped_file_name, cached_file_name)
-        print '\n\n\ncheck_file_name: ' + check_file_name + '\n\n\n'
-        
-        treeFile = None
-       
-        import os
-        
-        #GET RID OF THIS
-        #temp_file = 
-        
-        #if exists then return the tree state of that bookmark
-        if os.path.exists(check_file_name):
-            print 'Bookmark is there - proceed'   
-            treeFile = diagsHelper(user_id,bookmark_name,check_file_name)
-        else:
-            print 'Bookmark is not there - do not proceed'
-            treeloaded = 'false'
-        
-        
-        print 'treeFile---->: ' + str(treeFile)
-        
-        template = loader.get_template('exploratory_analysis/treeex.html')
-    
-        print 'figure bookmark list -> ' + str(figure_bookmark_list)
-       
-    
-        context = RequestContext(request, {
-            'loggedIn' : str(loggedIn),
-            'username' : username,
-            'treeloaded' : treeloaded,
-            'cachedfile' : cached_file_name,
-            'package_list' : package_list,
-            'dataset_list' : dataset_list,
-            'variable_list' : variable_list,
-            'season_list' : season_list,
-            'set_list' : set_list,
-            'bookmark_list' : bookmark_list,
-            'figure_bookmark_list' : figure_bookmark_list,
-            'treefile': treeFile,
-            'current_bookmark': bookmark,
-            'posttype':'save'
-            #'treeFile' : treeFile,
-            })
-        
-
-        print '\n\n\t\tloggedIn: ' + str(loggedIn) 
-        return HttpResponse(template.render(context))
-        '''
-
-
-def bookmarkHandler(request,user_id):
-
-  print '\nin bookmarkHandler'
-  #print '\nrequest user authenticate: ' + str(request.user.is_authenticated()) + '\n'
-    
-  #need a flag to indicated whether a tree 
-  #print '\n\n\t\tuser_id: ' + str(user_id)
-  #print 'user: ' + str(request.user)
-    
-  loggedIn = False
-    
-  if (str(request.user) == str(user_id)):
-    loggedIn = True
-    
-  username = 'jfharney'
-    
-  #grab the username
-  if user_id != None:
-    username = user_id
-    
-    
-  #get the predefined tree bookmarks of the user
-  from exploratory_analysis.models import Tree_Bookmarks
-  bookmark_list_obj = Tree_Bookmarks.objects.filter(tree_bookmark_username=username)
-  
-  bookmark_list = [] 
-  for obj in bookmark_list_obj:
-    bookmark_list.append(obj.tree_bookmark_name)
- 
- 
-
-  #get the figure bookmarks of the user
-  from exploratory_analysis.models import Figure_Bookmarks
-  figure_bookmark_list_obj = Figure_Bookmarks.objects.filter(figure_bookmark_username=username)
- 
-  figure_bookmark_list = [] 
-  for obj in figure_bookmark_list_obj:
-    figure_bookmark_list.append(obj.figure_bookmark_name)
- 
- 
-  print 'bookmark list: ' + str(bookmark_list)
-  #print 'figure bookmark list ' + str(figure_bookmark_list)
- 
- 
-  defaults = parameter_defaults.get_parameter_defaults()
-  package_list = defaults['package_list']
-  dataset_list = defaults['dataset_list']
-  variable_list = defaults['variable_list']
-  season_list = defaults['season_list']
-  set_list = defaults['set_list']
-    
- 
-    
-  #first we check if the request is in the cache or if it is the initial call
-  #if it is in the cache, no need to do any back end generation
-  bookmark = request.GET.get('bookmark')
-    
-  #print '\nbookmark: ' + str(bookmark)  
-      
-
-        
-  treeloaded = 'true'
-  bookmark_name = bookmark
-    
-    
-  fileName = bookmark + ".json"
-    
-  cached_file_name = front_end_cache_dir + fileName
-        
-    
-  mapped_file_name = paths.uvcdat_live_root + 'exploratory_analysis/'
-        #exploratory_analysis/static/exploratory_analysis/cache/tree/u1/json/tropics_warming_th_q_co2
-        
-        
-  p = re.compile('../../../')
-        
-  print '\ncached_file_name: ' + cached_file_name
-  print '\nmapped_file_name: ' + mapped_file_name
-  check_file_name = p.sub( mapped_file_name, cached_file_name)
-  print '\n\n\ncheck_file_name: ' + check_file_name + '\n\n\n'
-        
-  treeFile = None
-       
-  import os
-        
-        #GET RID OF THIS
-        #temp_file = 
-  
-  print 'treeFile----> ' + str(check_file_name)      
-        #if exists then return the tree state of that bookmark
-  if os.path.exists(check_file_name):
-    #print 'Bookmark is there - proceed'   
-    treeFile = diagsHelper(user_id,bookmark_name,check_file_name)
-  else:
-    #print 'Bookmark is not there - do not proceed'
-    treeloaded = 'false'
-        
-        
-  print 'treeFile---->: ' + str(treeFile)
-        
-  template = loader.get_template('exploratory_analysis/treeex.html')
-    
-  #print 'figure bookmark list -> ' + str(figure_bookmark_list)
-       
-    
-  context = RequestContext(request, {
-            'loggedIn' : str(loggedIn),
-            'username' : username,
-            'treeloaded' : treeloaded,
-            'cachedfile' : cached_file_name,
-            'package_list' : package_list,
-            'dataset_list' : dataset_list,
-            'variable_list' : variable_list,
-            'season_list' : season_list,
-            'set_list' : set_list,
-            'bookmark_list' : bookmark_list,
-            'figure_bookmark_list' : figure_bookmark_list,
-            'treefile': treeFile,
-            'current_bookmark': bookmark,
-            'posttype':'save'
-            #'treeFile' : treeFile,
-  })
-        
-
-  #print '\n\n\t\tloggedIn: ' + str(loggedIn) 
-  return HttpResponse(template.render(context))
-
-
-def noBookmarkHandler(request,user_id):
-
-  print '\nrequest user authenticate: ' + str(request.user.is_authenticated()) + '\n'
-    
-  #need a flag to indicated whether a tree 
-  #print '\n\n\t\tuser_id: ' + str(user_id)
-  #print 'user: ' + str(request.user)
-    
-  loggedIn = False
-    
-  if (str(request.user) == str(user_id)):
-    loggedIn = True
-    
-  username = 'jfharney'
-    
-  #grab the username
-  if user_id != None:
-    username = user_id
-    
-    
-  #get the predefined tree bookmarks of the user
-  from exploratory_analysis.models import Tree_Bookmarks
-  bookmark_list_obj = Tree_Bookmarks.objects.filter(tree_bookmark_username=username)
-  
-  bookmark_list = [] 
-  for obj in bookmark_list_obj:
-    bookmark_list.append(obj.tree_bookmark_name)
- 
- 
-
-  #get the figure bookmarks of the user
-  from exploratory_analysis.models import Figure_Bookmarks
-  figure_bookmark_list_obj = Figure_Bookmarks.objects.filter(figure_bookmark_username=username)
- 
-  figure_bookmark_list = [] 
-  for obj in figure_bookmark_list_obj:
-    figure_bookmark_list.append(obj.figure_bookmark_name)
- 
- 
-  print 'bookmark list: ' + str(bookmark_list)
-  print 'figure bookmark list ' + str(figure_bookmark_list)
- 
- 
-  defaults = parameter_defaults.get_parameter_defaults()
-  package_list = defaults['package_list']
-  dataset_list = defaults['dataset_list']
-  variable_list = defaults['variable_list']
-  season_list = defaults['season_list']
-  set_list = defaults['set_list']
-    
- 
-    
-  #first we check if the request is in the cache or if it is the initial call
-  #if it is in the cache, no need to do any back end generation
-  bookmark = request.GET.get('bookmark')
-    
-  #print '\nbookmark: ' + str(bookmark)  
-      
-
-  print '\nin noBookmarkHandler'
-
-
-  #if something has been posted, then a tree could be built       
-  if request.POST:
-            
-      posttype = request.POST['posttype']
-            
-      tree_bookmark_datasetname = request.POST['dataset']
-            
-      print 'tree_bookmark_datasetname----->' + tree_bookmark_datasetname + '\n\n\n\n'
-            
-      #print 'in a post request with parameters'
-            
-            
-      treename = request.POST['treename']
-            
-      #if there is no tree name give the tree a default name based on the timestamp
-      if treename == None or treename == '':
-        import time
-        millis = int(round(time.time() * 1000))
-        treename = 'tree' + str(millis)
-            
-            
-            
-      packages = ''
-      #defaults here
-      if request.POST['package'] == None:
-        packages = ['lmwg']
-      else:
-        packages = [request.POST['package'] ]
-            
-            
-            
-      vars= ''
-      variable_arr_str = request.POST['variable_arr_str']
-      if variable_arr_str == None:
-        #print 'variable_arr_str is None'
-        vars = ['TLAI', 'TG','NPP']
-      else:
-        #print 'variable_arr_str: ' + variable_arr_str
-        variable_arr = variable_arr_str.split(';')
-        vars = variable_arr
-                
-      times = ''
-      season_arr_str = request.POST['season_arr_str']
-      if season_arr_str == None:
-        #print 'season_arr_str is None'
-        times = ['MAR','APR','MAY','JUNE','JULY']
-      else:
-        season_arr = season_arr_str.split(';')
-        times = season_arr
-        
-      sets_arr = ''
-      sets_arr_str = request.POST['sets_arr_str']
-      if sets_arr_str == None:
-        print 'sets_arr_str is None'
-      else:
-        sets_arr = sets_arr_str.split(';')
-        print 's: ' + sets_arr[0] 
-            
-        
-      dataset = ''
-      path = ''
-      if request.POST['dataset'] == None:
-        dataset = 'tropics_warming_th_q_co2'
-        path = [default_tree_sample_data_dir + 'tropics_warming_th_q_co2']
-      else:
-        dataset = request.POST['dataset']
-        path = path = [default_tree_sample_data_dir + request.POST['dataset']]
-            
-            
-            
-            
-      #    username
-                
-      #static/exploratory_analysis/cache/tree/' username + '/json/' + dataset_name
-      #build tree here 
-      #if the post type is "submit" then grab "temp.json", otherwise it is a saved bookmark
-            
-      #old
-      #if posttype == 'submit':
-      #    treeFile = cache_dir + 'temp' + '.json'
-      #else:
-      #    treeFile = cache_dir + treename + '.json'
-            
-      if posttype == 'submit':
-        treeFile = cache_dir + username + '/json/' + 'temp' + '.json'
-      else:
-        treeFile = cache_dir + username + '/json/' + dataset + '/' + treename + '.json'
-            
-      import os
-      import os.path
-      #print 'created tree bookmark file: ' + (cache_dir + username + '/json/' + dataset)
-      #print 'treeFile exists? ' + str(os.path.isdir(cache_dir + username + '/json/' + dataset))
-      if not os.path.isdir(cache_dir + username + '/json/' + dataset):
-        print 'create dir'
-        os.makedirs(cache_dir + username + '/json/' + dataset)
-            
-      #### Start diagnostics generation here...
-      #username = user_id
-        
-      o = Options()
-       
-            
-      #print 'varsssss---->' + str(vars)
-       
-      ##### SET THESE BASED ON USER INPUT FROM THE GUI
-      o._opts['packages'] = packages
-      o._opts['vars'] = vars
-      o._opts['path'] = path
-      o._opts['times'] = times
-        
-            
-            
-      ### NOTE: 'ANN' won't work for times this way, but that shouldn't be a problem
-      datafiles = []
-      filetables = []
-      vars = o._opts['vars']
-      #   print vars
-    
-      #print 'packages--->' + str(packages)
-      #print 'vars--->' + str(vars)
-      #print 'times--->' + str(times)
-      #print 'dataset_list[0]--->' + dataset_list[0]
-    
-      for p in range(len(o._opts['path'])):
-        #print '\ndirtree\n',dirtree_datafiles(o,pathid=p)
-        datafiles.append(dirtree_datafiles(o,pathid=p))
-        filetables.append(basic_filetable(datafiles[p],o))
-            
-      #print 'Creating diags tree view JSON file...'
-        
-      #print 'ftnames->' + dataset_list[0]
-      #print 'filetables->' + str(filetables)
-        
-      print '\n\n\n\nFILENAME!!!! ' + treeFile
-        
-      tv = TreeView()
-      dtree = tv.makeTree(o, filetables,None,user=username,ftnames=[dataset_list[0]])
-      tv.dump(filename=treeFile)
-            
-            
-            
-      response_data = {}
-      response_data['treename'] = treename
-      response_data['username'] = username
-      return HttpResponse(json.dumps(response_data), content_type="application/json")
-            
-  #end if request.POST  
-            
-  if(loggedIn == True):
-    template = loader.get_template('exploratory_analysis/treeex.html')
-  else:
-    print 'username: ' + username
-        #print 'func: ' + str(func)
-            
-    func = treeviewer_treeex.func()
-    template = loader.get_template('exploratory_analysis/not_logged_in.html')
-    
-        
-        
-  treeloaded = 'false'
-        
-        
-        
-        
-  print 'figure bookmark list -> ' + str(figure_bookmark_list)
-        
-  print '\n\t\t\tloggedIn: ' + str(loggedIn) 
-        
-  context = RequestContext(request, {
-            'loggedIn' : str(loggedIn),
-            'username' : username,
-            'treeloaded' : treeloaded,
-            'package_list' : package_list,
-            'dataset_list' : dataset_list,
-            'variable_list' : variable_list,
-            'season_list' : season_list,
-            'set_list' : set_list,
-            'bookmark_list' : bookmark_list,
-            'figure_bookmark_list' : figure_bookmark_list,
-            'posttype':'save'
-                                          
-  })
-        
-
-  return HttpResponse(template.render(context))
-
         
   ############
   #End Page views#
@@ -1600,3 +1150,486 @@ def postStateExample(request):
     print 'in post state example'
     a = {'a' : 'hello'}
     return HttpResponse('hello')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'''old bookmark is something
+        treeloaded = 'true'
+        bookmark_name = bookmark
+    
+    
+        fileName = bookmark + ".json"
+    
+        cached_file_name = front_end_cache_dir + fileName
+        
+        #cached_file_name = exploratory_analysis/static/exploratory_analysis/cache/tree/u1/json/tropics_warming_th_q_co2
+           
+        #check if bookmark exists
+        #mapping
+        #/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/cache/
+        #----------->
+        #../../../static/cache/Bookmark2.json
+        #
+        mapped_file_name = paths.uvcdat_live_root + '/exploratory_analysis/'
+        #exploratory_analysis/static/exploratory_analysis/cache/tree/u1/json/tropics_warming_th_q_co2
+        
+        
+        p = re.compile('../../../')
+        
+        print '\ncached_file_name: ' + cached_file_name
+        print '\nmapped_file_name: ' + mapped_file_name
+        check_file_name = p.sub( mapped_file_name, cached_file_name)
+        print '\n\n\ncheck_file_name: ' + check_file_name + '\n\n\n'
+        
+        treeFile = None
+       
+        import os
+        
+        #GET RID OF THIS
+        #temp_file = 
+        
+        #if exists then return the tree state of that bookmark
+        if os.path.exists(check_file_name):
+            print 'Bookmark is there - proceed'   
+            treeFile = diagsHelper(user_id,bookmark_name,check_file_name)
+        else:
+            print 'Bookmark is not there - do not proceed'
+            treeloaded = 'false'
+        
+        
+        print 'treeFile---->: ' + str(treeFile)
+        
+        template = loader.get_template('exploratory_analysis/treeex.html')
+    
+        print 'figure bookmark list -> ' + str(figure_bookmark_list)
+       
+    
+        context = RequestContext(request, {
+            'loggedIn' : str(loggedIn),
+            'username' : username,
+            'treeloaded' : treeloaded,
+            'cachedfile' : cached_file_name,
+            'package_list' : package_list,
+            'dataset_list' : dataset_list,
+            'variable_list' : variable_list,
+            'season_list' : season_list,
+            'set_list' : set_list,
+            'bookmark_list' : bookmark_list,
+            'figure_bookmark_list' : figure_bookmark_list,
+            'treefile': treeFile,
+            'current_bookmark': bookmark,
+            'posttype':'save'
+            #'treeFile' : treeFile,
+            })
+        
+
+        print '\n\n\t\tloggedIn: ' + str(loggedIn) 
+        return HttpResponse(template.render(context))
+'''
+
+
+        
+'''
+def bookmarkHandler(request,user_id):
+
+  print '\nin bookmarkHandler'
+  #print '\nrequest user authenticate: ' + str(request.user.is_authenticated()) + '\n'
+    
+  #need a flag to indicated whether a tree 
+  #print '\n\n\t\tuser_id: ' + str(user_id)
+  #print 'user: ' + str(request.user)
+    
+  loggedIn = False
+    
+  if (str(request.user) == str(user_id)):
+    loggedIn = True
+    
+  username = 'jfharney'
+    
+  #grab the username
+  if user_id != None:
+    username = user_id
+    
+    
+  #get the predefined tree bookmarks of the user
+  from exploratory_analysis.models import Tree_Bookmarks
+  bookmark_list_obj = Tree_Bookmarks.objects.filter(tree_bookmark_username=username)
+  
+  bookmark_list = [] 
+  for obj in bookmark_list_obj:
+    bookmark_list.append(obj.tree_bookmark_name)
+ 
+ 
+
+  #get the figure bookmarks of the user
+  from exploratory_analysis.models import Figure_Bookmarks
+  figure_bookmark_list_obj = Figure_Bookmarks.objects.filter(figure_bookmark_username=username)
+ 
+  figure_bookmark_list = [] 
+  for obj in figure_bookmark_list_obj:
+    figure_bookmark_list.append(obj.figure_bookmark_name)
+ 
+ 
+  print 'bookmark list: ' + str(bookmark_list)
+  #print 'figure bookmark list ' + str(figure_bookmark_list)
+ 
+ 
+  defaults = parameter_defaults.get_parameter_defaults()
+  package_list = defaults['package_list']
+  dataset_list = defaults['dataset_list']
+  variable_list = defaults['variable_list']
+  season_list = defaults['season_list']
+  set_list = defaults['set_list']
+    
+ 
+    
+  #first we check if the request is in the cache or if it is the initial call
+  #if it is in the cache, no need to do any back end generation
+  bookmark = request.GET.get('bookmark')
+    
+  #print '\nbookmark: ' + str(bookmark)  
+      
+
+        
+  treeloaded = 'true'
+  bookmark_name = bookmark
+    
+    
+  fileName = bookmark + ".json"
+    
+  cached_file_name = front_end_cache_dir + fileName
+        
+    
+  mapped_file_name = paths.uvcdat_live_root + 'exploratory_analysis/'
+        #exploratory_analysis/static/exploratory_analysis/cache/tree/u1/json/tropics_warming_th_q_co2
+        
+        
+  p = re.compile('../../../')
+        
+  print '\ncached_file_name: ' + cached_file_name
+  print '\nmapped_file_name: ' + mapped_file_name
+  check_file_name = p.sub( mapped_file_name, cached_file_name)
+  print '\n\n\ncheck_file_name: ' + check_file_name + '\n\n\n'
+        
+  treeFile = None
+       
+  import os
+        
+        #GET RID OF THIS
+        #temp_file = 
+  
+  print 'treeFile----> ' + str(check_file_name)      
+        #if exists then return the tree state of that bookmark
+  if os.path.exists(check_file_name):
+    #print 'Bookmark is there - proceed'   
+    treeFile = diagsHelper(user_id,bookmark_name,check_file_name)
+  else:
+    #print 'Bookmark is not there - do not proceed'
+    treeloaded = 'false'
+        
+        
+  print 'treeFile---->: ' + str(treeFile)
+        
+  template = loader.get_template('exploratory_analysis/treeex.html')
+    
+  #print 'figure bookmark list -> ' + str(figure_bookmark_list)
+       
+    
+  context = RequestContext(request, {
+            'loggedIn' : str(loggedIn),
+            'username' : username,
+            'treeloaded' : treeloaded,
+            'cachedfile' : cached_file_name,
+            'package_list' : package_list,
+            'dataset_list' : dataset_list,
+            'variable_list' : variable_list,
+            'season_list' : season_list,
+            'set_list' : set_list,
+            'bookmark_list' : bookmark_list,
+            'figure_bookmark_list' : figure_bookmark_list,
+            'treefile': treeFile,
+            'current_bookmark': bookmark,
+            'posttype':'save'
+            #'treeFile' : treeFile,
+  })
+        
+
+  #print '\n\n\t\tloggedIn: ' + str(loggedIn) 
+  return HttpResponse(template.render(context))
+
+'''
+
+
+
+'''
+def noBookmarkHandler(request,user_id):
+
+  print '\nrequest user authenticate: ' + str(request.user.is_authenticated()) + '\n'
+    
+  #need a flag to indicated whether a tree 
+  #print '\n\n\t\tuser_id: ' + str(user_id)
+  #print 'user: ' + str(request.user)
+    
+  loggedIn = False
+    
+  if (str(request.user) == str(user_id)):
+    loggedIn = True
+    
+  username = 'jfharney'
+    
+  #grab the username
+  if user_id != None:
+    username = user_id
+    
+    
+  #get the predefined tree bookmarks of the user
+  from exploratory_analysis.models import Tree_Bookmarks
+  bookmark_list_obj = Tree_Bookmarks.objects.filter(tree_bookmark_username=username)
+  
+  bookmark_list = [] 
+  for obj in bookmark_list_obj:
+    bookmark_list.append(obj.tree_bookmark_name)
+ 
+ 
+
+  #get the figure bookmarks of the user
+  from exploratory_analysis.models import Figure_Bookmarks
+  figure_bookmark_list_obj = Figure_Bookmarks.objects.filter(figure_bookmark_username=username)
+ 
+  figure_bookmark_list = [] 
+  for obj in figure_bookmark_list_obj:
+    figure_bookmark_list.append(obj.figure_bookmark_name)
+ 
+ 
+  print 'bookmark list: ' + str(bookmark_list)
+  print 'figure bookmark list ' + str(figure_bookmark_list)
+ 
+ 
+  defaults = parameter_defaults.get_parameter_defaults()
+  package_list = defaults['package_list']
+  dataset_list = defaults['dataset_list']
+  variable_list = defaults['variable_list']
+  season_list = defaults['season_list']
+  set_list = defaults['set_list']
+    
+ 
+    
+  #first we check if the request is in the cache or if it is the initial call
+  #if it is in the cache, no need to do any back end generation
+  bookmark = request.GET.get('bookmark')
+    
+  #print '\nbookmark: ' + str(bookmark)  
+      
+
+  print '\nin noBookmarkHandler'
+
+
+  #if something has been posted, then a tree could be built       
+  if request.POST:
+            
+      posttype = request.POST['posttype']
+            
+      tree_bookmark_datasetname = request.POST['dataset']
+            
+      print 'tree_bookmark_datasetname----->' + tree_bookmark_datasetname + '\n\n\n\n'
+            
+      #print 'in a post request with parameters'
+            
+            
+      treename = request.POST['treename']
+            
+      #if there is no tree name give the tree a default name based on the timestamp
+      if treename == None or treename == '':
+        import time
+        millis = int(round(time.time() * 1000))
+        treename = 'tree' + str(millis)
+            
+            
+            
+      packages = ''
+      #defaults here
+      if request.POST['package'] == None:
+        packages = ['lmwg']
+      else:
+        packages = [request.POST['package'] ]
+            
+            
+            
+      vars= ''
+      variable_arr_str = request.POST['variable_arr_str']
+      if variable_arr_str == None:
+        #print 'variable_arr_str is None'
+        vars = ['TLAI', 'TG','NPP']
+      else:
+        #print 'variable_arr_str: ' + variable_arr_str
+        variable_arr = variable_arr_str.split(';')
+        vars = variable_arr
+                
+      times = ''
+      season_arr_str = request.POST['season_arr_str']
+      if season_arr_str == None:
+        #print 'season_arr_str is None'
+        times = ['MAR','APR','MAY','JUNE','JULY']
+      else:
+        season_arr = season_arr_str.split(';')
+        times = season_arr
+        
+      sets_arr = ''
+      sets_arr_str = request.POST['sets_arr_str']
+      if sets_arr_str == None:
+        print 'sets_arr_str is None'
+      else:
+        sets_arr = sets_arr_str.split(';')
+        print 's: ' + sets_arr[0] 
+            
+        
+      dataset = ''
+      path = ''
+      if request.POST['dataset'] == None:
+        dataset = 'tropics_warming_th_q_co2'
+        path = [default_tree_sample_data_dir + 'tropics_warming_th_q_co2']
+      else:
+        dataset = request.POST['dataset']
+        path = path = [default_tree_sample_data_dir + request.POST['dataset']]
+            
+            
+            
+            
+      #    username
+                
+      #static/exploratory_analysis/cache/tree/' username + '/json/' + dataset_name
+      #build tree here 
+      #if the post type is "submit" then grab "temp.json", otherwise it is a saved bookmark
+            
+      #old
+      #if posttype == 'submit':
+      #    treeFile = cache_dir + 'temp' + '.json'
+      #else:
+      #    treeFile = cache_dir + treename + '.json'
+            
+      if posttype == 'submit':
+        treeFile = cache_dir + username + '/json/' + 'temp' + '.json'
+      else:
+        treeFile = cache_dir + username + '/json/' + dataset + '/' + treename + '.json'
+            
+      import os
+      import os.path
+      #print 'created tree bookmark file: ' + (cache_dir + username + '/json/' + dataset)
+      #print 'treeFile exists? ' + str(os.path.isdir(cache_dir + username + '/json/' + dataset))
+      if not os.path.isdir(cache_dir + username + '/json/' + dataset):
+        print 'create dir'
+        os.makedirs(cache_dir + username + '/json/' + dataset)
+            
+      #### Start diagnostics generation here...
+      #username = user_id
+        
+      o = Options()
+       
+            
+      #print 'varsssss---->' + str(vars)
+       
+      ##### SET THESE BASED ON USER INPUT FROM THE GUI
+      o._opts['packages'] = packages
+      o._opts['vars'] = vars
+      o._opts['path'] = path
+      o._opts['times'] = times
+        
+            
+            
+      ### NOTE: 'ANN' won't work for times this way, but that shouldn't be a problem
+      datafiles = []
+      filetables = []
+      vars = o._opts['vars']
+      #   print vars
+    
+      #print 'packages--->' + str(packages)
+      #print 'vars--->' + str(vars)
+      #print 'times--->' + str(times)
+      #print 'dataset_list[0]--->' + dataset_list[0]
+    
+      for p in range(len(o._opts['path'])):
+        #print '\ndirtree\n',dirtree_datafiles(o,pathid=p)
+        datafiles.append(dirtree_datafiles(o,pathid=p))
+        filetables.append(basic_filetable(datafiles[p],o))
+            
+      #print 'Creating diags tree view JSON file...'
+        
+      #print 'ftnames->' + dataset_list[0]
+      #print 'filetables->' + str(filetables)
+        
+      print '\n\n\n\nFILENAME!!!! ' + treeFile
+        
+      tv = TreeView()
+      dtree = tv.makeTree(o, filetables,None,user=username,ftnames=[dataset_list[0]])
+      tv.dump(filename=treeFile)
+            
+            
+            
+      response_data = {}
+      response_data['treename'] = treename
+      response_data['username'] = username
+      return HttpResponse(json.dumps(response_data), content_type="application/json")
+            
+  #end if request.POST  
+            
+  if(loggedIn == True):
+    template = loader.get_template('exploratory_analysis/treeex.html')
+  else:
+    print 'username: ' + username
+        #print 'func: ' + str(func)
+            
+    func = treeviewer_treeex.func()
+    template = loader.get_template('exploratory_analysis/not_logged_in.html')
+    
+        
+        
+  treeloaded = 'false'
+        
+        
+        
+        
+  print 'figure bookmark list -> ' + str(figure_bookmark_list)
+        
+  print '\n\t\t\tloggedIn: ' + str(loggedIn) 
+        
+  context = RequestContext(request, {
+            'loggedIn' : str(loggedIn),
+            'username' : username,
+            'treeloaded' : treeloaded,
+            'package_list' : package_list,
+            'dataset_list' : dataset_list,
+            'variable_list' : variable_list,
+            'season_list' : season_list,
+            'set_list' : set_list,
+            'bookmark_list' : bookmark_list,
+            'figure_bookmark_list' : figure_bookmark_list,
+            'posttype':'save'
+                                          
+  })
+        
+
+  return HttpResponse(template.render(context))
+
+'''
+

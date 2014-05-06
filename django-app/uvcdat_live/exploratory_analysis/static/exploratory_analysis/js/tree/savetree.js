@@ -162,8 +162,6 @@ $(document).ready(function(){
 				//This address will save the tree to the database
 				var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/tree_bookmarks/';
 				
-				//alert('')
-				
 				
 				$.ajax({
 				  type: "POST",
@@ -195,6 +193,7 @@ $(document).ready(function(){
 						
 					  console.log('username----->' + username);
 					  console.log('save tree url-----> ' + url);
+					  
 					  
 					    
 						$.ajax({
