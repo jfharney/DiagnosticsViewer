@@ -1,7 +1,22 @@
 import json
 
+
+def timesHelper1(request):
+    
+    times = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC","DJF","MAM","JJA","SON","ANN"]
+
+    #times = ['jan','feb','mar','apr']
+    
+    data =  { 'times' : times }
+    
+    data_string = json.dumps(data,sort_keys=True,indent=2)
+    
+    return data_string
+
+
+
 def timesHelper(request,variable_id):
-    print '\n\n\ntimes for variable ', variable_id
+    #print '\n\n\ntimes for variable ', variable_id
   
     #dataset_id = 'dataset1'
     if(variable_id == None):
