@@ -59,9 +59,9 @@
 				shape-rendering: crispEdges;
 			}
 
-			//
-			.x.axis path {//
-				display: none;//
+			
+			.x.axis path {
+				display: none;
 			}
 
 			.line {
@@ -141,6 +141,9 @@
 									<a href="#" id="heatmap_link">Heatmap</a>
 								</li>
 								<li>
+									<a href="#" id="classic_link">Classic</a>
+								</li>
+								<li>
 									<a href="#" id="logout_link">Logout</a>
 								</li> 
 							{% else %}
@@ -193,6 +196,11 @@ $(document).ready(function(){
 	
 	$('#heatmap_link').click(function(){
 		location.href = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/heatmap/' + username;
+	});
+	
+	
+	$('#classic_link').click(function(){
+		location.href = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/classic/' + username;
 	});
 	
 	$('#login_link').click(function(){

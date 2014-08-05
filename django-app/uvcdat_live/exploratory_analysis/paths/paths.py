@@ -1,18 +1,18 @@
 ####related to settings.py####
 
-databases_name = '/Users/i7j/sqlite3/mydb.db'
+databases_name = '/home/user/Desktop/sqlite3/mydb.db'
 #databases_name = '/Users/8xo/sqlite3/11-3/mydb.db'
 
 
 
 #location of the cloned project 
 #${DiagnosticsViewer_home}/django-app/uvcdat-live
-uvcdat_live_root = '/Users/i7j/DiagnosticsViewer/django-app/uvcdat_live/' 
+uvcdat_live_root = '/home/user/Desktop/Aptana_Workspace/DiagnosticsViewer-jewell-devel/django-app/uvcdat_live/' 
 #uvcdat_live_root = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/' 
 
 #directory holding netcdf datasets
 #default_sample_data_dir = '/Users/8xo/sampledatalens/tropics_warming_th_q_co2'
-default_sample_data_dir = '/Users/i7j/climatedata/tropics_warming_th_q_co2/' 
+default_sample_data_dir = '/home/user/Desktop/Aptana_Workspace/DiagnosticsViewer-jewell-devel/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/tree/tropics_warming_th_q_co2/'
 
 
 
@@ -28,11 +28,11 @@ template_dirs = uvcdat_live_root + "exploratory_analysis/templates/exploratory_a
 ###UVCMetrics paths (deprecated)
 
 #path to uvcmetric python code
-syspath_append_uvcmetrics = '/Users/i7j/uvcmetrics/src/python'
+syspath_append_uvcmetrics = '/usr/local/uvcmetrics/src/python'
 #syspath_append_uvcmetrics = '/Users/8xo/software/exploratory_analysis/DiagnosticsGen/uvcmetrics/src/python'
 
 #path to cdscan (in uvcdat)
-syspath_append_cdscan = '/Users/i7j/build-uvcdat/install/Library/Frameworks/Python.framework/Versions/2.7/bin/cdscan'
+syspath_append_cdscan = '/usr/local/uvcdat/1.5.1/bin/cdscan'
 #syspath_append_cdscan = '/Users/8xo/software/exploratory_analysis/uvcdat_light/build-uvcdat/install/Library/Frameworks/Python.framework/Versions/2.7/bin/cdscan'
 
 ###End UVCMetrics paths

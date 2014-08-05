@@ -88,7 +88,7 @@ def main(request,user_id):
     print '\n\n\t\tuser_id: ' + str(user_id)
     print 'user: ' + str(request.user)
     
-    loggedIn = False
+    loggedIn = True
     
     if (str(request.user) == str(user_id)):
         loggedIn = True
@@ -116,7 +116,7 @@ def maps(request,user_id):
     print '\n\n\t\tuser_id: ' + str(user_id)
     print 'user: ' + str(request.user)
     
-    loggedIn = False
+    loggedIn = True
     
     if (str(request.user) == str(user_id)):
         loggedIn = True
@@ -153,7 +153,7 @@ def heatmap(request,user_id):
     #print '\n\n\n\n\n\n\n\t\t\tuser_id: ' + str(user_id)
     #print 'user: ' + str(request.user)
     
-    loggedIn = False
+    loggedIn = True
     
     if (str(request.user) == str(user_id)):
         loggedIn = True
@@ -288,6 +288,42 @@ def figureGenerator(request):
       return HttpResponse(cachedFile)
 
 
+#Test classic view
+def classic(request,user_id):
+      #print '\n\n\n\n\nrequest user authenticate: ' + str(request.user.is_authenticated()) + '\n\n\n\n'
+    
+    
+    #need a flag to indicated whether a tree 
+    #print '\n\n\n\n\n\n\n\t\t\tuser_id: ' + str(user_id)
+    #print 'user: ' + str(request.user)
+    
+    loggedIn = True
+    
+    if (str(request.user) == str(user_id)):
+        loggedIn = True
+    
+    username = 'jfharney'
+    
+    #grab the username
+    if user_id != None:
+        username = user_id
+    
+    print 'LoggedIn: ' + str(loggedIn)
+    
+    if(loggedIn == True):
+        template = loader.get_template('exploratory_analysis/classic.html')
+    else:
+        print 'username: ' + username
+        template = loader.get_template('exploratory_analysis/not_logged_in.html')
+        
+    context = RequestContext(request, {
+      'loggedIn' : str(loggedIn),
+      'username' : username,
+    })
+    
+    return HttpResponse(template.render(context))
+
+
 
 #New tree view
 def treeex(request,user_id):
@@ -299,7 +335,7 @@ def treeex(request,user_id):
     #print '\n\n\t\tuser_id: ' + str(user_id)
     #print 'user: ' + str(request.user)
     
-    loggedIn = False
+    loggedIn = True
     
     if (str(request.user) == str(user_id)):
         loggedIn = True
@@ -310,6 +346,7 @@ def treeex(request,user_id):
     if user_id != None:
         username = user_id
     
+    loggedIn = True
     
     '''
     #get the predefined tree bookmarks of the user
@@ -1262,7 +1299,7 @@ def bookmarkHandler(request,user_id):
   #print '\n\n\t\tuser_id: ' + str(user_id)
   #print 'user: ' + str(request.user)
     
-  loggedIn = False
+  loggedIn = True
     
   if (str(request.user) == str(user_id)):
     loggedIn = True
@@ -1393,7 +1430,7 @@ def noBookmarkHandler(request,user_id):
   #print '\n\n\t\tuser_id: ' + str(user_id)
   #print 'user: ' + str(request.user)
     
-  loggedIn = False
+  loggedIn = True
     
   if (str(request.user) == str(user_id)):
     loggedIn = True
