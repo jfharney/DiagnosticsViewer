@@ -191,11 +191,11 @@ def figureGenerator(request):
       
       
         
-      variables = [request.POST['variables']]
-      times = [request.POST['times']]
-      sets = [request.POST['sets']]
-      packages = [request.POST['packages']]
-      realms = [request.POST['realms']]
+      variables = [str(x) for x in request.POST['variables']]
+      times = [str(x) for x in request.POST['times']]
+      sets = [str(x) for x in request.POST['sets']]
+      packages = [str(x) for x in request.POST['packages']]
+      realms = [str(x) for x in request.POST['realms']]
       
       
       sets = ['1']
@@ -210,7 +210,7 @@ def figureGenerator(request):
     
       inCache = False
       
-      cachedFile = realms[0] + '_' + packages[0] + '_set' + sets[0] + '_' + times[0] + '_' + variables[0] + '.png'
+      cachedFile = str(realms[0] + '_' + packages[0] + '_set' + sets[0] + '_' + times[0] + '_' + variables[0] + '.png')
       
       #print 'cachedFile: ' + cachedFile
       
@@ -247,6 +247,7 @@ def figureGenerator(request):
         
           filepath = generated_img_path
           filename = request.POST['realms'] + '_' + request.POST['packages'] + '_' + request.POST['sets'] + '_' + request.POST['times'] + '_' + request.POST['variables']
+          filename = str(filename)
           import metrics.fileio.filetable as ft
           import metrics.fileio.findfiles as fi
           dtree1 = fi.dirtree_datafiles(o, pathid=0)
@@ -255,7 +256,10 @@ def figureGenerator(request):
           #print 'No second dataset for comparison'
              
           package=o._opts['packages']
-          pclass = dm[package[0]]()
+          print 'PACKAGE ' , package
+          print 'TYPEPACKAGE ' + str(type(package))
+          
+          pclass = dm[package]()
     
           # this needs a filetable probably, or we just define the maximum list of variables somewhere
 #          im = ".".join(['metrics', 'packages', package[0], package[0]])
