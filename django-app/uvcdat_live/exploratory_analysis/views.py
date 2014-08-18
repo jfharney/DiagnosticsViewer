@@ -41,6 +41,7 @@ if isConnected:
     from metrics.computation.reductions import *
     from metrics.fileio.filetable import *
     from metrics.fileio.findfiles import *
+    from metrics.packages.diagnostic_groups import *
 
     from metrics.exploratory.treeview import TreeView 
 
@@ -242,6 +243,7 @@ def figureGenerator(request):
           o._opts['sets']=sets
           o._opts['packages']=packages
           o._opts['realms']=realms
+          dm = diagnostics_menu()
         
           filepath = generated_img_path
           filename = request.POST['realms'] + '_' + request.POST['packages'] + '_' + request.POST['sets'] + '_' + request.POST['times'] + '_' + request.POST['variables']
@@ -253,13 +255,14 @@ def figureGenerator(request):
           #print 'No second dataset for comparison'
              
           package=o._opts['packages']
+          pclass = dm[package[0]]()
     
           # this needs a filetable probably, or we just define the maximum list of variables somewhere
-          im = ".".join(['metrics', 'packages', package[0], package[0]])
-          if package[0] == 'lmwg':
-             pclass = getattr(__import__(im, fromlist=['LMWG']), 'LMWG')()
-          elif package[0]=='amwg':
-             pclass = getattr(__import__(im, fromlist=['AMWG']), 'AMWG')()
+#          im = ".".join(['metrics', 'packages', package[0], package[0]])
+#          if package[0] == 'lmwg':
+#             pclass = getattr(__import__(im, fromlist=['LMWG']), 'LMWG')()
+#          elif package[0]=='amwg':
+#             pclass = getattr(__import__(im, fromlist=['AMWG']), 'AMWG')()
     
           setname = o._opts['sets'][0]
           varid = o._opts['vars'][0]
@@ -272,13 +275,15 @@ def figureGenerator(request):
           import vcs
           print 'generating output.png ...'
           v = vcs.init()
+          diag_template = diagnostics_template()
           for k in keys:
              fields = k.split()
              if setname[0] == fields[0]:
                 print 'calling init for ', k, 'varid: ', varid, 'seasonid: ', seasonid
                 plot = slist[k](filetable1, filetable2, varid, seasonid)
                 res = plot.compute()
-                v.plot(res[0].vars, res[0].presentation, bg=1)
+                v.clear()
+                v.plot(res[0].vars, res[0].presentation, template_name='diagnostic', bg=1)
                 
                 v.png(filepath + filename)
           
