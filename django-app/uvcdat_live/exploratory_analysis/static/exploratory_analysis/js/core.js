@@ -22,8 +22,8 @@ EA.treeDepthFactor = 150;
 EA.tree_width = 400;
 EA.tree_height = 600;
 
-EA.tree_margin_right = 120;
-EA.tree_margin_left = 120;
+EA.tree_margin_right = 20;
+EA.tree_margin_left = 20;
 EA.tree_margin_top = 30;
 EA.tree_margin_bottom = 20;
 

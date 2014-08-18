@@ -1,5 +1,5 @@
 $(document).ready(function() {
-
+	$('#viewbox').hide();
 	//removing thumbnail image from the pane
 	$('body').on('click', 'button.btn-remove', function() {
 		var id = $(this).attr('id');
@@ -168,54 +168,56 @@ function replacePipe(path) {
 }
 
 function update(source) {
-        // Compute the new height, function counts total children of root node and sets tree height accordingly.
-        // This prevents the layout looking squashed when new nodes are made visible or looking sparse when nodes are removed
-        // This makes the layout more consistent.
-        var levelWidth = [1];
-        var childCount = function(level, n) {
+	// Compute the new height, function counts total children of root node and sets tree height accordingly.
+	// This prevents the layout looking squashed when new nodes are made visible or looking sparse when nodes are removed
+	// This makes the layout more consistent.
+	var levelWidth = [1];
+	var childCount = function(level, n) {
 
-            if (n.children && n.children.length > 0) {
-                if (levelWidth.length <= level + 1) levelWidth.push(0);
+		if (n.children && n.children.length > 0) {
+			if (levelWidth.length <= level + 1)
+				levelWidth.push(0);
 
-                levelWidth[level + 1] += n.children.length;
-                n.children.forEach(function(d) {
-                    childCount(level + 1, d);
-                });
-            }
-        };
-        childCount(0, root);
-        var newHeight = d3.max(levelWidth) * 25; // 25 pixels per line  
-        tree = tree.size([newHeight, (width + margin.left + margin.right)]);	
-	
-	
+			levelWidth[level + 1] += n.children.length;
+			n.children.forEach(function(d) {
+				childCount(level + 1, d);
+			});
+		}
+	};
+	childCount(0, root);
+	var newHeight = d3.max(levelWidth) * 25;
+	// 25 pixels per line
+	tree = tree.size([newHeight, (width + margin.left + margin.right)]);
+
 	// Compute the new tree layout.
 	var nodes = tree.nodes(root).reverse(), links = tree.links(nodes);
-    var totalNodes = 0;
-    var maxLabelLength = 0;
+	var totalNodes = 0;
+	var maxLabelLength = 0;
 	console.log('--------updated tree state--------');
 
-    function visit(parent, visitFn, childrenFn) {
-        if (!parent) return;
+	function visit(parent, visitFn, childrenFn) {
+		if (!parent)
+			return;
 
-        visitFn(parent);
+		visitFn(parent);
 
-        var children = childrenFn(parent);
-        if (children) {
-            var count = children.length;
-            for (var i = 0; i < count; i++) {
-                visit(children[i], visitFn, childrenFn);
-            }
-        }
-    }
+		var children = childrenFn(parent);
+		if (children) {
+			var count = children.length;
+			for (var i = 0; i < count; i++) {
+				visit(children[i], visitFn, childrenFn);
+			}
+		}
+	}
 
-    // Call visit function to establish maxLabelLength
-    visit(source, function(d) {
-        totalNodes++;
-        maxLabelLength = Math.max(d.name.length, maxLabelLength);
+	// Call visit function to establish maxLabelLength
+	visit(source, function(d) {
+		totalNodes++;
+		maxLabelLength = Math.max(d.name.length, maxLabelLength);
 
-    }, function(d) {
-        return d.children && d.children.length > 0 ? d.children : null;
-    });
+	}, function(d) {
+		return d.children && d.children.length > 0 ? d.children : null;
+	});
 	/*
 	 for(var key in nodes) {
 	 console.log('nodessss key: ' + key + ' node ' + nodes[key]);
@@ -367,33 +369,79 @@ function update(source) {
 	});
 }
 
-
-
-
-
 // Define the zoom function for the zoomable tree
 
 function zoom() {
 	svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
 }
 
-
-
 // define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
 var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]).on("zoom", zoom);
+function zoomed() {
+	svg.attr("transform", "translate(" + zoomListener.translate() + ")" + "scale(" + zoomListener.scale() + ")");
+}
 
-    function centerNode(source) {
-        scale = zoomListener.scale();
-        x = -source.y0; 
-        y = -source.x0;
-        x = x * scale + viewerWidth / 2;
-        y = y * scale + viewerHeight / 2;
-        d3.select('g').transition()
-            .duration(duration)
-            .attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")");
-        zoomListener.scale(scale);
-        zoomListener.translate([x, y]);
-    }
+function interpolateZoom(translate, scale) {
+	var self = this;
+	return d3.transition().duration(350).tween("zoom", function() {
+		var iTranslate = d3.interpolate(zoomListener.translate(), translate), iScale = d3.interpolate(zoomListener.scale(), scale);
+		return function(t) {
+			zoomListener.scale(iScale(t)).translate(iTranslate(t));
+			zoomed();
+		};
+	});
+}
+
+function zoomOut() {
+	var clicked = d3.event.target, direction = 1, factor = 0.2, target_zoom = 1, center = [width / 2, height / 2], extent = zoomListener.scaleExtent(), translate = zoomListener.translate(), translate0 = [], l = [], view = {
+		x : translate[0],
+		y : translate[1],
+		k : zoomListener.scale()
+	};
+
+	d3.event.preventDefault();
+	direction = -1;
+	target_zoom = zoomListener.scale() * (1 + factor * direction);
+
+	if (target_zoom < extent[0] || target_zoom > extent[1]) {
+		return false;
+	}
+
+	translate0 = [(center[0] - view.x) / view.k, (center[1] - view.y) / view.k];
+	view.k = target_zoom;
+	l = [translate0[0] * view.k + view.x, translate0[1] * view.k + view.y];
+
+	view.x += center[0] - l[0];
+	view.y += center[1] - l[1];
+
+	interpolateZoom([view.x, view.y], view.k);
+}
+
+function zoomIn() {
+	var clicked = d3.event.target, direction = 1, factor = 0.2, target_zoom = 1, center = [width / 2, height / 2], extent = zoomListener.scaleExtent(), translate = zoomListener.translate(), translate0 = [], l = [], view = {
+		x : translate[0],
+		y : translate[1],
+		k : zoomListener.scale()
+	};
+
+	d3.event.preventDefault();
+	direction = 1;
+	target_zoom = zoomListener.scale() * (1 + factor * direction);
+
+	if (target_zoom < extent[0] || target_zoom > extent[1]) {
+		return false;
+	}
+
+	translate0 = [(center[0] - view.x) / view.k, (center[1] - view.y) / view.k];
+	view.k = target_zoom;
+	l = [translate0[0] * view.k + view.x, translate0[1] * view.k + view.y];
+
+	view.x += center[0] - l[0];
+	view.y += center[1] - l[1];
+
+	interpolateZoom([view.x, view.y], view.k);
+}
+
 //console.log('ea: ' + EA.tree_margin_right);
 
 var margin = {
@@ -403,7 +451,7 @@ var margin = {
 	left : EA.tree_margin_left
 }, width = EA.tree_width - margin.right - margin.left, height = EA.tree_height - margin.top - margin.bottom;
 
-var i = 0, duration = 750, root;
+var i = 0, duration = 100, root;
 
 for (var key in d3.layout.tree()) {
 	console.log('key: ' + key + ' layout: ' + d3.layout[key]);
@@ -418,29 +466,34 @@ tree.separation(function(a, b) {
 var diagonal = d3.svg.diagonal().projection(function(d) {
 	return [d.y, d.x];
 });
-
+var button = d3.select('#treeimg').append('button').attr("class", "btn btn-sm btn-default").style("position", "absolute").style("right", "10px").style("z-index", 9999).on("click", zoomIn).append("span").attr("class", "glyphicon glyphicon-zoom-in");
+var button = d3.select('#treeimg').append('button').attr("class", "btn btn-sm btn-default").style("position", "absolute").style("right", "50px").style("z-index", 9999).on("click", zoomOut).append("span").attr("class", "glyphicon glyphicon-zoom-out");
+var button = d3.select('#treeimg').append('button').attr("class", "btn btn-sm btn-default").style("position", "absolute").style("right", "90px").style("z-index", 9999).on("click", function(d) {
+	centerNode(lastNode)
+}).append("span").attr("class", "glyphicon glyphicon-home");
 var svg = d3.select("#treeimg").append("svg").attr("width", width + margin.right + margin.left).attr("height", height + margin.top + margin.bottom).call(zoomListener).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 d3.select(self.frameElement).style("height", "800px");
 
 var fullpath = '';
+var lastNode = null;
 
+// Function to center node when clicked/dropped so node doesn't get lost when collapsing/moving with large amount of children.
 
-    // Function to center node when clicked/dropped so node doesn't get lost when collapsing/moving with large amount of children.
+function centerNode(source) {
+	//console.log(source);
 
-    function centerNode(source) {
-        scale = zoomListener.scale();
-        x = -source.y0;
-        y = -source.x0;
-        x = x * scale + (width + margin.right + margin.left) / 2;
-        y = y * scale + (height + margin.top + margin.bottom) / 2;
-        d3.select('g').transition()
-            .duration(duration)
-            .attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")");
-        zoomListener.scale(scale);
-        zoomListener.translate([x, y]);
-    }
-
+	scale = zoomListener.scale();
+	x = -source.y0;
+	y = -source.x0;
+	x = x * scale + (width + margin.right + margin.left) / 2;
+	y = y * scale + (height + margin.top + margin.bottom) / 2;
+	d3.select('g').transition().duration(1000).attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")");
+	zoomListener.scale(scale);
+	zoomListener.translate([x, y]);
+	if (lastNode == null)
+		lastNode = source;
+}
 
 function hover(d) {
 
@@ -490,16 +543,16 @@ function pan(domNode, direction) {
 
 //Toggle children on click.
 function click(d) {
-    centerNode(d);
+
 	if (d.children) {
-		console.log('in if d.children ');
+		//console.log('in if d.children ');
 		d._children = d.children;
 		d.children = null;
 	} else {
-		console.log('in else ');
+		//console.log('in else ');
 		if (d['_children'] == undefined) {
 			var name = d['name'];
-			console.log('name: ' + name);
+			//console.log('name: ' + name);
 
 			/*
 			 for(var key in d) {
@@ -523,7 +576,7 @@ function click(d) {
 			var username = '';
 
 			for (var i = 0; i < params.length; i++) {
-				console.log('param: ' + params[i]);
+				//console.log('param: ' + params[i]);
 				if (i == 1) {
 					times = params[i];
 				} else if (i == 2) {
@@ -547,6 +600,7 @@ function click(d) {
 		d._children = null;
 	}
 	update(d);
+	centerNode(d);
 }
 
 function reversePath(path) {
@@ -572,8 +626,8 @@ function reversePath(path) {
 
 function figure_generator(times, variables, sets, dataset, packages, realms, username, fullpath) {
 	var csrftoken = getCookie('csrftoken');
-
-	console.log('*&^(^*%^*&^%*&^%*^%*^%*' + dataset);
+	console.log("set = " + sets);
+	//console.log('*&^(^*%^*&^%*&^%*^%*^%*' + dataset);
 
 	//var computedImg = "../../../static/exploratory_analysis/img/carousel/set6_turbf_Global.gif";
 
@@ -614,36 +668,78 @@ function figure_generator(times, variables, sets, dataset, packages, realms, use
 		type : 'POST',
 		data : data,
 		success : function(data) {
+			$('#viewbox').show();
 			//alert('data: ' + data);
 			//alert('fullpath ' + fullpath)
 			//cachedFile = realms[0] + '_' + packages[0] + '_set' + sets[0] + '_' + times[0] + '_' + variables[0] + '.png'
-			var figTitle = realms + '_' + packages + '_' + sets + '_' + times + '_' + variables + '.png';
 
-			$('#modal-title').empty();
-			$('.modal-body').empty();
-			//$('#modal-title').append('<span>TITLE:</span> <div id="' + "figtitle" + '"> ' + reversePath(fullpath) + '</div>');
-			//$('#modal-title').append('<span>TITLE:</span> <div id="' + "figtitle" + '"> ' + figTitle + '</div>');
-			$('#modal-title').append('<div id="' + "figtitle" + '"> ' + figTitle + '</div>');
+			if (sets == "set5") {
+				//<iframe src="missingmen.txt" width=200 height=400 frameborder=0 ></iframe></p></div>
+				var figTitle = realms + '_' + packages + '_' + sets + '_' + times + '_' + variables + '.png';
+	//var staticImg = img_prefix + realms + '_' + packages + '_' + sets + '_' + times + '_' + variables + '.png';
+				staticImg = img_prefix + 'table.txt';
+				$('#modal-title').empty();
+				$('.modal-body').empty();
+				//$('#modal-title').append('<span>TITLE:</span> <div id="' + "figtitle" + '"> ' + reversePath(fullpath) + '</div>');
+				//$('#modal-title').append('<span>TITLE:</span> <div id="' + "figtitle" + '"> ' + figTitle + '</div>');
+				$('#modal-title').append('<div id="' + "figtitle" + '"> ' + figTitle + '</div>');
 
-			//$('#modal-title').append('<span>URL:</span> <div id="' + "figurl" + '">' + staticImg + '</div>');
-			$('.modal-body').append('<div>' + '<img src="' + staticImg + '" style="max-width:600px;max-height:500px;display: block;display: block;margin-left: auto;margin-right: auto" />' + '</div>')
-			$('.modal-body').append('<div id="fig_url" style="display:none" >' + staticImg + '</div>');
+				//$('#modal-title').append('<span>URL:</span> <div id="' + "figurl" + '">' + staticImg + '</div>');
+				$('.modal-body').append('<div>' + '<iframe src="' + staticImg + '" style="width:700px;height:500px;display: block;display: block;margin-left: auto;margin-right: auto" />' + '</div>')
+				$('.modal-body').append('<div id="fig_url" style="display:none" >' + staticImg + '</div>');
 
-			//$('#figure_bookmark_description').
+				var vimage = function() {
+					$('.modal-body').append('<div>' + '<iframe src="' + staticImg + '" style="max-width:600px;max-height:500px;display: block;display: block;margin-left: auto;margin-right: auto" />' + '</div>')
+					$('.modal-body').append('<div id="fig_url" style="display:none" >' + staticImg + '</div>');
+				}
+				//$('#figure_bookmark_description').
 
-			console.log('figTitle: ' + figTitle);
+				//console.log('figTitle: ' + figTitle);
 
-			var addedListing = ' <li style="padding:10px;border: 1px solid #000000;list-style-type: none;margin-bottom:10px" id="' + stripPeriod(figTitle) + '">' + '<a class="thumbnail">' + '<img src="' + staticImg + '" style="max-width:150px;display: block;" />' + '</a>' +
-			//'<div style="font-size:10px;color:red;text-align: center;margin-top:5px">' + reversePath(fullpath) + '</div>' +
-			'<div style="font-size:10px;color:red;text-align: center;margin-top:5px">' + figTitle + '</div>' + '<div style="text-align: center;;padding:5px">' + '<button type="button" class="btn btn-default btn-remove" style="margin-right:10px;" id="' + stripPeriod(figTitle) + '">' + 'Remove' + '</button>' +
+				var addedListing = ' <li style="padding:10px;border: 1px solid #000000;list-style-type: none;margin-bottom:10px" id="' + stripPeriod(figTitle) + '">' + '<a class="thumbnail">' + '<iframe src="' + staticImg + '" style="max-width:150px;display: block;" />' + '</a>' +
+				//'<div style="font-size:10px;color:red;text-align: center;margin-top:5px">' + reversePath(fullpath) + '</div>' +
+				'<div style="font-size:10px;color:red;text-align: center;margin-top:5px">' + figTitle + '</div>' + '<div style="text-align: center;;padding:5px">' + '<button type="button" class="btn btn-default btn-remove" style="margin-right:10px;" id="' + stripPeriod(figTitle) + '">' + 'Remove' + '</button>' +
 
-			//'<button type="button" class="btn btn-default btn-remove" style="margin-right:10px;" id="remove_' + stripPipe(fullpath) + '">'+'Remove'+'</button>' +
-			'<a data-toggle="modal" href="#myModal" class="btn btn-primary">View</a>' + '</div>' + '</li>';
+				//'<button type="button" class="btn btn-default btn-remove" style="margin-right:10px;" id="remove_' + stripPipe(fullpath) + '">'+'Remove'+'</button>' +
+				'<a class="btn btn-primary">View</a>' + '</div>' + '</li>';
 
-			$('div#gallery').append(addedListing);
+				$('div#gallery').append(addedListing);
 
-			//add an image
-			var appended = '<div class="row"><div class="col-md-12">' + name + '</div></div>';
+				//add an image
+				var appended = '<div class="row"><div class="col-md-12">' + name + '</div></div>';
+			} else {
+				var figTitle = realms + '_' + packages + '_' + sets + '_' + times + '_' + variables + '.png';
+
+				$('#modal-title').empty();
+				$('.modal-body').empty();
+				//$('#modal-title').append('<span>TITLE:</span> <div id="' + "figtitle" + '"> ' + reversePath(fullpath) + '</div>');
+				//$('#modal-title').append('<span>TITLE:</span> <div id="' + "figtitle" + '"> ' + figTitle + '</div>');
+				$('#modal-title').append('<div id="' + "figtitle" + '"> ' + figTitle + '</div>');
+
+				//$('#modal-title').append('<span>URL:</span> <div id="' + "figurl" + '">' + staticImg + '</div>');
+				$('.modal-body').append('<div>' + '<img src="' + staticImg + '" style="max-width:600px;max-height:500px;display: block;display: block;margin-left: auto;margin-right: auto" />' + '</div>')
+				$('.modal-body').append('<div id="fig_url" style="display:none" >' + staticImg + '</div>');
+
+				var vimage = function() {
+					$('.modal-body').append('<div>' + '<img src="' + staticImg + '" style="max-width:600px;max-height:500px;display: block;display: block;margin-left: auto;margin-right: auto" />' + '</div>')
+					$('.modal-body').append('<div id="fig_url" style="display:none" >' + staticImg + '</div>');
+				}
+				//$('#figure_bookmark_description').
+
+				//console.log('figTitle: ' + figTitle);
+
+				var addedListing = ' <li style="padding:10px;border: 1px solid #000000;list-style-type: none;margin-bottom:10px" id="' + stripPeriod(figTitle) + '">' + '<a class="thumbnail">' + '<img src="' + staticImg + '" style="max-width:150px;display: block;" />' + '</a>' +
+				//'<div style="font-size:10px;color:red;text-align: center;margin-top:5px">' + reversePath(fullpath) + '</div>' +
+				'<div style="font-size:10px;color:red;text-align: center;margin-top:5px">' + figTitle + '</div>' + '<div style="text-align: center;;padding:5px">' + '<button type="button" class="btn btn-default btn-remove" style="margin-right:10px;" id="' + stripPeriod(figTitle) + '">' + 'Remove' + '</button>' +
+
+				//'<button type="button" class="btn btn-default btn-remove" style="margin-right:10px;" id="remove_' + stripPipe(fullpath) + '">'+'Remove'+'</button>' +
+				'<a class="btn btn-primary">View</a>' + '</div>' + '</li>';
+
+				$('div#gallery').append(addedListing);
+
+				//add an image
+				var appended = '<div class="row"><div class="col-md-12">' + name + '</div></div>';
+			}
 
 			$body.removeClass("loading");
 

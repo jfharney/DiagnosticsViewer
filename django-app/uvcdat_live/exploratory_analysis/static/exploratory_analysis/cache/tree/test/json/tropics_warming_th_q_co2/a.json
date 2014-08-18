@@ -6,7 +6,7 @@
       "name":"lmwg",
       "children":[
         {
-          "name":"tropics_warming_th_q.clm2.h0.0151-01.nc",
+          "name":"tropics_warming_th_q_co2",
           "children":[
             {
               "name":"set1",

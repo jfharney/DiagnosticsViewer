@@ -12,7 +12,7 @@ uvcdat_live_root = '/Users/i7j/DiagnosticsViewer/django-app/uvcdat_live/'
 
 #directory holding netcdf datasets
 #default_sample_data_dir = '/Users/8xo/sampledatalens/tropics_warming_th_q_co2'
-default_sample_data_dir = '/Users/i7j/climatedata/tropics_warming_th_q_co2/' 
+default_sample_data_dir = '/Users/i7j/climatedata/' 
 
 
 
@@ -49,7 +49,7 @@ cache_dir = uvcdat_live_root + 'exploratory_analysis/static/exploratory_analysis
 
 #directory holding netcdf datasets
 
-default_sample_data_dir = '/Users/i7j/climatedata/tropics_warming_th_q/' #tropics_warming_th_q_clm2'
+default_sample_data_dir = '/Users/i7j/climatedata/' #tropics_warming_th_q_clm2'
 
 
 default_tree_sample_data_dir = default_sample_data_dir
