@@ -42,7 +42,7 @@ if isConnected:
     from metrics.fileio.filetable import *
     from metrics.fileio.findfiles import *
 
-    from metrics.frontend.treeview import TreeView 
+    from metrics.exploratory.treeview import TreeView 
 
 cache_dir = paths_cache_dir
 #front_end_cache_dir = paths_front_end_cache_dir#'../../../static/cache/'
@@ -216,7 +216,7 @@ def figureGenerator(request):
       path = './' +  'exploratory_analysis/static/exploratory_analysis/img/treeex/' + cachedFile
       #print 'path: ' + path
       #print 'absolute path: ' + os.path.abspath(path)
-      #print 'not in cache: ' + str(not inCache) + ' os isfile: ' + str(os.path.exists(path))
+      print 'not in cache: ' + str(not inCache) + ' os isfile: ' + str(os.path.exists(path))
       
       if(os.path.exists(path)):
           inCache = True
@@ -292,7 +292,7 @@ def figureGenerator(request):
 #New tree view
 def treeex(request,user_id):
     
-    #print '\nrequest user authenticate: ' + str(request.user.is_authenticated()) + '\n'
+    print '\n\t--->request user authenticate: ' + str(request.user.is_authenticated()) + '\n'
     
     
     #need a flag to indicated whether a tree 
@@ -310,6 +310,8 @@ def treeex(request,user_id):
     if user_id != None:
         username = user_id
     
+    
+    loggedIn = True
     
     '''
     #get the predefined tree bookmarks of the user

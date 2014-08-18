@@ -47,7 +47,7 @@ if isConnected:
     from metrics.fileio.filetable import *
     from metrics.fileio.findfiles import *
 
-    from metrics.frontend.treeview import TreeView 
+    from metrics.exploratory.treeview import TreeView 
 
 cache_dir = paths_cache_dir
 #front_end_cache_dir = paths_front_end_cache_dir#'../../../static/cache/'
@@ -179,7 +179,9 @@ def bookmarkHandler(request,user_id):
   #print 'treeFile---->: ' + str(treeFile)
         
   template = loader.get_template('exploratory_analysis/treeex.html')
-    
+   
+   
+  loggedIn = True 
     
   context = RequestContext(request, {
             'loggedIn' : str(loggedIn),
@@ -258,7 +260,7 @@ def noBookmarkHandler(request,user_id):
     
   #first we check if the request is in the cache or if it is the initial call
   #if it is in the cache, no need to do any back end generation
-  bookmark = request.GET.get('bookmark')
+  bookmark = str(request.GET.get('bookmark'))
     
   #print '\nbookmark: ' + str(bookmark)  
       
@@ -269,16 +271,16 @@ def noBookmarkHandler(request,user_id):
   #if something has been posted, then a tree could be built       
   if request.POST:
             
-      posttype = request.POST['posttype']
+      posttype = str(request.POST['posttype'])
             
-      tree_bookmark_datasetname = request.POST['dataset']
+      tree_bookmark_datasetname = str(request.POST['dataset'])
             
       #print 'tree_bookmark_datasetname----->' + tree_bookmark_datasetname + '\n\n\n\n'
             
       #print 'in a post request with parameters'
             
             
-      treename = request.POST['treename']
+      treename = str(request.POST['treename'])
             
       #if there is no tree name give the tree a default name based on the timestamp
       if treename == None or treename == '':
@@ -293,12 +295,12 @@ def noBookmarkHandler(request,user_id):
       if request.POST['package'] == None:
         packages = ['lmwg']
       else:
-        packages = [request.POST['package'] ]
+        packages = [ str(request.POST['package']) ]
             
             
             
       vars= ''
-      variable_arr_str = request.POST['variable_arr_str']
+      variable_arr_str = str(request.POST['variable_arr_str'])
       if variable_arr_str == None:
         #print 'variable_arr_str is None'
         vars = ['TLAI', 'TG','NPP']
@@ -308,7 +310,7 @@ def noBookmarkHandler(request,user_id):
         vars = variable_arr
                 
       times = ''
-      season_arr_str = request.POST['season_arr_str']
+      season_arr_str = str(request.POST['season_arr_str'])
       if season_arr_str == None:
         #print 'season_arr_str is None'
         times = ['MAR','APR','MAY','JUNE','JULY']
@@ -317,7 +319,7 @@ def noBookmarkHandler(request,user_id):
         times = season_arr
         
       sets_arr = ''
-      sets_arr_str = request.POST['sets_arr_str']
+      sets_arr_str = str(request.POST['sets_arr_str'])
       if sets_arr_str == None:
         print 'sets_arr_str is None'
       else:
@@ -327,12 +329,12 @@ def noBookmarkHandler(request,user_id):
         
       dataset = ''
       path = ''
-      if request.POST['dataset'] == None:
+      if str(request.POST['dataset']) == None:
         dataset = 'tropics_warming_th_q_co2'
         path = [default_tree_sample_data_dir + 'tropics_warming_th_q_co2']
       else:
-        dataset = request.POST['dataset']
-        path = path = [default_tree_sample_data_dir + request.POST['dataset']]
+        dataset = str(request.POST['dataset'])
+        path = path = [default_tree_sample_data_dir + str(request.POST['dataset'])]
             
             
       #print '\n\n\t\t\tDATASET: ' + dataset 
@@ -406,7 +408,9 @@ def noBookmarkHandler(request,user_id):
         
       tv = TreeView()
       #dtree = tv.makeTree(o, filetables,None,user=username,ftnames=[dataset_list[0]])
-      dtree = tv.makeTree(o, filetables,None,user=username,ftnames=[dataset])
+      print 'LENGTH------> ' + str(len(filetables))
+      #dtree = tv.makeTree(o, filetables,None,user=username,ftnames=[dataset])
+      dtree = tv.makeTree(o, filetables,None,user=username)
       tv.dump(filename=treeFile)
             
             
@@ -417,6 +421,9 @@ def noBookmarkHandler(request,user_id):
       return HttpResponse(json.dumps(response_data), content_type="application/json")
             
   #end if request.POST  
+  
+  
+  loggedIn = True   
             
   if(loggedIn == True):
     template = loader.get_template('exploratory_analysis/treeex.html')
