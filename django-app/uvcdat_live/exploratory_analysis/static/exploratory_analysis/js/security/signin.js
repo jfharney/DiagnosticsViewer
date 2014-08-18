@@ -58,7 +58,7 @@ $(document).ready(function(){
 					  
 				  },
 				  error: function(xhr, status, error) {
-					  console.log('error'); 
+					  console.log('error' + xhr); 
 				    if(xhr.status==404)
 				    { 
 				    	

@@ -6,7 +6,7 @@
       "name":"lmwg",
       "children":[
         {
-          "name":"test.xml",
+          "name":"tropics_warming_th_q_co2",
           "children":[
             {
               "name":"set1",

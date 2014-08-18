@@ -11,8 +11,13 @@ databases_name = '/Users/8xo/sqlite3/11-3/mydb.db'
 uvcdat_live_root = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/' 
 
 #directory holding netcdf datasets
+#<<<<<<< HEAD
 default_sample_data_dir = '/Users/8xo/sampledatalens/tropics_warming_th_q_co2'
 #default_sample_data_dir = '/Users/i7j/climatedata/tropics_warming_th_q_co2/' 
+#=======
+#default_sample_data_dir = '/Users/8xo/sampledatalens/tropics_warming_th_q_co2'
+#default_sample_data_dir = '/Users/i7j/climatedata/' 
+#>>>>>>> 4fa58d76f5f248e6cc2fafa6ee472a001c786db2
 
 
 
@@ -48,8 +53,14 @@ cache_dir = uvcdat_live_root + 'exploratory_analysis/static/exploratory_analysis
 #front_end_cache_dir = '../../../static/exploratory_analysis/cache/tree/uu1/json/tropics_warming_th_q_co2/'
 
 #directory holding netcdf datasets
+#<<<<<<< HEAD
 #default_sample_data_dir = '/Users/i7j/climatedata/tropics_warming_th_q/' #tropics_warming_th_q_clm2'
 default_sample_data_dir = '/Users/8xo/djangoapp_data'
+#=======
+
+#default_sample_data_dir = '/Users/i7j/climatedata/' #tropics_warming_th_q_clm2'
+
+#>>>>>>> 4fa58d76f5f248e6cc2fafa6ee472a001c786db2
 
 default_tree_sample_data_dir = default_sample_data_dir
 default_map_sample_data_dir = default_sample_data_dir + 'tropics_warming_th_q'
