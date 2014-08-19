@@ -1,7 +1,8 @@
 ####related to settings.py####
 #databases_name = '/Users/i7j/sqlite3/mydb.db'
 databases_name = '/Users/8xo/sqlite3/11-3/mydb.db'
-
+databases_name = '/Users/bs1/uvcdat-devel/db/mydb.db'
+#databases_name = '/Users/8xo/sqlite3/11-3/mydb.db'
 
 
 
@@ -10,6 +11,8 @@ databases_name = '/Users/8xo/sqlite3/11-3/mydb.db'
 #${DiagnosticsViewer_home}/django-app/uvcdat-live
 #uvcdat_live_root = '/Users/i7j/DiagnosticsViewer/django-app/uvcdat_live/' 
 uvcdat_live_root = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/' 
+uvcdat_live_root = '/Users/bs1/uvcdat-devel/DiagnosticsViewer/django-app/uvcdat_live/' 
+#uvcdat_live_root = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/' 
 
 #directory holding netcdf datasets
 #<<<<<<< HEAD
@@ -18,6 +21,7 @@ default_sample_data_dir = '/Users/8xo/sampledatalens/tropics_warming_th_q_co2'
 #=======
 #default_sample_data_dir = '/Users/i7j/climatedata/' 
 #>>>>>>> 4fa58d76f5f248e6cc2fafa6ee472a001c786db2
+default_sample_data_dir = '/Users/bs1/data/tropics/'
 
 
 
@@ -39,6 +43,12 @@ syspath_append_uvcmetrics = '/Users/8xo/software/exploratory_analysis/Diagnostic
 #path to cdscan (in uvcdat)
 #syspath_append_cdscan = '/Users/i7j/build-uvcdat/install/Library/Frameworks/Python.framework/Versions/2.7/bin/cdscan'
 syspath_append_cdscan = '/Users/8xo/software/exploratory_analysis/uvcdat_light/build-uvcdat/install/Library/Frameworks/Python.framework/Versions/2.7/bin/cdscan'
+syspath_append_uvcmetrics = '/Users/bs1/uvcdat-devel/uvcmetrics/src/python'
+#syspath_append_uvcmetrics = '/Users/8xo/software/exploratory_analysis/DiagnosticsGen/uvcmetrics/src/python'
+
+#path to cdscan (in uvcdat)
+syspath_append_cdscan = '/Users/bs1/uvcdat-devel/build/install/Library/Frameworks/Python.framework/Versions/2.7/bin/cdscan'
+#syspath_append_cdscan = '/Users/8xo/software/exploratory_analysis/uvcdat_light/build-uvcdat/install/Library/Frameworks/Python.framework/Versions/2.7/bin/cdscan'
 
 ###End UVCMetrics paths
 
@@ -59,11 +69,11 @@ default_sample_data_dir = '/Users/8xo/djangoapp_data'
 #=======
 
 #default_sample_data_dir = '/Users/i7j/climatedata/' #tropics_warming_th_q_clm2'
+default_sample_data_dir = '/Users/bs1/data/tropics/' #tropics_warming_th_q_clm2'
 
-#>>>>>>> 4fa58d76f5f248e6cc2fafa6ee472a001c786db2
 
 default_tree_sample_data_dir = default_sample_data_dir
-default_map_sample_data_dir = default_sample_data_dir + 'tropics_warming_th_q'
+default_map_sample_data_dir = default_sample_data_dir + 'co2'
 
 #img_cache_path = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/cache/'
 img_cache_path = uvcdat_live_root + 'exploratory_analysis/static/exploratory_analysis/cache/'
