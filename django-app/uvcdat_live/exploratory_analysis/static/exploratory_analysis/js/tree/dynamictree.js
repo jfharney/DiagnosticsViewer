@@ -1,4 +1,15 @@
+var tooltipsGlobal = '';
+
 $(document).ready(function() {
+	
+	 var tooltips = $( "#treeimg" ).tooltip({
+		 position: {
+		 my: "left top",
+		 at: "right+5 top-5"
+		 }
+		 });
+	
+	 tooltipsGlobal = tooltips;
 	$('#viewbox').hide();
 	//removing thumbnail image from the pane
 	$('body').on('click', 'button.btn-remove', function() {
@@ -500,6 +511,9 @@ function hover(d) {
 	var name = d['name'];
 	//console.log(name + ' ' + d.parent.name);
 
+	tooltipsGlobal.tooltip("open");
+	//tooltips.tooltip( "open" );
+	
 	var path = '';
 
 	var node = d;
@@ -629,6 +643,7 @@ function figure_generator(times, variables, sets, dataset, packages, realms, use
 	console.log("set = " + sets);
 	//console.log('*&^(^*%^*&^%*&^%*^%*^%*' + dataset);
 
+	alert('dataset: ' + dataset);
 	//var computedImg = "../../../static/exploratory_analysis/img/carousel/set6_turbf_Global.gif";
 
 	//var img_prefix = '../../../static/exploratory_analysis/img/treeex/';
@@ -649,6 +664,7 @@ function figure_generator(times, variables, sets, dataset, packages, realms, use
 
 	var data = {
 		'csrfmiddlewaretoken' : csrftoken,
+		'dataset' : dataset,
 		'variables' : variables,
 		'times' : times,
 		'sets' : sets,

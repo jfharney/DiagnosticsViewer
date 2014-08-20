@@ -1,3 +1,5 @@
+from django.views.decorators.csrf import ensure_csrf_cookie
+
 #flag for toggling connection to the diags backend
 isConnected = True
 
@@ -189,7 +191,9 @@ def figureGenerator(request):
     
       #hard coded\
       
+      dataset = str(request.POST['dataset']);
       
+      #print 'dataset ---> ' + dataset
         
       variables = [str(x) for x in request.POST['variables']]
       times = [str(x) for x in request.POST['times']]
@@ -299,6 +303,7 @@ def figureGenerator(request):
 
 
 #New tree view
+@ensure_csrf_cookie
 def treeex(request,user_id):
     
     print '\n\t--->request user authenticate: ' + str(request.user.is_authenticated()) + '\n'

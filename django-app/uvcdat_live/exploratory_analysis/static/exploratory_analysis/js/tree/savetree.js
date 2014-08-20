@@ -4,6 +4,7 @@ $(document).ready(function(){
 	//for post requests, need to get the csrf token
 	function getCookie(name) {
         var cookieValue = null;
+        console.log('document.cookie: ' + document.cookie);
         if (document.cookie && document.cookie != '') {
             var cookies = document.cookie.split(';');
             for (var i = 0; i < cookies.length; i++) {
@@ -140,7 +141,7 @@ $(document).ready(function(){
 				console.log('tree_bookmark_sets: ' + tree_bookmark_sets);
 				console.log('tree_bookmark_description: ' + tree_bookmark_description);
 				console.log('tree_cache_url: ' + tree_cache_url);
-				
+				console.log('csrfmiddlewaretoken: ' + csrftoken);
 				
 				var data = {
 		    			'csrfmiddlewaretoken': csrftoken,
@@ -162,7 +163,7 @@ $(document).ready(function(){
 				//This address will save the tree to the database
 				var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/tree_bookmarks/';
 				
-				
+				console.log('username: ' + username);
 				$.ajax({
 				  type: "POST",
 				  url: url,

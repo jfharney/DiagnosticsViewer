@@ -23,7 +23,7 @@ default_sample_data_dir = paths.default_sample_data_dir
 
 def datasetListHelper1(request,user_id):
 
-    #print 'in datasetListHelper1 for user_id: ' + user_id
+    print 'in datasetListHelper1 for user_id: ' + user_id
     #datasets = ['tropics_warming_th_q_co2']
     
     import glob
@@ -47,6 +47,7 @@ def datasetListHelper1(request,user_id):
     
 
 def datasetListHelper(request,user_id):
+    print 'in datasetListHelper for user_id: ' + user_id
     
     #print '\n\n\nUSERr:' + user_id
   
