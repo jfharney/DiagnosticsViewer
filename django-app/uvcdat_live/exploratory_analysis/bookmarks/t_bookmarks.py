@@ -407,6 +407,9 @@ def noBookmarkHandler(request,user_id):
         
       tv = TreeView()
       #dtree = tv.makeTree(o, filetables,None,user=username,ftnames=[dataset_list[0]])
+      
+      print 'DATA set ----> ' + dataset
+      
       dtree = tv.makeTree(o, filetables,ftnames=[dataset],user=username)
       tv.dump(filename=treeFile)
             
