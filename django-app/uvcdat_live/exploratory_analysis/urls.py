@@ -29,7 +29,14 @@ urlpatterns = patterns('',
   #example url: http://localhost:8081/exploratory_analysis/treex/jfharney
   url(r'^treeex/(?P<user_id>\w+)/$', views.treeex, name='treeex'),
   
+  #classic data view
+  #example url: http://localhost:8081/exploratory_analysis/classic/user
+  url(r'^classic/(?P<user_id>\w+)/$', views.classic, name='classic'),
   
+  #if above does not work
+  #classic data view
+  #example url: http://localhost:8081/exploratory_analysis/classic/user
+  #url(r'^classic', views.classic, name='classic'),
   
             
              

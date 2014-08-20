@@ -5,6 +5,7 @@ databases_name = '/Users/8xo/sqlite3/11-3/mydb.db'
 
 
 
+
 #location of the cloned project 
 #${DiagnosticsViewer_home}/django-app/uvcdat-live
 #uvcdat_live_root = '/Users/i7j/DiagnosticsViewer/django-app/uvcdat_live/' 
@@ -15,7 +16,6 @@ uvcdat_live_root = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/d
 default_sample_data_dir = '/Users/8xo/sampledatalens/tropics_warming_th_q_co2'
 #default_sample_data_dir = '/Users/i7j/climatedata/tropics_warming_th_q_co2/' 
 #=======
-#default_sample_data_dir = '/Users/8xo/sampledatalens/tropics_warming_th_q_co2'
 #default_sample_data_dir = '/Users/i7j/climatedata/' 
 #>>>>>>> 4fa58d76f5f248e6cc2fafa6ee472a001c786db2
 

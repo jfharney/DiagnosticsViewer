@@ -66,7 +66,7 @@ def bookmarkHandler(request,user_id):
     
     
   # get the user name  
-  loggedIn = False
+  loggedIn = True
     
   if (str(request.user) == str(user_id)):
     loggedIn = True
@@ -77,7 +77,7 @@ def bookmarkHandler(request,user_id):
   if user_id != None:
     username = user_id
     
-    
+  loggedIn = True  
     
   #get the predefined tree bookmarks of the user
   from exploratory_analysis.models import Tree_Bookmarks
@@ -213,7 +213,7 @@ def noBookmarkHandler(request,user_id):
   #print '\n\n\t\tuser_id: ' + str(user_id)
   #print 'user: ' + str(request.user)
     
-  loggedIn = False
+  loggedIn = True
     
   if (str(request.user) == str(user_id)):
     loggedIn = True
@@ -224,7 +224,8 @@ def noBookmarkHandler(request,user_id):
   if user_id != None:
     username = user_id
     
-    
+  loggedIn = True
+  
   #get the predefined tree bookmarks of the user
   from exploratory_analysis.models import Tree_Bookmarks
   bookmark_list_obj = Tree_Bookmarks.objects.filter(tree_bookmark_username=username)
@@ -422,7 +423,6 @@ def noBookmarkHandler(request,user_id):
             
   #end if request.POST  
   
-  
   loggedIn = True   
             
   if(loggedIn == True):
@@ -439,7 +439,7 @@ def noBookmarkHandler(request,user_id):
   treeloaded = 'false'
         
         
-        
+    
         
   #print 'figure bookmark list -> ' + str(figure_bookmark_list)
         

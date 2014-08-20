@@ -109,5 +109,4 @@ class Long_Names(models.Model):
     description = models.CharField(max_length=10000)
     def __unicode__(self):
         return self.short_name
-    
 
