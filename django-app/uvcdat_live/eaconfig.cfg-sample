@@ -1,0 +1,12 @@
+[paths]
+database_root = /Users/bs1/uvcdat-devel/db/
+data_root = /Users/bs1/data/tropics/
+ea_root = /Users/bs1/uvcdat-devel/DiagnosticsViewer/
+uvcdat_root = /Users/bs1/uvcdat-devel/build/
+metrics_root = /Users/bs1/uvcdat-devel/uvcmetrics/
+
+[data]
+dataset_names = co2
+
+[options]
+loggedIn = True
