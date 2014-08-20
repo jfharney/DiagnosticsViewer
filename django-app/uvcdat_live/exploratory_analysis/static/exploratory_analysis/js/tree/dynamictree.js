@@ -657,7 +657,7 @@ function figure_generator(times, variables, sets, dataset, packages, realms, use
 
 	//var staticImg = "{% static 'exploratory_analysis/img/carousel/set6_turbf_Global.gif' %}";
 	//"../../../static/exploratory_analysis/css/tree/flare13.json"
-	var staticImg = img_prefix + realms + '_' + packages + '_' + sets + '_' + times + '_' + variables + '.png';
+	var staticImg = img_prefix + realms + '_' + packages + '_' + sets[0] + '_' + times + '_' + variables + '.png';
 	//computedImg;
 
 	$body = $("body");

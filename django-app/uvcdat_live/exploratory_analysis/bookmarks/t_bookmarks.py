@@ -66,7 +66,8 @@ def bookmarkHandler(request,user_id):
     
     
   # get the user name  
-  loggedIn = True
+  loggedIn = paths.noAuthReq
+   
     
   if (str(request.user) == str(user_id)):
     loggedIn = True
@@ -129,9 +130,6 @@ def bookmarkHandler(request,user_id):
   dataset = ''
   path = ''
   
-  #MUST REPLACE!!!!!!
-  #base_dir = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/cache/tree' 
-  
   #the root directory of the tree files
   tree_cache_root_dir = '../../../static/exploratory_analysis/cache/tree/' + username
   
@@ -181,7 +179,7 @@ def bookmarkHandler(request,user_id):
   template = loader.get_template('exploratory_analysis/treeex.html')
    
    
-  loggedIn = True 
+  loggedIn = paths.noAuthReq 
     
   context = RequestContext(request, {
             'loggedIn' : str(loggedIn),
@@ -213,7 +211,7 @@ def noBookmarkHandler(request,user_id):
   #print '\n\n\t\tuser_id: ' + str(user_id)
   #print 'user: ' + str(request.user)
     
-  loggedIn = True
+  loggedIn = paths.noAuthReq
     
   if (str(request.user) == str(user_id)):
     loggedIn = True
@@ -409,9 +407,7 @@ def noBookmarkHandler(request,user_id):
         
       tv = TreeView()
       #dtree = tv.makeTree(o, filetables,None,user=username,ftnames=[dataset_list[0]])
-      print 'LENGTH------> ' + str(len(filetables))
-      #dtree = tv.makeTree(o, filetables,None,user=username,ftnames=[dataset])
-      dtree = tv.makeTree(o, filetables,None,user=username)
+      dtree = tv.makeTree(o, filetables,ftnames=[dataset],user=username)
       tv.dump(filename=treeFile)
             
             
@@ -423,7 +419,7 @@ def noBookmarkHandler(request,user_id):
             
   #end if request.POST  
   
-  loggedIn = True   
+  loggedIn = paths.noAuthReq   
             
   if(loggedIn == True):
     template = loader.get_template('exploratory_analysis/treeex.html')
@@ -559,7 +555,6 @@ def diagsHelper(user_id,bookmark_name,treeFile):
         #  index = index+1
         #
         print 'Creating diags tree view JSON file...'
-        
         
         
         tv = TreeView()

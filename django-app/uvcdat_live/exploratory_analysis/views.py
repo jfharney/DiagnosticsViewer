@@ -1,5 +1,4 @@
 from django.views.decorators.csrf import ensure_csrf_cookie
-
 #flag for toggling connection to the diags backend
 isConnected = True
 
@@ -91,7 +90,8 @@ def main(request,user_id):
     print '\n\n\t\tuser_id: ' + str(user_id)
     print 'user: ' + str(request.user)
     
-    loggedIn = True
+    print 'main: noAuthReq: ', paths.noAuthReq
+    loggedIn = paths.noAuthReq
     
     if (str(request.user) == str(user_id)):
         loggedIn = True
@@ -119,7 +119,7 @@ def maps(request,user_id):
     print '\n\n\t\tuser_id: ' + str(user_id)
     print 'user: ' + str(request.user)
     
-    loggedIn = True
+    loggedIn = paths.noAuthReq
     
     if (str(request.user) == str(user_id)):
         loggedIn = True
@@ -156,7 +156,7 @@ def heatmap(request,user_id):
     #print '\n\n\n\n\n\n\n\t\t\tuser_id: ' + str(user_id)
     #print 'user: ' + str(request.user)
     
-    loggedIn = True
+    loggedIn = paths.noAuthReq
     
     if (str(request.user) == str(user_id)):
         loggedIn = True
@@ -189,20 +189,46 @@ def heatmap(request,user_id):
 def figureGenerator(request):
       print 'in figure generator'
     
+      print request.POST
       #hard coded\
       
       dataset = str(request.POST['dataset']);
       
       #print 'dataset ---> ' + dataset
+      variables = request.POST['variables']
+      print 'variables passed in: ', variables
+      print type(variables)
+      if type(variables) is list:
+         variables = [str(x) for x in variables]
+      else:
+         variables = [str(variables)]
+
+      times = request.POST['times']
+      if type(times) is list:
+         times = [str(x) for x in times]
+      else:
+         times = [str(times)]
+
+      sets = request.POST['sets']
+      if type(sets) is list:
+         sets = [str(x) for x in sets]
+      else:
+         sets = [str(sets)]
+
+      packages = request.POST['packages']
+      if type(packages) is list:
+         packages = [str(x) for x in packages]
+      else:
+         packages = [str(packages)]
+
+      realms = request.POST['realms']
+      if type(realms) is list:
+         realms = [str(x) for x in realms]
+      else:
+         realms = [str(realms)]
         
-      variables = [str(x) for x in request.POST['variables']]
-      times = [str(x) for x in request.POST['times']]
-      sets = [str(x) for x in request.POST['sets']]
-      packages = [str(x) for x in request.POST['packages']]
-      realms = [str(x) for x in request.POST['realms']]
-      
-      
-      sets = ['1']
+      print 'sets: ', sets
+#      sets = ['1']
     
       '''
       print 'variables: ' + str(variables)
@@ -214,7 +240,7 @@ def figureGenerator(request):
     
       inCache = False
       
-      cachedFile = str(realms[0] + '_' + packages[0] + '_set' + sets[0] + '_' + times[0] + '_' + variables[0] + '.png')
+      cachedFile = str(realms[0] + '_' + packages[0] + '_set' + sets[0][0] + '_' + times[0] + '_' + variables[0] + '.png')
       
       #print 'cachedFile: ' + cachedFile
       
@@ -240,7 +266,7 @@ def figureGenerator(request):
           o._opts['realms']=['land']
           '''
         
-          o._opts['path']=[default_tree_sample_data_dir + 'tropics_warming_th_q_co2']
+          o._opts['path']=[default_tree_sample_data_dir + paths.dataset_name ]
           o._opts['vars']=variables
           o._opts['times']=times
           #Note: only use 1 or 2 
@@ -250,8 +276,9 @@ def figureGenerator(request):
           dm = diagnostics_menu()
         
           filepath = generated_img_path
-          filename = request.POST['realms'] + '_' + request.POST['packages'] + '_' + request.POST['sets'] + '_' + request.POST['times'] + '_' + request.POST['variables']
-          filename = str(filename)
+          filename = realms[0]+'_'+packages[0]+'_'+sets[0][0]+'_'+times[0]
+#          filename = request.POST['realms'] + '_' + request.POST['packages'] + '_' + request.POST['sets'] + '_' + request.POST['times'] + '_' + request.POST['variables']
+#          filename = str(filename)
           import metrics.fileio.filetable as ft
           import metrics.fileio.findfiles as fi
           dtree1 = fi.dirtree_datafiles(o, pathid=0)
@@ -259,11 +286,10 @@ def figureGenerator(request):
           filetable2 = None
           #print 'No second dataset for comparison'
              
-          package=o._opts['packages']
+          package=o._opts['packages'][0]
           print 'PACKAGE ' , package
-          print 'TYPEPACKAGE ' + str(type(package))
           
-          pclass = dm[package]()
+          pclass = dm[package.upper()]()
     
           # this needs a filetable probably, or we just define the maximum list of variables somewhere
 #          im = ".".join(['metrics', 'packages', package[0], package[0]])
@@ -283,17 +309,20 @@ def figureGenerator(request):
           import vcs
           print 'generating output.png ...'
           v = vcs.init()
-          diag_template = diagnostics_template()
+#          diag_template = diagnostics_template()
           for k in keys:
              fields = k.split()
              if setname[0] == fields[0]:
                 print 'calling init for ', k, 'varid: ', varid, 'seasonid: ', seasonid
                 plot = slist[k](filetable1, filetable2, varid, seasonid)
                 res = plot.compute()
+                print type(res)
                 v.clear()
-                v.plot(res[0].vars, res[0].presentation, template_name='diagnostic', bg=1)
+                v.plot(res[0].vars, res[0].presentation, bg=1)
+                fname = filepath+filename+'_'+varid+'.png'
+                print 'fname: ', fname
                 
-                v.png(filepath + filename)
+                v.png(fname)
           
     
     
@@ -350,7 +379,7 @@ def treeex(request,user_id):
     #print '\n\n\t\tuser_id: ' + str(user_id)
     #print 'user: ' + str(request.user)
     
-    loggedIn = True
+    loggedIn = paths.noAuthReq
     
     if (str(request.user) == str(user_id)):
         loggedIn = True
@@ -363,7 +392,7 @@ def treeex(request,user_id):
     
     loggedIn = True
     
-    loggedIn = True
+    loggedIn = paths.noAuthReq
     
     '''
     #get the predefined tree bookmarks of the user
@@ -918,20 +947,18 @@ def tree_bookmarks(request):
     else: 
         return HttpResponse()
     '''
-    season_list_str = ', '.join(season_list)
-    #default bookmark: bookmark + currentmillitime
-        if bookmark_name == None:
-            import time
-            print 'tme ' + str(time.time())
-            millis = int(round(time.time()*1000))
-            print 'millis' + str(millis)
-            bookmark_name = 'bookmark' + str(millis)
-            print 'using default bookmark name ' + bookmark_name
+#    season_list_str = ', '.join(season_list)
+#    #default bookmark: bookmark + currentmillitime
+#        if bookmark_name == None:
+#            import time
+#            print 'tme ' + str(time.time())
+#            millis = int(round(time.time()*1000))
+#            print 'millis' + str(millis)
+#            bookmark_name = 'bookmark' + str(millis)
+#            print 'using default bookmark name ' + bookmark_name
                
     
     '''  
-  
-  
   
 def figure_bookmarks_get_helper(figure_bookmark_name,
                                 figure_bookmark_datasetname,
@@ -1316,7 +1343,7 @@ def bookmarkHandler(request,user_id):
   #print '\n\n\t\tuser_id: ' + str(user_id)
   #print 'user: ' + str(request.user)
     
-  loggedIn = True
+  loggedIn = paths.noAuthReq
     
   if (str(request.user) == str(user_id)):
     loggedIn = True
@@ -1447,7 +1474,7 @@ def noBookmarkHandler(request,user_id):
   #print '\n\n\t\tuser_id: ' + str(user_id)
   #print 'user: ' + str(request.user)
     
-  loggedIn = True
+  loggedIn = paths.noAuthReq
     
   if (str(request.user) == str(user_id)):
     loggedIn = True
@@ -1564,7 +1591,7 @@ def noBookmarkHandler(request,user_id):
       path = ''
       if request.POST['dataset'] == None:
         dataset = 'tropics_warming_th_q_co2'
-        path = [default_tree_sample_data_dir + 'tropics_warming_th_q_co2']
+        path = [default_tree_sample_data_dir + paths.dataset_name ]
       else:
         dataset = request.POST['dataset']
         path = path = [default_tree_sample_data_dir + request.POST['dataset']]
@@ -1624,6 +1651,7 @@ def noBookmarkHandler(request,user_id):
       #print 'times--->' + str(times)
       #print 'dataset_list[0]--->' + dataset_list[0]
     
+      print 'PATHS -------> ', o._opts['path']
       for p in range(len(o._opts['path'])):
         #print '\ndirtree\n',dirtree_datafiles(o,pathid=p)
         datafiles.append(dirtree_datafiles(o,pathid=p))
