@@ -302,6 +302,7 @@ def figureGenerator(request):
 
 
 #Test classic view
+@ensure_csrf_cookie
 def classic(request,user_id):
       #print '\n\n\n\n\nrequest user authenticate: ' + str(request.user.is_authenticated()) + '\n\n\n\n'
     
