@@ -1,29 +1,48 @@
-#location and name of the db being used (in settings.py)
-databases_name = '/Users/8xo/sqlite3/11-3/mydb.db'
-#databases_name = '/Users/i7j/sqlite3/mydb.db'
+import ConfigParser
+import os
+print os.getcwd()
+# some day, we could check for all of the "derived" paths and use them if defined, otherwise derive them.
 
-#location of the cloned project 
-#${DiagnosticsViewer_home}/django-app/uvcdat-live
-#uvcdat_live_root = '/Users/i7j/DiagnosticsViewer/django-app/uvcdat_live/' 
-uvcdat_live_root = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/' 
-databases_name = '/Users/8xo/sqlite3/11-3/mydb.db'
+print 'This one is looking for ../eaconfig.cfg in uvcdat_live/paths/paths.py'
+config = ConfigParser.ConfigParser()
+config.read('eaconfig.cfg')
 
-#databases_name = '/Users/bs1/uvcdat-devel/db/mydb.db'
+try:
+   ea_root = config.get("paths", "ea_root")
+except:
+   print '-------> Couldnt find ea_root in paths section of eaconfig.cfg.'
+   print 'Exiting'
+   quit()
 
-#location of the cloned project 
-#${DiagnosticsViewer_home}/django-app/uvcdat-live
-#uvcdat_live_root = '/Users/bs1/uvcdat-devel/DiagnosticsViewer/django-app/uvcdat_live/' 
-#uvcdat_live_root = '/Users/i7j/DiagnosticsViewer/django-app/uvcdat_live/' 
-uvcdat_live_root = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/' 
+data_root = config.get("paths", "data_root")
+uvcdat_root = config.get("paths", "uvcdat_root")
+database_root = config.get("paths", "database_root")
+metrics_root = config.get("paths", "metrics_root")
 
+dataset_name = config.get("data", "dataset_names")
 
-#location of the static files directory used (in settings.py)
-#staticfiles_dirs = "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis",
-staticfiles_dirs = uvcdat_live_root + 'exploratory_analysis/static/exploratory_analysis'
-    
-#location of the template directory used (in settings.py)
-#template_dirs = "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/templates/exploratory_analysis"
-template_dirs = uvcdat_live_root + 'exploratory_analysis/templates/exploratory_analysis'
+noAuthReq = config.get("options", "loggedIn")
+if type(noAuthReq) is str and noAuthReq == 'True':
+   noAuthReq = True
+else:
+   noAuthReq = False
 
+database_name = database_root +"/mydb.db"
 
-message_reader_template_dirs = uvcdat_live_root + 'message_reader/templates/message_reader'
+uvcdat_live_root = ea_root+ '/django-app/uvcdat_live/' 
+staticfiles_dirs = uvcdat_live_root + "/exploratory_analysis/static/exploratory_analysis"
+template_dirs = uvcdat_live_root + "/exploratory_analysis/templates/exploratory_analysis"
+cache_dir = uvcdat_live_root + '/exploratory_analysis/static/exploratory_analysis/cache/tree/'
+img_cache_path = uvcdat_live_root + '/exploratory_analysis/static/exploratory_analysis/cache/'
+timeseries_cache_path = uvcdat_live_root +'/exploratory_analysis/static/exploratory_analysis/cache'
+generated_img_path = uvcdat_live_root + '/exploratory_analysis/static/exploratory_analysis/img/treeex/'
+message_reader_template_dirs = uvcdat_live_root + '/message_reader/templates/message_reader'
+
+syspath_append_uvcmetrics = metrics_root + '/src/python'
+
+syspath_append_cdscan = uvcdat_root+ '/install/Library/Frameworks/Python.framework/Versions/2.7/bin/cdscan'
+
+default_sample_data_dir = data_root
+
+default_tree_sample_data_dir = default_sample_data_dir
+default_map_sample_data_dir = default_sample_data_dir + dataset_name
