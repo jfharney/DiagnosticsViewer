@@ -1,7 +1,7 @@
 
 from paths import paths
 
-databases_name = paths.databases_name
+databases_name = paths.database_name
 staticfiles_dirs = paths.staticfiles_dirs
 template_dirs = paths.template_dirs
 message_reader_template_dirs = paths.message_reader_template_dirs
