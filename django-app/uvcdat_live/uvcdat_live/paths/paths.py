@@ -1,12 +1,12 @@
 #location and name of the db being used (in settings.py)
-databases_name = '/Users/8xo/sqlite3/11-3/mydb.db'
+databases_name = '/home/user/Desktop/AptanaWorkspace/db/mydb.db'
 #databases_name = '/Users/i7j/sqlite3/mydb.db'
 
 #location of the cloned project 
 #${DiagnosticsViewer_home}/django-app/uvcdat-live
 #uvcdat_live_root = '/Users/i7j/DiagnosticsViewer/django-app/uvcdat_live/' 
-uvcdat_live_root = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/' 
-databases_name = '/Users/8xo/sqlite3/11-3/mydb.db'
+uvcdat_live_root = '/home/user/Desktop/AptanaWorkspace/DiagnosticsViewer/django-app/uvcdat_live/' 
+databases_name = '/home/user/Desktop/AptanaWorkspace/db/mydb.db'
 
 #databases_name = '/Users/bs1/uvcdat-devel/db/mydb.db'
 
@@ -14,7 +14,7 @@ databases_name = '/Users/8xo/sqlite3/11-3/mydb.db'
 #${DiagnosticsViewer_home}/django-app/uvcdat-live
 #uvcdat_live_root = '/Users/bs1/uvcdat-devel/DiagnosticsViewer/django-app/uvcdat_live/' 
 #uvcdat_live_root = '/Users/i7j/DiagnosticsViewer/django-app/uvcdat_live/' 
-uvcdat_live_root = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/' 
+uvcdat_live_root = '/home/user/Desktop/AptanaWorkspace/DiagnosticsViewer/django-app/uvcdat_live/' 
 
 
 #location of the static files directory used (in settings.py)
@@ -27,3 +27,7 @@ template_dirs = uvcdat_live_root + 'exploratory_analysis/templates/exploratory_a
 
 
 message_reader_template_dirs = uvcdat_live_root + 'message_reader/templates/message_reader'
+
+
+
+

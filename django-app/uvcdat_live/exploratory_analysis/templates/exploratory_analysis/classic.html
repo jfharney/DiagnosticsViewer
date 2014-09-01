@@ -274,42 +274,171 @@ body.loading #modal1 {
 
 			<div class="row-fluid">
 			
+			<button type="button" onclick="go_Home()">Back to Land Home</button>
 			
 				<div class="row" style="border: 1px solid #000000;" id="dataviewer">
-					<div class="col-md-7" style="border-right: 1px solid #000000;height:900px;max-height:900px;">
-						<span style="margin-left:10px;font-weight:bold"> Dataset: Land or Atmos</span>
+					<div class="col-md-7" style="overflow:scroll; border-right: 1px solid #000000;height:900px;max-height:900px;">
+						
+						
+						
+						<script>
+						
+							function toggle_vis1() 
+    						{
+    							document.getElementById('landHome').style.display = 'none';
+    							$("#1energyBalance").load("/static/exploratory_analysis/img/classic/land/set1/set1.html");   
+    							document.getElementById('1energyBalance').style.display = 'block';
+    						}
+    						function toggle_vis2() 
+    						{
+    							document.getElementById('landHome').style.display = 'none';
+    							$("#2contourPlots").load("/static/exploratory_analysis/img/classic/land/set2/set2.html");   
+    							document.getElementById('2contourPlots').style.display = 'block'; 							
+    						}
+    						function toggle_vis3() 
+    						{
+    							document.getElementById('landHome').style.display = 'none';
+    							$("#3monthlyClimatology").load("/static/exploratory_analysis/img/classic/land/set3/set3.html");   
+    							document.getElementById('3monthlyClimatology').style.display = 'block';
+    						}
+    						function toggle_vis5() 
+    						{
+    							document.getElementById('landHome').style.display = 'none';
+    							$("#5tablesAnual").load("/static/exploratory_analysis/img/classic/land/set5/set5.html"); 
+    							document.getElementById('5tablesAnual').style.display = 'block';
+    						}
+    						function toggle_vis6() 
+    						{
+    							document.getElementById('landHome').style.display = 'none';
+    							$("#6anualTrends").load("/static/exploratory_analysis/img/classic/land/set6/set6.html"); 
+    							document.getElementById('6anualTrends').style.display = 'block';
+    						}
+    						function toggle_vis7() 
+    						{
+    							document.getElementById('landHome').style.display = 'none';
+    							$("#7rtm").load("/static/exploratory_analysis/img/classic/land/set7/set7.html"); 
+    							document.getElementById('7rtm').style.display = 'block';
+    						}
+    						function toggle_vis9() 
+    						{
+    							document.getElementById('landHome').style.display = 'none';
+    							$("#9econtourStats").load("/static/exploratory_analysis/img/classic/land/set9/set9.html"); 
+    							document.getElementById('9econtourStats').style.display = 'block';
+    						}
+    						
+    						function go_Home()
+    						{
+    							document.getElementById('landHome').style.display = 'block';
+    							document.getElementById('1energyBalance').style.display = 'none';
+    							document.getElementById('2contourPlots').style.display = 'none';
+    							document.getElementById('3monthlyClimatology').style.display = 'none';
+    							document.getElementById('5tablesAnual').style.display = 'none';
+    							document.getElementById('6anualTrends').style.display = 'none';
+    							document.getElementById('7rtm').style.display = 'none';
+    							document.getElementById('9econtourStats').style.display = 'none';
+    					
+    						}
+						</script>
+						
+						
+						
+						
+						
+						
+						
+						
+						<div id="landHome">
 					
-						<div id="datasetLinks" style="overflow-x:hidden">
-						<body>
-							<p>	Classic dataset links here?	</p>
-							
-							<p>
-								<a href="http://cds.ccs.ornl.gov/y9s/singlef/i1850cn_cruncep_CNDA_Cli_b_2000-2009-i1850cn_cruncep_ctl_2000-2009/setsIndex.html">Land</a>  
-								
-								<p>
 									
-								</p>
-							</p>
-				
-				
-							<p>
-								<a href="http://cds.ccs.ornl.gov/mbranst/t85f09.BTRANS.1948s.a/atm/t85f09.BTRANS.1948s.a-obs/sets.htm">Atmsph</a>  
-								<p>
-									
-								</p>
-								
-							</p>
-					
-							
-						</body>
-				
+									<BODY>
+									<TABLE>
+									  <TH><A HREF="http://www.cgd.ucar.edu/tss/clm/diagnostics/index.html">
+									<font color=blue>LND_DIAG Diagnostics Plots</font></A>
+									<font color=black>Source: /tmp/proj/cli017/cli017bgc/y9s/lnd_diag
+									</TABLE>
+									<hr noshade size=2 size="100%">
+									<TABLE>
+									<TR>
+									  <TH><font color=red>Set</font>
+									  <TH ALIGN=LEFT><font color=red>Description</font>
+									<TR>
+									  <TH>1
+									  <TH ALIGN=LEFT>  <a onclick="toggle_vis1()" href="#"> Line plots</A> of annual trends in energy balance, soil water/ice and temperature, runoff, snow water/ice, photosynthesis </b><br>
+									<TR>
+									  <TH>2
+									  <TH ALIGN=LEFT> Horizontal  <a onclick="toggle_vis2()" href="#">contour plots</A> of DJF, MAM, JJA, SON, and ANN means </b><br>
+									<TR>
+									  <TH>3
+									  <TH ALIGN=LEFT>  <a onclick="toggle_vis3()" href="#">Line plots</A> of monthly climatology: regional air temperature, precipitation, runoff, snow depth, radiative fluxes, and turbulent fluxes </b><br>
+									<TR>
+									  <TH>4
+									  <TH ALIGN=LEFT><span style="font-style:italic; font-weight: bold; color: rgb(255,0,0);">(Inactive)</span> Vertical profiles at selected land raobs stations </b><br>
+									<TR>
+									  <TH>5
+									  <TH ALIGN=LEFT>  <a onclick="toggle_vis5()" href="#">Tables</A> of annual means </b><br>
+									<TR>
+									  <TH>6
+									  <TH ALIGN=LEFT>  <a onclick="toggle_vis6()" href="#">Line plots</A> of annual trends in regional soil water/ice and temperature, runoff, snow water/ice, photosynthesis </b><br>
+									<TR>
+									  <TH>7
+									  <TH ALIGN=LEFT>  <a onclick="toggle_vis7()" href="#">Line plots, tables, and maps</A> of RTM river flow and discharge to oceans </b><br>
+									<TR>
+									  <TH>8
+									  <TH ALIGN=LEFT><span style="font-style:italic; font-weight: bold; color: rgb(255,0,0);">(Inactive)</span> Line and contour plots of Ocean/Land/Atmosphere CO2 exchange</b><br>
+									<TR>
+									  <TH>9
+									  <TH ALIGN=LEFT>  <a onclick="toggle_vis9()" href="#">Contour plots</A> and statistics for precipitation and temperature. Statistics include DJF, JJA, and ANN biases, and RMSE, correlation and standard deviation of the annual cycle relative to observations</b><br>
+									<TR>
+									</table>
+									<hr noshade size=2 size="100%">
+									<em>Click on Plot Type</em></b><p>
+									<a onclick="toggle_vis1()" href="#"><img src="/static/exploratory_analysis/img/classic/SET1sn.gif" align=left border=1 hspace=1 alt="Set 1"></a>
+									<a onclick="toggle_vis2()" href="#"><img src="http://www.cgd.ucar.edu/tss/clm/diagnostics/images/SET2sn.gif" align=left border=1 hspace=1 alt="Set 2"></a>
+									<a onclick="toggle_vis3()" href="#"><img src="http://www.cgd.ucar.edu/tss/clm/diagnostics/images/SET3s.gif" align=left border=1 hspace=1 alt="Set 3"></a>
+									<a onclick="toggle_vis6()" href="#"><img src="http://www.cgd.ucar.edu/tss/clm/diagnostics/images/SET6sn.gif" align=left border=1 hspace=1 alt="Set 6"></a>
+									<a onclick="toggle_vis7()" href="#"><img src="http://www.cgd.ucar.edu/tss/clm/diagnostics/images/SET7sn.gif" align=left border=1 hspace=1 alt="Set 7"></a>
+									<br clear=left>
+									<p>
+									<br clear=left>
+									<p>
+									</BODY>
+
 						</div>
+						
+				
+						
+						<div id="1energyBalance" style='display: none'>							
+						</div>
+						
+						
+						<div id="2contourPlots"  style='display: none'>
+						</div>
+						
+						
+						<div id="3monthlyClimatology" style='display: none'>
+						</div>
+						
+						<div id="5tablesAnual" style='display: none'>
+						</div>
+						
+						<div id="6anualTrends" style='display: none'>
+						</div>
+						
+						<div id="7rtm" style='display: none'>
+						</div>
+						
+						<div id="9econtourStats" style='display: none'>
+						</div>
+						
+						
 					</div>
 					
+					<div id="plotArea" style="overflow:scroll">
 						<span style="margin-left:10px;font-weight:bold"> Plot for Selected Dataset</span>
 						<body>
 							<p>	Image or Table Plots Here</p>
 						</body>
+					</div>
 					
 				</div>
 			
