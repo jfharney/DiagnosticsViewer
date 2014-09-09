@@ -132,5 +132,8 @@ urlpatterns = patterns('',
   url(r'^postStateExample/$',views.postStateExample,name='postStateExample'),
   
   
+  #for generation of classic views on the fly
+  url(r'^classic_views/$',views.classic_views,name='classic_views'),
+  
 )
 

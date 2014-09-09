@@ -4,6 +4,7 @@ isConnected = True
 
 # Create your views here.
 from django.http import HttpResponse
+from django.http import HttpResponseServerError
 from django.template import RequestContext, loader
 #from exploratory_analysis.models import Diags
 import json
@@ -731,7 +732,59 @@ def tree(request):
  
   
   
+#Test classic view
+from django.views.decorators.csrf import csrf_exempt
 
+@csrf_exempt
+def classic_views(request):
+    
+    print 'in classic views'
+    
+    #if request.POST['set'] == None: #or request.POST['vars'] == None or request.POST['times'] == None or request.POST['package'] == None:
+    #    return HttpResponse("Error")
+    
+    
+    print request.body
+    
+    
+    response = 'error'
+    
+    if request.method == "POST":
+        print 'yes'
+        json_data = json.loads(request.body)
+        
+        
+        set = json_data['set'] #should be a string
+        vars = json_data['vars'] #should be a list
+        times = json_data['times'] #should be a list
+        package = json_data['package'] #should be a string
+        
+        print 'set: ' + set
+        print 'vars: ' + str(vars)
+        print 'times: ' + str(times)
+        print 'package: ' + package
+        
+        
+        #assemble the variable dictionary here per Brian's email
+    
+    
+        #change this to the specified directory structure
+        url_prefix = "/static/exploratory_analysis/img/classic/land/set1/"
+    
+    
+        #assemble the url to be returned
+        url = url_prefix + set + ".html"
+    
+        response = url;
+        #except KeyError:
+        #    print 'in key error'
+        #    HttpResponseServerError("Malformed data!")
+    
+        
+    
+    
+    #added the '\n' for 
+    return HttpResponse(response + '\n')  
   
 
 
