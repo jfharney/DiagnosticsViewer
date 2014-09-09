@@ -194,7 +194,7 @@ def figureGenerator(request):
       
       dataset = str(request.POST['dataset']);
       
-      #print 'dataset ---> ' + dataset
+      print 'dataset ---> ' + dataset
       variables = request.POST['variables']
       print 'variables passed in: ', variables
       print type(variables)
@@ -319,7 +319,9 @@ def figureGenerator(request):
                 print type(res)
                 v.clear()
                 v.plot(res[0].vars, res[0].presentation, bg=1)
-                fname = filepath+filename+'_'+varid+'.png'
+                filename = filename+'_'+varid+'.png'
+                fname = os.path.join(filepath, dataset, filename)
+#                fname = filepath+filename+'_'+varid+'.png'
                 print 'fname: ', fname
                 
                 v.png(fname)
