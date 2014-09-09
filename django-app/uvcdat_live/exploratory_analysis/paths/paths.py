@@ -33,7 +33,7 @@ template_dirs = uvcdat_live_root + "/exploratory_analysis/templates/exploratory_
 cache_dir = uvcdat_live_root + '/exploratory_analysis/static/exploratory_analysis/cache/tree/'
 img_cache_path = uvcdat_live_root + '/exploratory_analysis/static/exploratory_analysis/cache/'
 timeseries_cache_path = uvcdat_live_root +'/exploratory_analysis/static/exploratory_analysis/cache'
-generated_img_path = uvcdat_live_root + '/exploratory_analysis/static/exploratory_analysis/img/treeex/'
+generated_img_path = uvcdat_live_root + '/exploratory_analysis/static/exploratory_analysis/img/tree/'
 
 syspath_append_uvcmetrics = metrics_root + '/src/python'
 
