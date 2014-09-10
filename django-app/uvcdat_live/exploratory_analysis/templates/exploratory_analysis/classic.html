@@ -289,17 +289,41 @@ body.loading #modal1 {
     							$("#1energyBalance").load("/static/exploratory_analysis/img/classic/land/set1/set1.html");   
     							document.getElementById('1energyBalance').style.display = 'block';
     						}
+    						
+    						function variable1() 
+    						{
+    							document.getElementById('landHome').style.display = 'none';
+    							document.getElementById('1energyBalance').style.display = 'none';
+    							$("#1variable").load("/static/exploratory_analysis/img/classic/land/set1/variableList_1.html");   
+    							document.getElementById('1variable').style.display = 'block';
+    						}
+    						
     						function toggle_vis2() 
     						{
     							document.getElementById('landHome').style.display = 'none';
     							$("#2contourPlots").load("/static/exploratory_analysis/img/classic/land/set2/set2.html");   
     							document.getElementById('2contourPlots').style.display = 'block'; 							
     						}
+    						function variable2() 
+    						{
+    							document.getElementById('landHome').style.display = 'none';
+    							document.getElementById('2contourPlots').style.display = 'none'; 
+    							$("#2variable").load("/static/exploratory_analysis/img/classic/land/set2/variableList_2.html");   
+    							document.getElementById('2variable').style.display = 'block';
+    						}
+    						
     						function toggle_vis3() 
     						{
     							document.getElementById('landHome').style.display = 'none';
     							$("#3monthlyClimatology").load("/static/exploratory_analysis/img/classic/land/set3/set3.html");   
     							document.getElementById('3monthlyClimatology').style.display = 'block';
+    						}
+    						function variable3() 
+    						{
+    							document.getElementById('landHome').style.display = 'none';
+    							document.getElementById('3monthlyClimatology').style.display = 'none';
+    							$("#3variable").load("/static/exploratory_analysis/img/classic/land/set3/variableList_3.html");   
+    							document.getElementById('3variable').style.display = 'block';
     						}
     						function toggle_vis5() 
     						{
@@ -307,11 +331,25 @@ body.loading #modal1 {
     							$("#5tablesAnual").load("/static/exploratory_analysis/img/classic/land/set5/set5.html"); 
     							document.getElementById('5tablesAnual').style.display = 'block';
     						}
+    						function variable5() 
+    						{
+    							document.getElementById('landHome').style.display = 'none';
+    							document.getElementById('5tablesAnual').style.display = 'none';
+    							$("#5variable").load("/static/exploratory_analysis/img/classic/land/set5/variableList_5.html");   
+    							document.getElementById('5variable').style.display = 'block';
+    						}
     						function toggle_vis6() 
     						{
     							document.getElementById('landHome').style.display = 'none';
     							$("#6anualTrends").load("/static/exploratory_analysis/img/classic/land/set6/set6.html"); 
     							document.getElementById('6anualTrends').style.display = 'block';
+    						}
+    						function variable6() 
+    						{
+    							document.getElementById('landHome').style.display = 'none';
+    							document.getElementById('6anualTrends').style.display = 'none';
+    							$("#6variable").load("/static/exploratory_analysis/img/classic/land/set6/variableList_6.html");   
+    							document.getElementById('6variable').style.display = 'block';
     						}
     						function toggle_vis7() 
     						{
@@ -326,6 +364,7 @@ body.loading #modal1 {
     							document.getElementById('9econtourStats').style.display = 'block';
     						}
     						
+    				
     						function go_Home()
     						{
     							document.getElementById('landHome').style.display = 'block';
@@ -336,8 +375,42 @@ body.loading #modal1 {
     							document.getElementById('6anualTrends').style.display = 'none';
     							document.getElementById('7rtm').style.display = 'none';
     							document.getElementById('9econtourStats').style.display = 'none';
+    							document.getElementById('1variable').style.display = 'none';
+    							document.getElementById('2variable').style.display = 'none';
+    							document.getElementById('3variable').style.display = 'none';
+    							document.getElementById('5variable').style.display = 'none';
+    							document.getElementById('6variable').style.display = 'none';
     					
     						}
+    						
+    						function displayImageClick(imageName)
+    						{
+    							var imageURL;
+    							imageURL="/static/exploratory_analysis/img/classic/land/set1/"+imageName;
+    							var imagePath = "<img src=\"" + imageURL + "\" \/>";
+    							
+    							document.getElementById("plotArea").style.visibility='visible';
+								document.getElementById("plotArea").innerHTML=imagePath;
+								clicked =1;
+							}
+							function displayImageHover(imageName)
+    						{
+    							var imageURL;
+    							imageURL="/static/exploratory_analysis/img/classic/land/set1/"+imageName;
+    							var imagePath = "<img src=\"" + imageURL + "\" \/>";
+    							
+    							document.getElementById("plotArea").style.visibility='visible';
+								document.getElementById("plotArea").innerHTML=imagePath;
+								clicked =0;
+							}
+							function nodisplayImage()
+							{
+								if (clicked!=1){
+									document.getElementById("plotArea").style.visibility='hidden';
+								}
+							}
+							
+							var clicked=0;
 						</script>
 						
 						
@@ -393,10 +466,10 @@ body.loading #modal1 {
 									<hr noshade size=2 size="100%">
 									<em>Click on Plot Type</em></b><p>
 									<a onclick="toggle_vis1()" href="#"><img src="/static/exploratory_analysis/img/classic/SET1sn.gif" align=left border=1 hspace=1 alt="Set 1"></a>
-									<a onclick="toggle_vis2()" href="#"><img src="http://www.cgd.ucar.edu/tss/clm/diagnostics/images/SET2sn.gif" align=left border=1 hspace=1 alt="Set 2"></a>
-									<a onclick="toggle_vis3()" href="#"><img src="http://www.cgd.ucar.edu/tss/clm/diagnostics/images/SET3s.gif" align=left border=1 hspace=1 alt="Set 3"></a>
-									<a onclick="toggle_vis6()" href="#"><img src="http://www.cgd.ucar.edu/tss/clm/diagnostics/images/SET6sn.gif" align=left border=1 hspace=1 alt="Set 6"></a>
-									<a onclick="toggle_vis7()" href="#"><img src="http://www.cgd.ucar.edu/tss/clm/diagnostics/images/SET7sn.gif" align=left border=1 hspace=1 alt="Set 7"></a>
+									<a onclick="toggle_vis2()" href="#"><img src="/static/exploratory_analysis/img/classic/SET2sn.gif" align=left border=1 hspace=1 alt="Set 2"></a>
+									<a onclick="toggle_vis3()" href="#"><img src="/static/exploratory_analysis/img/classic/SET3s.gif" align=left border=1 hspace=1 alt="Set 3"></a>
+									<a onclick="toggle_vis6()" href="#"><img src="/static/exploratory_analysis/img/classic/SET6sn.gif" align=left border=1 hspace=1 alt="Set 6"></a>
+									<a onclick="toggle_vis7()" href="#"><img src="/static/exploratory_analysis/img/classic/SET7sn.gif" align=left border=1 hspace=1 alt="Set 7"></a>
 									<br clear=left>
 									<p>
 									<br clear=left>
@@ -410,18 +483,31 @@ body.loading #modal1 {
 						<div id="1energyBalance" style='display: none'>							
 						</div>
 						
+						<div id="1variable" style='display: none'>							
+						</div>
 						
 						<div id="2contourPlots"  style='display: none'>
 						</div>
 						
+						<div id="2variable" style='display: none'>							
+						</div>
 						
 						<div id="3monthlyClimatology" style='display: none'>
+						</div>
+						
+						<div id="3variable" style='display: none'>							
 						</div>
 						
 						<div id="5tablesAnual" style='display: none'>
 						</div>
 						
+						<div id="5variable" style='display: none'>							
+						</div>
+						
 						<div id="6anualTrends" style='display: none'>
+						</div>
+						
+						<div id="6variable" style='display: none'>							
 						</div>
 						
 						<div id="7rtm" style='display: none'>
@@ -433,11 +519,10 @@ body.loading #modal1 {
 						
 					</div>
 					
-					<div id="plotArea" style="overflow:scroll">
+					
 						<span style="margin-left:10px;font-weight:bold"> Plot for Selected Dataset</span>
-						<body>
-							<p>	Image or Table Plots Here</p>
-						</body>
+					<div id="plotArea" style="overflow:scroll">	
+						
 					</div>
 					
 				</div>

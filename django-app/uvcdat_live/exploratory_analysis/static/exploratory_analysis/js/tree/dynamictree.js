@@ -643,7 +643,7 @@ function figure_generator(times, variables, sets, dataset, packages, realms, use
 	console.log("set = " + sets);
 	//console.log('*&^(^*%^*&^%*&^%*^%*^%*' + dataset);
 
-	alert('dataset: ' + dataset);
+//	alert('dataset: ' + dataset);
 	//var computedImg = "../../../static/exploratory_analysis/img/carousel/set6_turbf_Global.gif";
 
 	//var img_prefix = '../../../static/exploratory_analysis/img/treeex/';
