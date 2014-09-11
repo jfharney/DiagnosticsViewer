@@ -657,7 +657,7 @@ function figure_generator(times, variables, sets, dataset, packages, realms, use
 
 	//var staticImg = "{% static 'exploratory_analysis/img/carousel/set6_turbf_Global.gif' %}";
 	//"../../../static/exploratory_analysis/css/tree/flare13.json"
-	var staticImg = img_prefix + realms + '_' + packages + '_' + sets[0] + '_' + times + '_' + variables + '.png';
+	var staticImg = img_prefix + packages + '_set' + sets[0] + '_' + times + '_' + variables + '.png';
 	//computedImg;
 
 	$body = $("body");
@@ -691,7 +691,7 @@ function figure_generator(times, variables, sets, dataset, packages, realms, use
 
 			if (sets == "set5") {
 				//<iframe src="missingmen.txt" width=200 height=400 frameborder=0 ></iframe></p></div>
-				var figTitle = realms + '_' + packages + '_' + sets + '_' + times + '_' + variables + '.png';
+				var figTitle = packages + '_set' + sets + '_' + times + '_' + variables + '.png';
 	//var staticImg = img_prefix + realms + '_' + packages + '_' + sets + '_' + times + '_' + variables + '.png';
 				staticImg = img_prefix + 'table.txt';
 				$('#modal-title').empty();
@@ -724,7 +724,7 @@ function figure_generator(times, variables, sets, dataset, packages, realms, use
 				//add an image
 				var appended = '<div class="row"><div class="col-md-12">' + name + '</div></div>';
 			} else {
-				var figTitle = realms + '_' + packages + '_' + sets + '_' + times + '_' + variables + '.png';
+				var figTitle = packages + '_set' + sets + '_' + times + '_' + variables + '.png';
 
 				$('#modal-title').empty();
 				$('.modal-body').empty();
