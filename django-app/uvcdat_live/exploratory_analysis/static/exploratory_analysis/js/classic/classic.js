@@ -1,93 +1,664 @@
 $(document).ready(function() {
 
-	//removing thumbnail image from the pane
-	$('body').on('click', 'button.btn-remove', function() {
-		var id = $(this).attr('id');
-		//alert('id: ' + id);
-		console.log('id: ' + id);
-		var removedListId = id.split('_')[1];
-		//alert('removedListId: ' + removedListId);
-		//$('li#'+removedListId).remove();
-		$('li#' + id).remove();
+	//alert('loading classic.js');
+	$('.classic_figure_sets').click(function() {
+	
+		var index = this.id.search('_');
+		
+		var set = this.id.substring(index+1);
+		
+		
+		toggle_vis(set);
+		
+		
+		
 	});
-
-	//var cache_dir = '../../../static/cache/';
-
-	//var fileName = "flare25.json";
-
-	var treeFile = $('span#treeFile').html();
-	console.log('treeFile: ' + treeFile);
-
-	var cachedfile = $('span#CachedFile').html();
-	console.log('cachefile: ' + cachedfile);
-
-	//EA.uvcdat_live_root = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live';
-
-	console.log('EA---> ' + EA.uvcdat_live_root + '/exploratory_analysis');
-	console.log('$treeFile---> ' + treeFile);
-	treeFile = treeFile.replace(EA.uvcdat_live_root + '/exploratory_analysis', '../../..');
-	console.log('treeFile: ' + treeFile);
-
-	//treeFile = '../../../static/cache/temp.json';
-	//alert('treeFile: ' + treeFile);
-	//if(checkFile(cache_dir+fileName))
-
-	//check to see if there was a tree loaded
-	var treeloaded = $('span#treeloaded').html();
-	//console.log('treeloaded: ' + tree);
-	console.log('chk: ' + checkFile(treeFile));
-	treeFile = cachedfile;
-	console.log('after conversion chk: ' + checkFile(treeFile));
-	if (treeloaded == 'true') {
-
-		if (checkFile(treeFile)) {
-
-			//render the tree
-
-			d3.json(treeFile, function(error, flare) {
-
-
-				//***PLAY HERE***
-
-
-				//d3.json(cache_dir + fileName, function(error, flare) {
-				for (var key in flare) {
-					console.log('flare key: ' + key);
-				}
-				///Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/css/tree/flare13.json
-				root = flare;
-				root.x0 = height / 2;
-				root.y0 = 0;
-
-				function collapse(d) {
-					if (d.children) {
-						d._children = d.children;
-						d._children.forEach(collapse);
-						d.children = null;
-					}
-				}
-
-
-				root.children.forEach(collapse);
-				update(root);
-
-			});
-
-				//***DONE PLAY HERE***
-
-
-
-
-		} else {
-			console.log('leave blank');
-		}
-
-	} else {
-		//$('#bookmark_selection').show();
-	}
-
+	
+	$('.classic_toggle_sets').click(function() {
+		
+		
+		var index = this.id.search('_');
+		
+		var set = this.id.substring(index+1);
+		
+		toggle_vis(set);
+		
+		
+	});
+	
+	
 });
 
+
+function toggle_vis(set) {
+	
+	document.getElementById('landHome').style.display = 'none';
+	
+	var dataset = $('#selectD').val();
+	var pckg = $('#selectP').val();
+	
+	var variable_arr = $("#selectV").val();
+	
+	//it is possible that the variable_arr can be null (if none are selected)
+	//in that case, let the default be ALL variables
+	if (variable_arr == null) {
+		variable_arr = new Array();
+		//NOTE: come back and push all variables onto the array
+		variable_arr.push('TLAI');
+	}
+	
+	
+	//it is possible that the season_arr can be null (if none are selected)
+	//in that case, let the default be ALL variables
+	var season_arr = $('#selectT').val();
+	if (season_arr == null) {
+		season_arr = new Array();
+		season_arr.push('JAN');
+	}
+
+	
+	var url = 'http://localhost:8081/exploratory_analysis/classic_views/';
+	
+	var setData = set;
+	var varsData = variable_arr;//["var1","var2"];
+	var timesData = season_arr; //timesData;
+	var packageData = pckg; //"package1";
+	var datasetData = dataset;
+	
+	var data = {
+			
+			"set" : setData,
+			"vars" : varsData,
+			"times" : timesData,
+			"package" : packageData,
+			"dataset" : datasetData
+			
+	};
+	
+	
+	$.ajax({
+		type : "POST",
+		url : url,
+		data : JSON.stringify(data),
+		//async : false,
+		success : function(set_url) {
+			
+			console.log('setData: ' + setData);
+			console.log('url: ' + set_url);
+			
+			var html_elem_id = setData + '_html';
+			console.log('html_elem_id: ' + html_elem_id);
+			$('#' + html_elem_id).load(set_url);   
+			
+			document.getElementById(html_elem_id).style.display = 'block';
+			
+		},
+		error : function(xhr, status, error) {
+			
+			console.log('error');
+			if (xhr.status == 404) {/** not found! **/
+			}
+			
+		}
+	});
+	
+	
+	
+}
+
+
+function go_Home()
+{
+	document.getElementById('landHome').style.display = 'block';
+	
+	document.getElementById('set1_html').style.display = 'none';
+	document.getElementById('set2_html').style.display = 'none';
+	document.getElementById('set3_html').style.display = 'none';
+	document.getElementById('set5_html').style.display = 'none';
+	document.getElementById('set6_html').style.display = 'none';
+	document.getElementById('set7_html').style.display = 'none';
+	document.getElementById('set9_html').style.display = 'none';
+	
+	
+	/*
+	document.getElementById('1energyBalance').style.display = 'none';
+	document.getElementById('2contourPlots').style.display = 'none';
+	document.getElementById('3monthlyClimatology').style.display = 'none';
+	document.getElementById('5tablesAnual').style.display = 'none';
+	document.getElementById('6anualTrends').style.display = 'none';
+	document.getElementById('7rtm').style.display = 'none';
+	document.getElementById('9econtourStats').style.display = 'none';
+	*/
+}
+
+
+
+
+/*
+function toggle_vis1() 
+{
+	document.getElementById('landHome').style.display = 'none';
+	
+	
+
+	var dataset = $('#selectD').val();
+	var pckg = $('#selectP').val();
+	
+	var variable_arr = $("#selectV").val();
+	
+	//it is possible that the variable_arr can be null (if none are selected)
+	//in that case, let the default be ALL variables
+	if (variable_arr == null) {
+		variable_arr = new Array();
+		//NOTE: come back and push all variables onto the array
+		variable_arr.push('TLAI');
+	}
+	
+	
+	//it is possible that the season_arr can be null (if none are selected)
+	//in that case, let the default be ALL variables
+	var season_arr = $('#selectT').val();
+	if (season_arr == null) {
+		season_arr = new Array();
+		season_arr.push('JAN');
+	}
+
+	
+	var url = 'http://localhost:8081/exploratory_analysis/classic_views/';
+	
+	var setData = "set1";
+	var varsData = variable_arr;//["var1","var2"];
+	var timesData = season_arr; //timesData;
+	var packageData = pckg; //"package1";
+	var datasetData = dataset;
+	
+	
+	var data = {
+		
+			"set" : setData,
+			"vars" : varsData,
+			"times" : timesData,
+			"package" : packageData,
+			"dataset" : datasetData
+			
+	};
+	
+	
+	$.ajax({
+		type : "POST",
+		url : url,
+		data : JSON.stringify(data),
+		//async : false,
+		success : function(set_url) {
+			
+			console.log('url: ' + set_url);
+			
+			$("#1energyBalance").load(set_url);   
+			document.getElementById('1energyBalance').style.display = 'block';
+			
+		},
+		error : function(xhr, status, error) {
+			
+			console.log('error');
+			if (xhr.status == 404) {
+			}
+			
+		}
+	});
+	
+	
+}
+
+
+function toggle_vis2() 
+{
+	document.getElementById('landHome').style.display = 'none';
+	
+	var dataset = $('#selectD').val();
+	var pckg = $('#selectP').val();
+	
+	var variable_arr = $("#selectV").val();
+	
+	//it is possible that the variable_arr can be null (if none are selected)
+	//in that case, let the default be ALL variables
+	if (variable_arr == null) {
+		variable_arr = new Array();
+		//NOTE: come back and push all variables onto the array
+		variable_arr.push('TLAI');
+	}
+	
+	
+	//it is possible that the season_arr can be null (if none are selected)
+	//in that case, let the default be ALL variables
+	var season_arr = $('#selectT').val();
+	if (season_arr == null) {
+		season_arr = new Array();
+		season_arr.push('JAN');
+	}
+
+	
+	var url = 'http://localhost:8081/exploratory_analysis/classic_views/';
+	
+	var setData = "set2";
+	var varsData = variable_arr;//["var1","var2"];
+	var timesData = season_arr; //timesData;
+	var packageData = pckg; //"package1";
+	var datasetData = dataset;
+	
+	
+	var data = {
+		
+			"set" : setData,
+			"vars" : varsData,
+			"times" : timesData,
+			"package" : packageData,
+			"dataset" : datasetData
+			
+	};
+	
+	
+	$.ajax({
+		type : "POST",
+		url : url,
+		data : JSON.stringify(data),
+		//async : false,
+		success : function(set_url) {
+			
+			console.log('url: ' + set_url);
+			
+			$("#2contourPlots").load(set_url);   
+			document.getElementById('2contourPlots').style.display = 'block'; 		
+		},
+		error : function(xhr, status, error) {
+			
+			console.log('error');
+			if (xhr.status == 404) {
+			}
+			
+		}
+	});
+	
+	
+						
+}
+function toggle_vis3() 
+{
+	document.getElementById('landHome').style.display = 'none';
+	
+	var dataset = $('#selectD').val();
+	var pckg = $('#selectP').val();
+	
+	var variable_arr = $("#selectV").val();
+	
+	//it is possible that the variable_arr can be null (if none are selected)
+	//in that case, let the default be ALL variables
+	if (variable_arr == null) {
+		variable_arr = new Array();
+		//NOTE: come back and push all variables onto the array
+		variable_arr.push('TLAI');
+	}
+	
+	
+	//it is possible that the season_arr can be null (if none are selected)
+	//in that case, let the default be ALL variables
+	var season_arr = $('#selectT').val();
+	if (season_arr == null) {
+		season_arr = new Array();
+		season_arr.push('JAN');
+	}
+
+	
+	var url = 'http://localhost:8081/exploratory_analysis/classic_views/';
+	
+	var setData = "set3";
+	var varsData = variable_arr;//["var1","var2"];
+	var timesData = season_arr; //timesData;
+	var packageData = pckg; //"package1";
+	var datasetData = dataset;
+	
+	
+	var data = {
+		
+			"set" : setData,
+			"vars" : varsData,
+			"times" : timesData,
+			"package" : packageData,
+			"dataset" : datasetData
+			
+	};
+	
+	
+	$.ajax({
+		type : "POST",
+		url : url,
+		data : JSON.stringify(data),
+		//async : false,
+		success : function(set_url) {
+			
+			console.log('url: ' + set_url);
+
+			$("#3monthlyClimatology").load(set_url);   
+			document.getElementById('3monthlyClimatology').style.display = 'block';
+		},
+		error : function(xhr, status, error) {
+			
+			console.log('error');
+			if (xhr.status == 404) {
+			}
+			
+		}
+	});
+	
+	
+	
+	
+	
+	
+}
+function toggle_vis5() 
+{
+	document.getElementById('landHome').style.display = 'none';
+	
+	var dataset = $('#selectD').val();
+	var pckg = $('#selectP').val();
+	
+	var variable_arr = $("#selectV").val();
+	
+	//it is possible that the variable_arr can be null (if none are selected)
+	//in that case, let the default be ALL variables
+	if (variable_arr == null) {
+		variable_arr = new Array();
+		//NOTE: come back and push all variables onto the array
+		variable_arr.push('TLAI');
+	}
+	
+	
+	//it is possible that the season_arr can be null (if none are selected)
+	//in that case, let the default be ALL variables
+	var season_arr = $('#selectT').val();
+	if (season_arr == null) {
+		season_arr = new Array();
+		season_arr.push('JAN');
+	}
+
+	
+	var url = 'http://localhost:8081/exploratory_analysis/classic_views/';
+	
+	var setData = "set5";
+	var varsData = variable_arr;//["var1","var2"];
+	var timesData = season_arr; //timesData;
+	var packageData = pckg; //"package1";
+	var datasetData = dataset;
+	
+	
+	var data = {
+		
+			"set" : setData,
+			"vars" : varsData,
+			"times" : timesData,
+			"package" : packageData,
+			"dataset" : datasetData
+			
+	};
+	
+	
+	$.ajax({
+		type : "POST",
+		url : url,
+		data : JSON.stringify(data),
+		//async : false,
+		success : function(set_url) {
+			
+			console.log('url: ' + set_url);
+
+			$("#5tablesAnual").load(set_url); 
+			document.getElementById('5tablesAnual').style.display = 'block';
+		},
+		error : function(xhr, status, error) {
+			
+			console.log('error');
+			if (xhr.status == 404) {
+			}
+			
+		}
+	});
+	
+	
+	
+	
+	
+	
+}
+function toggle_vis6() 
+{
+	document.getElementById('landHome').style.display = 'none';
+	
+	var dataset = $('#selectD').val();
+	var pckg = $('#selectP').val();
+	
+	var variable_arr = $("#selectV").val();
+	
+	//it is possible that the variable_arr can be null (if none are selected)
+	//in that case, let the default be ALL variables
+	if (variable_arr == null) {
+		variable_arr = new Array();
+		//NOTE: come back and push all variables onto the array
+		variable_arr.push('TLAI');
+	}
+	
+	
+	//it is possible that the season_arr can be null (if none are selected)
+	//in that case, let the default be ALL variables
+	var season_arr = $('#selectT').val();
+	if (season_arr == null) {
+		season_arr = new Array();
+		season_arr.push('JAN');
+	}
+
+	
+	var url = 'http://localhost:8081/exploratory_analysis/classic_views/';
+	
+	var setData = "set6";
+	var varsData = variable_arr;//["var1","var2"];
+	var timesData = season_arr; //timesData;
+	var packageData = pckg; //"package1";
+	var datasetData = dataset;
+	
+	
+	var data = {
+		
+			"set" : setData,
+			"vars" : varsData,
+			"times" : timesData,
+			"package" : packageData,
+			"dataset" : datasetData
+			
+	};
+	
+	
+	$.ajax({
+		type : "POST",
+		url : url,
+		data : JSON.stringify(data),
+		//async : false,
+		success : function(set_url) {
+			
+			console.log('url: ' + set_url);
+
+			$("#6anualTrends").load(set_url); 
+			document.getElementById('6anualTrends').style.display = 'block';
+			
+		},
+		error : function(xhr, status, error) {
+			
+			console.log('error');
+			if (xhr.status == 404) {
+			}
+			
+		}
+	});
+	
+	
+	
+	
+	
+	
+	
+}
+function toggle_vis7() 
+{
+	document.getElementById('landHome').style.display = 'none';
+	
+	var dataset = $('#selectD').val();
+	var pckg = $('#selectP').val();
+	
+	var variable_arr = $("#selectV").val();
+	
+	//it is possible that the variable_arr can be null (if none are selected)
+	//in that case, let the default be ALL variables
+	if (variable_arr == null) {
+		variable_arr = new Array();
+		//NOTE: come back and push all variables onto the array
+		variable_arr.push('TLAI');
+	}
+	
+	
+	//it is possible that the season_arr can be null (if none are selected)
+	//in that case, let the default be ALL variables
+	var season_arr = $('#selectT').val();
+	if (season_arr == null) {
+		season_arr = new Array();
+		season_arr.push('JAN');
+	}
+
+	
+	var url = 'http://localhost:8081/exploratory_analysis/classic_views/';
+	
+	var setData = "set7";
+	var varsData = variable_arr;//["var1","var2"];
+	var timesData = season_arr; //timesData;
+	var packageData = pckg; //"package1";
+	var datasetData = dataset;
+	
+	
+	var data = {
+		
+			"set" : setData,
+			"vars" : varsData,
+			"times" : timesData,
+			"package" : packageData,
+			"dataset" : datasetData
+			
+	};
+	
+	
+	$.ajax({
+		type : "POST",
+		url : url,
+		data : JSON.stringify(data),
+		//async : false,
+		success : function(set_url) {
+			
+			console.log('url: ' + set_url);
+
+			$("#7rtm").load(set_url); 
+			document.getElementById('7rtm').style.display = 'block';
+			
+		},
+		error : function(xhr, status, error) {
+			
+			console.log('error');
+			if (xhr.status == 404) {
+			}
+			
+		}
+	});
+	
+	
+	
+}
+
+
+
+
+function toggle_vis9() 
+{
+	document.getElementById('landHome').style.display = 'none';
+	
+	var dataset = $('#selectD').val();
+	var pckg = $('#selectP').val();
+	
+	var variable_arr = $("#selectV").val();
+	
+	//it is possible that the variable_arr can be null (if none are selected)
+	//in that case, let the default be ALL variables
+	if (variable_arr == null) {
+		variable_arr = new Array();
+		//NOTE: come back and push all variables onto the array
+		variable_arr.push('TLAI');
+	}
+	
+	
+	//it is possible that the season_arr can be null (if none are selected)
+	//in that case, let the default be ALL variables
+	var season_arr = $('#selectT').val();
+	if (season_arr == null) {
+		season_arr = new Array();
+		season_arr.push('JAN');
+	}
+
+	
+	var url = 'http://localhost:8081/exploratory_analysis/classic_views/';
+	
+	var setData = "set9";
+	var varsData = variable_arr;//["var1","var2"];
+	var timesData = season_arr; //timesData;
+	var packageData = pckg; //"package1";
+	var datasetData = dataset;
+	
+	
+	var data = {
+		
+			"set" : setData,
+			"vars" : varsData,
+			"times" : timesData,
+			"package" : packageData,
+			"dataset" : datasetData
+			
+	};
+	
+	
+	$.ajax({
+		type : "POST",
+		url : url,
+		data : JSON.stringify(data),
+		//async : false,
+		success : function(set_url) {
+			
+			console.log('url: ' + set_url);
+
+			
+			$("#9econtourStats").load(set_url); 
+			document.getElementById('9econtourStats').style.display = 'block';
+			
+		},
+		error : function(xhr, status, error) {
+			
+			console.log('error');
+			if (xhr.status == 404) {
+			}
+			
+		}
+	});
+	
+	
+	
+	
+	
+}
+*/
+
+/*
 function checkFile(fileUrl) {
 
 	//for post requests, need to get the csrf token
@@ -125,7 +696,7 @@ function checkFile(fileUrl) {
 			found = true;
 		},
 		error : function(xhr, status, error) {
-			if (xhr.status == 404) {/** not found! **/
+			if (xhr.status == 404) {
 			}
 		}
 	});
@@ -158,7 +729,9 @@ function checkFile(fileUrl) {
 	self.xmlHttpReq.send();
 
 }
+*/
 
+/*
 function stripPipe(path) {
 	console.log('path1: ' + path);
 	path = path.replace(" ", "");
@@ -167,7 +740,9 @@ function stripPipe(path) {
 
 	return replacedPath;
 }
+*/
 
+/*
 function replacePipe(path) {
 
 	var replacedPath = path.replace(/|/g, ";");
@@ -175,7 +750,9 @@ function replacePipe(path) {
 	return replacedPath;
 
 }
+*/
 
+/*
 function update(source) {
         // Compute the new height, function counts total children of root node and sets tree height accordingly.
         // This prevents the layout looking squashed when new nodes are made visible or looking sparse when nodes are removed
@@ -225,7 +802,7 @@ function update(source) {
     }, function(d) {
         return d.children && d.children.length > 0 ? d.children : null;
     });
-	/*
+	// note this was commented out
 	 for(var key in nodes) {
 	 console.log('nodessss key: ' + key + ' node ' + nodes[key]);
 	 var node = nodes[key];
@@ -283,7 +860,7 @@ function update(source) {
 	 }
 	 });
 
-	 */
+	 //end note this was commented out
 
 	console.log('--------end updated tree state--------');
 	//console.log('****\n' + JSON.stringify(nodes) + '\n*******');
@@ -375,19 +952,21 @@ function update(source) {
 		d.y0 = d.y;
 	});
 }
+*/
 
 
 
 
-
+/*
 // Define the zoom function for the zoomable tree
 
 function zoom() {
 	svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
 }
+*/
 
 
-
+/*
 // define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
 var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]).on("zoom", zoom);
 
@@ -496,7 +1075,10 @@ function pan(domNode, direction) {
 		}, 50);
 	}
 }
+*/
 
+
+/*
 //Toggle children on click.
 function click(d) {
     centerNode(d);
@@ -510,15 +1092,13 @@ function click(d) {
 			var name = d['name'];
 			console.log('name: ' + name);
 
-			/*
+			
 			 for(var key in d) {
 			 console.log('key: ' + key + ' val: ' + d[key]);
 			 }
-			 */
+			
 
-			/*
-			 *
-			 */
+			
 
 			var params = fullpath.split('9');
 			//9MAR9TLAI9set19tropics_warming_th_q_co29lmwg9jfharney
@@ -557,7 +1137,10 @@ function click(d) {
 	}
 	update(d);
 }
+*/
 
+
+/*
 function reversePath(path) {
 
 	var reversedPath = '';
@@ -578,7 +1161,10 @@ function reversePath(path) {
 	return reversedPath;
 
 }
+*/
 
+
+/*
 function figure_generator(times, variables, sets, dataset, packages, realms, username, fullpath) {
 	var csrftoken = getCookie('csrftoken');
 
@@ -667,13 +1253,17 @@ function figure_generator(times, variables, sets, dataset, packages, realms, use
 	});
 
 }
+*/
 
+/*
 function stripPeriod(word) {
 	var newWord = '';
 	newWord = word.replace('.', '_');
 	return newWord;
 }
+*/
 
+/*
 //for post requests, need to get the csrf token
 function getCookie(name) {
 	var cookieValue = null;
@@ -690,3 +1280,4 @@ function getCookie(name) {
 	}
 	return cookieValue;
 }
+*/
