@@ -771,7 +771,8 @@ def classic_views(request):
         print 'dataset: ' + dataset
     
         #change this to the specified directory structure
-        url_prefix = "/static/exploratory_analysis/img/classic/land/" + set + "/"
+        url_prefix = "/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
+        
         
     
     

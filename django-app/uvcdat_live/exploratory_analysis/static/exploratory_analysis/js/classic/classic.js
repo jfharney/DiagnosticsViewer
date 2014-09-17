@@ -21,21 +21,56 @@ $(document).ready(function() {
 		
 		var set = this.id.substring(index+1);
 		
+		//alert('this.id: ' + this.id);
+		
 		toggle_vis(set);
 		
 		
 	});
 	
-	
+	$('#selectP').on('change',function() {
+		
+		var pckg = $('#selectP').val();
+		
+		if(pckg == 'lmwg') {
+			
+			//make lmwg home button appear
+			$('#go_Land_Home_Button').show();
+			
+			//make amwg home button disappear
+			$('#go_Atm_Home_Button').hide();
+			
+			//make lmwg home appear
+			go_Land_Home();
+			
+		} else {
+
+			//make amwg home button appear
+			$('#go_Atm_Home_Button').show();
+			
+			//make lmwg home button disappear
+			$('#go_Land_Home_Button').hide();
+			
+			//make atm home appear
+			go_Atm_Home();
+			
+		}
+		
+		
+	});
 });
 
 
 function toggle_vis(set) {
 	
-	document.getElementById('landHome').style.display = 'none';
 	
 	var dataset = $('#selectD').val();
 	var pckg = $('#selectP').val();
+	
+	//document.getElementById('landHome').style.display = 'none';
+	hide_land_home();
+	hide_atm_home();
+	
 	
 	var variable_arr = $("#selectV").val();
 	
@@ -65,6 +100,10 @@ function toggle_vis(set) {
 	var packageData = pckg; //"package1";
 	var datasetData = dataset;
 	
+	
+	
+	
+	
 	var data = {
 			
 			"set" : setData,
@@ -86,17 +125,18 @@ function toggle_vis(set) {
 			console.log('setData: ' + setData);
 			console.log('url: ' + set_url);
 			
-			var html_elem_id = setData + '_html';
+			var html_elem_id = packageData + '_' + setData + '_html';
 			console.log('html_elem_id: ' + html_elem_id);
-			$('#' + html_elem_id).load(set_url);   
 			
+			$('#' + html_elem_id).load(set_url);
+
 			document.getElementById(html_elem_id).style.display = 'block';
 			
 		},
 		error : function(xhr, status, error) {
 			
 			console.log('error');
-			if (xhr.status == 404) {/** not found! **/
+			if (xhr.status == 404) {
 			}
 			
 		}
@@ -106,33 +146,70 @@ function toggle_vis(set) {
 	
 }
 
+function go_Atm_Home() {
+	
+	document.getElementById('atmHome').style.display = 'block';
+	
+	hide_land_home();
+	hide_land_sets();
+	hide_atm_sets();
 
-function go_Home()
-{
-	document.getElementById('landHome').style.display = 'block';
-	
-	document.getElementById('set1_html').style.display = 'none';
-	document.getElementById('set2_html').style.display = 'none';
-	document.getElementById('set3_html').style.display = 'none';
-	document.getElementById('set5_html').style.display = 'none';
-	document.getElementById('set6_html').style.display = 'none';
-	document.getElementById('set7_html').style.display = 'none';
-	document.getElementById('set9_html').style.display = 'none';
-	
-	
-	/*
-	document.getElementById('1energyBalance').style.display = 'none';
-	document.getElementById('2contourPlots').style.display = 'none';
-	document.getElementById('3monthlyClimatology').style.display = 'none';
-	document.getElementById('5tablesAnual').style.display = 'none';
-	document.getElementById('6anualTrends').style.display = 'none';
-	document.getElementById('7rtm').style.display = 'none';
-	document.getElementById('9econtourStats').style.display = 'none';
-	*/
 }
 
 
+function go_Land_Home()
+{
+	
+	document.getElementById('landHome').style.display = 'block';
+	
+	hide_atm_home();
+	hide_land_sets();
+	hide_atm_sets();
+	
+}
 
+
+function hide_land_sets() {
+	
+	document.getElementById('lmwg_set1_html').style.display = 'none';
+	document.getElementById('lmwg_set2_html').style.display = 'none';
+	document.getElementById('lmwg_set3_html').style.display = 'none';
+	document.getElementById('lmwg_set5_html').style.display = 'none';
+	document.getElementById('lmwg_set6_html').style.display = 'none';
+	document.getElementById('lmwg_set7_html').style.display = 'none';
+	document.getElementById('lmwg_set9_html').style.display = 'none';
+	
+}
+
+function hide_atm_sets() {
+	
+	document.getElementById('amwg_set1_html').style.display = 'none';
+	document.getElementById('amwg_set2_html').style.display = 'none';
+	document.getElementById('amwg_set3_html').style.display = 'none';
+	document.getElementById('amwg_set5_html').style.display = 'none';
+	document.getElementById('amwg_set6_html').style.display = 'none';
+	document.getElementById('amwg_set7_html').style.display = 'none';
+	document.getElementById('amwg_set9_html').style.display = 'none';
+}
+
+function hide_land_home() {
+	document.getElementById('landHome').style.display = 'none';
+}
+
+function hide_atm_home() {
+	document.getElementById('atmHome').style.display = 'none';
+}
+
+
+/*
+document.getElementById('1energyBalance').style.display = 'none';
+document.getElementById('2contourPlots').style.display = 'none';
+document.getElementById('3monthlyClimatology').style.display = 'none';
+document.getElementById('5tablesAnual').style.display = 'none';
+document.getElementById('6anualTrends').style.display = 'none';
+document.getElementById('7rtm').style.display = 'none';
+document.getElementById('9econtourStats').style.display = 'none';
+*/
 
 /*
 function toggle_vis1() 
