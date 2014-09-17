@@ -740,36 +740,39 @@ def classic_views(request):
     
     print 'in classic views'
     
-    #if request.POST['set'] == None: #or request.POST['vars'] == None or request.POST['times'] == None or request.POST['package'] == None:
-    #    return HttpResponse("Error")
     
-    
-    print request.body
-    
+    curlFlag = False
     
     response = 'error'
     
     if request.method == "POST":
-        print 'yes'
-        json_data = json.loads(request.body)
+        set = None
+        vars = None
+        times = None
+        package = None
+        dataset = None
         
+        json_data = json.loads(request.body)
         
         set = json_data['set'] #should be a string
         vars = json_data['vars'] #should be a list
         times = json_data['times'] #should be a list
         package = json_data['package'] #should be a string
+        dataset = json_data['dataset']
         
-        print 'set: ' + set
-        print 'vars: ' + str(vars)
-        print 'times: ' + str(times)
-        print 'package: ' + package
-        
-        
+          
         #assemble the variable dictionary here per Brian's email
     
     
+        print 'set: ' + set
+        print 'vars: ' + str(vars) + ' ' #+ vars.length
+        print 'times: ' + str(times) + ' ' #+ times.length
+        print 'package: ' + package
+        print 'dataset: ' + dataset
+    
         #change this to the specified directory structure
-        url_prefix = "/static/exploratory_analysis/img/classic/land/set1/"
+        url_prefix = "/static/exploratory_analysis/img/classic/land/" + set + "/"
+        
     
     
         #assemble the url to be returned
@@ -779,7 +782,8 @@ def classic_views(request):
         #except KeyError:
         #    print 'in key error'
         #    HttpResponseServerError("Malformed data!")
-    
+    else:
+        print 'not post'
         
     
     
