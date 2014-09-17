@@ -16,8 +16,6 @@ function getDatasets(username) {
 		  
 		  var dataList = response_data['datasets'];
 		  
-		  
-		  
 		  //var dataList = ["tropics_warming_th_q_co2"];
 			
 		  $("#selectD").multiselect().multiselectfilter();
@@ -65,7 +63,7 @@ function getPackages(current_username) {
 		  success: function(response_data)
 		  { 
 				
-			  console.log('success in getting datasets');
+			  console.log('success in getting packages');
 			  
 			  packList = response_data['packages'];
 			  
@@ -175,7 +173,7 @@ function getTimes(current_username) {
 		  success: function(response_data)
 		  { 
 				
-			  console.log('success in getting datasets');
+			  console.log('success in getting times');
 			  
 			  var timeList = response_data['times'];
 			  

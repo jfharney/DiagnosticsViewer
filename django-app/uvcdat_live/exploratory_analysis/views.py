@@ -762,7 +762,8 @@ def classic_views(request):
         
           
         #assemble the variable dictionary here per Brian's email
-    
+        
+           
     
         print 'set: ' + set
         print 'vars: ' + str(vars) + ' ' #+ vars.length
@@ -771,12 +772,31 @@ def classic_views(request):
         print 'dataset: ' + dataset
     
         #change this to the specified directory structure
-        url_prefix = "/static/exploratory_analysis/img/classic/land/" + set + "/"
+        url_prefix = "/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
+        
         
     
     
         #assemble the url to be returned
         url = url_prefix + set + ".html"
+    
+    
+    
+        url1 = url_prefix + set + 'ex.html'
+        
+        #import os.path
+        #if os.path.isfile(url1):
+        #    os.remove(url1)
+        
+        print os.getcwd() 
+        
+        url1 = str(os.getcwd()) + '/exploratory_analysis' + str(url1)
+        
+        f = open(url1,'w') 
+        
+        f.write('0123456789abcdef')
+        
+        f.close()
     
         response = url;
         #except KeyError:

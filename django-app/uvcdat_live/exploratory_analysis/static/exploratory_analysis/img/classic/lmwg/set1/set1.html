@@ -1,0 +1,867 @@
+<p> 
+<b><font color=maroon size=+2>Set 1 Description: <b></font>Line plots of annual trends in energy balance, soil water/ice and temperature, runoff, snow water/ice, photosynthesis </b><br>
+<br clear=left> 
+ <p> 
+ <a onclick="variable1()" href="#"><font color=maroon size=+1 text-align: right><b>Lookup Table: Set 1 Variable Definition</b></font></a>
+<br> 
+ <p> 
+<hr noshade size=2 size="100%">
+<TABLE> 
+ <TR>
+   <TH><TH ALIGN=LEFT><font color=maroon>Trend</font>
+  <TH ALIGN=LEFT><font color=maroon> vs Difference</font>
+<TR>
+  <TH ALIGN=LEFT>2m air temperature (TSA) 
+  <TH ALIGN=LEFT><a href="#" onclick="displayImageClick(land/tropics_warming_th_q/img/lmwg_set1_JAN_TLAI.png);" onmouseover="displayImageHover('set1_TSA\.gif');" onmouseout="nodisplayImage();">plot</A>
+  <TH><TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1Diff_TSA\.gif');" onmouseover="displayImageHover('set1Diff_TSA\.gif');" onmouseout="nodisplayImage();">DifferencePlot</A>
+  	
+<TR>
+  <TH ALIGN=LEFT>ppt: rain+snow (PREC)
+  <TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1_PREC\.gif');" onmouseover="displayImageHover('set1_PREC\.gif');" onmouseout="nodisplayImage();">plot</A>
+  <TH><TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1Diff_PREC\.gif');" onmouseover="displayImageHover('set1Diff_PREC\.gif');" onmouseout="nodisplayImage();">DifferencePlot</A>
+<TR>
+  <TH ALIGN=LEFT>Canopy Evaporation (CANOPY_EVAPORATION)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>Runoff:qover+qdrai+qrgwl (TOTRUNOFF)
+  <TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1_TOTRUNOFF\.gif');" onmouseover="displayImageHover('set1_TOTRUNOFF\.gif');" onmouseout="nodisplayImage();">plot</A>
+  <TH><TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1Diff_TOTRUNOFF\.gif');" onmouseover="displayImageHover('set1Diff_TOTRUNOFF\.gif');" onmouseout="nodisplayImage();">DifferencePlot</A>
+<TR>
+  <TH ALIGN=LEFT>soil temperature: layers 1,5,10 (TSOI)
+  <TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1_TSOI\.gif');" onmouseover="displayImageHover('set1_TSOI\.gif');" onmouseout="nodisplayImage();">plot</A>
+  <TH><TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1Diff_TSOI\.gif');" onmouseover="displayImageHover('set1Diff_TSOI\.gif');" onmouseout="nodisplayImage();">DifferencePlot</A>
+<TR>
+  <TH ALIGN=LEFT>photosynthesis (FPSN)
+  <TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1_FPSN\.gif');" onmouseover="displayImageHover('set1_FPSN\.gif');" onmouseout="nodisplayImage();">plot</A>
+  <TH><TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1Diff_FPSN\.gif');" onmouseover="displayImageHover('set1Diff_FPSN\.gif');" onmouseout="nodisplayImage();">DifferencePlot</A>
+<TR>
+  <TH ALIGN=LEFT>exposed one-sided leaf area index (ELAI)
+  <TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1_ELAI\.gif');" onmouseover="displayImageHover('set1_ELAI\.gif');" onmouseout="nodisplayImage();">plot</A>
+  <TH><TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1Diff_ELAI\.gif');" onmouseover="displayImageHover('set1Diff_ELAI\.gif');" onmouseout="nodisplayImage();">DifferencePlot</A>
+<TR>
+  <TH ALIGN=LEFT>exposed one-sided stem area index (ESAI)
+  <TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1_ESAI\.gif');" onmouseover="displayImageHover('set1_ESAI\.gif');" onmouseout="nodisplayImage();">plot</A>
+  <TH><TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1Diff_ESAI\.gif');" onmouseover="displayImageHover('set1Diff_ESAI\.gif');" onmouseout="nodisplayImage();">DifferencePlot</A>
+<TR>
+  <TH ALIGN=LEFT>total one-sided leaf area index (TLAI)
+  <TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1_TLAI\.gif');" onmouseover="displayImageHover('set1_TLAI\.gif');" onmouseout="nodisplayImage();">plot</A>
+  <TH><TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1Diff_TLAI\.gif');" onmouseover="displayImageHover('set1Diff_TLAI\.gif');" onmouseout="nodisplayImage();">DifferencePlot</A>
+<TR>
+  <TH ALIGN=LEFT>total one-sided stem area index (TSAI)
+  <TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1_TSAI\.gif');" onmouseover="displayImageHover('set1_TSAI\.gif');" onmouseout="nodisplayImage();">plot</A>
+  <TH><TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1Diff_TSAI\.gif');" onmouseover="displayImageHover('set1Diff_TSAI\.gif');" onmouseout="nodisplayImage();">DifferencePlot</A>
+<TR>
+  <TH ALIGN=LEFT>Sunlit Projected Leaf Area Index (LAISUN)
+  <TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1_LAISUN\.gif');" onmouseover="displayImageHover('set1_LAISUN\.gif');" onmouseout="nodisplayImage();">plot</A>
+  <TH><TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1Diff_LAISUN\.gif');" onmouseover="displayImageHover('set1Diff_LAISUN\.gif');" onmouseout="nodisplayImage();">DifferencePlot</A>
+<TR>
+  <TH ALIGN=LEFT>Shaded Projected Leaf Area Index (LAISHA)
+  <TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1_LAISHA\.gif');" onmouseover="displayImageHover('set1_LAISHA\.gif');" onmouseout="nodisplayImage();">plot</A>
+  <TH><TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1Diff_LAISHA\.gif');" onmouseover="displayImageHover('set1Diff_LAISHA\.gif');" onmouseout="nodisplayImage();">DifferencePlot</A>
+<TR>
+  <TH ALIGN=LEFT>Sunlit leaf stomatal resistance (RSSUN)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>shaded leaf stomatal resistance (RSSHA)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>transpiration beta factor (BTRAN)
+  <TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1_BTRAN\.gif');" onmouseover="displayImageHover('set1_BTRAN\.gif');" onmouseout="nodisplayImage();">plot</A>
+  <TH><TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1Diff_BTRAN\.gif');" onmouseover="displayImageHover('set1Diff_BTRAN\.gif');" onmouseout="nodisplayImage();">DifferencePlot</A>
+<TR>
+  <TH ALIGN=LEFT>infiltration (QINFL)
+  <TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1_QINFL\.gif');" onmouseover="displayImageHover('set1_QINFL\.gif');" onmouseout="nodisplayImage();">plot</A>
+  <TH><TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1Diff_QINFL\.gif');" onmouseover="displayImageHover('set1Diff_QINFL\.gif');" onmouseout="nodisplayImage();">DifferencePlot</A>
+<TR>
+  <TH ALIGN=LEFT>surface runoff (QOVER)
+  <TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1_QOVER\.gif');" onmouseover="displayImageHover('set1_QOVER\.gif');" onmouseout="nodisplayImage();">plot</A>
+  <TH><TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1Diff_QOVER\.gif');" onmouseover="displayImageHover('set1Diff_QOVER\.gif');" onmouseout="nodisplayImage();">DifferencePlot</A>
+<TR>
+  <TH ALIGN=LEFT>surface runoff at glaciers, wetlands, lakes (QRGWL)
+  <TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1_QRGWL\.gif');" onmouseover="displayImageHover('set1_QRGWL\.gif');" onmouseout="nodisplayImage();">plot</A>
+  <TH><TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1Diff_QRGWL\.gif');" onmouseover="displayImageHover('set1Diff_QRGWL\.gif');" onmouseout="nodisplayImage();">DifferencePlot</A>
+<TR>
+  <TH ALIGN=LEFT>sub-surface drainage (QDRAI)
+  <TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1_QDRAI\.gif');" onmouseover="displayImageHover('set1_QDRAI\.gif');" onmouseout="nodisplayImage();">plot</A>
+  <TH><TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1Diff_QDRAI\.gif');" onmouseover="displayImageHover('set1Diff_QDRAI\.gif');" onmouseout="nodisplayImage();">DifferencePlot</A>
+<TR>
+  <TH ALIGN=LEFT>interception (QINTR)
+  <TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1_QINTR\.gif');" onmouseover="displayImageHover('set1_QINTR\.gif');" onmouseout="nodisplayImage();">plot</A>
+  <TH><TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1Diff_QINTR\.gif');" onmouseover="displayImageHover('set1Diff_QINTR\.gif');" onmouseout="nodisplayImage();">DifferencePlot</A>
+<TR>
+  <TH ALIGN=LEFT>ground evaporation (QSOIL)
+  <TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1_QSOIL\.gif');" onmouseover="displayImageHover('set1_QSOIL\.gif');" onmouseout="nodisplayImage();">plot</A>
+  <TH><TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1Diff_QSOIL\.gif');" onmouseover="displayImageHover('set1Diff_QSOIL\.gif');" onmouseout="nodisplayImage();">DifferencePlot</A>
+<TR>
+  <TH ALIGN=LEFT>canopy transpiration (QVEGT)
+  <TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1_QVEGT\.gif');" onmouseover="displayImageHover('set1_QVEGT\.gif');" onmouseout="nodisplayImage();">plot</A>
+  <TH><TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1Diff_QVEGT\.gif');" onmouseover="displayImageHover('set1Diff_QVEGT\.gif');" onmouseout="nodisplayImage();">DifferencePlot</A>
+<TR>
+  <TH ALIGN=LEFT>soil liquid water: layers 1,5,10 (SOILLIQ)
+  <TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1_SOILLIQ\.gif');" onmouseover="displayImageHover('set1_SOILLIQ\.gif');" onmouseout="nodisplayImage();">plot</A>
+  <TH><TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1Diff_SOILLIQ\.gif');" onmouseover="displayImageHover('set1Diff_SOILLIQ\.gif');" onmouseout="nodisplayImage();">DifferencePlot</A>
+<TR>
+  <TH ALIGN=LEFT>soil ice: layers 1,5,10 (SOILICE)
+  <TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1_SOILICE\.gif');" onmouseover="displayImageHover('set1_SOILICE\.gif');" onmouseout="nodisplayImage();">plot</A>
+  <TH><TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1Diff_SOILICE\.gif');" onmouseover="displayImageHover('set1Diff_SOILICE\.gif');" onmouseout="nodisplayImage();">DifferencePlot</A>
+<TR>
+  <TH ALIGN=LEFT>Soil Water Potential in Each Soil Layer (SOILPSI)
+  <TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1_SOILPSI\.gif');" onmouseover="displayImageHover('set1_SOILPSI\.gif');" onmouseout="nodisplayImage();">plot</A>
+  <TH><TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1Diff_SOILPSI\.gif');" onmouseover="displayImageHover('set1Diff_SOILPSI\.gif');" onmouseout="nodisplayImage();">DifferencePlot</A>
+<TR>
+  <TH ALIGN=LEFT>snow liquid water (SNOWLIQ)
+  <TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1_SNOWLIQ\.gif');" onmouseover="displayImageHover('set1_SNOWLIQ\.gif');" onmouseout="nodisplayImage();">plot</A>
+  <TH><TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1Diff_SNOWLIQ\.gif');" onmouseover="displayImageHover('set1Diff_SNOWLIQ\.gif');" onmouseout="nodisplayImage();">DifferencePlot</A>
+<TR>
+  <TH ALIGN=LEFT>snow ice (SNOWICE)
+  <TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1_SNOWICE\.gif');" onmouseover="displayImageHover('set1_SNOWICE\.gif');" onmouseout="nodisplayImage();">plot</A>
+  <TH><TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1Diff_SNOWICE\.gif');" onmouseover="displayImageHover('set1Diff_SNOWICE\.gif');" onmouseout="nodisplayImage();">DifferencePlot</A>
+<TR>
+  <TH ALIGN=LEFT>total soil liquid water (TOTSOILLIQ)
+  <TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1_TOTSOILLIQ\.gif');" onmouseover="displayImageHover('set1_TOTSOILLIQ\.gif');" onmouseout="nodisplayImage();">plot</A>
+  <TH><TH ALIGN=LEFT><a href="#" onclick="displayImageClick('set1Diff_TOTSOILLIQ\.gif');" onmouseover="displayImageHover('set1Diff_TOTSOILLIQ\.gif');" onmouseout="nodisplayImage();">DifferencePlot</A>
+<TR>
+  <TH ALIGN=LEFT>soil ice (TOTSOILICE)
+  <TH ALIGN=LEFT><A HREF="set1_TOTSOILICE.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_TOTSOILICE.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>water in the unconfined aquifer (WA)
+  <TH ALIGN=LEFT><A HREF="set1_WA.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_WA.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>total water storage (WT)
+  <TH ALIGN=LEFT><A HREF="set1_WT.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_WT.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>water table depth (ZWT)
+  <TH ALIGN=LEFT><A HREF="set1_ZWT.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_ZWT.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>aquifer recharge rate (QCHARGE)
+  <TH ALIGN=LEFT><A HREF="set1_QCHARGE.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_QCHARGE.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>fractional area with water table at surface (FCOV)
+  <TH ALIGN=LEFT><A HREF="set1_FCOV.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_FCOV.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>CO2 concentration (CO2_PPMV)
+  <TH ALIGN=LEFT><A HREF="set1_CO2_PPMV.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_CO2_PPMV.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>net ecosys exchange of C;incl fire flx;pos for source (NEE)
+  <TH ALIGN=LEFT><A HREF="set1_NEE.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_NEE.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>net ecosystem production;excl fire flx;pos for sink (NEP)
+  <TH ALIGN=LEFT><A HREF="set1_NEP.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_NEP.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>gross primary production (GPP)
+  <TH ALIGN=LEFT><A HREF="set1_GPP.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_GPP.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>GPP from Sunlit Canopy (PSNSUN_TO_CPOOL)
+  <TH ALIGN=LEFT><A HREF="set1_PSNSUN_TO_CPOOL.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_PSNSUN_TO_CPOOL.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>GPP from Shaded Canopy (PSNSHADE_TO_CPOOL)
+  <TH ALIGN=LEFT><A HREF="set1_PSNSHADE_TO_CPOOL.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_PSNSHADE_TO_CPOOL.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>net primary production (NPP)
+  <TH ALIGN=LEFT><A HREF="set1_NPP.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_NPP.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>above ground net primary production (AGNPP)
+  <TH ALIGN=LEFT><A HREF="set1_AGNPP.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_AGNPP.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>below ground net primary production (BGNPP)
+  <TH ALIGN=LEFT><A HREF="set1_BGNPP.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_BGNPP.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>maintenance respiration (MR)
+  <TH ALIGN=LEFT><A HREF="set1_MR.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_MR.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>total growth respiration (GR)
+  <TH ALIGN=LEFT><A HREF="set1_GR.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_GR.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>autotrophic respiration (MR + GR) (AR)
+  <TH ALIGN=LEFT><A HREF="set1_AR.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_AR.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>litter hetereotrophic respiration (LITHR)
+  <TH ALIGN=LEFT><A HREF="set1_LITHR.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_LITHR.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>SOM hetereotrophic respiration (SOMHR)
+  <TH ALIGN=LEFT><A HREF="set1_SOMHR.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_SOMHR.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>total hetereotrophic respiration (HR)
+  <TH ALIGN=LEFT><A HREF="set1_HR.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_HR.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>root respiration (fine root MR + total root GR) (RR)
+  <TH ALIGN=LEFT><A HREF="set1_RR.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_RR.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>total soil respiration (HR + root resp) (SR)
+  <TH ALIGN=LEFT><A HREF="set1_SR.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_SR.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>total ecosystem respiration (AR + HR) (ER)
+  <TH ALIGN=LEFT><A HREF="set1_ER.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_ER.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>leaf carbon (LEAFC)
+  <TH ALIGN=LEFT><A HREF="set1_LEAFC.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_LEAFC.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Soil organic matter C (slow pool) (SOIL3C)
+  <TH ALIGN=LEFT><A HREF="set1_SOIL3C.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_SOIL3C.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Soil organic matter C (slowest pool) (SOIL4C)
+  <TH ALIGN=LEFT><A HREF="set1_SOIL4C.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_SOIL4C.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>fine root carbon (FROOTC)
+  <TH ALIGN=LEFT><A HREF="set1_FROOTC.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_FROOTC.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>live stem C (LIVESTEMC)
+  <TH ALIGN=LEFT><A HREF="set1_LIVESTEMC.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_LIVESTEMC.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>dead stem carbon (DEADSTEMC)
+  <TH ALIGN=LEFT><A HREF="set1_DEADSTEMC.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_DEADSTEMC.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>live coarse root carbon (LIVECROOTC)
+  <TH ALIGN=LEFT><A HREF="set1_LIVECROOTC.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_LIVECROOTC.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>dead coarse root carbon (DEADCROOTC)
+  <TH ALIGN=LEFT><A HREF="set1_DEADCROOTC.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_DEADCROOTC.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>temporary photosynthate C pool (CPOOL)
+  <TH ALIGN=LEFT><A HREF="set1_CPOOL.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_CPOOL.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Temporary Photosynthate C Pool (XSMRPOOL)
+  <TH ALIGN=LEFT><A HREF="set1_XSMRPOOL.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_XSMRPOOL.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>total vegetation C, excluding cpool (TOTVEGC)
+  <TH ALIGN=LEFT><A HREF="set1_TOTVEGC.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_TOTVEGC.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>coarse woody debris carbon (CWDC)
+  <TH ALIGN=LEFT><A HREF="set1_CWDC.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_CWDC.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>total litter carbon (TOTLITC)
+  <TH ALIGN=LEFT><A HREF="set1_TOTLITC.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_TOTLITC.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>total SOM carbon (TOTSOMC)
+  <TH ALIGN=LEFT><A HREF="set1_TOTSOMC.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_TOTSOMC.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>total ecosystem C, incl veg but excl cpool (TOTECOSYSC)
+  <TH ALIGN=LEFT><A HREF="set1_TOTECOSYSC.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_TOTECOSYSC.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>total ecosystem C, incl veg and cpool (TOTCOLC)
+  <TH ALIGN=LEFT><A HREF="set1_TOTCOLC.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_TOTCOLC.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>column-level sink for C truncation (COL_CTRUNC)
+  <TH ALIGN=LEFT><A HREF="set1_COL_CTRUNC.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_COL_CTRUNC.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>pft-level sink for C truncation (PFT_CTRUNC)
+  <TH ALIGN=LEFT><A HREF="set1_PFT_CTRUNC.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_PFT_CTRUNC.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>fraction of potential GPP (FPG)
+  <TH ALIGN=LEFT><A HREF="set1_FPG.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_FPG.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>fraction of potential immobilization (FPI)
+  <TH ALIGN=LEFT><A HREF="set1_FPI.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_FPI.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>total ecosystem N (TOTECOSYSN)
+  <TH ALIGN=LEFT><A HREF="set1_TOTECOSYSN.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_TOTECOSYSN.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>nitrogen deposition (NDEP_TO_SMINN)
+  <TH ALIGN=LEFT><A HREF="set1_NDEP_TO_SMINN.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_NDEP_TO_SMINN.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>nitrogen fixation (NFIX_TO_SMINN)
+  <TH ALIGN=LEFT><A HREF="set1_NFIX_TO_SMINN.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_NFIX_TO_SMINN.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>supplement to mineral nitrogen (SUPPLEMENT_TO_SMINN)
+  <TH ALIGN=LEFT><A HREF="set1_SUPPLEMENT_TO_SMINN.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_SUPPLEMENT_TO_SMINN.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Nitrogen Leached (SMINN_LEACHED)
+  <TH ALIGN=LEFT><A HREF="set1_SMINN_LEACHED.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_SMINN_LEACHED.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>soil mineral N (SMINN)
+  <TH ALIGN=LEFT><A HREF="set1_SMINN.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_SMINN.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Mineral N to NPool (SMINN_TO_NPOOL)
+  <TH ALIGN=LEFT><A HREF="set1_SMINN_TO_NPOOL.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_SMINN_TO_NPOOL.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>column-level sink for N truncation (COL_NTRUNC)
+  <TH ALIGN=LEFT><A HREF="set1_COL_NTRUNC.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_COL_NTRUNC.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>pft-level sink for N truncation (PFT_NTRUNC)
+  <TH ALIGN=LEFT><A HREF="set1_PFT_NTRUNC.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_PFT_NTRUNC.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>plant pool of retranslocated N (RETRANSN)
+  <TH ALIGN=LEFT><A HREF="set1_RETRANSN.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_RETRANSN.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Retranslocated N to NPool (RETRANSN_TO_NPOOL)
+  <TH ALIGN=LEFT><A HREF="set1_RETRANSN_TO_NPOOL.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_RETRANSN_TO_NPOOL.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Potential Immobilization (POTENTIAL_IMMOB)
+  <TH ALIGN=LEFT><A HREF="set1_POTENTIAL_IMMOB.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_POTENTIAL_IMMOB.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Actual Immobilization (ACTUAL_IMMOB)
+  <TH ALIGN=LEFT><A HREF="set1_ACTUAL_IMMOB.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_ACTUAL_IMMOB.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Gross N Mineralization (GROSS_NMIN)
+  <TH ALIGN=LEFT><A HREF="set1_GROSS_NMIN.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_GROSS_NMIN.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Net N Mineralization (NET_NMIN)
+  <TH ALIGN=LEFT><A HREF="set1_NET_NMIN.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_NET_NMIN.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Total N Deployed in New Growth (NDEPLOY)
+  <TH ALIGN=LEFT><A HREF="set1_NDEPLOY.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_NDEPLOY.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Total Denitrification (DENIT)
+  <TH ALIGN=LEFT><A HREF="set1_DENIT.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_DENIT.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>soil organic matter N (slow pool) (SOIL3N)
+  <TH ALIGN=LEFT><A HREF="set1_SOIL3N.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_SOIL3N.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Soil organic matter N (slowest pool) (SOIL4N)
+  <TH ALIGN=LEFT><A HREF="set1_SOIL4N.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_SOIL4N.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>total column-level fire C loss (COL_FIRE_CLOSS)
+  <TH ALIGN=LEFT><A HREF="set1_COL_FIRE_CLOSS.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_COL_FIRE_CLOSS.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>total pft-level fire C loss (PFT_FIRE_CLOSS)
+  <TH ALIGN=LEFT><A HREF="set1_PFT_FIRE_CLOSS.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_PFT_FIRE_CLOSS.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>total column-level fire N loss (COL_FIRE_NLOSS)
+  <TH ALIGN=LEFT><A HREF="set1_COL_FIRE_NLOSS.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_COL_FIRE_NLOSS.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>total pft-level fire N loss (PFT_FIRE_NLOSS)
+  <TH ALIGN=LEFT><A HREF="set1_PFT_FIRE_NLOSS.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_PFT_FIRE_NLOSS.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>annual fire season length (FIRESEASONL)
+  <TH ALIGN=LEFT><A HREF="set1_FIRESEASONL.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_FIRESEASONL.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>daily fire probability (FIRE_PROB)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>annual total fractional area burned (ANN_FAREA_BURNED)
+  <TH ALIGN=LEFT><A HREF="set1_ANN_FAREA_BURNED.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_ANN_FAREA_BURNED.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>e-folding mean of daily fire probability (MEAN_FIRE_PROB)
+  <TH ALIGN=LEFT><A HREF="set1_MEAN_FIRE_PROB.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_MEAN_FIRE_PROB.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Coarse Woody Debris C Hetereotrophic respiration (CWDC_HR)
+  <TH ALIGN=LEFT><A HREF="set1_CWDC_HR.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_CWDC_HR.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Coarse Woody Debris C Loss (CWDC_LOSS)
+  <TH ALIGN=LEFT><A HREF="set1_CWDC_LOSS.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_CWDC_LOSS.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Fine root C allocation (FROOTC_ALLOC)
+  <TH ALIGN=LEFT><A HREF="set1_FROOTC_ALLOC.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_FROOTC_ALLOC.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Fine root C Loss (FROOTC_LOSS)
+  <TH ALIGN=LEFT><A HREF="set1_FROOTC_LOSS.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_FROOTC_LOSS.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Leaf C Allocation (LEAFC_ALLOC)
+  <TH ALIGN=LEFT><A HREF="set1_LEAFC_ALLOC.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_LEAFC_ALLOC.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Leaf C Loss (LEAFC_LOSS)
+  <TH ALIGN=LEFT><A HREF="set1_LEAFC_LOSS.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_LEAFC_LOSS.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Total Litter C (LITTERC)
+  <TH ALIGN=LEFT><A HREF="set1_LITTERC.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_LITTERC.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Litter Hetereotrophic Respiration (LITTERC_HR)
+  <TH ALIGN=LEFT><A HREF="set1_LITTERC_HR.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_LITTERC_HR.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Litter C Loss (LITTERC_LOSS)
+  <TH ALIGN=LEFT><A HREF="set1_LITTERC_LOSS.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_LITTERC_LOSS.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>soil organic matter C (fast pool) (SOILC)
+  <TH ALIGN=LEFT><A HREF="set1_SOILC.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_SOILC.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Soil C hetereotrophic respiration (SOILC_HR)
+  <TH ALIGN=LEFT><A HREF="set1_SOILC_HR.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_SOILC_HR.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Soil C Loss (SOILC_LOSS)
+  <TH ALIGN=LEFT><A HREF="set1_SOILC_LOSS.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_SOILC_LOSS.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Wood C (WOODC)
+  <TH ALIGN=LEFT><A HREF="set1_WOODC.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_WOODC.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Wood C Allocation (WOODC_ALLOC)
+  <TH ALIGN=LEFT><A HREF="set1_WOODC_ALLOC.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_WOODC_ALLOC.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Wood C Loss (WOODC_LOSS)
+  <TH ALIGN=LEFT><A HREF="set1_WOODC_LOSS.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_WOODC_LOSS.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>seed source to PFT-level leaf (DWT_SEEDC_TO_LEAF)
+  <TH ALIGN=LEFT><A HREF="set1_DWT_SEEDC_TO_LEAF.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_DWT_SEEDC_TO_LEAF.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>seed source to PFT-level deadstem (DWT_SEEDC_TO_DEADSTEM)
+  <TH ALIGN=LEFT><A HREF="set1_DWT_SEEDC_TO_DEADSTEM.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_DWT_SEEDC_TO_DEADSTEM.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>conversion C flux (immediate loss to atm) (DWT_CONV_CFLUX)
+  <TH ALIGN=LEFT><A HREF="set1_DWT_CONV_CFLUX.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_DWT_CONV_CFLUX.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>landcover change-driven addition to 10-yr wood product pool (DWT_PROD10C_GAIN)
+  <TH ALIGN=LEFT><A HREF="set1_DWT_PROD10C_GAIN.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_DWT_PROD10C_GAIN.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>loss from 10-yr wood product pool (PROD10C_LOSS)
+  <TH ALIGN=LEFT><A HREF="set1_PROD10C_LOSS.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_PROD10C_LOSS.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>landcover change-driven addition to 100-yr wood product pool (DWT_PROD100C_GAIN)
+  <TH ALIGN=LEFT><A HREF="set1_DWT_PROD100C_GAIN.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_DWT_PROD100C_GAIN.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>loss from 100-yr wood product pool (PROD100C_LOSS)
+  <TH ALIGN=LEFT><A HREF="set1_PROD100C_LOSS.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_PROD100C_LOSS.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>total carbon loss from land cover conversion (DWT_CLOSS)
+  <TH ALIGN=LEFT><A HREF="set1_DWT_CLOSS.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_DWT_CLOSS.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>total carbon loss from wood product pools (PRODUCT_CLOSS)
+  <TH ALIGN=LEFT><A HREF="set1_PRODUCT_CLOSS.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_PRODUCT_CLOSS.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>10-yr wood product C (PROD10C)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>100-yr wood product C (PROD100C)
+  <TH ALIGN=LEFT><A HREF="set1_PROD100C.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_PROD100C.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>total wood product C (TOTPRODC)
+  <TH ALIGN=LEFT><A HREF="set1_TOTPRODC.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_TOTPRODC.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>wood harvest (to product pools) (WOOD_HARVESTC)
+  <TH ALIGN=LEFT><A HREF="set1_WOOD_HARVESTC.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_WOOD_HARVESTC.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>heat flux into soil (GROUND)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>Latent Heat Flux (LATENT)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>Sensible Heat Flux (SENSIBLE)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>Sensible Heat Flux from Ground (SENSIBLE_GND)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>Sensible Heat Flux from Vegetation (SENSIBLE_VEG)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>Relative Humidity at 2m (REL_HUM)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>Specific Humidity at 2m (SPEC_HUM_2M)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>Atmospheric Specific Humidity (SPEC_HUM)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>atmospheric rain (RAIN)
+  <TH ALIGN=LEFT><A HREF="set1_RAIN.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_RAIN.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>atmospheric snow (SNOW)
+  <TH ALIGN=LEFT><A HREF="set1_SNOW.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_SNOW.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>transpiration beta factor (BTRAN)
+  <TH ALIGN=LEFT><A HREF="set1_BTRAN.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_BTRAN.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Canopy Evaporation (CANOPY_EVAPORATION)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>Subsurface Drainage (DRAINAGE)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>Evapotranspiration (ET)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>Canopy Interception (INTERCEPTION)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>Surface Runoff (RUNOFF)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>Snow depth (SNOW_DEPTH)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>Soil Evaporation (SOIL_EVAPORATION)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>Soil Ice in each soil layer (SOIL_ICE)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>Soil Liquid Water (SOIL_LIQUID)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>Soil Water Potential (SOIL_PSI)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>Total soil ice (TOTAL_SOIL_ICE)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>total soil liquid water (TOTAL_SOIL_LIQUID)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>Transpiration (TRANSPIRATION)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>Volumetric Soil Water (VOL_SOIL_WATER)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>All-Sky Albedo (ALL_SKY_ALBEDO)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>Surface Black-Sky Albedo (BLACK_SKY_ALBEDO)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>Downward Infrared Radiation (IRDOWN)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>Upward Infrared Radiation (IRUP)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>Shaded Projected Leaf Area Index (LAISHA)
+  <TH ALIGN=LEFT><A HREF="set1_LAISHA.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_LAISHA.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Sunlit Projected Leaf Area Index (LAISUN)
+  <TH ALIGN=LEFT><A HREF="set1_LAISUN.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_LAISUN.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Net Infrared (longwave) Radiation (NETIR)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>Net radiation (NETRAD)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>Total Reflected Solar Radiation (REFLECT)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>Snow Fraction (SNOW_FRACTION)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>Total Incident Solar Radiation (SOLAR)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>Total Absorbed Solar Radiation (SOLAR_AB)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>Solar Radiation Absorbed by Ground (SOLAR_ABG)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>Solar Rad Absorbed by Vegetation (SOLAR_ABV)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>Accumulated degree days (DEGREE_DAYS)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>daily minimum of average 2m temperature (TREFMNAV)
+  <TH ALIGN=LEFT><A HREF="set1_TREFMNAV.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_TREFMNAV.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>daily maximum of average 2m temperature (TREFMXAV)
+  <TH ALIGN=LEFT><A HREF="set1_TREFMXAV.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_TREFMXAV.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>2m Air Temperature (TSA2M)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>soil temperature (TSOIL)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>Vegetation Temperature (TVEG)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>exposed one-sided leaf area index (ELAI)
+  <TH ALIGN=LEFT><A HREF="set1_ELAI.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_ELAI.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>exposed one-sided stem area index (ESAI)
+  <TH ALIGN=LEFT><A HREF="set1_ESAI.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_ESAI.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>total one-sided leaf area index (TLAI)
+  <TH ALIGN=LEFT><A HREF="set1_TLAI.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_TLAI.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>total one-sided stem area index (TSAI)
+  <TH ALIGN=LEFT><A HREF="set1_TSAI.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_TSAI.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Photosynthesis (PHOTOSYNTHESIS)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>shaded leaf stomatal resistance (RSSHA)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>Sunlit leaf stomatal resistance (RSSUN)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>above ground net primary production (AGNPP)
+  <TH ALIGN=LEFT><A HREF="set1_AGNPP.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_AGNPP.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>autotrophic respiration (MR + GR) (AR)
+  <TH ALIGN=LEFT><A HREF="set1_AR.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_AR.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>below ground net primary production (BGNPP)
+  <TH ALIGN=LEFT><A HREF="set1_BGNPP.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_BGNPP.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Biogenic CO Flux (BIOGENIC_CO)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>coarse woody debris carbon (CWDC)
+  <TH ALIGN=LEFT><A HREF="set1_CWDC.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_CWDC.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Coarse Woody Debris C Hetereotrophic respiration (CWDC_HR)
+  <TH ALIGN=LEFT><A HREF="set1_CWDC_HR.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_CWDC_HR.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Coarse Woody Debris C Loss (CWDC_LOSS)
+  <TH ALIGN=LEFT><A HREF="set1_CWDC_LOSS.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_CWDC_LOSS.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>fine root carbon (FROOTC)
+  <TH ALIGN=LEFT><A HREF="set1_FROOTC.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_FROOTC.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Fine root C allocation (FROOTC_ALLOC)
+  <TH ALIGN=LEFT><A HREF="set1_FROOTC_ALLOC.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_FROOTC_ALLOC.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Fine root C Loss (FROOTC_LOSS)
+  <TH ALIGN=LEFT><A HREF="set1_FROOTC_LOSS.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_FROOTC_LOSS.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>gross primary production (GPP)
+  <TH ALIGN=LEFT><A HREF="set1_GPP.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_GPP.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Gross N Mineralization (GROSS_NMIN)
+  <TH ALIGN=LEFT><A HREF="set1_GROSS_NMIN.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_GROSS_NMIN.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>total hetereotrophic respiration (HR)
+  <TH ALIGN=LEFT><A HREF="set1_HR.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_HR.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Isoprene Flux (ISOPRENE)
+  <TH ALIGN=LEFT><A HREF="set1_ISOPRENE.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_ISOPRENE.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>leaf carbon (LEAFC)
+  <TH ALIGN=LEFT><A HREF="set1_LEAFC.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_LEAFC.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Leaf C Allocation (LEAFC_ALLOC)
+  <TH ALIGN=LEFT><A HREF="set1_LEAFC_ALLOC.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_LEAFC_ALLOC.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Leaf C Loss (LEAFC_LOSS)
+  <TH ALIGN=LEFT><A HREF="set1_LEAFC_LOSS.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_LEAFC_LOSS.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Total Litter C (LITTERC)
+  <TH ALIGN=LEFT><A HREF="set1_LITTERC.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_LITTERC.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Litter Hetereotrophic Respiration (LITTERC_HR)
+  <TH ALIGN=LEFT><A HREF="set1_LITTERC_HR.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_LITTERC_HR.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Litter C Loss (LITTERC_LOSS)
+  <TH ALIGN=LEFT><A HREF="set1_LITTERC_LOSS.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_LITTERC_LOSS.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Monoterpene Flux (MONOTERPENE)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>net ecosys exchange of C;incl fire flx;pos for source (NEE)
+  <TH ALIGN=LEFT><A HREF="set1_NEE.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_NEE.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>net ecosystem production;excl fire flx;pos for sink (NEP)
+  <TH ALIGN=LEFT><A HREF="set1_NEP.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_NEP.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Net N Mineralization (NET_NMIN)
+  <TH ALIGN=LEFT><A HREF="set1_NET_NMIN.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_NET_NMIN.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>net primary production (NPP)
+  <TH ALIGN=LEFT><A HREF="set1_NPP.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_NPP.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Other VOC Flux (OTHER_VOC)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>Other Reactive VOC Flux (OR_VOC)
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+  <TH ALIGN=LEFT><font color=green:font weight=bold>---</font>
+<TR>
+  <TH ALIGN=LEFT>soil organic matter C (fast pool) (SOILC)
+  <TH ALIGN=LEFT><A HREF="set1_SOILC.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_SOILC.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Soil C hetereotrophic respiration (SOILC_HR)
+  <TH ALIGN=LEFT><A HREF="set1_SOILC_HR.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_SOILC_HR.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Soil C Loss (SOILC_LOSS)
+  <TH ALIGN=LEFT><A HREF="set1_SOILC_LOSS.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_SOILC_LOSS.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Total VOC flux into Atmosphere (VOCFLXT)
+  <TH ALIGN=LEFT><A HREF="set1_VOCFLXT.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_VOCFLXT.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Wood C (WOODC)
+  <TH ALIGN=LEFT><A HREF="set1_WOODC.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_WOODC.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Wood C Allocation (WOODC_ALLOC)
+  <TH ALIGN=LEFT><A HREF="set1_WOODC_ALLOC.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_WOODC_ALLOC.gif">DifferencePlot</a>
+<TR>
+  <TH ALIGN=LEFT>Wood C Loss (WOODC_LOSS)
+  <TH ALIGN=LEFT><A HREF="set1_WOODC_LOSS.gif">plot</a>
+  <TH><TH ALIGN=LEFT><A HREF="set1Diff_WOODC_LOSS.gif">DifferencePlot</a>
+<TR>
+</table>
