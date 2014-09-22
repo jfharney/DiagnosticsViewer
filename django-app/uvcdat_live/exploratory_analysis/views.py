@@ -736,6 +736,120 @@ def tree(request):
 from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
+def classic_views_html(request):
+    
+    print 'in classic views html'
+    
+    html = ""
+    
+    response = 'error'
+    
+    if request.method == "POST":
+        set = None
+        vars = None
+        times = None
+        package = None
+        dataset = None
+        
+        json_data = json.loads(request.body)
+        
+        set = json_data['set'] #should be a string
+        vars = json_data['vars'] #should be a list
+        times = json_data['times'] #should be a list
+        package = json_data['package'] #should be a string
+        dataset = json_data['dataset']
+        
+        print 'set: ' + set
+        print 'vars: ' + str(vars) + ' ' #+ vars.length
+        print 'times: ' + str(times) + ' ' #+ times.length
+        print 'package: ' + package
+        print 'dataset: ' + dataset
+        
+        
+        if package == 'amwg':
+            print 'atmosphere diagnostics'
+        
+            from classic import amwghtmlgenerator
+            
+            if set == 'set1':
+                print 'set1'
+                
+                html = amwghtmlgenerator.set1(set,vars,times,package,dataset)
+            
+            elif set == 'set2':
+                print 'set2'
+            
+                html = amwghtmlgenerator.set2(set,vars,times,package,dataset)
+            
+            elif set == 'set3':
+                print 'set3'
+            
+                html = amwghtmlgenerator.set3(set,vars,times,package,dataset)
+            
+            
+            elif set == 'set4':
+                print 'set4'
+            
+                html = '<div>set4</div>'
+            
+            elif set == 'set5':
+                print 'set5'
+            
+                html = '<div>set5</div>'
+            
+            elif set == 'set6':
+                print 'set6'
+            
+                html = '<div>set6<div>'
+            
+            elif set == 'set7':
+                print 'set7'
+            
+                html = '<div>set7</div>'
+            
+            elif set == 'set8':
+                print 'set8'
+            
+                html = '<div>set8</div>'
+            
+            elif set == 'set9':
+                print 'set9'
+            
+                html = '<div>set9</div>'
+            
+            elif set == 'set10':
+                print 'set10'
+            
+                html = '<div>set10</div>'
+            
+            elif set == 'set11':
+                print 'set11'
+            
+                html = '<div>set12<div>'
+            
+            elif set == 'set13':
+                print 'set13'
+            
+                html = '<div>set13</div>'
+            
+            elif set == 'set14':
+                print 'set14'
+            
+                html = '<div>set14</div>'
+            
+            elif set == 'set15':
+                print 'set15'
+            
+                html = '<div>set15</div>'
+            
+                
+    
+    response = html
+    
+    return HttpResponse(html);
+    
+    
+@csrf_exempt
 def classic_views(request):
     
     print 'in classic views'
