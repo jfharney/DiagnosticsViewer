@@ -771,6 +771,8 @@ def classic_views(request):
         print 'package: ' + package
         print 'dataset: ' + dataset
     
+    
+    
         #change this to the specified directory structure
         url_prefix = "/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
         
@@ -793,6 +795,71 @@ def classic_views(request):
         url1 = str(os.getcwd()) + '/exploratory_analysis' + str(url1)
         
         f = open(url1,'w') 
+        
+        #Write the html here
+        
+        if package == 'amwg':
+            print 'atmosphere diagnostics'
+            
+            if set == 'set1':
+                print 'set1'
+                html_str = ''
+                html_str += '<img src="../images/3Dglobe.gif" hspace=10 align=left alt="3D globe">\n'
+                html_str += '<p>\n'
+                html_str += '<font color=maroon size=+3><b>\n'
+                html_str += 't85f09.B1850 <br>and<br> OBS data\n'
+                html_str += '</b></font>\n'
+                html_str += '<p>\n'
+                html_str += '<a href="../sets.htm">\n'
+                html_str += '<font color=red><b>Back to diagnostic sets</b></font></a>\n'
+                html_str += '<br clear=left>\n'
+                html_str += '<p>\n'
+                html_str += '<b>DIAG Set 1 - Tables of global, tropical, and extratropical<br>\n'
+                html_str += 'DJF, JJA, ANN means and RMSE</b><br>\n'
+                html_str += '<hr noshade size=2 size="100%">\n'
+                
+                html_str += '<TABLE>\n'
+                html_str += '<TR>\n'
+                html_str += '  <TH ALIGN=LEFT><font color=blue>Domain</font>\n'
+                html_str += '  <TH>DJF\n'
+                html_str += '  <TH>JJA\n'
+                html_str += '  <TH>ANN\n'
+                html_str += '<TR>\n'
+                html_str += '  <TH ALIGN=LEFT>global\n'
+                html_str += '  <TH ALIGN=LEFT><A HREF="table_GLBL_DJF_obs.asc">table</a>\n'
+                html_str += '  <TH ALIGN=LEFT><A HREF="table_GLBL_JJA_obs.asc">table</a>\n'
+                html_str += '  <TH ALIGN=LEFT><A HREF="table_GLBL_ANN_obs.asc">table</a>\n'
+                html_str += '\n'
+                '''
+                <TR>
+                  <TH ALIGN=LEFT>global
+                  <TH ALIGN=LEFT><A HREF="table_GLBL_DJF_obs.asc">table</a>
+                  <TH ALIGN=LEFT><A HREF="table_GLBL_JJA_obs.asc">table</a>
+                  <TH ALIGN=LEFT><A HREF="table_GLBL_ANN_obs.asc">table</a>
+                <TR>
+                  <TH ALIGN=LEFT>tropics (20S-20N)
+                  <TH ALIGN=LEFT><A HREF="table_TROP_DJF_obs.asc">table</a>
+                  <TH ALIGN=LEFT><A HREF="table_TROP_JJA_obs.asc">table</a>
+                  <TH ALIGN=LEFT><A HREF="table_TROP_ANN_obs.asc">table</a>
+                <TR>
+                  <TH ALIGN=LEFT>southern extratropics (90S-20S)
+                  <TH ALIGN=LEFT><A HREF="table_SEXT_DJF_obs.asc">table</a>
+                  <TH ALIGN=LEFT><A HREF="table_SEXT_JJA_obs.asc">table</a>
+                  <TH ALIGN=LEFT><A HREF="table_SEXT_ANN_obs.asc">table</a>
+                <TR>
+                  <TH ALIGN=LEFT>northern extratropics (20N-90N)
+                  <TH ALIGN=LEFT><A HREF="table_NEXT_DJF_obs.asc">table</a>
+                  <TH ALIGN=LEFT><A HREF="table_NEXT_JJA_obs.asc">table</a>
+                  <TH ALIGN=LEFT><A HREF="table_NEXT_ANN_obs.asc">table</a>
+                </TABLE>
+                '''
+                
+                f.write(html_str)
+            
+        else:
+            print 'land diagnostics'
+        
+        
         
         f.write('0123456789abcdef')
         

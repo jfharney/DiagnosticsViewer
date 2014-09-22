@@ -92,7 +92,7 @@ function toggle_vis(set) {
 	}
 
 	
-	var url = 'http://localhost:8081/exploratory_analysis/classic_views/';
+	var url = 'http://localhost:8081/exploratory_analysis/classic_views/' + '?_='+Math.round(Math.random()*10000);
 	
 	var setData = set;
 	var varsData = variable_arr;//["var1","var2"];
@@ -118,6 +118,7 @@ function toggle_vis(set) {
 	$.ajax({
 		type : "POST",
 		url : url,
+		cache: false,
 		data : JSON.stringify(data),
 		//async : false,
 		success : function(set_url) {
