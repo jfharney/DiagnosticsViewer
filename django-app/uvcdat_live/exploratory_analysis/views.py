@@ -740,6 +740,10 @@ def classic_views_html(request):
     
     print 'in classic views html'
     
+    options = request.GET.get('options')
+    
+    print 'options: ' + str(options)
+    
     html = ""
     
     response = 'error'
@@ -784,13 +788,13 @@ def classic_views_html(request):
             elif set == 'set3':
                 print 'set3'
             
-                html = amwghtmlgenerator.set3(set,vars,times,package,dataset)
+                html = amwghtmlgenerator.set3(set,vars,times,package,dataset,options)
             
             
             elif set == 'set4':
                 print 'set4'
             
-                html = '<div>set4</div>'
+                html = amwghtmlgenerator.set4(set,vars,times,package,dataset,options)
             
             elif set == 'set5':
                 print 'set5'
