@@ -64,9 +64,10 @@ var clicked=0;
 function displayImageClick(imageURL)
 {
 	var imagePath = "<img src=\"" + imageURL + "\" \/>";
+	document.getElementById("unglue").style.visibility='visible';
 	document.getElementById("plotArea").style.visibility='visible';
-		document.getElementById("plotArea").innerHTML=imagePath;
-		clicked =1;
+	document.getElementById("plotArea").innerHTML=imagePath;
+	clicked =1;
 }
 
 
@@ -82,6 +83,8 @@ function displayImageHover(imageURL)
 function ungluePlot()
 {
 	clicked =0;
+	document.getElementById("unglue").style.visibility='hidden';
+	document.getElementById("plotArea").style.visibility='hidden';
 }
 
 function nodisplayImage()
@@ -163,7 +166,7 @@ function toggle_vis(set) {
 			$('#' + html_elem_id).load(set_url);
 
 			document.getElementById(html_elem_id).style.display = 'block';
-			
+			document.getElementById("unglue").style.visibility='hidden';
 		},
 		error : function(xhr, status, error) {
 			
