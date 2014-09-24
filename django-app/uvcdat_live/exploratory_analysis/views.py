@@ -4,6 +4,7 @@ isConnected = True
 
 # Create your views here.
 from django.http import HttpResponse
+from django.http import HttpResponseServerError
 from django.template import RequestContext, loader
 #from exploratory_analysis.models import Diags
 import json
@@ -728,8 +729,348 @@ def tree(request):
  
   
   
+#Test classic view
+from django.views.decorators.csrf import csrf_exempt
 
+@csrf_exempt
+def classic_views_html(request):
+    
+    print 'in classic views html'
+    
+    options = request.GET.get('options')
+    
+    print 'options: ' + str(options)
+    
+    html = ""
+    
+    response = 'error'
+    
+    if request.method == "POST":
+        set = None
+        vars = None
+        times = None
+        package = None
+        dataset = None
+        
+        json_data = json.loads(request.body)
+        
+        set = json_data['set'] #should be a string
+        vars = json_data['vars'] #should be a list
+        times = json_data['times'] #should be a list
+        package = json_data['package'] #should be a string
+        dataset = json_data['dataset']
+        
+        print 'set: ' + set
+        print 'vars: ' + str(vars) + ' ' #+ vars.length
+        print 'times: ' + str(times) + ' ' #+ times.length
+        print 'package: ' + package
+        print 'dataset: ' + dataset
+        
+        
+        if package == 'amwg':
+            print 'atmosphere diagnostics'
+        
+            from classic import amwghtmlgenerator
+            
+            if set == 'set1':
+                print 'set1'
+                
+                html = amwghtmlgenerator.set1(set,vars,times,package,dataset)
+            
+            elif set == 'set2':
+                print 'set2'
+            
+                html = amwghtmlgenerator.set2(set,vars,times,package,dataset)
+            
+            elif set == 'set3':
+                print 'set3'
+            
+                html = amwghtmlgenerator.set3(set,vars,times,package,dataset,options)
+            
+            
+            elif set == 'set4':
+                print 'set4'
+            
+                html = amwghtmlgenerator.set4(set,vars,times,package,dataset,options)
+            
+            elif set == 'set5':
+                print 'set5'
+            
+                html = '<div>set5</div>'
+            
+            elif set == 'set6':
+                print 'set6'
+            
+                html = '<div>set6<div>'
+            
+            elif set == 'set7':
+                print 'set7'
+            
+                html = '<div>set7</div>'
+            
+            elif set == 'set8':
+                print 'set8'
+            
+                html = '<div>set8</div>'
+            
+            elif set == 'set9':
+                print 'set9'
+            
+                html = '<div>set9</div>'
+            
+            elif set == 'set10':
+                print 'set10'
+            
+                html = '<div>set10</div>'
+            
+            elif set == 'set11':
+                print 'set11'
+            
+                html = '<div>set12<div>'
+            
+            elif set == 'set13':
+                print 'set13'
+            
+                html = '<div>set13</div>'
+            
+            elif set == 'set14':
+                print 'set14'
+            
+                html = '<div>set14</div>'
+            
+            elif set == 'set15':
+                print 'set15'
+            
+                html = '<div>set15</div>'
+            
+                
+    
+    response = html
+    
+    return HttpResponse(html);
+    
+    
+@csrf_exempt
+def classic_views(request):
+    
+    print 'in classic views'
+    
+    
+    
+    response = 'error'
+    
+    if request.method == "POST":
+        set = None
+        vars = None
+        times = None
+        package = None
+        dataset = None
+        
+        json_data = json.loads(request.body)
+        
+        set = json_data['set'] #should be a string
+        vars = json_data['vars'] #should be a list
+        times = json_data['times'] #should be a list
+        package = json_data['package'] #should be a string
+        dataset = json_data['dataset']
+        
+          
+        #assemble the variable dictionary here per Brian's email
+        
+        print 'set: ' + set
+        print 'vars: ' + str(vars) + ' ' #+ vars.length
+        print 'times: ' + str(times) + ' ' #+ times.length
+        print 'package: ' + package
+        print 'dataset: ' + dataset
+
+    
+    
+    
+        #change this to the specified directory structure
+        #url_prefix = "/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
+
+        
+        #RAY's new code
+        ####################################################
+
+        if package == 'lmwg':
+            
+            from classic import lmwgvardict
+            
+            vardict = lmwgvardict.vardict
+            
+            print 'vardict: ' + str(vardict)
+            
+            #JOHN's example code
+            #########################################
+            #change this to the specified directory structure
+            
+            
+            url_prefix = paths.uvcdat_live_root + "exploratory_analysis/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
+            
+            print 'url_prefix: ' + url_prefix
+        
+            #assemble the url to be returned
+            url = url_prefix + set + ".html"
+            #END JOHN's code
+            
+            
+            
+            
+            #Construct table with description (variable) and link to plot
+            #Input from json object from user selection
+            #user_selected_vars = {'TSA', 'PREC'}
+            
+            #Start writing file (SPECIFY LOCATION TO WRITE FILE TO HERE)     Example: land/tropics_warming_th_q/img/
+            file = open(url, "w")
+                    
+            
+            #Header
+            file.write("<p>\n") 
+            file.write("<b><font color=maroon size=+2>Set 1 Description: <b></font>Line plots of annual trends in energy balance, soil water/ice and temperature, runoff, snow water/ice, photosynthesis </b><br>\n")
+            file.write("<br clear=left>")
+            file.write("</p>\n")
+            file.write("<p>\n")
+            file.write("<A HREF=\"variableList_1.html\" target=\"set1_Variables\">\n")
+            file.write("<font color=maroon size=+1 text-align: right><b>Lookup Table: Set 1 Variable Definition</b></font></a>\n")
+            file.write("</br>\n")
+            file.write("</p>\n") 
+            
+            
+            #Start table
+            file.write("<p>\n")
+            file.write("<hr noshade size=2 size=\"100%\">\n")
+            file.write("<TABLE> \n")
+            file.write("<TR>\n")
+            file.write("<TH><TH ALIGN=LEFT><font color=maroon>Trend</font>\n")
+            file.write("</TR>\n")
+            
+            
+            #python for loop----------
+            #Descriptions are (predefinedBrianSmithDictionary[key]) 
+            
+            for key in vardict:
+                if 1 in vardict[key]['sets'] and key in vars:
+                    file.write("<TR>\n")
+                    file.write('<TH ALIGN=LEFT>') 
+                    file.write(vardict[key]['desc'])
+                    file.write('(')
+                    file.write(key)
+                    file.write(')')
+                    file.write('<TH ALIGN=LEFT>') 
+                    file.write('<a href="#" onclick="displayImageClick(')
+                    file.write('/static/exploratory_analysis/img/classic/lmwg/set1/set1_')#Here we write gif name
+                    file.write(key)
+                    file.write('.gif') 
+                    file.write(');" onmouseover="displayImageHover(')
+                    file.write('/static/exploratory_analysis/img/classic/lmwg/set1/set1_')#Here we write gif name again
+                    file.write(key)
+                    file.write('.gif') 
+                    file.write(');" onmouseout="nodisplayImage();">plot</A>\n')
+                    file.write("</TR>\n")
+            
+        '''
+        Figure Names
+        <package>_<set>_<time>_<variable>.png
+        
+        '''
+        #Write the html here
+        
+        
+        '''
+        
+        if package == 'amwg':
+            print 'atmosphere diagnostics'
+            
+            if set == 'set1':
+                print 'set1'
+                html_str = ''
+                html_str += '<img src="../images/3Dglobe.gif" hspace=10 align=left alt="3D globe">\n'
+                html_str += '<p>\n'
+                html_str += '<font color=maroon size=+3><b>\n'
+                html_str += 't85f09.B1850 <br>and<br> OBS data\n'
+                html_str += '</b></font>\n'
+                html_str += '<p>\n'
+                html_str += '<a href="../sets.htm">\n'
+                html_str += '<font color=red><b>Back to diagnostic sets</b></font></a>\n'
+                html_str += '<br clear=left>\n'
+                html_str += '<p>\n'
+                html_str += '<b>DIAG Set 1 - Tables of global, tropical, and extratropical<br>\n'
+                html_str += 'DJF, JJA, ANN means and RMSE</b><br>\n'
+                html_str += '<hr noshade size=2 size="100%">\n'
+                
+                html_str += '<TABLE>\n'
+                html_str += '<TR>\n'
+                html_str += '  <TH ALIGN=LEFT><font color=blue>Domain</font>\n'
+                html_str += '  <TH>DJF\n'
+                html_str += '  <TH>JJA\n'
+                html_str += '  <TH>ANN\n'
+                html_str += '<TR>\n'
+                html_str += '  <TH ALIGN=LEFT>global\n'
+                html_str += '  <TH ALIGN=LEFT><A HREF="table_GLBL_DJF_obs.asc">table</a>\n'
+                html_str += '  <TH ALIGN=LEFT><A HREF="table_GLBL_JJA_obs.asc">table</a>\n'
+                html_str += '  <TH ALIGN=LEFT><A HREF="table_GLBL_ANN_obs.asc">table</a>\n'
+                html_str += '\n'
+                
+                
+                f.write(html_str)
+            
+        else:
+            print 'land diagnostics'
+        
+        
+=======
+>>>>>>> devel-next-9-9-rayborg_testing
+        
+        #No time in this one
+        
+        
+        Example: 
+        lmwg_set1_JAN_TLAI.png
+        '''
+        
+        #end for loop and end table generation-------------------------
+        
+        file.write("</TABLE> \n")
+        file.write("</p>\n")
+        file.close()
+
+
+        
+        #######################################################
+        #end Ray's code
+    
+    
+    
+        
+        url_prefix = "/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
+        
+        
+    
+    
+        #assemble the url to be returned
+        url = url_prefix + set + ".html"
+        
+        
+        
+        response = url;
+        
+        print 'response: ' + response
+        
+        
+        #except KeyError:
+        #    print 'in key error'
+        #    HttpResponseServerError("Malformed data!")
+    else:
+        print 'not post'
+        
+    
+    
+    #added the '\n' for 
+    return HttpResponse(response + '\n')  
   
+
+
 
 
 
