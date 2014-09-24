@@ -92,7 +92,6 @@ function toggle_vis(set) {
 	}
 
 	
-	var url = 'http://localhost:8081/exploratory_analysis/classic_views/' + '?_='+Math.round(Math.random()*10000);
 	
 	var setData = set;
 	var varsData = variable_arr;//["var1","var2"];
@@ -113,77 +112,83 @@ function toggle_vis(set) {
 	
 	//alert('data: ' + data);
 	
-	var url = 'http://localhost:8081/exploratory_analysis/classic_views_html/' + '?_='+Math.round(Math.random()*10000);
 	
 	
-	$.ajax({
-		type : "POST",
-		url : url,
-		cache: false,
-		data : JSON.stringify(data),
-		//async : false,
-		success : function(html) {
-			
-			//alert('html: ' + html);
-			
-			var html_elem_id = packageData + '_' + setData + '_html';
-			
-			$('#' + html_elem_id).empty();
-			$('#' + html_elem_id).append(html);
-			document.getElementById(html_elem_id).style.display = 'block';
-			
-			/*
-			console.log('setData: ' + setData);
-			console.log('url: ' + set_url);
-			
-			var html_elem_id = packageData + '_' + setData + '_html';
-			console.log('html_elem_id: ' + html_elem_id);
-			
-			$('#' + html_elem_id).load(set_url);
-
-			document.getElementById(html_elem_id).style.display = 'block';
-			*/
-		},
-		error : function(xhr, status, error) {
-			
-			console.log('error');
-			if (xhr.status == 404) {
+	if(packageData == 'amwg') {
+		
+		var url = 'http://localhost:8081/exploratory_analysis/classic_views_html/' + '?_='+Math.round(Math.random()*10000);
+		
+		
+		$.ajax({
+			type : "POST",
+			url : url,
+			cache: false,
+			data : JSON.stringify(data),
+			//async : false,
+			success : function(html) {
+				
+				//alert('html: ' + html);
+				
+				var html_elem_id = packageData + '_' + setData + '_html';
+				
+				$('#' + html_elem_id).empty();
+				$('#' + html_elem_id).append(html);
+				document.getElementById(html_elem_id).style.display = 'block';
+				
+				
+			},
+			error : function(xhr, status, error) {
+				
+				console.log('error');
+				if (xhr.status == 404) {
+				}
+				
 			}
-			
-		}
-	});
-	
+		});
+		
+		
+	} else {
+		
+		var url = 'http://localhost:8081/exploratory_analysis/classic_views/' + '?_='+Math.round(Math.random()*10000);
+		
+		
+		
+		$.ajax({
+			type : "POST",
+			url : url,
+			cache: false,
+			data : JSON.stringify(data),
+			//async : false,
+			success : function(set_url) {
+				
+				console.log('setData: ' + setData);
+				console.log('url: ' + set_url);
+				
+				//alert('set_url: ' + set_url);
+				
+				var html_elem_id = packageData + '_' + setData + '_html';
+				console.log('html_elem_id: ' + html_elem_id);
+				
+				$('#' + html_elem_id).load(set_url);
+
+				document.getElementById(html_elem_id).style.display = 'block';
+				
+			},
+			error : function(xhr, status, error) {
+				
+				console.log('error');
+				if (xhr.status == 404) {
+				}
+				
+			}
+		});
+		
+	}
 	
 	
 	
 	/*
-	$.ajax({
-		type : "POST",
-		url : url,
-		cache: false,
-		data : JSON.stringify(data),
-		//async : false,
-		success : function(set_url) {
-			
-			console.log('setData: ' + setData);
-			console.log('url: ' + set_url);
-			
-			var html_elem_id = packageData + '_' + setData + '_html';
-			console.log('html_elem_id: ' + html_elem_id);
-			
-			$('#' + html_elem_id).load(set_url);
-
-			document.getElementById(html_elem_id).style.display = 'block';
-			
-		},
-		error : function(xhr, status, error) {
-			
-			console.log('error');
-			if (xhr.status == 404) {
-			}
-			
-		}
-	});
+	
 	*/
 	
 	
