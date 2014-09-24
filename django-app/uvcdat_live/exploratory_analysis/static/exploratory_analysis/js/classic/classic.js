@@ -60,6 +60,38 @@ $(document).ready(function() {
 	});
 });
 
+var clicked=0;
+function displayImageClick(imageURL)
+{
+	var imagePath = "<img src=\"" + imageURL + "\" \/>";
+	document.getElementById("plotArea").style.visibility='visible';
+		document.getElementById("plotArea").innerHTML=imagePath;
+		clicked =1;
+}
+
+
+function displayImageHover(imageURL)
+{
+	if (clicked!=1){
+		var imagePath = "<img src=\"" + imageURL + "\" \/>";
+		document.getElementById("plotArea").style.visibility='visible';
+		document.getElementById("plotArea").innerHTML=imagePath;
+	}
+}
+
+function ungluePlot()
+{
+	clicked =0;
+}
+
+function nodisplayImage()
+{
+	if (clicked!=1){
+		document.getElementById("plotArea").style.visibility='hidden';
+	}
+}
+
+
 
 function toggle_vis(set) {
 	

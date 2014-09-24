@@ -109,36 +109,6 @@ body.loading #modal1 {
 
 </style>
 
-<script>
-	function displayImageClick(imageURL)
-	{
-		var imagePath = "<img src=\"" + imageURL + "\" \/>";
-		document.getElementById("plotArea").style.visibility='visible';
-			document.getElementById("plotArea").innerHTML=imagePath;
-			clicked =1;
-	}
-	
-	
-	function displayImageHover(imageURL)
-	{
-		var imagePath = "<img src=\"" + imageURL + "\" \/>";
-		document.getElementById("plotArea").style.visibility='visible';
-			document.getElementById("plotArea").innerHTML=imagePath;
-			clicked =0;
-	}
-	
-	function nodisplayImage()
-	{
-		if (clicked!=1){
-			document.getElementById("plotArea").style.visibility='hidden';
-		}
-	}
-	
-	var clicked=0;
-</script>
-
-
-
 <body>
 	<!-- overlay blocking user input while backend is crunching numbers -->
 	<div class="modal" id="modal1"></div>
@@ -554,6 +524,9 @@ body.loading #modal1 {
 						<body>
 							<p>	Image or Table Plots Here</p>
 						</body>
+					</div>
+					<div id="unglue">
+							<button type="button" onclick="ungluePlot()">Unglue</button>
 					</div>
 					
 				</div>
