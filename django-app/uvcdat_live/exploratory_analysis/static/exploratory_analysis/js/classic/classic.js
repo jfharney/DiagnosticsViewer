@@ -60,6 +60,41 @@ $(document).ready(function() {
 	});
 });
 
+var clicked=0;
+function displayImageClick(imageURL)
+{
+	var imagePath = "<img src=\"" + imageURL + "\" \/>";
+	document.getElementById("unglue").style.visibility='visible';
+	document.getElementById("plotArea").style.visibility='visible';
+	document.getElementById("plotArea").innerHTML=imagePath;
+	clicked =1;
+}
+
+
+function displayImageHover(imageURL)
+{
+	if (clicked!=1){
+		var imagePath = "<img src=\"" + imageURL + "\" \/>";
+		document.getElementById("plotArea").style.visibility='visible';
+		document.getElementById("plotArea").innerHTML=imagePath;
+	}
+}
+
+function ungluePlot()
+{
+	clicked =0;
+	document.getElementById("unglue").style.visibility='hidden';
+	document.getElementById("plotArea").style.visibility='hidden';
+}
+
+function nodisplayImage()
+{
+	if (clicked!=1){
+		document.getElementById("plotArea").style.visibility='hidden';
+	}
+}
+
+
 
 function toggle_vis(set) {
 	
@@ -110,15 +145,14 @@ function toggle_vis(set) {
 			
 	};
 	
-	//alert('data: ' + data);
-	
-	
 	
 	if(packageData == 'amwg') {
 		
 		var url = 'http://localhost:8081/exploratory_analysis/classic_views_html/' + '?_='+Math.round(Math.random()*10000);
 		
 		
+		
+		/*
 		$.ajax({
 			type : "POST",
 			url : url,
@@ -142,11 +176,38 @@ function toggle_vis(set) {
 				console.log('error');
 				if (xhr.status == 404) {
 				}
+			
+		else {
+			
+		}
 				
+	$.ajax({
+		type : "POST",
+		url : url,
+		data : JSON.stringify(data),
+		//async : false,
+		success : function(set_url) {
+			
+			console.log('setData: ' + setData);
+			console.log('url: ' + set_url);
+			
+			var html_elem_id = packageData + '_' + setData + '_html';
+			console.log('html_elem_id: ' + html_elem_id);
+			
+			$('#' + html_elem_id).load(set_url);
+
+			document.getElementById(html_elem_id).style.display = 'block';
+			document.getElementById("unglue").style.visibility='hidden';
+		},
+		error : function(xhr, status, error) {
+			
+			console.log('error');
+			if (xhr.status == 404) {
 			}
+		}
 		});
 		
-		
+		*/
 	} else {
 		
 		var url = 'http://localhost:8081/exploratory_analysis/classic_views/' + '?_='+Math.round(Math.random()*10000);
@@ -187,9 +248,6 @@ function toggle_vis(set) {
 	
 	
 	
-	/*
-	
-	*/
 	
 	
 }
