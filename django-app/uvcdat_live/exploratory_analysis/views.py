@@ -969,65 +969,7 @@ def classic_views(request):
                     file.write(');" onmouseout="nodisplayImage();">plot</A>\n')
                     file.write("</TR>\n")
             
-        '''
-        Figure Names
-        <package>_<set>_<time>_<variable>.png
-        
-        '''
-        #Write the html here
-        
-        
-        '''
-        
-        if package == 'amwg':
-            print 'atmosphere diagnostics'
-            
-            if set == 'set1':
-                print 'set1'
-                html_str = ''
-                html_str += '<img src="../images/3Dglobe.gif" hspace=10 align=left alt="3D globe">\n'
-                html_str += '<p>\n'
-                html_str += '<font color=maroon size=+3><b>\n'
-                html_str += 't85f09.B1850 <br>and<br> OBS data\n'
-                html_str += '</b></font>\n'
-                html_str += '<p>\n'
-                html_str += '<a href="../sets.htm">\n'
-                html_str += '<font color=red><b>Back to diagnostic sets</b></font></a>\n'
-                html_str += '<br clear=left>\n'
-                html_str += '<p>\n'
-                html_str += '<b>DIAG Set 1 - Tables of global, tropical, and extratropical<br>\n'
-                html_str += 'DJF, JJA, ANN means and RMSE</b><br>\n'
-                html_str += '<hr noshade size=2 size="100%">\n'
-                
-                html_str += '<TABLE>\n'
-                html_str += '<TR>\n'
-                html_str += '  <TH ALIGN=LEFT><font color=blue>Domain</font>\n'
-                html_str += '  <TH>DJF\n'
-                html_str += '  <TH>JJA\n'
-                html_str += '  <TH>ANN\n'
-                html_str += '<TR>\n'
-                html_str += '  <TH ALIGN=LEFT>global\n'
-                html_str += '  <TH ALIGN=LEFT><A HREF="table_GLBL_DJF_obs.asc">table</a>\n'
-                html_str += '  <TH ALIGN=LEFT><A HREF="table_GLBL_JJA_obs.asc">table</a>\n'
-                html_str += '  <TH ALIGN=LEFT><A HREF="table_GLBL_ANN_obs.asc">table</a>\n'
-                html_str += '\n'
-                
-                
-                f.write(html_str)
-            
-        else:
-            print 'land diagnostics'
-        
-        
-=======
->>>>>>> devel-next-9-9-rayborg_testing
-        
-        #No time in this one
-        
-        
-        Example: 
-        lmwg_set1_JAN_TLAI.png
-        '''
+       
         
         #end for loop and end table generation-------------------------
         
@@ -1043,6 +985,9 @@ def classic_views(request):
             #########################################
             #change this to the specified directory structure
             url_prefix = "/home/user/Desktop/AptanaWorkspace/climate/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
+            url_prefix = paths.uvcdat_live_root + "exploratory_analysis/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
+            
+            
             url_prefixIMAGE = "\'/static/exploratory_analysis/img/classic/" + package + "/" + set + "/set1_"
             
             #assemble the url to be returned

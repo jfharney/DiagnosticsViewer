@@ -152,7 +152,7 @@ function toggle_vis(set) {
 		
 		
 		
-		/*
+		
 		$.ajax({
 			type : "POST",
 			url : url,
@@ -160,8 +160,6 @@ function toggle_vis(set) {
 			data : JSON.stringify(data),
 			//async : false,
 			success : function(html) {
-				
-				//alert('html: ' + html);
 				
 				var html_elem_id = packageData + '_' + setData + '_html';
 				
@@ -176,38 +174,11 @@ function toggle_vis(set) {
 				console.log('error');
 				if (xhr.status == 404) {
 				}
-			
-		else {
-			
-		}
-				
-	$.ajax({
-		type : "POST",
-		url : url,
-		data : JSON.stringify(data),
-		//async : false,
-		success : function(set_url) {
-			
-			console.log('setData: ' + setData);
-			console.log('url: ' + set_url);
-			
-			var html_elem_id = packageData + '_' + setData + '_html';
-			console.log('html_elem_id: ' + html_elem_id);
-			
-			$('#' + html_elem_id).load(set_url);
-
-			document.getElementById(html_elem_id).style.display = 'block';
-			document.getElementById("unglue").style.visibility='hidden';
-		},
-		error : function(xhr, status, error) {
-			
-			console.log('error');
-			if (xhr.status == 404) {
-			}
-		}
+			},
 		});
 		
-		*/
+				
+	
 	} else {
 		
 		var url = 'http://localhost:8081/exploratory_analysis/classic_views/' + '?_='+Math.round(Math.random()*10000);

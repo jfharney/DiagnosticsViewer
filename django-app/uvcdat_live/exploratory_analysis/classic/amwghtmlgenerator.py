@@ -155,10 +155,11 @@ def set3(set,vars,times,package,dataset,options):
             html += '    <TH ALIGN=LEFT>' + vardict[v]['desc'] 
             
             for season in seasons:
-                html += '    <TH ALIGN=LEFT><A href="#" onmouseover="set3_' + season + '_' + v + '_CRU_obsc\.png);" onmouseout="nodisplayImage();" onclick="set3_' + season + '_' + v + '_CRU_obsc\.png">plot</a>'
+                html += '    <TH ALIGN=LEFT><A href="#" onmouseover="onmouseover="displayImageHover(\'set3_' + season + '_' + v + '_CRU_obsc\.png\');" onmouseout="nodisplayImage();" onclick="displayImageClick(\'set3_' + season + '_' + v + '_CRU_obsc\.png\'">plot</a>'
      #onclick="displayImageClick('set1_TOTRUNOFF\.gif');" onmouseover="displayImageHover('set1_TOTRUNOFF\.gif');" onmouseout="nodisplayImage();"
     
     
+    print 'html: ' + html
     
     return html
 
