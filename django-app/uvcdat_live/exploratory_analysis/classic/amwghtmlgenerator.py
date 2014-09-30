@@ -1,4 +1,53 @@
 
+def set12(set,vars,times,package,dataset,options):
+    html = ''
+    
+    
+    
+    varlist = ['T', 'Q', 'H']
+    stations = { 'Thule Greenland':'Thule_Greenland', 'Resolute NWT Canada':'Resolute_Canada', 'Ship P Gulf of Alaska':'ShipP_GulfofAlaska', 'Midway Island (N Pacific)':'Midway_Island', 'Northern Great Plains USA':'Great_Plains_USA', 'San Francisco Calif USA':'SanFrancisco_CA', 'Western Europe':'Western_Europe', 'Miami Florida USA':'Miami_FL', 'Panama Central America':'Panama', 'Hawaii (Eq Pacific)':'Hawaii', 'Marshall Islands (Eq Pacific)':'Marshall_Islands', 'Yap Island (Eq Pacific)':'Yap_Island', 'Truk Island (Eq Pacific)':'Truk_Island', 'Diego Garcia (Eq Indian)':'Diego_Garcia', 'Ascension Island (Eq Atlantic)':'Ascension_Island', 'Easter Island (S Pacific)':'Easter_Island', 'McMurdo Antarctica':'McMurdo_Antarctica'}
+    
+    
+    html += '<img src="../images/SET12.gif" border=1 hspace=10 align=left alt="set 12">'
+    html += '<font color=maroon size=+3><b>'
+    html += 't85f09.B1850 <br>and<br> OBS data'
+    html += '</b></font>'
+    html += '<p>'
+    html += '<a href="../sets.htm">'
+    html += '<font color=red><b>Back to diagnostic sets</b></font></a>'
+    html += '<br clear=left>'
+    html += '<p>'
+    html += '<b>Set 12 - Vertical Profiles at 17 selected raobs stations</b>'
+    html += '<hr noshade size=2 size="100%">'
+    
+    #table of plot links
+    #format
+    # Obs station name variable variable
+    # 
+    html += '<TABLE>'
+    html += '<TR>'
+    html += '<TH ALIGN=LEFT><font color=blue>Station Name</font>'
+    
+    for var in varlist:
+        
+        html += '<TH>' + var
+        
+    for station in stations:
+        print 'station: ' + station
+        html += '<TR>'
+    
+        html += '<TH ALIGN=LEFT>' + station
+        
+        for var in varlist:
+            
+            img_link = set + '_' + stations[station] + '_' + var + '.png'
+            mouseover = 'onmouseover=displayImageHover("' + img_link + '")'
+            onmouseout = 'onmouseout="nodisplayImage();"'
+            onclick= 'onclick=displayImageClick("' + img_link + '")'
+            html += '<TH ALIGN=LEFT><A HREF="#" ' + onclick + ' ' + mouseover + ' ' + onmouseout + '>plot</a>'
+            
+    
+    return html
 
 def set4(set,vars,times,package,dataset,options):
     
@@ -155,9 +204,16 @@ def set3(set,vars,times,package,dataset,options):
             html += '    <TH ALIGN=LEFT>' + vardict[v]['desc'] 
             
             for season in seasons:
-                html += '    <TH ALIGN=LEFT><A href="#" onmouseover="onmouseover="displayImageHover(\'set3_' + season + '_' + v + '_CRU_obsc\.png\');" onmouseout="nodisplayImage();" onclick="displayImageClick(\'set3_' + season + '_' + v + '_CRU_obsc\.png\'">plot</a>'
-     #onclick="displayImageClick('set1_TOTRUNOFF\.gif');" onmouseover="displayImageHover('set1_TOTRUNOFF\.gif');" onmouseout="nodisplayImage();"
-    
+                
+                
+                img_link = set + '_' + season + '_' + v + '.png'
+                mouseover = 'onmouseover=displayImageHover("' + img_link + '")'
+                onmouseout = 'onmouseout="nodisplayImage();"'
+                onclick= 'onclick=displayImageClick("' + img_link + '")'
+                html += '<TH ALIGN=LEFT><A HREF="#" ' + onclick + ' ' + mouseover + ' ' + onmouseout + '>plot</a>'
+            
+                #html += '    <TH ALIGN=LEFT><A href="#" onmouseover="onmouseover="displayImageHover(\'set3_' + season + '_' + v + '_CRU_obsc\.png\');" onmouseout="nodisplayImage();" onclick="displayImageClick(\'set3_' + season + '_' + v + '_CRU_obsc\.png\'">plot</a>'
+     
     
     print 'html: ' + html
     
