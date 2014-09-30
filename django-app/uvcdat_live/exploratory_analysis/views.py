@@ -88,16 +88,16 @@ def index(request):
 def main(request,user_id):
     
     
-    print '\n\n\t\tuser_id: ' + str(user_id)
-    print 'user: ' + str(request.user)
+  
     
-    print 'main: noAuthReq: ', paths.noAuthReq
-    loggedIn = paths.noAuthReq
-    
-    if (str(request.user) == str(user_id)):
-        loggedIn = True
+    loggedIn = isLoggedIn(request,user_id)
     
     template = loader.get_template('exploratory_analysis/index.html')
+    if(loggedIn == False):
+        template = loader.get_template('exploratory_analysis/not_logged_in.html')
+    
+    
+    
     
     context = RequestContext(request, {
         'username' : str(user_id),
@@ -107,7 +107,17 @@ def main(request,user_id):
     return HttpResponse(template.render(context))
 
 
-
+def isLoggedIn(request,user_id):
+    print '\n\n\t\tuser_id: ' + str(user_id)
+    print 'user: ' + str(request.user)
+    
+    print 'main: noAuthReq: ', paths.noAuthReq
+    loggedIn = paths.noAuthReq
+    
+    if (str(request.user) == str(user_id)):
+        loggedIn = True
+        
+    return loggedIn
 
 
 #geo map/time series view
@@ -336,29 +346,19 @@ def classic(request,user_id):
       #print '\n\n\n\n\nrequest user authenticate: ' + str(request.user.is_authenticated()) + '\n\n\n\n'
     
     
-    #need a flag to indicated whether a tree 
-    #print '\n\n\n\n\n\n\n\t\t\tuser_id: ' + str(user_id)
-    #print 'user: ' + str(request.user)
-    
-    loggedIn = True
-    
-    if (str(request.user) == str(user_id)):
-        loggedIn = True
-    
     username = 'jfharney'
     
     #grab the username
     if user_id != None:
         username = user_id
-    
-    print 'LoggedIn: ' + str(loggedIn)
-    
-    if(loggedIn == True):
-        template = loader.get_template('exploratory_analysis/classic.html')
-    else:
-        print 'username: ' + username
-        template = loader.get_template('exploratory_analysis/not_logged_in.html')
         
+    loggedIn = isLoggedIn(request,user_id)
+    
+    template = loader.get_template('exploratory_analysis/classic.html')
+    if(loggedIn == False):
+        template = loader.get_template('exploratory_analysis/not_logged_in.html')
+    
+    
     context = RequestContext(request, {
       'loggedIn' : str(loggedIn),
       'username' : username,
@@ -578,6 +578,8 @@ def diagplot(request):
 def login1(request):
     template = loader.get_template('exploratory_analysis/login1.html')
 
+
+    print 'going to login1.html...'
     context = RequestContext(request, {
         
     })
@@ -590,6 +592,7 @@ def login1(request):
 def logout1(request):
     
     
+    print 'going to logout1.html...'
     from django.contrib.auth import logout
     logout(request)
     
@@ -610,7 +613,7 @@ def logout1(request):
 def login(request):
     template = loader.get_template('exploratory_analysis/login.html')
 
-    print 'going to login1.html...'
+    print 'going to login.html...'
     context = RequestContext(request, {
         
     })
@@ -623,11 +626,14 @@ def login(request):
 def logout(request):
     
     
+    print 'going to logout.html...'
+    
     from django.contrib.auth import logout
     logout(request)
     
     template = loader.get_template('exploratory_analysis/logout.html')
 
+    
     context = RequestContext(request, {
         
     })

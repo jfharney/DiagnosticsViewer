@@ -118,6 +118,7 @@ def authenticate1(username=None,password=None,peernode=None):
             user = User.objects.get(username=username)
          
             user = authenticate(username=username,password=password)
+            print 'username: ' + username
             print '------end Get/Create the django user object-----'
             return user
             
