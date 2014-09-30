@@ -24,15 +24,20 @@ $(document).ready(function(){
 
 	$('#signin').click(function(){
 			
+			console.log('signin');
+		
+			
+			
 			var username = $('#username').val();
 	        var password = $('#password').val();
 	        var email = $('#email').val();
-			
+			var peernode = 'esg.ccs.ornl.gov';
 			
 			var input_data = {
 					'csrfmiddlewaretoken': csrftoken,
 					'username':username,
 					'password':password,
+					'peernode':peernode,
 					'email':email
 			}
 			
@@ -48,8 +53,10 @@ $(document).ready(function(){
 				  success: function(data)
 				  { 
 					  console.log(data);
+					  
+					  
 					  if(data == 'Authenticated') {
-						  console.log('Authenticated - go to the main page with the username');
+						  alert('Authenticated - go to the main page with the username');
 						  //window.location = 'http://localhost:8081/exploratory_analysis/main/' + username;
 						  window.location = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/main/' + username;
 					  } else {

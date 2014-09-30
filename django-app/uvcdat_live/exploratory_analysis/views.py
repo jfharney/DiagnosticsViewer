@@ -637,12 +637,75 @@ def logout(request):
 
 def auth(request):
     
+    print '\n\n\n\n\n\n\n\nin auth\n\n'
+    
     from django.contrib.auth import authenticate, login
     
-    if request.POST['username'] == None or request.POST['password'] == None:
-        return HttpResponse("Error")
     
     
+    
+    username1 = ''
+    password1 = ''
+    peernode1 = 'esg.ccs.ornl.gov'
+    
+    curlFlag = False
+    
+    if curlFlag:
+        json_data = json.loads(request.body)
+        username1 = json_data['username'] #should be a string
+        password1 = json_data['password'] #should be a list
+    
+    else:
+        
+        username1 = request.POST['username']
+        password1 = request.POST['password']
+    
+    
+    #if request.POST['username'] == None or request.POST['password'] == None:
+    #    return HttpResponse("Error")
+    
+    
+    #peernode = ''
+    #if request.POST['peernode'] == None:
+    #    peernode = 'esg.ccs.ornl.gov'
+    
+    from OpenSSL import crypto,SSL
+    
+    # for POST requests, attempt logging-in
+    if request.POST:
+        print 'it is a post...authenticating'
+        
+        from backends import authenticate1
+        
+        #authenticates to ESGF
+        user = authenticate1(username = username1,
+                             password = password1,
+                             peernode = peernode1)
+        
+        print 'username...' + user.username
+        print 'password...' + user.password
+        
+        print 'user: ' + str(user)
+    
+        if user is not None:
+            if user.is_active:
+                #redirect to a success page
+                login(request,user)
+                return HttpResponse('Authenticated')
+            else:
+                #return a 'disabled account'
+                #print 'disabled account'
+                return HttpResponse('Disabled')
+        else:
+            #return an 'invalid login error
+            return HttpResponse('InvalidLogin')
+    
+
+    else:
+        print 'it is not a post'
+        
+        
+    '''
     username = request.POST['username']
     password = request.POST['password']
     
@@ -681,7 +744,8 @@ def auth(request):
         #return an 'invalid login error
         return HttpResponse('InvalidLogin')
     
-    
+    '''
+    return HttpResponse('Authenticatedd')
 
 
 def register(request):
