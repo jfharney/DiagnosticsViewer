@@ -1,4 +1,8 @@
 
+
+from paths import paths
+        
+        
 def set12(set,vars,times,package,dataset,options):
     html = ''
     
@@ -13,9 +17,11 @@ def set12(set,vars,times,package,dataset,options):
     html += 't85f09.B1850 <br>and<br> OBS data'
     html += '</b></font>'
     html += '<p>'
+    '''
     html += '<a href="../sets.htm">'
     html += '<font color=red><b>Back to diagnostic sets</b></font></a>'
     html += '<br clear=left>'
+    '''
     html += '<p>'
     html += '<b>Set 12 - Vertical Profiles at 17 selected raobs stations</b>'
     html += '<hr noshade size=2 size="100%">'
@@ -38,12 +44,19 @@ def set12(set,vars,times,package,dataset,options):
     
         html += '<TH ALIGN=LEFT>' + station
         
+
+        # some day, we could check for all of the "derived" paths and use them if defined, otherwise derive them.
+
+        
         for var in varlist:
             
-            img_link = set + '_' + stations[station] + '_' + var + '.png'
+            
+            img_prefix = paths.img_cache_path
+            img_link = img_prefix + set + '_' + stations[station] + '_' + var + '.png'
+
             mouseover = 'onmouseover=displayImageHover("' + img_link + '")'
             onmouseout = 'onmouseout="nodisplayImage();"'
-            onclick= 'onclick=displayImageClick("' + img_link + '")'
+            onclick = 'onclick=displayImageClick("' + img_link + '")'
             html += '<TH ALIGN=LEFT><A HREF="#" ' + onclick + ' ' + mouseover + ' ' + onmouseout + '>plot</a>'
             
     
