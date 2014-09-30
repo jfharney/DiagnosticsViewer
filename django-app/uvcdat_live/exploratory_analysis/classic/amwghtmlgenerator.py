@@ -1,5 +1,67 @@
 
 
+from paths import paths
+        
+        
+def set12(set,vars,times,package,dataset,options):
+    html = ''
+    
+    
+    
+    varlist = ['T', 'Q', 'H']
+    stations = { 'Thule Greenland':'Thule_Greenland', 'Resolute NWT Canada':'Resolute_Canada', 'Ship P Gulf of Alaska':'ShipP_GulfofAlaska', 'Midway Island (N Pacific)':'Midway_Island', 'Northern Great Plains USA':'Great_Plains_USA', 'San Francisco Calif USA':'SanFrancisco_CA', 'Western Europe':'Western_Europe', 'Miami Florida USA':'Miami_FL', 'Panama Central America':'Panama', 'Hawaii (Eq Pacific)':'Hawaii', 'Marshall Islands (Eq Pacific)':'Marshall_Islands', 'Yap Island (Eq Pacific)':'Yap_Island', 'Truk Island (Eq Pacific)':'Truk_Island', 'Diego Garcia (Eq Indian)':'Diego_Garcia', 'Ascension Island (Eq Atlantic)':'Ascension_Island', 'Easter Island (S Pacific)':'Easter_Island', 'McMurdo Antarctica':'McMurdo_Antarctica'}
+    
+    
+    html += '<img src="../images/SET12.gif" border=1 hspace=10 align=left alt="set 12">'
+    html += '<font color=maroon size=+3><b>'
+    html += 't85f09.B1850 <br>and<br> OBS data'
+    html += '</b></font>'
+    html += '<p>'
+    '''
+    html += '<a href="../sets.htm">'
+    html += '<font color=red><b>Back to diagnostic sets</b></font></a>'
+    html += '<br clear=left>'
+    '''
+    html += '<p>'
+    html += '<b>Set 12 - Vertical Profiles at 17 selected raobs stations</b>'
+    html += '<hr noshade size=2 size="100%">'
+    
+    #table of plot links
+    #format
+    # Obs station name variable variable
+    # 
+    html += '<TABLE>'
+    html += '<TR>'
+    html += '<TH ALIGN=LEFT><font color=blue>Station Name</font>'
+    
+    for var in varlist:
+        
+        html += '<TH>' + var
+        
+    for station in stations:
+        print 'station: ' + station
+        html += '<TR>'
+    
+        html += '<TH ALIGN=LEFT>' + station
+        
+
+        # some day, we could check for all of the "derived" paths and use them if defined, otherwise derive them.
+
+        
+        for var in varlist:
+            
+            
+            img_prefix = paths.img_cache_path
+            img_link = img_prefix + set + '_' + stations[station] + '_' + var + '.png'
+
+            mouseover = 'onmouseover=displayImageHover("' + img_link + '")'
+            onmouseout = 'onmouseout="nodisplayImage();"'
+            onclick = 'onclick=displayImageClick("' + img_link + '")'
+            html += '<TH ALIGN=LEFT><A HREF="#" ' + onclick + ' ' + mouseover + ' ' + onmouseout + '>plot</a>'
+            
+    
+    return html
+
 def set4(set,vars,times,package,dataset,options):
     
     html = ''
@@ -60,7 +122,72 @@ def set4a(set,vars,times,package,dataset,options):
     html = ''
     
     
+def set5_6(sets,varlist,times,package,dataset,options):
+    from master import varinfo
     
+    html = '<p>'
+    
+    html += '<img src="../images/SET5.gif" border=1 hspace=10 align=left alt="set 5">'
+    html += '<font color=maroon size=+3><b>'
+    html += dataset+'<br>and<br>OBS data'
+    html += '</b></font>'
+    '''
+    html += '<p>'
+    html += '<a href="../sets.htm">'
+    html += '<font color=red><b>Back to diagnostic sets</b></font></a>'
+    html += '<br clear=left>'
+    '''
+    html += '<p>'
+    html += '<b>DIAG Sets 5 & 6 - Horizontal contour/vector plots of DJF, JJA and ANN means'
+    html += '<hr noshade size=2 size="100%">'
+    
+    html += '<TABLE>'
+    
+   
+
+    # Figure out which obssets diags set 5/6 uses
+    obssets = []
+    set56_vars = []
+    for v in varinfo.keys():
+      if 5 in varinfo[v]['sets'] or 6 in varinfo[v]['sets']:
+         obssets.extend(varinfo[v]['obssets'].keys())
+         set56_vars.append(v)
+
+    obssets = list(set(obssets))
+    print obssets
+    set56_vars = list(set(set56_vars))
+    # intersect user times and the default seasons for this dataset
+#    print times
+    seasons = list(set(times) & set(['DJF', 'ANN', 'JJA']))
+#    print seasons
+    print 'DEFAULTING TO ALL SEASONS FOR NOW'
+    seasons = ['DJF','ANN','JJA']
+
+    for o in obssets:
+        html += '<TR>'
+        html += '    <TH><BR>'
+        html += '    <TH ALIGN=LEFT><font color=navy size=+1>' + o + '</font>'
+        
+        for season in seasons:
+            html += '    <TH>' + season
+    
+        for v in set56_vars:
+            # Is this obset used by this variable?
+            if o in varinfo[v]['obssets'].keys():
+               obsfname = varinfo[v]['obssets'][o]['filekey']
+
+               html += '<TR>'
+               html += '    <TH ALIGN=LEFT>' + v
+               html += '    <TH ALIGN=LEFT>' + varinfo[v]['desc'] 
+               if 5 in varinfo[v]['sets']:
+                  fnameset = '5'
+               else:
+                  fnameset = '6'
+            
+               for season in seasons:
+                  html += '    <TH ALIGN=LEFT><A href="#" onmouseover="onmouseover="displayImageHover(\'set' + fnameset+'_' + season + '_' + v + '_'+obsfname+'_obsc\.png\');" onmouseout="nodisplayImage();" onclick="displayImageClick(\'set' +fnameset+'_' + season + '_' + v + '_'+obsfname+'_obsc\.png\'">plot</a>'
+   
+
     return html
     
 def set3(set,vars,times,package,dataset,options):
@@ -155,9 +282,16 @@ def set3(set,vars,times,package,dataset,options):
             html += '    <TH ALIGN=LEFT>' + vardict[v]['desc'] 
             
             for season in seasons:
-                html += '    <TH ALIGN=LEFT><A href="#" onmouseover="onmouseover="displayImageHover(\'set3_' + season + '_' + v + '_CRU_obsc\.png\');" onmouseout="nodisplayImage();" onclick="displayImageClick(\'set3_' + season + '_' + v + '_CRU_obsc\.png\'">plot</a>'
-     #onclick="displayImageClick('set1_TOTRUNOFF\.gif');" onmouseover="displayImageHover('set1_TOTRUNOFF\.gif');" onmouseout="nodisplayImage();"
-    
+                
+                
+                img_link = set + '_' + season + '_' + v + '.png'
+                mouseover = 'onmouseover=displayImageHover("' + img_link + '")'
+                onmouseout = 'onmouseout="nodisplayImage();"'
+                onclick= 'onclick=displayImageClick("' + img_link + '")'
+                html += '<TH ALIGN=LEFT><A HREF="#" ' + onclick + ' ' + mouseover + ' ' + onmouseout + '>plot</a>'
+            
+                #html += '    <TH ALIGN=LEFT><A href="#" onmouseover="onmouseover="displayImageHover(\'set3_' + season + '_' + v + '_CRU_obsc\.png\');" onmouseout="nodisplayImage();" onclick="displayImageClick(\'set3_' + season + '_' + v + '_CRU_obsc\.png\'">plot</a>'
+     
     
     print 'html: ' + html
     

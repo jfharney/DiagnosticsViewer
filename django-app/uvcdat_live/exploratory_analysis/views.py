@@ -860,12 +860,12 @@ def classic_views_html(request):
             elif set == 'set5':
                 print 'set5'
             
-                html = '<div>set5</div>'
+                html = amwghtmlgenerator.set5_6(set,vars,times,package,dataset,options)
             
             elif set == 'set6':
                 print 'set6'
+                html = amwghtmlgenerator.set5_6(set,vars,times,package,dataset,options)
             
-                html = '<div>set6<div>'
             
             elif set == 'set7':
                 print 'set7'
@@ -891,6 +891,11 @@ def classic_views_html(request):
                 print 'set11'
             
                 html = '<div>set12<div>'
+                
+            elif set == 'set12':
+                print 'set12'
+            
+                html = amwghtmlgenerator.set12(set,vars,times,package,dataset,options)
             
             elif set == 'set13':
                 print 'set13'
