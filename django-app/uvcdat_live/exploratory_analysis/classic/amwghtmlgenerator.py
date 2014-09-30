@@ -1,4 +1,4 @@
-from master import varinfo
+
 
 def set4(set,vars,times,package,dataset,options):
     
@@ -63,72 +63,6 @@ def set4a(set,vars,times,package,dataset,options):
     
     return html
     
-def set5_6(sets,varlist,times,package,dataset,options):
-    
-    html = '<p>'
-    
-    html += '<img src="../images/SET5.gif" border=1 hspace=10 align=left alt="set 5">'
-    html += '<font color=maroon size=+3><b>'
-    html += dataset+'<br>and<br>OBS data'
-    html += '</b></font>'
-    '''
-    html += '<p>'
-    html += '<a href="../sets.htm">'
-    html += '<font color=red><b>Back to diagnostic sets</b></font></a>'
-    html += '<br clear=left>'
-    '''
-    html += '<p>'
-    html += '<b>DIAG Sets 5 & 6 - Horizontal contour/vector plots of DJF, JJA and ANN means'
-    html += '<hr noshade size=2 size="100%">'
-    
-    html += '<TABLE>'
-    
-   
-
-    # Figure out which obssets diags set 5/6 uses
-    obssets = []
-    set56_vars = []
-    for v in varinfo.keys():
-      if 5 in varinfo[v]['sets'] or 6 in varinfo[v]['sets']:
-         obssets.extend(varinfo[v]['obssets'].keys())
-         set56_vars.append(v)
-
-    obssets = list(set(obssets))
-    print obssets
-    set56_vars = list(set(set56_vars))
-    # intersect user times and the default seasons for this dataset
-#    print times
-    seasons = list(set(times) & set(['DJF', 'ANN', 'JJA']))
-#    print seasons
-    print 'DEFAULTING TO ALL SEASONS FOR NOW'
-    seasons = ['DJF','ANN','JJA']
-
-    for o in obssets:
-        html += '<TR>'
-        html += '    <TH><BR>'
-        html += '    <TH ALIGN=LEFT><font color=navy size=+1>' + o + '</font>'
-        
-        for season in seasons:
-            html += '    <TH>' + season
-    
-        for v in set56_vars:
-            # Is this obset used by this variable?
-            if o in varinfo[v]['obssets'].keys():
-               obsfname = varinfo[v]['obssets'][o]['filekey']
-
-               html += '<TR>'
-               html += '    <TH ALIGN=LEFT>' + v
-               html += '    <TH ALIGN=LEFT>' + varinfo[v]['desc'] 
-               if 5 in varinfo[v]['sets']:
-                  fnameset = '5'
-               else:
-                  fnameset = '6'
-            
-               print 'here!!!'
-               for season in seasons:
-                  html += '    <TH ALIGN=LEFT><A href="#" onmouseover="onmouseover="displayImageHover(\'set' + fnameset+'_' + season + '_' + v + '_'+obsfname+'_obsc\.png\');" onmouseout="nodisplayImage();" onclick="displayImageClick(\'set' +fnameset+'_' + season + '_' + v + '_'+obsfname+'_obsc\.png\'">plot</a>'
-   
-   
 def set3(set,vars,times,package,dataset,options):
     
     # set 3
