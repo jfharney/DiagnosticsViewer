@@ -148,7 +148,7 @@ function toggle_vis(set) {
 	
 	if(packageData == 'amwg') {
 		
-		var url = 'http://localhost:8081/exploratory_analysis/classic_views_html/' + '?_='+Math.round(Math.random()*10000);
+		var url = '/exploratory_analysis/classic_views_html/' + '?_='+Math.round(Math.random()*10000);
 		
 		
 		
@@ -181,7 +181,7 @@ function toggle_vis(set) {
 	
 	} else {
 		
-		var url = 'http://localhost:8081/exploratory_analysis/classic_views/' + '?_='+Math.round(Math.random()*10000);
+		var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/classic_views/' + '?_='+Math.round(Math.random()*10000);
 		
 		
 		
