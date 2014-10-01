@@ -1,406 +1,326 @@
+#from paths import paths
+from amwgmaster import *
+
+def pageGenerator(sets, varlist, times, package, dataset, options):
+   obssort = 1 
+   html = ''
+
+   html = '<p>'
+   html += '<img src="../images/SET'+sets+'.gif" border=1 hspace=10 align=left alt="set '+sets+'">'
+   html += '<font color=maroon size=+3><b>'
+   html += dataset+'<br>and<br>OBS data'
+   html += '</b></font>'
+        
+   html += '<p>'
+   html += '<b>DIAG Set'+sets+' '+amwgsets[sets]['desc']
+   html += '<hr noshade size=2 size="100%">'
+    
+   html += '<b>'+amwgsets[sets]['preamble']
+
+   maxcols = 0
+
+   def_seasons = ['DJF', 'JJA', 'ANN']
+
+   # Determine number of columns
+
+   if sets in ['2', '8', '9', '10', '11', '12', '15']: def_seasons = ['NA']
+
+   html += '<TABLE>'
+
+   obssets = []
+   setXvars = []
+   for v in varinfo.keys():
+      if sets in varinfo[v]['sets']:
+         obssets.extend(varinfo[v]['obssets'].keys())
+         setXvars.append(v)
+   # unique-ify
+   obssets = list(set(obssets))
+   # This shouldn't be necessary but do it anyway
+   setXvars = list(set(setXvars))
+   
+
+   #### Setup paths based on dataset name and path
+   #### NOTE: Filename strings need converted to documented paths
+   # intersect user times and the default seasons for this dataset
+   seasons = list(set(times) & set(def_seasons))
+
+   print 'DEFAULTING TO ALL SEASONS FOR NOW'
+   print 'DEFAULTING TO ALL VARS FOR NOW'
+   print 'DEFAULTING TO EXISTING FILENAME CONVENTIONS'
+   print 'DEFAULTING TO NO ABSOLUTE PATHS'
+
+   seasons = def_seasons
+
+   # special(er) cases first
+   if sets == '1':
+      regions = {'global':'GLBL', 'tropics (20S-20N)':'TROP', 'southern extratropics (90S-20S)':'SEXT', 'northen extratropics (20N-90N)':'NEXT'}
+      html += '<TR>'
+      html += '<TH ALIGN=LEFT><font color="navy" size="+1">Domain</font>'
+      for season in seasons:
+         html += '<TH>'+season
+      for r in regions:
+         html +='<TR>'
+         for season in seasons:
+            html +='   <TH ALIGN=LEFT><A HREF="table_'+regions[r]+'_'+season+'_obs.asc">table<\/a>'
+      html += '</TABLE>'
+      return html
+
+   # this one is almost entirely special
+   if sets == '14':
+      html += '<TR>'
+      html += ' <TH ALIGN=LEFT>Space and Time'
+      fname = 'set14_ANN_SPACE_TIME_obsc.png'
+      click = 'onclick="displayImageClick(\''+fname+'\');" '
+      over = 'onmouseover="displayImageHover(\''+fname+'\');" '
+      out = 'onmouseout="nodisplayImage();" '
+      html += ' <TH ALIGN=LEFT><A HREF="#" '+click+over+out+'">plot</a>'
+
+      html += '<TR>'
+      html += ' <TH ALIGN=LEFT>Space only'
+      seasons = ['ANN', 'DJF', 'MAM', 'JJA', 'SON']
+      for season in seasons:
+         fname = 'set14_'+season+'_SPACE_obsc.png'
+         click = 'onclick="displayImageClick(\''+fname+'\');" '
+         over = 'onmouseover="displayImageHover(\''+fname+'\');" '
+         out = 'onmouseout="nodisplayImage();" '
+         html += ' <TH ALIGN=LEFT><A HREF="#" '+click+over+out+'">'+season+'</a>'
+
+      html += '</TABLE>'
+
+      html += '<TABLE>'
+      html += '<TR>'
+      html += '<TH ALIGN=LEFT>Bias(%), Variance (ratio), Correlation Coefficient Tables'
+      html += '<TR>'
+      html += '<TH ALIGN=LEFT>Space and Time'
+      varl = {'Correlation':'CC', 'Variance': 'VAR', 'Bias':'BIAS'}
+      for v in varl.keys():
+         fname = 'set14.METRICS_'+varl[v]+'_SPACE_TIME_obsc.png'
+         click = 'onclick="displayImageClick(\''+fname+'\');" '
+         over = 'onmouseover="displayImageHover(\''+fname+'\');" '
+         out = 'onmouseout="nodisplayImage();" '
+         html += ' <TH ALIGN=LEFT><A HREF="#" '+click+over+out+'">'+v+'</a>'
+      html += '<TR>'
+      html += '<TH ALIGN=LEFT>Space only'
+      for v in varl.keys():
+         fname = 'set14.METRICS_'+varl[v]+'_SPACE.png'
+         click = 'onclick="displayImageClick(\''+fname+'\');" '
+         over = 'onmouseover="displayImageHover(\''+fname+'\');" '
+         out = 'onmouseout="nodisplayImage();" '
+         html += ' <TH ALIGN=LEFT><A HREF="#" '+click+over+out+'">'+v+'</a>'
+      html += '<TR>'
+      html += '<TH ALIGN=LEFT>Time only'
+      fname = 'set14.METRICS_CC_TIME_obsc.png'
+      click = 'onclick="displayImageClick(\''+fname+'\');" '
+      over = 'onmouseover="displayImageHover(\''+fname+'\');" '
+      out = 'onmouseout="nodisplayImage();" '
+      html += ' <TH ALIGN=LEFT><A HREF="#" '+click+over+out+'">Correlation</a>'
+      html += '</TABLE>'
+
+   return html
+      
+   if sets == '2' :
+      varl = {'Ocean Heat':'OHT', 'Atmospheric Heat':'AHT', 'Ocean Freshwater':'OFT'}
+      html += '<TR>'
+      html += '<TH ALIGN=LEFT><font color="navy" size="+1">Annual Implied Northward Transports</font><TH>'
+      for v in varl.keys():
+         html += '<TR>'
+         html += ' <TH ALIGN=LEFT>'+v
+         fname ='set2_'+varl[v]+'_obs.png'
+         click = 'onclick="displayImageClick(\''+fname+'\');" '
+         over = 'onmouseover="displayImageHover(\''+fname+'\');" '
+         out = 'onmouseout="nodisplayImage();" '
+         html += ' <TH ALIGN=LEFT><A HREF="#" '+click+over+out+'">plot</a>'
+      html += '</TABLE>'
+      return html
 
 
-from paths import paths
-        
-        
-def set12(set,vars,times,package,dataset,options):
-    html = ''
-    
-    
-    
-    varlist = ['T', 'Q', 'H']
-    stations = { 'Thule Greenland':'Thule_Greenland', 'Resolute NWT Canada':'Resolute_Canada', 'Ship P Gulf of Alaska':'ShipP_GulfofAlaska', 'Midway Island (N Pacific)':'Midway_Island', 'Northern Great Plains USA':'Great_Plains_USA', 'San Francisco Calif USA':'SanFrancisco_CA', 'Western Europe':'Western_Europe', 'Miami Florida USA':'Miami_FL', 'Panama Central America':'Panama', 'Hawaii (Eq Pacific)':'Hawaii', 'Marshall Islands (Eq Pacific)':'Marshall_Islands', 'Yap Island (Eq Pacific)':'Yap_Island', 'Truk Island (Eq Pacific)':'Truk_Island', 'Diego Garcia (Eq Indian)':'Diego_Garcia', 'Ascension Island (Eq Atlantic)':'Ascension_Island', 'Easter Island (S Pacific)':'Easter_Island', 'McMurdo Antarctica':'McMurdo_Antarctica'}
-    
-    
-    html += '<img src="../images/SET12.gif" border=1 hspace=10 align=left alt="set 12">'
-    html += '<font color=maroon size=+3><b>'
-    html += 't85f09.B1850 <br>and<br> OBS data'
-    html += '</b></font>'
-    html += '<p>'
-    '''
-    html += '<a href="../sets.htm">'
-    html += '<font color=red><b>Back to diagnostic sets</b></font></a>'
-    html += '<br clear=left>'
-    '''
-    html += '<p>'
-    html += '<b>Set 12 - Vertical Profiles at 17 selected raobs stations</b>'
-    html += '<hr noshade size=2 size="100%">'
-    
-    #table of plot links
-    #format
-    # Obs station name variable variable
-    # 
-    html += '<TABLE>'
-    html += '<TR>'
-    html += '<TH ALIGN=LEFT><font color=blue>Station Name</font>'
-    
-    for var in varlist:
-        
-        html += '<TH>' + var
-        
-    for station in stations:
-        print 'station: ' + station
-        html += '<TR>'
-    
-        html += '<TH ALIGN=LEFT>' + station
-        
+   if sets in ['3', '4', '4a', '5', '6', '7']:
+      # some minor preliminary setup for set 7
+      if sets == '7':
+         northkeys = []
+         southkeys = []
+         for v in varinfo.keys():
+            if '_NORTH' in v:
+               northkeys.append(v)
+            if '_SOUTH' in v:
+               southkeys.append(v)
+         setXvars = northkeys
 
-        # some day, we could check for all of the "derived" paths and use them if defined, otherwise derive them.
+      if obssort == 1:
+         for o in obssets:
+            html += '<TR>'
+            html += '<TH><BR>' # the variable
+            html += '  <TH ALIGN=LEFT><font color="navy" size="+1">'+o+'</font>' # the obs/desc
+            for season in seasons: 
+               html += '    <TH>'+season # the plot links
 
+            if sets == '7':
+               html += '<TR><TH><BR><TH ALIGN=LEFT><font color="maroon" size="+1">Northern Hemisphere</font><TH><BR><TH><BR><TH><BR>'
+
+            for v in setXvars:
+
+               # Is this obset used by this variable?
+               if o in varinfo[v]['obssets'].keys():
+                  obsfname = varinfo[v]['obssets'][o]['filekey']
+                  html += '<TR>'
+                  if sets == '7':
+                     html += '    <TH ALIGN=LEFT>' + v.split('_')[0]
+                  else:
+                     html += '    <TH ALIGN=LEFT>' + v
+                  html += '    <TH ALIGN=LEFT>' + varinfo[v]['desc']
+                  for season in seasons:
+                     if sets == '7':
+                        fname = 'set'+sets+'_'+season+'_'+v.split('_')[0]+'_'+obsfname+'_NP_obsc.png'
+                     else:
+                        fname = 'set'+sets+'_'+season+'_'+v+'_'+obsfname+'_obsc.png'
+                     click = 'onclick="displayImageClick(\''+fname+'\');" '
+                     over = 'onmouseover="displayImageHover(\''+fname+'\');" '
+                     out = 'onmouseout="nodisplayImage();" '
+                     html += '<TH ALIGN=LEFT><A HREF="#" '+click+over+out+'">plot</a>'
+
+            # do southern keys. This could probably be combined with the above somehow
+            if sets == '7':
+               html += '<TR><TH><BR><TH ALIGN=LEFT><font color="maroon" size="+1">Southern Hemisphere</font><TH><BR><TH><BR><TH><BR>'
+               for v in southkeys:
+   
+                  # Is this obset used by this variable?
+                  if o in varinfo[v]['obssets'].keys():
+                     obsfname = varinfo[v]['obssets'][o]['filekey']
+                     html += '<TR>'
+                     html += '    <TH ALIGN=LEFT>' + v.split('_')[0]
+                     html += '    <TH ALIGN=LEFT>' + varinfo[v]['desc']
+                     for season in seasons:
+                        fname = 'set'+sets+'_'+season+'_'+v.split('_')[0]+'_'+obsfname+'_SP_obsc.png'
+                        click = 'onclick="displayImageClick(\''+fname+'\');" '
+                        over = 'onmouseover="displayImageHover(\''+fname+'\');" '
+                        out = 'onmouseout="nodisplayImage();" '
+                        html += '<TH ALIGN=LEFT><A HREF="#" '+click+over+out+'">plot</a>'
+               
+         html += '</TABLE>'
+         return html
+      else:
+         print 'NOT IMPLEMENTED SORTING BY VAR'
+         return None
+
+   if sets in ['8', '9', '10', '15']: # this could probably also be special cased above....
+      if obssort == 1:
+         for o in obssets:
+            html += '<TR>'
+            html += '<TH><BR>'
+            html += '<TH ALIGN=LEFT><font color="navy" size="+1">'+o+'</font>'
+            html += '<TH>'
+
+            for v in setXvars:
+               if o in varinfo[v]['obssets'].keys():
+                  obsfname = varinfo[v]['obssets'][o]['filekey']
+                  html += '<TR>'
+                  html += '   <TH ALIGN=LEFT>'+v
+                  html += '   <TH ALIGN=LEFT>'+varinfo[v]['desc']
+                  fname = 'set'+sets+'_'+v+'_'+obsfname+'_obsc.png'
+                  click = 'onclick="displayImageClick(\''+fname+'\');" '
+                  over = 'onmouseover="displayImageHover(\''+fname+'\');" '
+                  out = 'onmouseout="nodisplayImage();" '
+                  html += '<TH ALIGN=LEFT><A HREF="#" '+click+over+out+'">plot</a>'
+         html += '</TABLE>'
+         return html
+      else:
+         print 'NOT IMPLEMENTED SORTING BY VAR'
+         return None
+
+   # more special cases
+   if sets == '11':
+      # two subtables.
+      # format for both is <var><obs><plot link>
+      set1obs = { 'CERES2 March 2000-October 2005':'CERES2','CERES 2000-2003':'CERES', 'ERBE 1985-1989':'ERBE'}
+      set2list = {}
+      set2list['LHFLX'] = {'desc':'Latent Heat Flux', 'obssets':{'ECMWF 1979-1993':'ECMWF', 'WHOI 1958-2006':'WHOI'}}
+      set2list['PRECT'] = {'desc':'Precipitation Rate', 'obssets':{'GPCP 1979-2003':'GPCP'}}
+      set2list['SST'] = {'desc':'Sea Surface Temperature', 'obssets':{'HADISST 1982-2001':'HADISST'}}
+      set2list['SWCF'] = {'desc':'Shortwave Cloud Forcing', 'obssets':{'ERBE 1985-1989':'ERBE'}}
+      set2list['TAUX'] = {'desc':'Surface Zonal Stress', 'obssets':{'ERS 1992-2000':'ERS', 'LARGE-YEAGER 1984-2004':'LARYEA'}}
+      set2list['TAUY'] = {'desc':'Surface Meridional Stress', 'obssets':{'ERS 1992-2000':'ERS', 'LARGE-YEAGER 1984-2004':'LARYEA'}}
+
+      html += '<TR>'
+      html += ' <TH ALIGN=LEFT>Warm Pool Scatter Plot<TH><TH>'
+
+      for o in set1obs:
+         html += '<TR>'
+         html += '  <TH ALIGN=LEFT>SW/LW Cloud Forcing'
+         html += '  <TH ALIGN=LEFT><font color="navy">'+o+'</font>'
+         obsfname = set1obs[o]
+         fname = 'set11_SWCF_LWCF_'+obsfname+'_obs.png'
+         click = 'onclick="displayImageClick(\''+fname+'\');" '
+         over = 'onmouseover="displayImageHover(\''+fname+'\');" '
+         out = 'onmouseout="nodisplayImage();" '
+         html += '<TH ALIGN=LEFT><A HREF="#" '+click+over+out+'">plot</a>'
+
+      html += '</TABLE>'
+      html += '<TABLE>'
+
+      html += '<TR>'
+      html += '<TH ALIGN=LEFT">Annual Cycle on the Equatorial Pacific<TH><TH>'
+      for v in set2list.keys():
+         for o in set2list[v]['obssets'].keys():
+            html += '<TR>'
+            html += '  <TH ALIGN=LEFT>'+set2list[v]['desc']
+            html += '  <TH ALIGN=LEFT>'+o
+            fname = 'set11_'+v+'_'+set2list[v]['obssets'][o]+'_obsc.png'
+            click = 'onclick="displayImageClick(\''+fname+'\');" '
+            over = 'onmouseover="displayImageHover(\''+fname+'\');" '
+            out = 'onmouseout="nodisplayImage();" '
+            html += '<TH ALIGN=LEFT><A HREF="#" '+click+over+out+'">plot</a>'
+
+      return html
+
+
+   # These two are pretty similar at least.
+   if sets == '12' or sets == '13':
+    
+      if sets == '12':
+         cols = ['T', 'Q', 'H']
+         vlist = { 'Thule Greenland':'Thule_Greenland', 'Resolute NWT Canada':'Resolute_Canada', 'Ship P Gulf of Alaska':'ShipP_GulfofAlaska', 'Midway Island (N Pacific)':'Midway_Island', 'Northern Great Plains USA':'Great_Plains_USA', 'San Francisco Calif USA':'SanFrancisco_CA', 'Western Europe':'Western_Europe', 'Miami Florida USA':'Miami_FL', 'Panama Central America':'Panama', 'Hawaii (Eq Pacific)':'Hawaii', 'Marshall Islands (Eq Pacific)':'Marshall_Islands', 'Yap Island (Eq Pacific)':'Yap_Island', 'Truk Island (Eq Pacific)':'Truk_Island', 'Diego Garcia (Eq Indian)':'Diego_Garcia', 'Ascension Island (Eq Atlantic)':'Ascension_Island', 'Easter Island (S Pacific)':'Easter_Island', 'McMurdo Antarctica':'McMurdo_Antarctica'}
+         header = 'Station Name'
+      else:
+         cols = ['DJF', 'JJA', 'ANN']
+         vlist = {'Global':'global', 'Tropics (15S-15N)':'tropics', 'NH SubTropics (15N-30N)':'nsubtrop', 'SH SubTropics (30S-15S)':'ssubtrop', 'NH Mid-Latitudes (30N-70N)':'nmidlats', 'SH Mid-Latitudes (70S-30S)':'smidlats', 'NH Polar (70N-90N)':'npole', 'SH Polar (90S-70S)':'spole', 'North Pacific Stratus':'npacstrat', 'South Pacific Stratus':'spacstrat', 'North Pacific':'npacific', 'North Atlantic':'natlantic', 'Warm Pool':'warmpool', 'Central Africa':'cafrica', 'USA':'usa'}
+         header = 'Region'
+    
+      html += '<TR>'
+      html += '<TH ALIGN=LEFT><font color=blue>'+header+'</font>'
+    
+      for col in cols:
+         html += '<TH>' + col
         
-        for var in varlist:
-            
-            
-            img_prefix = paths.img_cache_path
-            img_link = img_prefix + set + '_' + stations[station] + '_' + var + '.png'
+      for var in vlist:
+         html += '<TR>'
+         html += '<TH ALIGN=LEFT>' + var
+         # some day, we could check for all of the "derived" paths and use them if defined, otherwise derive them.
+        
+         for col in cols:
+#            img_prefix = paths.img_cache_path
+            img_prefix='tst/'
+            img_link = img_prefix + sets + '_' + col + '_' + var + '.png'
 
             mouseover = 'onmouseover=displayImageHover("' + img_link + '")'
             onmouseout = 'onmouseout="nodisplayImage();"'
             onclick = 'onclick=displayImageClick("' + img_link + '")'
             html += '<TH ALIGN=LEFT><A HREF="#" ' + onclick + ' ' + mouseover + ' ' + onmouseout + '>plot</a>'
             
+      html += '</TABLE>'
     
-    return html
-
-def set4(set,vars,times,package,dataset,options):
-    
-    html = ''
-    
-    html += '<p>'
-    html += '<img src="../images/SET4.gif" border=1 hspace=10 align=left alt="set 4">'
-    html += '<font color=maroon size=+3><b>'
-    html += 't85f09.B1850 <br>and<br> OBS data'
-    html += '</b></font>'
-    html += '<p>'
-    html += '<a href="../sets.htm">'
-    html += '<font color=red><b>Back to diagnostic sets</b></font></a>'
-    html += '<br clear=left>'
-    html += '<p>'
-    html += '<b>DIAG Set 4 - Vertical contour plots of DJF, JJA and ANN zonal means</b>'
-    html += '<hr noshade size=2 size="100%">'
-    
-    #need to replace these with the python dictionary
-    od = ['AIRS IR Sounder 2002-06', 'CERES 2000-2003', 'CERES2 March 2000-October 2005', 'CLOUDSAT (Radar+Lidar) Sep2006-Nov2008', 'CMAP (Xie-Arkin) 1979-98', 'ECMWF Reanalysis 1979-93', 'ERA40 Reanalysis 1980-2001', 'ERBE Feb1985-Apr1989', 'GPCP 1979-2003', 'IPCC/CRU climatology 1961-90', 'ISCCP D2 1983-2001', 'ISCCP FD Jul1983-Dec2000', 'JRA25 Reanalysis 1979-2004', 'Large-Yeager 1984-2004', 'Legates and Willmott 1920-80', 'MODIS 2000-2004', 'NCEP Reanalysis 1979-98', 'NVAP 1988-1999', 'SSM/I (Wentz) 1987-2000', 'TRMM (3B43) 1998-Feb2004', 'Warren Cloud Surface OBS', 'Willmott and Matsuura 1950-99', 'Woods Hole OAFLUX 1958-2006']
-    vd = ['CLDHGH', 'CLDHGH_VISIR', 'CLDLOW', 'CLDLOW_VISIR', 'CLDMED', 'CLDMED_VISIR', 'CLDTOT', 'CLDTOT_VISIR', 'FLDS', 'FLDSC', 'FLNS', 'FLNSC', 'FLUT', 'FLUTC', 'FSDS', 'FSDSC', 'FSNS', 'FSNSC', 'FSNTOA', 'FSNTOAC', 'LHFLX', 'LWCF', 'LWCFSRF', 'PRECT', 'PREH2O', 'PSL', 'QFLX', 'SHFLX', 'SWCF', 'SWCFSRF', 'TGCLDLWP', 'TREFHT', 'TS']
-    
-    seasons = times
-    seasons = ['DJF', 'ANN', 'JJA']
-    
-    html += '<TABLE>'
-    html += '<TR>'
-    html += '<TH><BR>'
-    html += '<TH ALIGN=LEFT><font color=navy size=+1>NCEP Reanalysis 1979-98</font>'
-    for season in seasons:
-        html += '<TH>' + season
+      return html
 
 
-    html += '<TR>'
-    html += '<TH ALIGN=LEFT>OMEGA *'
-    html += '<TH ALIGN=LEFT>Pressure vertical velocity'
-    for season in seasons:
-        html += '<TH ALIGN=LEFT><A HREF="set4_' + season + '_OMEGA_NCEP_obsc.png">plot</a>' 
-    
-    
-    html += '<TR>'
-    html += '<TH><BR>'
-    html += '<TH ALIGN=LEFT><font color=navy size=+1>ERA40 Reanalysis 1980-2001</font>'
-    html += '<TH>DJF'
-    html += '<TH>JJA'
-    html += '<TH>ANN'
-    html += '<TR>'
-    html += '<TH ALIGN=LEFT>OMEGA *'
-    html += '<TH ALIGN=LEFT>Pressure vertical velocity'
-    html += '<TH ALIGN=LEFT><A HREF="set4_DJF_OMEGA_ERA40_obsc.png">plot</a>'
-    html += '<TH ALIGN=LEFT><A HREF="set4_JJA_OMEGA_ERA40_obsc.png">plot</a>'
-    html += '<TH ALIGN=LEFT><A HREF="set4_ANN_OMEGA_ERA40_obsc.png">plot</a>'
-    
-    
-    return html
+if __name__ == '__main__':
+   sets = ['1', '2', '3', '4', '4a', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15']
+   times = ['DJF', 'ANN', 'JJA']
 
-def set4a(set,vars,times,package,dataset,options):
-    
-    html = ''
-    
-    
-def set5_6(sets,varlist,times,package,dataset,options):
-    from master import varinfo
-    
-    html = '<p>'
-    
-    html += '<img src="../images/SET5.gif" border=1 hspace=10 align=left alt="set 5">'
-    html += '<font color=maroon size=+3><b>'
-    html += dataset+'<br>and<br>OBS data'
-    html += '</b></font>'
-    '''
-    html += '<p>'
-    html += '<a href="../sets.htm">'
-    html += '<font color=red><b>Back to diagnostic sets</b></font></a>'
-    html += '<br clear=left>'
-    '''
-    html += '<p>'
-    html += '<b>DIAG Sets 5 & 6 - Horizontal contour/vector plots of DJF, JJA and ANN means'
-    html += '<hr noshade size=2 size="100%">'
-    
-    html += '<TABLE>'
-    
+   for s in sets:
+      html = pageGenerator(s, None, times, None, 'datasetname', None)
+      fname = 'set'+s+'.html'
+      f = open(fname, "w")
+      f.write(html)
+      f.close()
+#      print html
    
-
-    # Figure out which obssets diags set 5/6 uses
-    obssets = []
-    set56_vars = []
-    for v in varinfo.keys():
-      if 5 in varinfo[v]['sets'] or 6 in varinfo[v]['sets']:
-         obssets.extend(varinfo[v]['obssets'].keys())
-         set56_vars.append(v)
-
-    obssets = list(set(obssets))
-    print obssets
-    set56_vars = list(set(set56_vars))
-    # intersect user times and the default seasons for this dataset
-#    print times
-    seasons = list(set(times) & set(['DJF', 'ANN', 'JJA']))
-#    print seasons
-    print 'DEFAULTING TO ALL SEASONS FOR NOW'
-    seasons = ['DJF','ANN','JJA']
-
-    for o in obssets:
-        html += '<TR>'
-        html += '    <TH><BR>'
-        html += '    <TH ALIGN=LEFT><font color=navy size=+1>' + o + '</font>'
-        
-        for season in seasons:
-            html += '    <TH>' + season
-    
-        for v in set56_vars:
-            # Is this obset used by this variable?
-            if o in varinfo[v]['obssets'].keys():
-               obsfname = varinfo[v]['obssets'][o]['filekey']
-
-               html += '<TR>'
-               html += '    <TH ALIGN=LEFT>' + v
-               html += '    <TH ALIGN=LEFT>' + varinfo[v]['desc'] 
-               if 5 in varinfo[v]['sets']:
-                  fnameset = '5'
-               else:
-                  fnameset = '6'
-            
-               for season in seasons:
-                  html += '    <TH ALIGN=LEFT><A href="#" onmouseover="onmouseover="displayImageHover(\'set' + fnameset+'_' + season + '_' + v + '_'+obsfname+'_obsc\.png\');" onmouseout="nodisplayImage();" onclick="displayImageClick(\'set' +fnameset+'_' + season + '_' + v + '_'+obsfname+'_obsc\.png\'">plot</a>'
    
-
-    return html
-    
-def set3(set,vars,times,package,dataset,options):
-    
-    # set 3
-
-    obsprefix={'GPCP 1979-2003':'GPCP', 'NVAP 1988-1999':'NVAP', 'MODIS 2000-2004':'MODIS', 'CERES 2000-2003':'CERES', 'ISCCP D2 1983-2001':'ISCCP', 'ERA40 Reanalysis 1980-2001':'ERA40', 'ECMWF Reanalysis 1979-93':'ECMWF', 'SSM/I (Wentz) 1987-2000':'SSMI', 'Large-Yeager 1984-2004':'LARYEA', 'IPCC/CRU climatology 1961-90':'CRU', 'CMAP (Xie-Arkin) 1979-98':'XA', 'NCEP Reanalysis 1979-98':'NCEP', 'TRMM (3B43) 1998-Feb2004':'TRMM', 'Legates and Willmott 1920-80':'LEGATES', 'ERBE Feb1985-Apr1989':'ERBE', 'Willmott and Matsuura 1950-99':'WILLMOTT', 'CERES2 March 2000-October 2005':'CERES2', 'Woods Hole OAFLUX 1958-2006':'WHOI', 'ISCCP FD Jul1983-Dec2000':'ISCCP', 'CLOUDSAT (Radar+Lidar) Sep2006-Nov2008':'CLOUDSAT', 'JRA25 Reanalysis 1979-2004':'JRA25', 'AIRS IR Sounder 2002-06':'AIRS', 'Warren Cloud Surface OBS':'WARREN'}
-    vardict = {}
-    vardict['TREFHT'] = {'desc':'2-meter air temperature (land)', 'obssets': [ 'IPCC/CRU climatology 1961-90', 'Willmott and Matsuura 1950-99', 'Legates and Willmott 1920-80', 'JRA25 Reanalysis 1979-2004'], 'sets':[3]}
-    vardict['PRECT'] = {'desc':'Precipitation rate', 'obssets': [ 'Legates and Willmott 1920-80', 'GPCP 1979-2003', 'CMAP (Xie-Arkin) 1979-98', 'SSM/I (Wentz) 1987-2000', 'TRMM (3B43) 1998-Feb2004'], 'sets':[3]}
-    vardict['PREH2O'] = {'desc':'Total precipitable water', 'obssets': [ 'JRA25 Reanalysis 1979-2004', 'NCEP Reanalysis 1979-98', 'ECMWF Reanalysis 1979-93', 'ERA40 Reanalysis 1980-2001', 'MODIS 2000-2004', 'NVAP 1988-1999', 'AIRS IR Sounder 2002-06', 'SSM/I (Wentz) 1987-2000'], 'sets':[3]}
-    vardict['PSL'] = {'desc':'Sea level pressure', 'obssets': ['JRA25 Reanalysis 1979-2004', 'NCEP Reanalysis 1979-98'], 'sets':[3]}
-    vardict['SHFLX'] = {'desc':'Surface sensible heat flux', 'obssets': ['JRA25 Reanalysis 1979-2004', 'NCEP Reanalysis 1979-98', 'Large-Yeager 1984-2004'], 'sets':[3]}
-    vardict['LHFLX'] = {'desc':'Surface latent heat flux', 'obssets':[ 'JRA25 Reanalysis 1979-2004', 'ECMWF Reanalysis 1979-93', 'ERA40 Reanalysis 1980-2001', 'Woods Hole OAFLUX 1958-2006'],'sets':[3]}
-    vardict['TS'] = {'desc':'Surface temperatuer', 'obssets': ['NCEP Reanalysis 1979-98'],'sets':[3]}
-    vardict['QFLX'] = {'desc':'Surface water flux', 'obssets':[ 'ECMWF Reanalysis 1979-93', 'Woods Hole OAFLUX 1958-2006', 'Large-Yeager 1984-2004'], 'sets':[3]}
-    vardict['TGCLDLWP'] = {'desc':'Cloud Liquid Water', 'obssets': ['MODIS 2000-2004', 'NVAP 1988-1999', 'SSM/I (Wentz) 1987-2000'], 'sets':[3]}
-    vardict['FLNS'] = {'desc':'Surf Net LW Flux', 'obssets':[ 'Large-Yeager 1984-2004', 'ISCCP FD Jul1983-Dec2000'], 'sets':[3]}
-    vardict['FSNS'] = {'desc':'Surf Net SW Flux', 'obssets':[ 'Large-Yeager 1984-2004', 'ISCCP FD Jul1983-Dec2000'], 'sets':[3]}
-    vardict['FLUT'] = {'desc':'TOA Upward LW Flux', 'obssets':[ 'CERES2 March 2000-October 2005', 'CERES 2000-2003', 'ERBE Feb1985-Apr1989'], 'sets':[3]}
-    vardict['FLUTC'] = {'desc':'TOA clearsky upward LW flux', 'obssets':[ 'CERES2 March 2000-October 2005', 'CERES 2000-2003', 'ERBE Feb1985-Apr1989'], 'sets':[3]}
-    vardict['FSNTOA'] = {'desc':'TOA net SW Flux', 'obssets':[ 'CERES2 March 2000-October 2005', 'CERES 2000-2003', 'ERBE Feb1985-Apr1989'], 'sets':[3]}
-    vardict['FSNTOAC'] = {'desc':'TOA clearsky net SW flux', 'obssets':[ 'CERES2 March 2000-October 2005', 'CERES 2000-2003', 'ERBE Feb1985-Apr1989'], 'sets':[3]}
-    vardict['LWCF'] = {'desc':'TOA longwave cloud forcing', 'obssets':[ 'CERES2 March 2000-October 2005', 'CERES 2000-2003', 'ERBE Feb1985-Apr1989'], 'sets':[3]}
-    vardict['SWCF'] = {'desc':'TOA shortwave cloud forcing', 'obssets':[ 'CERES2 March 2000-October 2005', 'CERES 2000-2003', 'ERBE Feb1985-Apr1989'], 'sets':[3]}
-    vardict['FLDS'] = {'desc':'Surf LW downwelling flux', 'obssets':[ 'ISCCP FD Jul1983-Dec2000'], 'sets':[3]}
-    vardict['FLDSC'] = {'desc':'Clearsky Surf LW downwelling flux', 'obssets':[ 'ISCCP FD Jul1983-Dec2000'], 'sets':[3]}
-    vardict['FLNSC'] = {'desc':'Clearsky Surf Net LW Flux', 'obssets':[ 'ISCCP FD Jul1983-Dec2000'], 'sets':[3]}
-    vardict['FSDS'] = {'desc':'Surf SW downwelling flux', 'obssets':[ 'ISCCP FD Jul1983-Dec2000'], 'sets':[3]}
-    vardict['FSDSC'] = {'desc':'Clearsky Surf SW downwelling flux', 'obssets':[ 'ISCCP FD Jul1983-Dec2000'], 'sets':[3]}
-    vardict['FSNSC'] = {'desc':'Clearsky Surf Net SW flux', 'obssets':[ 'ISCCP FD Jul1983-Dec2000'], 'sets':[3]}
-    vardict['LWCFSRF'] = {'desc': 'Surf LW cloud forcing', 'obssets':[ 'ISCCP FD Jul1983-Dec2000'], 'sets':[3]}
-    vardict['SWCFSRF'] = {'desc':'Surf SW Cloud Forcing', 'obssets':[ 'ISCCP FD Jul1983-Dec2000'], 'sets':[3]}
-    vardict['CLDHGH'] = {'desc':'High cloud amount (IR clouds)', 'obssets':[ 'ISCCP D2 1983-2001', 'CLOUDSAT (Radar+Lidar) Sep2006-Nov2008'],'sets':[3]}
-    vardict['CLDHGH_VISIR'] = {'desc':'High cloud amount (VIS/IR/NIR clouds)', 'obssets':[ 'ISCCP D2 1983-2001'],'sets':[3]}
-    vardict['CLDLOW'] = {'desc':'Low cloud amount (IR clouds)', 'obssets':[ 'ISCCP D2 1983-2001', 'Warren Cloud Surface OBS', 'CLOUDSAT (Radar+Lidar) Sep2006-Nov2008'],'sets':[3]}
-    vardict['CLDLOW_VISIR'] = {'desc':'Low cloud amount (VIS/IR/NIR clouds)', 'obssets':[ 'ISCCP D2 1983-2001'],'sets':[3]} 
-    vardict['CLDMED'] = {'desc':'Mid cloud amount (IR clouds)', 'obssets': [ 'ISCCP D2 1983-2001', 'CLOUDSAT (Radar+Lidar) Sep2006-Nov2008'],'sets':[3]}
-    vardict['CLDMED_VISIR'] = {'desc':'Mid cloud amount (VIS/IR/NIR)', 'obssets': [ 'ISCCP D2 1983-2001'],'sets':[3]}
-    vardict['CLDTOT'] = {'desc':'Total cloud amount (IR clouds)','obssets': [ 'ISCCP D2 1983-2001', 'Warren Cloud Surface OBS'],'sets':[3]}
-    vardict['CLDTOT_VISIR'] = {'desc':'Total cloud amount (VIS/IR/NIR clouds)','obssets': [ 'ISCCP D2 1983-2001'],'sets':[3]}
-
-
-    
-    
-    
-    html = '<p>'
-    
-    html += '<img src="../images/SET3.gif" border=1 hspace=10 align=left alt="set 3">'
-    html += '<font color=maroon size=+3><b>'
-    html += 't85f09.B1850 <br>and<br> OBS data'
-    html += '</b></font>'
-    '''
-    html += '<p>'
-    html += '<a href="../sets.htm">'
-    html += '<font color=red><b>Back to diagnostic sets</b></font></a>'
-    html += '<br clear=left>'
-    '''
-    html += '<p>'
-    html += '<b>DIAG Set 3 - Line plots of DJF, JJA and ANN zonal means</b>'
-    html += '<hr noshade size=2 size="100%">'
-    
-    html += '<TABLE>'
-    
-    vd = vardict.keys()
-    vd.sort()
-    od = obsprefix.keys()
-    od.sort()
-    
-    
-    seasons = times
-    seasons = ['DJF', 'ANN', 'JJA']
-    
-    print 'vd: ' + str(vd)
-    
-    for o in od:
-        
-        html += '<TR>'
-        html += '    <TH><BR>'
-        html += '    <TH ALIGN=LEFT><font color=navy size=+1>' + o + '</font>'
-        
-        for season in seasons:
-            html += '    <TH>' + season
-    
-        
-        for v in vd:
-            #if given that variable
-            #if o is in vardict[v]['obssets']
-            
-            html += '<TR>'
-            html += '    <TH ALIGN=LEFT>' + v
-            html += '    <TH ALIGN=LEFT>' + vardict[v]['desc'] 
-            
-            for season in seasons:
-                
-                
-                img_link = set + '_' + season + '_' + v + '.png'
-                mouseover = 'onmouseover=displayImageHover("' + img_link + '")'
-                onmouseout = 'onmouseout="nodisplayImage();"'
-                onclick= 'onclick=displayImageClick("' + img_link + '")'
-                html += '<TH ALIGN=LEFT><A HREF="#" ' + onclick + ' ' + mouseover + ' ' + onmouseout + '>plot</a>'
-            
-                #html += '    <TH ALIGN=LEFT><A href="#" onmouseover="onmouseover="displayImageHover(\'set3_' + season + '_' + v + '_CRU_obsc\.png\');" onmouseout="nodisplayImage();" onclick="displayImageClick(\'set3_' + season + '_' + v + '_CRU_obsc\.png\'">plot</a>'
-     
-    
-    print 'html: ' + html
-    
-    return html
-
-
-def set2(set,vars,times,package,dataset):
-    
-    html = ''
-
-    html += '<p>'
-    html += '<img src="../images/SET2.gif" border=1 hspace=10 align=left alt="set 2">'
-    html += '<font color=maroon size=+3><b>'
-    html += 't85f09.B1850 <br>and<br> OBS data'
-    html += '</b></font>'
-    html += '<p>'
-    html += '<a href="../sets.htm">'
-    html += '<font color=red><b>Back to diagnostic sets</b></font></a>'
-    html += '<br clear=left>'
-    html += '<p>'
-    html += '<b>DIAG Set 2 - Line plots of annual implied transports<br> '
-    html += '<hr noshade size=2 size="100%">'
-    html += '<p>' 
-    html += 'The computation of the implied northward transports follows the conventions described<br>'
-    html += 'in the paper by <A HREF="http://www.cgd.ucar.edu/cas/papers/jclim2001a/transpts.html">Trenberth and Caron (2001)</A>. Their corrections applied to the southern<br>'
-    html += 'oceans poleward of 30S are not used in the calculations, and the NCEP derived values<br>'
-    html += 'plotted here are their unadjusted values. <A HREF="http://www.cgd.ucar.edu/cas/catalog/ohts/index.html">Webpage</A> about the NCEP derived data.<br>'
-    html += 'A <A HREF="../images/ocean_masks.jpg">plot</A> of the ocean basins used in the calculations.'
-    html += '</b>'
-    
-    html += '<p>'
-    
-    html += '<TABLE>'
-    
-    html += '<TR>'
-    html += '    <TH ALIGN=LEFT>Annual Implied Northward Transports'
-    html += '    <TH><BR>'
-    
-    html += '<TR>'
-    html += '    <TH ALIGN=LEFT>Ocean Heat'
-    html += '    <TH ALIGN=LEFT><A HREF="set2_OHT_obsc.png">plot</A>'
-    
-    html += '<TR>'
-    html += '    <TH ALIGN=LEFT>Atmospheric Heat'
-    html += '    <TH ALIGN=LEFT><A HREF="set2_AHT_obsc.png">plot</A>'
-    
-    html += '<TR>'
-    html += '    <TH ALIGN=LEFT>Ocean Freshwater'
-    html += '    <TH ALIGN=LEFT><A HREF="set2_OFT_obsc.png">plot</A>'
-    
-    html += '</TABLE>'
-
-    return html
-
-
-
-def set1(set,vars,times,package,dataset):
-    
-    html = ''
-    
-    html += '<img src="../images/3Dglobe.gif" hspace=10 align=left alt="3D globe">\n'
-    html += '<p>\n'
-    html += '<font color=maroon size=+3><b>\n'
-    html += 't85f09.B1850 <br>and<br> OBS data\n'
-    html += '</b></font>\n'
-    html += '<p>\n'
-    html += '<a href="../sets.htm">\n'
-    html += '<font color=red><b>Back to diagnostic sets</b></font></a>\n'
-    html += '<br clear=left>\n'
-    html += '<p>\n'
-    html += '<b>DIAG Set 1 - Tables of global, tropical, and extratropical<br>\n'
-    html += 'DJF, JJA, ANN means and RMSE</b><br>\n'
-    html += '<hr noshade size=2 size="100%">\n'
-    
-    html += '<TABLE>\n'
-    
-    html += '<TR>\n'
-    html += '  <TH ALIGN=LEFT><font color=blue>Domain</font>\n'
-    #print 'DJF: ' + str(('DJF' in times))
-    for time in times:
-        html += '  <TH>' + time + '\n'
-    
-    
-    html += '<TR>\n'
-    html += '  <TH ALIGN=LEFT>global'
-    # GLOBAL OBS TABLE
-    for time in times:
-        html += '  <TH ALIGN=LEFT><A HREF="table_GLBL_' + time + '_obs.asc">table</a>\n'
-    
-    
-    html += '<TR>\n'
-    html += '  <TH ALIGN=LEFT>tropics (20S-20N)'
-    # GLOBAL OBS TABLE
-    for time in times:
-        html += '  <TH ALIGN=LEFT><A HREF="table_TROP_' + time + '_obs.asc">table</a>\n'
-        
-    html += '<TR>\n'
-    html += '  <TH ALIGN=LEFT>southern extratropics (90S-20S)'
-    # 
-    for time in times:
-        html += '  <TH ALIGN=LEFT><A HREF="table_SEXT_' + time + '_obs.asc">table</a>'
-        
-    html += '<TR>\n'
-    html += '  <TH ALIGN=LEFT>northern extratropics (20N-90N)'
-    for time in times:
-        html += '  <TH ALIGN=LEFT><A HREF="table_NEXT_' + time + '_obs.asc">table</a>'
-    
-    
-    html += '</TABLE>'
-    html += '\n'
-                
-    return html

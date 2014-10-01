@@ -746,22 +746,22 @@ def classic_views_html(request):
     response = 'error'
     
     if request.method == "POST":
-        set = None
-        vars = None
+        sets = None
+        varlist = None
         times = None
         package = None
         dataset = None
         
         json_data = json.loads(request.body)
         
-        set = json_data['set'] #should be a string
-        vars = json_data['vars'] #should be a list
+        sets = json_data['set'] #should be a string
+        varlist = json_data['vars'] #should be a list
         times = json_data['times'] #should be a list
         package = json_data['package'] #should be a string
         dataset = json_data['dataset']
         
-        print 'set: ' + set
-        print 'vars: ' + str(vars) + ' ' #+ vars.length
+        print 'sets: ' + sets
+        print 'varlist: ' + str(varlist) + ' ' #+ vars.length
         print 'times: ' + str(times) + ' ' #+ times.length
         print 'package: ' + package
         print 'dataset: ' + dataset
@@ -772,83 +772,10 @@ def classic_views_html(request):
         
             from classic import amwghtmlgenerator
             
-            if set == 'set1':
-                print 'set1'
-                
-                html = amwghtmlgenerator.set1(set,vars,times,package,dataset)
-            
-            elif set == 'set2':
-                print 'set2'
-            
-                html = amwghtmlgenerator.set2(set,vars,times,package,dataset)
-            
-            elif set == 'set3':
-                print 'set3'
-            
-                html = amwghtmlgenerator.set3(set,vars,times,package,dataset,options)
-            
-            
-            elif set == 'set4':
-                print 'set4'
-            
-                html = amwghtmlgenerator.set4(set,vars,times,package,dataset,options)
-            
-            elif set == 'set5':
-                print 'set5'
-            
-                html = amwghtmlgenerator.set5_6(set,vars,times,package,dataset,options)
-            
-            elif set == 'set6':
-                print 'set6'
-                html = amwghtmlgenerator.set5_6(set,vars,times,package,dataset,options)
-            
-            
-            elif set == 'set7':
-                print 'set7'
-            
-                html = '<div>set7</div>'
-            
-            elif set == 'set8':
-                print 'set8'
-            
-                html = '<div>set8</div>'
-            
-            elif set == 'set9':
-                print 'set9'
-            
-                html = '<div>set9</div>'
-            
-            elif set == 'set10':
-                print 'set10'
-            
-                html = '<div>set10</div>'
-            
-            elif set == 'set11':
-                print 'set11'
-            
-                html = '<div>set12<div>'
-                
-            elif set == 'set12':
-                print 'set12'
-            
-                html = amwghtmlgenerator.set12(set,vars,times,package,dataset,options)
-            
-            elif set == 'set13':
-                print 'set13'
-            
-                html = '<div>set13</div>'
-            
-            elif set == 'set14':
-                print 'set14'
-            
-                html = '<div>set14</div>'
-            
-            elif set == 'set15':
-                print 'set15'
-            
-                html = '<div>set15</div>'
-            
-                
+            html = None
+            html = pageGenerator(sets, varlist, times, package, dataset, options)
+            if html == None:
+               html = '<div>set'+sets+' currently unimplemented</div>'
     
     response = html
     
