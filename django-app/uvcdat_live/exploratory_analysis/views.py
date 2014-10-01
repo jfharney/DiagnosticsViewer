@@ -754,13 +754,14 @@ def classic_views_html(request):
         
         json_data = json.loads(request.body)
         
-        sets = json_data['set'] #should be a string
+        sets = json_data['set'] #should be a string. strip off the 'set' part of it, and drop unicode
+        sets = str(sets.replace('set',''))
         varlist = json_data['vars'] #should be a list
         times = json_data['times'] #should be a list
         package = json_data['package'] #should be a string
         dataset = json_data['dataset']
         
-        print 'sets: ' + sets
+        print 'sets: ' + str(sets)
         print 'varlist: ' + str(varlist) + ' ' #+ vars.length
         print 'times: ' + str(times) + ' ' #+ times.length
         print 'package: ' + package
@@ -773,7 +774,7 @@ def classic_views_html(request):
             from classic import amwghtmlgenerator
             
             html = None
-            html = pageGenerator(sets, varlist, times, package, dataset, options)
+            html = amwghtmlgenerator.pageGenerator(sets, varlist, times, package, dataset, options)
             if html == None:
                html = '<div>set'+sets+' currently unimplemented</div>'
     

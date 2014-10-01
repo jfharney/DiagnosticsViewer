@@ -1,7 +1,11 @@
-#from paths import paths
+from paths import paths
 from amwgmaster import *
+import os
 
 def pageGenerator(sets, varlist, times, package, dataset, options):
+   dataset = 'f40_amip_cam5_c03_78b'
+   img_prefix = os.path.join(paths.img_cache_path, package, dataset,'')
+
    obssort = 1 
    html = ''
 
@@ -27,17 +31,29 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
 
    html += '<TABLE>'
 
+   # get a list of all obssets
+   obslist = []
+   for v in varinfo.keys():
+      obslist.extend(varinfo[v]['obssets'].keys())
+   # unique-ify
+   obslist = list(set(obslist))
+
    obssets = []
+   for v in varinfo.keys():
+      for obs in varinfo[v]['obssets'].keys():
+         if sets in varinfo[v]['obssets'][obs]['usedin']:
+            obssets.append(obs)
+
+   obssets = list(set(obssets))
+   print obssets
+
    setXvars = []
    for v in varinfo.keys():
       if sets in varinfo[v]['sets']:
-         obssets.extend(varinfo[v]['obssets'].keys())
          setXvars.append(v)
-   # unique-ify
-   obssets = list(set(obssets))
-   # This shouldn't be necessary but do it anyway
    setXvars = list(set(setXvars))
    
+   print setXvars
 
    #### Setup paths based on dataset name and path
    #### NOTE: Filename strings need converted to documented paths
@@ -69,7 +85,7 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
    if sets == '14':
       html += '<TR>'
       html += ' <TH ALIGN=LEFT>Space and Time'
-      fname = 'set14_ANN_SPACE_TIME_obsc.png'
+      fname = img_prefix+'set14_ANN_SPACE_TIME_obsc.png'
       click = 'onclick="displayImageClick(\''+fname+'\');" '
       over = 'onmouseover="displayImageHover(\''+fname+'\');" '
       out = 'onmouseout="nodisplayImage();" '
@@ -79,7 +95,7 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
       html += ' <TH ALIGN=LEFT>Space only'
       seasons = ['ANN', 'DJF', 'MAM', 'JJA', 'SON']
       for season in seasons:
-         fname = 'set14_'+season+'_SPACE_obsc.png'
+         fname = img_prefix+'set14_'+season+'_SPACE_obsc.png'
          click = 'onclick="displayImageClick(\''+fname+'\');" '
          over = 'onmouseover="displayImageHover(\''+fname+'\');" '
          out = 'onmouseout="nodisplayImage();" '
@@ -94,7 +110,7 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
       html += '<TH ALIGN=LEFT>Space and Time'
       varl = {'Correlation':'CC', 'Variance': 'VAR', 'Bias':'BIAS'}
       for v in varl.keys():
-         fname = 'set14.METRICS_'+varl[v]+'_SPACE_TIME_obsc.png'
+         fname = img_prefix+'set14.METRICS_'+varl[v]+'_SPACE_TIME_obsc.png'
          click = 'onclick="displayImageClick(\''+fname+'\');" '
          over = 'onmouseover="displayImageHover(\''+fname+'\');" '
          out = 'onmouseout="nodisplayImage();" '
@@ -102,21 +118,21 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
       html += '<TR>'
       html += '<TH ALIGN=LEFT>Space only'
       for v in varl.keys():
-         fname = 'set14.METRICS_'+varl[v]+'_SPACE.png'
+         fname = img_prefix+'set14.METRICS_'+varl[v]+'_SPACE.png'
          click = 'onclick="displayImageClick(\''+fname+'\');" '
          over = 'onmouseover="displayImageHover(\''+fname+'\');" '
          out = 'onmouseout="nodisplayImage();" '
          html += ' <TH ALIGN=LEFT><A HREF="#" '+click+over+out+'">'+v+'</a>'
       html += '<TR>'
       html += '<TH ALIGN=LEFT>Time only'
-      fname = 'set14.METRICS_CC_TIME_obsc.png'
+      fname = img_prefix+'set14.METRICS_CC_TIME_obsc.png'
       click = 'onclick="displayImageClick(\''+fname+'\');" '
       over = 'onmouseover="displayImageHover(\''+fname+'\');" '
       out = 'onmouseout="nodisplayImage();" '
       html += ' <TH ALIGN=LEFT><A HREF="#" '+click+over+out+'">Correlation</a>'
       html += '</TABLE>'
 
-   return html
+      return html
       
    if sets == '2' :
       varl = {'Ocean Heat':'OHT', 'Atmospheric Heat':'AHT', 'Ocean Freshwater':'OFT'}
@@ -125,7 +141,7 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
       for v in varl.keys():
          html += '<TR>'
          html += ' <TH ALIGN=LEFT>'+v
-         fname ='set2_'+varl[v]+'_obs.png'
+         fname =img_prefix+'set2_'+varl[v]+'_obsc.png'
          click = 'onclick="displayImageClick(\''+fname+'\');" '
          over = 'onmouseover="displayImageHover(\''+fname+'\');" '
          out = 'onmouseout="nodisplayImage();" '
@@ -170,9 +186,9 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
                   html += '    <TH ALIGN=LEFT>' + varinfo[v]['desc']
                   for season in seasons:
                      if sets == '7':
-                        fname = 'set'+sets+'_'+season+'_'+v.split('_')[0]+'_'+obsfname+'_NP_obsc.png'
+                        fname = img_prefix+'set'+sets+'_'+season+'_'+v.split('_')[0]+'_'+obsfname+'_NP_obsc.png'
                      else:
-                        fname = 'set'+sets+'_'+season+'_'+v+'_'+obsfname+'_obsc.png'
+                        fname = img_prefix+'set'+sets+'_'+season+'_'+v+'_'+obsfname+'_obsc.png'
                      click = 'onclick="displayImageClick(\''+fname+'\');" '
                      over = 'onmouseover="displayImageHover(\''+fname+'\');" '
                      out = 'onmouseout="nodisplayImage();" '
@@ -190,7 +206,7 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
                      html += '    <TH ALIGN=LEFT>' + v.split('_')[0]
                      html += '    <TH ALIGN=LEFT>' + varinfo[v]['desc']
                      for season in seasons:
-                        fname = 'set'+sets+'_'+season+'_'+v.split('_')[0]+'_'+obsfname+'_SP_obsc.png'
+                        fname = img_prefix+'set'+sets+'_'+season+'_'+v.split('_')[0]+'_'+obsfname+'_SP_obsc.png'
                         click = 'onclick="displayImageClick(\''+fname+'\');" '
                         over = 'onmouseover="displayImageHover(\''+fname+'\');" '
                         out = 'onmouseout="nodisplayImage();" '
@@ -216,7 +232,7 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
                   html += '<TR>'
                   html += '   <TH ALIGN=LEFT>'+v
                   html += '   <TH ALIGN=LEFT>'+varinfo[v]['desc']
-                  fname = 'set'+sets+'_'+v+'_'+obsfname+'_obsc.png'
+                  fname = img_prefix+'set'+sets+'_'+v+'_'+obsfname+'_obsc.png'
                   click = 'onclick="displayImageClick(\''+fname+'\');" '
                   over = 'onmouseover="displayImageHover(\''+fname+'\');" '
                   out = 'onmouseout="nodisplayImage();" '
@@ -248,7 +264,8 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
          html += '  <TH ALIGN=LEFT>SW/LW Cloud Forcing'
          html += '  <TH ALIGN=LEFT><font color="navy">'+o+'</font>'
          obsfname = set1obs[o]
-         fname = 'set11_SWCF_LWCF_'+obsfname+'_obs.png'
+         #### NOTE: Set11 is _obs instead of _obsc for some reason
+         fname = img_prefix+'set11_SWCF_LWCF_'+obsfname+'_obs.png'
          click = 'onclick="displayImageClick(\''+fname+'\');" '
          over = 'onmouseover="displayImageHover(\''+fname+'\');" '
          out = 'onmouseout="nodisplayImage();" '
@@ -264,7 +281,7 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
             html += '<TR>'
             html += '  <TH ALIGN=LEFT>'+set2list[v]['desc']
             html += '  <TH ALIGN=LEFT>'+o
-            fname = 'set11_'+v+'_'+set2list[v]['obssets'][o]+'_obsc.png'
+            fname = img_prefix+'set11_'+v+'_'+set2list[v]['obssets'][o]+'_obsc.png'
             click = 'onclick="displayImageClick(\''+fname+'\');" '
             over = 'onmouseover="displayImageHover(\''+fname+'\');" '
             out = 'onmouseout="nodisplayImage();" '
@@ -297,8 +314,6 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
          # some day, we could check for all of the "derived" paths and use them if defined, otherwise derive them.
         
          for col in cols:
-#            img_prefix = paths.img_cache_path
-            img_prefix='tst/'
             img_link = img_prefix + sets + '_' + col + '_' + var + '.png'
 
             mouseover = 'onmouseover=displayImageHover("' + img_link + '")'
