@@ -760,14 +760,22 @@ def classic_views(request):
         package = json_data['package'] #should be a string
         dataset = json_data['dataset']
         
-          
-        #assemble the variable dictionary here per Brian's email
+       #To be added region = json_data['region'] #should be a list
+        regions = ['Global Land','Northern Hemisphere Land', 'Southern Hemisphere Land', 'Alaskan Arctic', 'Central U.S.', 'diterranean and Western Asia']  
+        set3Headers = ['reg', 'landf','randf','turbf','cnFlx','frFlx','moistEnergyFlx','snow','albedo','hydro']
+        #DONE to be added
+        
+        
+        
+        
         
         print 'set: ' + set
         print 'vars: ' + str(vars) + ' ' #+ vars.length
         print 'times: ' + str(times) + ' ' #+ times.length
         print 'package: ' + str(package)
         print 'dataset: ' + str(dataset)
+        
+        print 'regions: ' + str(regions)
         
         #RAY's new code
         ####################################################
@@ -1153,10 +1161,87 @@ def classic_views(request):
             
             
         elif set == 'set3':
+             #########################################
+            #change this to the specified directory structure
+            url_prefix = "/home/user/Desktop/AptanaWorkspace/climate/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
+            url_prefixIMAGE = "\'/static/exploratory_analysis/img/classic/" + package + "/" + set + "/set3_"
             
+            #assemble the url to be returned
+            url = url_prefix + set + ".html"
+            #END JOHN's code
+        
+            #Construct table with description (variable) and link to plot
+            #Input from json object from user selection
+            #user_selected_vars = {'TSA', 'PREC'}
             
+            #Start writing file (SPECIFY LOCATION TO WRITE FILE TO HERE)     Example: land/tropics_warming_th_q/img/
+            file = open(url, "w")
+                    
+            #Header
+            file.write("<p>\n") 
+            file.write("<b><font color=maroon size=+2>Set 3 Description: <b></font>Line plots of monthly climatology: regional air temperature, precipitation, runoff, snow depth, radiative fluxes, and turbulent fluxes</b><br>\n")
+            file.write("<br clear=left>")
+            file.write("</p>\n")
+            file.write("<p>\n")
+            file.write("<A HREF=\"/static/exploratory_analysis/img/classic/lmwg/set3/variableList_3.html\" target=\"set3_Variables\">\n")
+            file.write("<font color=maroon size=+1 text-align: right><b>Lookup Table: Set 3 Variable Definition</b></font></a>\n")
+            file.write("</br>\n")
+            file.write("</p>\n") 
+                   
+                        
+            #Start table
+            file.write("<p>\n")
+            file.write("<hr noshade size=2 size=\"100%\">\n</hr>")
+            file.write("<TABLE> \n")
+            file.write("<TR>\n")
+            file.write("<td ALIGN=LEFT><font color=maroon>Description (variable)</font>\n</td>")
+            for time in times:  
+               file.write("<td ALIGN=LEFT><font color=maroon>"+time+"</font>\n</td>")
+            file.write("</TR>\n")
+          
             
-             #assemble the url to be returned
+            #python for loop----------
+            #Descriptions are (predefinedBrianSmithDictionary[key]) 
+            
+            for key in vardict:
+                if 3 in vardict[key]['sets'] and key in vars:
+                    file.write("<TR>\n")
+                    file.write('<Td ALIGN=LEFT>') 
+                    file.write(vardict[key]['desc'])
+                    file.write('(')
+                    file.write(key)
+                    file.write(')</td>')
+                    
+                    
+                    for time in times:                
+                        file.write('<td ALIGN=LEFT>') 
+                        file.write('<a href="#" onclick="displayImageClick(')
+                        file.write(url_prefixIMAGE)#Here we write gif name
+                        file.write(time+'_')
+                        file.write(key)
+                        file.write('.gif\'') 
+                        file.write(');" onmouseover="displayImageHover(')
+                        file.write(url_prefixIMAGE)#Here we write gif name again
+                        file.write(time+'_')
+                        file.write(key)
+                        file.write('.gif\'') 
+                        file.write(');" onmouseout="nodisplayImage();">plot</A>\n')
+                        file.write('</td>')
+                    file.write("</TR>\n")
+                    
+                    
+            #end for loop and end table generation-------------------------
+            
+       
+            file.write("</TABLE> \n")
+            file.write("</p>\n")
+            file.close()
+    
+                    
+            
+            url_prefix = "/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"      
+        
+            #assemble the url to be returned
             url = url_prefix + set + ".html"
             
             response = url;
