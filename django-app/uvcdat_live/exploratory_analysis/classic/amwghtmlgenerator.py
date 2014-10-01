@@ -10,7 +10,7 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
    html = ''
 
    html = '<p>'
-   html += '<img src="../images/SET'+sets+'.gif" border=1 hspace=10 align=left alt="set '+sets+'">'
+   html += '<img src="'+img_prefix+'SET'+sets+'.gif" border=1 hspace=10 align=left alt="set '+sets+'">'
    html += '<font color=maroon size=+3><b>'
    html += dataset+'<br>and<br>OBS data'
    html += '</b></font>'
@@ -180,13 +180,13 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
                   obsfname = varinfo[v]['obssets'][o]['filekey']
                   html += '<TR>'
                   if sets == '7':
-                     html += '    <TH ALIGN=LEFT>' + v.split('_')[0]
+                     html += '    <TH ALIGN=LEFT>' + v.replace('_NORTH','')
                   else:
                      html += '    <TH ALIGN=LEFT>' + v
                   html += '    <TH ALIGN=LEFT>' + varinfo[v]['desc']
                   for season in seasons:
                      if sets == '7':
-                        fname = img_prefix+'set'+sets+'_'+season+'_'+v.split('_')[0]+'_'+obsfname+'_NP_obsc.png'
+                        fname = img_prefix+'set'+sets+'_'+season+'_'+v.replace('_NORTH','')+'_'+obsfname+'_NP_obsc.png'
                      else:
                         fname = img_prefix+'set'+sets+'_'+season+'_'+v+'_'+obsfname+'_obsc.png'
                      click = 'onclick="displayImageClick(\''+fname+'\');" '
@@ -203,10 +203,10 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
                   if o in varinfo[v]['obssets'].keys():
                      obsfname = varinfo[v]['obssets'][o]['filekey']
                      html += '<TR>'
-                     html += '    <TH ALIGN=LEFT>' + v.split('_')[0]
+                     html += '    <TH ALIGN=LEFT>' + v.replace('_SOUTH','')
                      html += '    <TH ALIGN=LEFT>' + varinfo[v]['desc']
                      for season in seasons:
-                        fname = img_prefix+'set'+sets+'_'+season+'_'+v.split('_')[0]+'_'+obsfname+'_SP_obsc.png'
+                        fname = img_prefix+'set'+sets+'_'+season+'_'+v.replace('_SOUTH','')+'_'+obsfname+'_SP_obsc.png'
                         click = 'onclick="displayImageClick(\''+fname+'\');" '
                         over = 'onmouseover="displayImageHover(\''+fname+'\');" '
                         out = 'onmouseout="nodisplayImage();" '
