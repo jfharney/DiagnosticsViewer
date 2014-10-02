@@ -224,7 +224,6 @@ function toggle_vis(set) {
 }
 
 function go_Atm_Home() {
-	
 	document.getElementById('atmHome').style.display = 'block';
 	
 	hide_land_home();
@@ -263,10 +262,18 @@ function hide_atm_sets() {
 	document.getElementById('amwg_set1_html').style.display = 'none';
 	document.getElementById('amwg_set2_html').style.display = 'none';
 	document.getElementById('amwg_set3_html').style.display = 'none';
+	document.getElementById('amwg_set4_html').style.display = 'none';
 	document.getElementById('amwg_set5_html').style.display = 'none';
 	document.getElementById('amwg_set6_html').style.display = 'none';
 	document.getElementById('amwg_set7_html').style.display = 'none';
+	document.getElementById('amwg_set8_html').style.display = 'none';
 	document.getElementById('amwg_set9_html').style.display = 'none';
+	document.getElementById('amwg_set10_html').style.display = 'none';
+	document.getElementById('amwg_set11_html').style.display = 'none';
+	document.getElementById('amwg_set12_html').style.display = 'none';
+	document.getElementById('amwg_set13_html').style.display = 'none';
+	document.getElementById('amwg_set14_html').style.display = 'none';
+	document.getElementById('amwg_set15_html').style.display = 'none';
 }
 
 function hide_land_home() {
