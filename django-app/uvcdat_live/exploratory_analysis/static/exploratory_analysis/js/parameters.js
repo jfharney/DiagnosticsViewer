@@ -78,7 +78,7 @@ function getPackages(current_username) {
 				});
 
 				d3.select("#selectP").selectAll("option").data(packList).enter().append("option").attr("value", String).text(String);
-
+				//console.log(packList);
 				$("#selectP").multiselect("refresh");
 				
 			  
@@ -101,7 +101,7 @@ function getPackages(current_username) {
 }
 
 function getVariables(current_username) {
-	url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/variables1';
+	url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/variables' + '/tropics_warming_th_q';
 	
 	
 	var varList = EA.varList;//["GPP","NEE","HR","ER","NPP","QVEGT","QVEGE","QSOIL","GROSSNMIN"];
@@ -117,14 +117,14 @@ function getVariables(current_username) {
 				
 			  console.log('success in getting variables');
 			  
-			  varList = response_data['variables'];
+			  varList = response_data['vars'];
 			  
 			  
 			  //for(var i=0;i<varList.length;i++) {
 			  //	  console.log('times: ' + varList[i]);
 			  //}
 			  
-			  //var dataList = ["tropics_warming_th_q_co2"];
+			  //var dataList = ["tropics_warming_th_q"];
 				
 			  $("#selectV").multiselect().multiselectfilter();
 				
@@ -137,7 +137,7 @@ function getVariables(current_username) {
 
 				d3.select("#selectV").selectAll("option").data(varList).enter().append("option").attr("value", String).text(String);
 
-
+				console.log(varList);
 				$("#selectV").multiselect("refresh");
 				
 			  

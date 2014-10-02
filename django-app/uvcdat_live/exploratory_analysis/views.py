@@ -38,14 +38,15 @@ if isConnected:
     #sys.path.append(syspath_append_uvcmetrics)
     #sys.path.append(syspath_append_cdscan)
    
-    
+    from metrics import *
     from metrics.frontend.options import Options
     from metrics.computation.reductions import *
     from metrics.fileio.filetable import *
     from metrics.fileio.findfiles import *
     from metrics.packages.diagnostic_groups import *
-
+    import metrics.frontend.defines as defines
     from metrics.exploratory.treeview import TreeView 
+    
 
 cache_dir = paths_cache_dir
 #front_end_cache_dir = paths_front_end_cache_dir#'../../../static/cache/'
@@ -496,14 +497,64 @@ def datasets1(request,user_id):
     return HttpResponse(data_string)
 
   #grabs variables given a dataset
-  #http://<host>/exploratory_analysis/variables/dataset_id
+  #http://<host>/exploratory_analysis/variables/dataset_id'
+def setnum( setname ):
+    """extracts the plot set number from the full plot set name, and returns the number.
+    The plot set name should begin with the set number, e.g.
+       setname = ' 2- Line Plots of Annual Implied Northward Transport'"""
+    mo = re.search( r'\d', setname )   # matches decimal digits
+    if mo is None:
+        return None
+    index1 = mo.start()                        # index of first match
+    mo = re.search( r'\D', setname[index1:] )  # matches anything but decimal digits
+    if mo is None:                             # everything past the first digit is another digit
+        setnumber = setname[index1:]
+    else:
+        index2 = mo.start()                    # index of first match
+        setnumber = setname[index1:index1+index2]
+    return setnumber
+  
 def variables(request,dataset_id):
     
-    from menuhelper import variablelist
+    opts = Options()
+    opts['path'] = ['/path/to/some/data']
+    opts['path'] = ['/data/tropics/tropics_warming_th_q/']
+    opts['packages'] = ['LMWG']
+    path1 = opts['path'][0]
+    filt1 = None
+
+    # create a filetable for the path
+    dtree1 = dirtree_datafiles(opts, pathid=0)
+    filetable1 = basic_filetable(dtree1, opts)
+    print filetable1.nrows()
+    print dir(filetable1)
+    # you can get all regions from defines.all_regions at any time.
+    # you can get the superset of all seasons from defines.all_regions at any time as well
     
-    data_string = variablelist.variableListHelper(request,dataset_id)
+    dm = diagnostics_menu()
+    for pname in opts['packages']:
+        pclass = dm[pname]()
+
+        slist = pclass.list_diagnostic_sets()
+        # slist contains "Set 1 - Blah Blah Blah", "Set 2 - Blah Blah Blah", etc 
+
+        # now to get all variables, we need to extract just the integer from the slist entries.
+        snums = [setnum(x) for x in slist.keys()]
+        print slist
+        print snums
+        variables = {'vars': [], 'seasons': []}
+        for s in slist.keys():
+            sclass = slist[s]
+            # This season list is a subset for a given diagnostic set. This is NOT implemented in land diags
+            # yet; you'll just get the entire season list back. I should work on that.
+            seasons = pclass.list_seasons()
     
-    return HttpResponse(data_string)
+            variables['vars'].extend(pclass.list_variables(filetable1, None, s))
+            variables['seasons'] = seasons
+            print 'seasons:' , seasons
+            print 'variables: ', variables
+  
+    return HttpResponse(json.dumps(variables))
  
 
 def variables1(request):
