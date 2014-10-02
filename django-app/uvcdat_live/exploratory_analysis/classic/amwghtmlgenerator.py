@@ -248,18 +248,26 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
 
             for v in setXvars:
                if o in varinfo[v]['obssets'].keys():
-                  obsfname = varinfo[v]['obssets'][o]['filekey']
-                  html += '<TR>'
-                  html += '   <TH ALIGN=LEFT>'+v
-                  html += '   <TH ALIGN=LEFT>'+varinfo[v]['desc']
-                  if sets == '15':
-                     fname = img_prefix+'set'+sets+'_'+obsfname+'_'+v+'_obsc.png'
-                  else:
-                     fname = img_prefix+'set'+sets+'_'+v+'_'+obsfname+'_obsc.png'
-                  click = 'onclick="displayImageClick(\''+fname+'\');" '
-                  over = 'onmouseover="displayImageHover(\''+fname+'\');" '
-                  out = 'onmouseout="nodisplayImage();" '
-                  html += '<TH ALIGN=LEFT><A HREF="#" '+click+over+out+'">plot</a>'
+                  if sets in varinfo[v]['obssets'][o]['usedin']:
+                     obsfname = varinfo[v]['obssets'][o]['filekey']
+                     html += '<TR>'
+                     html += '   <TH ALIGN=LEFT>'+v
+                     html += '   <TH ALIGN=LEFT>'+varinfo[v]['desc']
+                     if sets == '15':
+                        fname = img_prefix+'set'+sets+'_'+obsfname+'_'+v+'_obsc.png'
+                     else:
+                        fname = img_prefix+'set'+sets+'_'+v+'_'+obsfname+'_obsc.png'
+                     if '_VISIR' in v:
+                        fname = img_prefix+'set'+sets+'_'+v+'_obsc.png'
+                     if '_NORTH' in v:
+                        fname = img_prefix+'set'+sets+'_'+v.replace('_NORTH','')+'_'+obsfname+'_NP_obsc.png'
+                     if '_SOUTH' in v:
+                        fname = img_prefix+'set'+sets+'_'+v.replace('_SOUTH','')+'_'+obsfname+'_SP_obsc.png'
+
+                     click = 'onclick="displayImageClick(\''+fname+'\');" '
+                     over = 'onmouseover="displayImageHover(\''+fname+'\');" '
+                     out = 'onmouseout="nodisplayImage();" '
+                     html += '<TH ALIGN=LEFT><A HREF="#" '+click+over+out+'">plot</a>'
          html += '</TABLE>'
          return html
       else:
