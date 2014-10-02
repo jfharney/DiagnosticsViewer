@@ -487,7 +487,7 @@ def datasets(request,user_id):
 
 def datasets1(request,user_id):
     
-    print '\n\nIn datasets'
+    print '\n\nIn datasets for user_id: ' + user_id
     
     from menuhelper import datasets
     

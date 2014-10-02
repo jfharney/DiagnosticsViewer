@@ -20,6 +20,8 @@ paths_cache_dir = paths.cache_dir
 
 default_sample_data_dir = paths.default_sample_data_dir
 
+def is_in_ACME(user):
+    return user.groups.filter(name='ACME-test').exists()
 
 def datasetListHelper1(request,user_id):
 
@@ -36,6 +38,19 @@ def datasetListHelper1(request,user_id):
       datasets.append(f_arr[len(f_arr)-1])
     
     #datasets = (glob.glob('/Users/8xo/djangoapp_data/*'));
+    
+    from django.contrib.auth.models import User
+    user = User.objects.get(username=user_id)
+    
+    print 'groups: ' + str(user.groups.all())
+    print 'datasets: ' + str(datasets)
+    print 'is in ACME-test?: ' + str(is_in_ACME(user))
+    
+    if not is_in_ACME(user):
+        datasets.remove('tropics_warming_th_q_co2_3year')
+    
+    
+    print 'datasets: ' + str(datasets)
     
     data =  { 'datasets' : datasets }
     data_string = json.dumps(data,sort_keys=False,indent=2)
