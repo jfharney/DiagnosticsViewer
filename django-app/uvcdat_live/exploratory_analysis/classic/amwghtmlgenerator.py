@@ -118,7 +118,7 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
       html += '<TR>'
       html += '<TH ALIGN=LEFT>Space only'
       for v in varl.keys():
-         fname = img_prefix+'set14.METRICS_'+varl[v]+'_SPACE.png'
+         fname = img_prefix+'set14.METRICS_'+varl[v]+'_SPACE_obsc.png'
          click = 'onclick="displayImageClick(\''+fname+'\');" '
          over = 'onmouseover="displayImageHover(\''+fname+'\');" '
          out = 'onmouseout="nodisplayImage();" '
