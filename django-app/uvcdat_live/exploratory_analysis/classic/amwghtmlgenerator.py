@@ -183,12 +183,27 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
                      html += '    <TH ALIGN=LEFT>' + v.replace('_NORTH','')
                   else:
                      html += '    <TH ALIGN=LEFT>' + v
+
                   html += '    <TH ALIGN=LEFT>' + varinfo[v]['desc']
                   for season in seasons:
                      if sets == '7':
-                        fname = img_prefix+'set'+sets+'_'+season+'_'+v.replace('_NORTH','')+'_'+obsfname+'_NP_obsc.png'
+                        if '_VISIR' in v:
+                           fname = img_prefix+'set'+sets+'_'+season+'_'+v.replace('_NORTH','')+'_NP_obsc.png'
+                        elif 'SURF_WIND' in v:
+                           fname = img_prefix+'set'+sets+'_'+season+'_WIND_SURF_'+obsfname+'_NP_obsc.png'
+                        else:
+                           fname = img_prefix+'set'+sets+'_'+season+'_'+v.replace('_NORTH','')+'_'+obsfname+'_NP_obsc.png'
                      else:
-                        fname = img_prefix+'set'+sets+'_'+season+'_'+v+'_'+obsfname+'_obsc.png'
+                        if '_VISIR' in v:
+                           fname = img_prefix+'set'+sets+'_'+season+'_'+v+'_obsc.png'
+                        elif '_TROP' in v:
+                           fname = img_prefix+'set'+sets+'_'+season+'_'+v.replace('_TROP','')+'_'+obsfname+'_obsc.png'
+                        elif '_LAND' in v:
+                           fname = img_prefix+'set'+sets+'_'+season+'_PRECT_PRECL_obsc.png'
+                        elif 'TTRP' in v:
+                           fname = img_prefix+'set'+sets+'_'+season+'_'+v+'_'+obsfname+'_TROP_obsc.png'
+                        else:
+                           fname = img_prefix+'set'+sets+'_'+season+'_'+v+'_'+obsfname+'_obsc.png'
                      click = 'onclick="displayImageClick(\''+fname+'\');" '
                      over = 'onmouseover="displayImageHover(\''+fname+'\');" '
                      out = 'onmouseout="nodisplayImage();" '
@@ -206,7 +221,12 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
                      html += '    <TH ALIGN=LEFT>' + v.replace('_SOUTH','')
                      html += '    <TH ALIGN=LEFT>' + varinfo[v]['desc']
                      for season in seasons:
-                        fname = img_prefix+'set'+sets+'_'+season+'_'+v.replace('_SOUTH','')+'_'+obsfname+'_SP_obsc.png'
+                        if '_VISIR' in v:
+                           fname = img_prefix+'set'+sets+'_'+season+'_'+v.replace('_SOUTH','')+'_SP_obsc.png'
+                        elif 'SURF_WIND' in v:
+                           fname = img_prefix+'set'+sets+'_'+season+'_WIND_SURF_'+obsfname+'_SP_obsc.png'
+                        else:
+                           fname = img_prefix+'set'+sets+'_'+season+'_'+v.replace('_SOUTH','')+'_'+obsfname+'_SP_obsc.png'
                         click = 'onclick="displayImageClick(\''+fname+'\');" '
                         over = 'onmouseover="displayImageHover(\''+fname+'\');" '
                         out = 'onmouseout="nodisplayImage();" '
@@ -232,7 +252,10 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
                   html += '<TR>'
                   html += '   <TH ALIGN=LEFT>'+v
                   html += '   <TH ALIGN=LEFT>'+varinfo[v]['desc']
-                  fname = img_prefix+'set'+sets+'_'+v+'_'+obsfname+'_obsc.png'
+                  if sets == '15':
+                     fname = img_prefix+'set'+sets+'_'+obsfname+'_'+v+'_obsc.png'
+                  else:
+                     fname = img_prefix+'set'+sets+'_'+v+'_'+obsfname+'_obsc.png'
                   click = 'onclick="displayImageClick(\''+fname+'\');" '
                   over = 'onmouseover="displayImageHover(\''+fname+'\');" '
                   out = 'onmouseout="nodisplayImage();" '
@@ -314,12 +337,16 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
          # some day, we could check for all of the "derived" paths and use them if defined, otherwise derive them.
         
          for col in cols:
-            img_link = img_prefix + sets + '_' + col + '_' + var + '.png'
+            if sets == '13':
+               fname = img_prefix + 'set13_' + col + '_' + vlist[var] + '.png'
+            else:
+               fname = img_prefix + 'set12_' + vlist[var] + '_' + col + '.png'
 
-            mouseover = 'onmouseover=displayImageHover("' + img_link + '")'
-            onmouseout = 'onmouseout="nodisplayImage();"'
-            onclick = 'onclick=displayImageClick("' + img_link + '")'
-            html += '<TH ALIGN=LEFT><A HREF="#" ' + onclick + ' ' + mouseover + ' ' + onmouseout + '>plot</a>'
+            click = 'onclick="displayImageClick(\''+fname+'\');" '
+            over = 'onmouseover="displayImageHover(\''+fname+'\');" '
+            out = 'onmouseout="nodisplayImage();" '
+            html += '<TH ALIGN=LEFT><A HREF="#" '+click+over+out+'">plot</a>'
+
             
       html += '</TABLE>'
     
