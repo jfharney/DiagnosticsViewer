@@ -105,6 +105,7 @@ function getVariables(current_username) {
 	
 	
 	var varList = EA.varList;//["GPP","NEE","HR","ER","NPP","QVEGT","QVEGE","QSOIL","GROSSNMIN"];
+	var timeList = EA.timeList;
 	
 	$.ajax({
 		  type: "GET",
@@ -118,6 +119,7 @@ function getVariables(current_username) {
 			  console.log('success in getting variables');
 			  
 			  varList = response_data['vars'];
+			  timeList = response_data['seasons'];
 			  
 			  
 			  //for(var i=0;i<varList.length;i++) {
@@ -140,7 +142,18 @@ function getVariables(current_username) {
 				console.log(varList);
 				$("#selectV").multiselect("refresh");
 				
-			  
+			  $("#selectT").multiselect().multiselectfilter();
+				
+			  $("#selectT").multiselect({
+					multiple : true,
+					header : "Select a dataset",
+					//noneSelectedText : "tropics_warming_th_q_co2",
+					selectedList : 1
+			  });
+
+			  d3.select("#selectT").selectAll("option").data(timeList).enter().append("option").attr("value", String).text(String);
+
+			  $("#selectT").multiselect("refresh");			  
 			  
 		  },
 		  error: function(xhr, status, error) {
