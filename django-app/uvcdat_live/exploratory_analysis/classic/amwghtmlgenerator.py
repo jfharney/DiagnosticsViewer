@@ -10,7 +10,7 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
    html = ''
 
    html = '<p>'
-   html += '<img src="'+img_prefix+'SET'+sets+'.gif" border=1 hspace=10 align=left alt="set '+sets+'">'
+   html += '<img src="'+paths.img_cache_path+'/classic/amwg/SET'+sets+'.gif" border=1 hspace=10 align=left alt="set '+sets+'">'
    html += '<font color=maroon size=+3><b>'
    html += dataset+'<br>and<br>OBS data'
    html += '</b></font>'
