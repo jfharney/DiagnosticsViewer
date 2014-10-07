@@ -231,8 +231,11 @@ body.loading #modal1 {
 				<br>
 			</div>
 			<br>
+			
+			<button type="button" class="btn btn-default" id="dataset_selected" onclick="toggle_varSelect()">Next</button> 
 			 
-			 
+			<div id="variables_div" style="display:none">
+			<hr>
 			<div class="row-fluid create_tree_options">
 				<label for="selectV">Variables:</label>
 				<br>
@@ -255,9 +258,11 @@ body.loading #modal1 {
 			
 			
 			<br>
+			
 			<div class="row-fluid create_tree_options" id="viz_button">
 				
 				<button type="button" class="btn btn-default" id="save_tree">Plot Dataset</button>
+			</div>
 			</div>
 		</div>
 
@@ -588,9 +593,9 @@ $(document).ready(function(){
 	
 	getPackages(current_username);
 	
-	getVariables(current_username);
+	//getVariables(current_username);
 	
-	getTimes(current_username);
+	//getTimes(current_username);
 	
 	
 	

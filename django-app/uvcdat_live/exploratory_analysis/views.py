@@ -38,14 +38,15 @@ if isConnected:
     #sys.path.append(syspath_append_uvcmetrics)
     #sys.path.append(syspath_append_cdscan)
    
-    
+    from metrics import *
     from metrics.frontend.options import Options
     from metrics.computation.reductions import *
     from metrics.fileio.filetable import *
     from metrics.fileio.findfiles import *
     from metrics.packages.diagnostic_groups import *
-
+    import metrics.frontend.defines as defines
     from metrics.exploratory.treeview import TreeView 
+    
 
 cache_dir = paths_cache_dir
 #front_end_cache_dir = paths_front_end_cache_dir#'../../../static/cache/'
@@ -498,14 +499,64 @@ def datasets1(request,user_id):
     return HttpResponse(data_string)
 
   #grabs variables given a dataset
-  #http://<host>/exploratory_analysis/variables/dataset_id
+  #http://<host>/exploratory_analysis/variables/dataset_id'
+def setnum( setname ):
+    """extracts the plot set number from the full plot set name, and returns the number.
+    The plot set name should begin with the set number, e.g.
+       setname = ' 2- Line Plots of Annual Implied Northward Transport'"""
+    mo = re.search( r'\d', setname )   # matches decimal digits
+    if mo is None:
+        return None
+    index1 = mo.start()                        # index of first match
+    mo = re.search( r'\D', setname[index1:] )  # matches anything but decimal digits
+    if mo is None:                             # everything past the first digit is another digit
+        setnumber = setname[index1:]
+    else:
+        index2 = mo.start()                    # index of first match
+        setnumber = setname[index1:index1+index2]
+    return setnumber
+  
 def variables(request,dataset_id):
     
-    from menuhelper import variablelist
+    opts = Options()
+    opts['path'] = ['/path/to/some/data']
+    opts['path'] = ['/data/tropics/tropics_warming_th_q/']
+    opts['packages'] = ['LMWG']
+    path1 = opts['path'][0]
+    filt1 = None
+
+    # create a filetable for the path
+    dtree1 = dirtree_datafiles(opts, pathid=0)
+    filetable1 = basic_filetable(dtree1, opts)
+    print filetable1.nrows()
+    print dir(filetable1)
+    # you can get all regions from defines.all_regions at any time.
+    # you can get the superset of all seasons from defines.all_regions at any time as well
     
-    data_string = variablelist.variableListHelper(request,dataset_id)
+    dm = diagnostics_menu()
+    for pname in opts['packages']:
+        pclass = dm[pname]()
+
+        slist = pclass.list_diagnostic_sets()
+        # slist contains "Set 1 - Blah Blah Blah", "Set 2 - Blah Blah Blah", etc 
+
+        # now to get all variables, we need to extract just the integer from the slist entries.
+        snums = [setnum(x) for x in slist.keys()]
+        print slist
+        print snums
+        variables = {'vars': [], 'seasons': []}
+        for s in slist.keys():
+            sclass = slist[s]
+            # This season list is a subset for a given diagnostic set. This is NOT implemented in land diags
+            # yet; you'll just get the entire season list back. I should work on that.
+            seasons = pclass.list_seasons()
     
-    return HttpResponse(data_string)
+            variables['vars'].extend(pclass.list_variables(filetable1, None, s))
+            variables['seasons'] = seasons
+            print 'seasons:' , seasons
+            print 'variables: ', variables
+  
+    return HttpResponse(json.dumps(variables))
  
 
 def variables1(request):
@@ -818,22 +869,23 @@ def classic_views_html(request):
     response = 'error'
     
     if request.method == "POST":
-        set = None
-        vars = None
+        sets = None
+        varlist = None
         times = None
         package = None
         dataset = None
         
         json_data = json.loads(request.body)
         
-        set = json_data['set'] #should be a string
-        vars = json_data['vars'] #should be a list
+        sets = json_data['set'] #should be a string. strip off the 'set' part of it, and drop unicode
+        sets = str(sets.replace('set',''))
+        varlist = json_data['vars'] #should be a list
         times = json_data['times'] #should be a list
         package = json_data['package'] #should be a string
         dataset = json_data['dataset']
         
-        print 'set: ' + set
-        print 'vars: ' + str(vars) + ' ' #+ vars.length
+        print 'sets: ' + str(sets)
+        print 'varlist: ' + str(varlist) + ' ' #+ vars.length
         print 'times: ' + str(times) + ' ' #+ times.length
         print 'package: ' + package
         print 'dataset: ' + dataset
@@ -844,83 +896,10 @@ def classic_views_html(request):
         
             from classic import amwghtmlgenerator
             
-            if set == 'set1':
-                print 'set1'
-                
-                html = amwghtmlgenerator.set1(set,vars,times,package,dataset)
-            
-            elif set == 'set2':
-                print 'set2'
-            
-                html = amwghtmlgenerator.set2(set,vars,times,package,dataset)
-            
-            elif set == 'set3':
-                print 'set3'
-            
-                html = amwghtmlgenerator.set3(set,vars,times,package,dataset,options)
-            
-            
-            elif set == 'set4':
-                print 'set4'
-            
-                html = amwghtmlgenerator.set4(set,vars,times,package,dataset,options)
-            
-            elif set == 'set5':
-                print 'set5'
-            
-                html = amwghtmlgenerator.set5_6(set,vars,times,package,dataset,options)
-            
-            elif set == 'set6':
-                print 'set6'
-                html = amwghtmlgenerator.set5_6(set,vars,times,package,dataset,options)
-            
-            
-            elif set == 'set7':
-                print 'set7'
-            
-                html = '<div>set7</div>'
-            
-            elif set == 'set8':
-                print 'set8'
-            
-                html = '<div>set8</div>'
-            
-            elif set == 'set9':
-                print 'set9'
-            
-                html = '<div>set9</div>'
-            
-            elif set == 'set10':
-                print 'set10'
-            
-                html = '<div>set10</div>'
-            
-            elif set == 'set11':
-                print 'set11'
-            
-                html = '<div>set12<div>'
-                
-            elif set == 'set12':
-                print 'set12'
-            
-                html = amwghtmlgenerator.set12(set,vars,times,package,dataset,options)
-            
-            elif set == 'set13':
-                print 'set13'
-            
-                html = '<div>set13</div>'
-            
-            elif set == 'set14':
-                print 'set14'
-            
-                html = '<div>set14</div>'
-            
-            elif set == 'set15':
-                print 'set15'
-            
-                html = '<div>set15</div>'
-            
-                
+            html = None
+            html = amwghtmlgenerator.pageGenerator(sets, varlist, times, package, dataset, options)
+            if html == None:
+               html = '<div>set'+sets+' currently unimplemented</div>'
     
     response = html
     
