@@ -487,6 +487,8 @@ def datasets(request,user_id):
 
 def datasets1(request,user_id):
     
+    print request.META['REMOTE_ADDR']
+    
     print '\n\nIn datasets for user_id: ' + user_id
     
     from menuhelper import datasets

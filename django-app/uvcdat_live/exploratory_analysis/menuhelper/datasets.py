@@ -37,8 +37,56 @@ def datasetListHelper1(request,user_id):
       #print 'f: ' + f_arr[len(f_arr)-1]
       datasets.append(f_arr[len(f_arr)-1])
     
+    
+    #Step 0 - get the user object
+    user = User.objects.get(username=user_id)    
+    
+    
+    #Step 1 - grab the groups that this user belongs to
+    print 'groups: ' + str(user.groups.all())
+    
+    #example
+    groups_list = ['ACME-test','Group2']
+    
+    
+    #Step 2 - grab all the datasets that all groups in which a user can access 
+    
+    datasets_in_groups = []
+    
+    #example
+    for group in groups_list:
+        temp_list = []
+        if group == 'ACME-test':
+            temp_list = ['dataset1','dataset2','dataset6']
+        else:
+            temp_list = ['dataset1','dataset3']
+        datasets_in_groups = set(temp_list).union(datasets_in_groups)
+    
+    #ACMEtest_list = ['dataset1','dataset2','dataset6']
+    #Group2_list = ['dataset1','dataset3']
+    #take intersection of these groups ^^^^
+    #datasets_in_groups = set(ACMEtest_list).union(Group2_list)
+    #print 'datasets_in_groups: ' + str(list(datasets_in_groups))
+    
+    
+    #Step 3 - read all the datasets from the root directory
+    
+    datasets_in_cades = ['dataset1','dataset2','dataset3','dataset4','dataset5']
+    
+    
+    #Step 4 - take the intersection of steps 1 and 3
+    datasets_set_returned = set(datasets_in_groups).intersection(datasets_in_cades)
+    
+    datasets_list_returned = list(datasets_set_returned)
+    
+    #Step 5 - return result to the app
+    data = {'datasets' : datasets_list_returned}
+    data_string = json.dumps(data,sort_keys=False,indent=2)
     #datasets = (glob.glob('/Users/8xo/djangoapp_data/*'));
     
+    print 'data_string: ' + str(data_string)
+    
+    '''
     from django.contrib.auth.models import User
     user = User.objects.get(username=user_id)
     
@@ -55,7 +103,7 @@ def datasetListHelper1(request,user_id):
     data =  { 'datasets' : datasets }
     data_string = json.dumps(data,sort_keys=False,indent=2)
     #print 'JSON:',data_string
-    
+    '''
     
     return data_string
     

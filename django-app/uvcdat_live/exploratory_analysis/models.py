@@ -110,3 +110,8 @@ class Long_Names(models.Model):
     def __unicode__(self):
         return self.short_name
 
+class Dataset_Access(models.Model):
+    group_name = models.CharField(max_length=1000)
+    dataset_list = models.TextField(null=True)
+
+
