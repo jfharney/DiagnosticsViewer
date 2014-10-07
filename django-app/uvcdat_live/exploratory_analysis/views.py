@@ -514,12 +514,11 @@ def setnum( setname ):
         setnumber = setname[index1:index1+index2]
     return setnumber
   
-def variables(request,dataset_id):
+def variables(request,dataset_id,package_id):
     
     opts = Options()
-    opts['path'] = ['/path/to/some/data']
-    opts['path'] = ['/data/tropics/tropics_warming_th_q/']
-    opts['packages'] = ['LMWG']
+    opts['path'] = ['/data/tropics/' + dataset_id + '/']
+    opts['packages'] = [package_id.upper()]
     path1 = opts['path'][0]
     filt1 = None
 
