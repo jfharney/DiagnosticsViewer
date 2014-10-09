@@ -63,6 +63,7 @@ def datasetListHelper1(request,user_id):
     jfhCSSEF_response_str = '{ "groups": [ "CSSEF" ] }'
     jfhACME_response_str = '{ "groups": [ "ACME" ] }'
     jfhACMECSSEF_response_str = '{ "groups" : [ "ACME" , "CSSEF" ] }'
+    jfharney_response_str = '{ "groups" : [ "ACME" , "CSSEF" ] }'
     
     response_str = ''
     
@@ -78,6 +79,11 @@ def datasetListHelper1(request,user_id):
     elif user.username == 'jfhACMECSSEF':
         print 'jfhACMECSSEF user'
         response_str = jfhACMECSSEF_response_str
+    elif user.username == 'jfharney':
+        print 'jfharney user'
+        response_str = jfharney_response_str
+    else:
+        response_str = jfhNone_response_str
     
     import json 
     
