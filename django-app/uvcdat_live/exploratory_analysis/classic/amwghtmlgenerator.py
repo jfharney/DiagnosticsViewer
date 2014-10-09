@@ -5,12 +5,13 @@ import os
 def pageGenerator(sets, varlist, times, package, dataset, options):
    dataset = 'f40_amip_cam5_c03_78b'
    img_prefix = os.path.join(paths.img_cache_path, package, dataset,'')
+   img_prefix='foo'
 
    obssort = 1 
    html = ''
 
    html = '<p>'
-   html += '<img src="'+img_prefix+'SET'+sets+'.gif" border=1 hspace=10 align=left alt="set '+sets+'">'
+   html += '<img src="'+paths.img_cache_path+'/classic/amwg/SET'+sets+'.gif" border=1 hspace=10 align=left alt="set '+sets+'">'
    html += '<font color=maroon size=+3><b>'
    html += dataset+'<br>and<br>OBS data'
    html += '</b></font>'
@@ -27,7 +28,7 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
 
    # Determine number of columns
 
-   if sets in ['2', '8', '9', '10', '11', '12', '15']: def_seasons = ['NA']
+   if sets in ['2', '8', '9', '10', '11', '12', '15' 'TopTen']: def_seasons = ['NA']
 
    html += '<TABLE>'
 
@@ -238,7 +239,7 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
          print 'NOT IMPLEMENTED SORTING BY VAR'
          return None
 
-   if sets in ['8', '9', '10', '15']: # this could probably also be special cased above....
+   if sets in ['8', '9', '10', '15', 'TopTen']: # this could probably also be special cased above....
       if obssort == 1:
          for o in obssets:
             html += '<TR>'
@@ -362,7 +363,7 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
 
 
 if __name__ == '__main__':
-   sets = ['1', '2', '3', '4', '4a', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15']
+   sets = ['1', '2', '3', '4', '4a', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', 'TopTen']
    times = ['DJF', 'ANN', 'JJA']
 
    for s in sets:

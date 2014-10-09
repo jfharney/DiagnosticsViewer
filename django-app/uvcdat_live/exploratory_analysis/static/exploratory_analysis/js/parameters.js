@@ -101,7 +101,8 @@ function getPackages(current_username) {
 }
 
 function getVariables(current_username) {
-	url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/variables' + '/tropics_warming_th_q';
+	console.log($("#selectP").val());
+	url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/variables' + '/' + $('#selectD').val() + '/' + $('#selectP').val() + '/';
 	
 	
 	var varList = EA.varList;//["GPP","NEE","HR","ER","NPP","QVEGT","QVEGE","QSOIL","GROSSNMIN"];
