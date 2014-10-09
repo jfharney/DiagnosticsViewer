@@ -37,73 +37,116 @@ def datasetListHelper1(request,user_id):
       #print 'f: ' + f_arr[len(f_arr)-1]
       datasets.append(f_arr[len(f_arr)-1])
     
+    from django.contrib.auth.models import User
+    
+    '''
+    if User.DoesNotExist:
+        user = User(username=user_id,
+                         password='password is not used, ESGF handles authentication for us')
+        user.save()
+    '''
+    
     
     #Step 0 - get the user object
     user = User.objects.get(username=user_id)    
     
     
     #Step 1 - grab the groups that this user belongs to
-    print 'groups: ' + str(user.groups.all())
+    #This will involve a call to the ESGF node
+    #print 'groups: ' + str(user.groups.all())
     
     #example
-    groups_list = ['ACME-test','Group2']
+    groups_list = ['ACME','OTHER']
     
+    #examples
+    jfhNone_response_str = '{ "groups" : [] }'
+    jfhCSSEF_response_str = '{ "groups": [ "CSSEF" ] }'
+    jfhACME_response_str = '{ "groups": [ "ACME" ] }'
+    jfhACMECSSEF_response_str = '{ "groups" : [ "ACME" , "CSSEF" ] }'
+    
+    response_str = ''
+    
+    if user.username == 'None':
+        print 'None user'
+        response_str = jfhNone_response_str
+    elif user.username == 'jfhCSSEF':
+        print 'jfhCSSEF user'
+        response_str = jfhCSSEF_response_str
+    elif user.username == 'jfhACME':
+        print 'jfhACME user'
+        response_str = jfhACME_response_str
+    elif user.username == 'jfhACMECSSEF':
+        print 'jfhACMECSSEF user'
+        response_str = jfhACMECSSEF_response_str
+    
+    import json 
+    
+    response_json = json.loads(response_str)
+    
+    g_list = []
+    for group in response_json['groups']:
+        print 'group: ' + str(group)
+        g_list.append(group)
+    
+    print 'g_list: ' + str(g_list)
+    
+    groups_list = g_list
     
     #Step 2 - grab all the datasets that all groups in which a user can access 
     
     datasets_in_groups = []
     
-    #example
-    for group in groups_list:
-        temp_list = []
-        if group == 'ACME-test':
-            temp_list = ['dataset1','dataset2','dataset6']
-        else:
-            temp_list = ['dataset1','dataset3']
-        datasets_in_groups = set(temp_list).union(datasets_in_groups)
+    from exploratory_analysis.models import Dataset_Access
     
-    #ACMEtest_list = ['dataset1','dataset2','dataset6']
-    #Group2_list = ['dataset1','dataset3']
+    for group_name in groups_list:
+        da = Dataset_Access.objects.filter(group_name=group_name)
+        if da:
+            print 'da'
+            new_dataset_list_str = da[0].dataset_list
+            
+            print 'da datasetlists: ' + new_dataset_list_str
+            
+            for dataset_item in new_dataset_list_str.split(','):
+                datasets_in_groups.append(dataset_item)
+                print 'dataset_item: ' + dataset_item
+        
+    
     #take intersection of these groups ^^^^
     #datasets_in_groups = set(ACMEtest_list).union(Group2_list)
-    #print 'datasets_in_groups: ' + str(list(datasets_in_groups))
-    
     
     #Step 3 - read all the datasets from the root directory
+    #list of datasets
     
-    datasets_in_cades = ['dataset1','dataset2','dataset3','dataset4','dataset5']
+    import glob
+    
+    disk_datasets = []
+    
+    for f in glob.glob(default_sample_data_dir + '/*'):
+      f_arr = f.split('/')
+      #print 'f: ' + f_arr[len(f_arr)-1]
+      disk_datasets.append(f_arr[len(f_arr)-1])
+    
+    print 'datasets on hard drive: ' + str(disk_datasets)
+    
+    
+    #datasets_in_cades = ['dataset1','dataset2','dataset3','dataset4','dataset5']
     
     
     #Step 4 - take the intersection of steps 1 and 3
-    datasets_set_returned = set(datasets_in_groups).intersection(datasets_in_cades)
+    #datasets_set_returned = set(datasets_in_groups).intersection(datasets_in_cades)
+    #set(b1).intersection(b2)
+    datasets_lists_returned = list(set(datasets_in_groups).intersection(disk_datasets))
     
-    datasets_list_returned = list(datasets_set_returned)
+    print 'intersection of datasets: ' + str(datasets_lists_returned)
     
     #Step 5 - return result to the app
-    data = {'datasets' : datasets_list_returned}
+    data = {'datasets' : datasets_lists_returned } #datasets_in_groups}
     data_string = json.dumps(data,sort_keys=False,indent=2)
     #datasets = (glob.glob('/Users/8xo/djangoapp_data/*'));
     
     print 'data_string: ' + str(data_string)
     
-    '''
-    from django.contrib.auth.models import User
-    user = User.objects.get(username=user_id)
     
-    print 'groups: ' + str(user.groups.all())
-    print 'datasets: ' + str(datasets)
-    print 'is in ACME-test?: ' + str(is_in_ACME(user))
-    
-    if not is_in_ACME(user):
-        datasets.remove('tropics_warming_th_q_co2_3year')
-    
-    
-    print 'datasets: ' + str(datasets)
-    
-    data =  { 'datasets' : datasets }
-    data_string = json.dumps(data,sort_keys=False,indent=2)
-    #print 'JSON:',data_string
-    '''
     
     return data_string
     

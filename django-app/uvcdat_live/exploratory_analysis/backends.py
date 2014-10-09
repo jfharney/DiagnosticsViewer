@@ -25,7 +25,7 @@ def authenticate1(username=None,password=None,peernode=None):
 
     print '*****Begin ESGF Login*****'
 
-
+    import traceback
         
     try:
         #substitute
@@ -40,19 +40,26 @@ def authenticate1(username=None,password=None,peernode=None):
                 os.makedirs(cert_path)
             except:
                 pass
-            
-        myproxy_logon(peernode,
+        
+        outfile = '/tmp/x509up_u%s' % (os.getuid()) 
+        
+        import myproxy_logon
+           
+        myproxy_logon.myproxy_logon(peernode,
                       username,
                       password,
-                      os.path.join(cert_path,username + '.pem').encode("UTF-8"),
+                      outfile,#os.path.join(cert_path,username + '.pem').encode("UTF-8"),
                       lifetime=43200,
                       port=7512
                       )
             
+        print '*****End ESGF login*****'
     except:
-        pass
+        print traceback.print_exc()
+        print '*****End ESGF login*****'
+        return None
+        
     
-    print '*****End ESGF login*****'
     
     # if we make it here, the username and password were good
     # output .httprc file if .httprc is not found
@@ -117,21 +124,33 @@ def authenticate1(username=None,password=None,peernode=None):
             
             user = User.objects.get(username=username)
          
-            user = authenticate(username=username,password=password)
-            print 'username: ' + username
+            print 'user before authenticate: ' + str(user)
+            
+            
+            #user = authenticate(username=username,password='Mattryan12')
+            print 'username: ' + username + ' authenticated fine'
+            
+            print 'user: ' + str(user)
+            
             print '------end Get/Create the django user object-----'
             return user
             
          # except if the user has not been added to Django's database
          except User.DoesNotExist:
              
-            print 'user does not exist'
+            print 'user does not exist in django - creating user account'
             user = User(username=username,
-                         password='password is not used, ESGF handles authentication for us')
+                         password=password)
+            
+            #user = authenticate(username=username, password='Mattryan12')
+            
             user.is_staff = False
             user.is_superuser = False
             user.save()
          
+         
+            print '\n\ndir\n\n'
+            print dir(user)
             print '------end Get/Create the django user object-----'
             return user
              
@@ -165,13 +184,16 @@ def authenticate1(username=None,password=None,peernode=None):
         return None
     '''
 
+'''
 def myproxy_logon(hostname,username,passphrase,outfile,lifetime=43200,port=7512):
     print 'in myproxy_logon'
-    '''
+    
     print 'hostname: ' + hostname
     print 'username: ' + username
     print 'passphrase: ' + passphrase
     print 'outfile: ' + outfile
     print 'lifetime: ' + str(lifetime)
     print 'port: ' + str(port)
-    '''
+'''    
+    
+    

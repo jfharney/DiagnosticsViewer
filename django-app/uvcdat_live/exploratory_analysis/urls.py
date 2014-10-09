@@ -138,5 +138,11 @@ urlpatterns = patterns('',
   #for generation of classic views on the fly
   url(r'^classic_views_html/$',views.classic_views_html,name='classic_views_html'),
   
+  #for posting a new dataset to a group
+  url(r'^group_datasets/$',views.group_datasets,name='group_datasets'),
+  
+  #for posting a new dataset to a group
+  url(r'^group_dataset/(?P<group_name>\w+)/$',views.group_dataset,name='group_dataset'),
+  
 )
 

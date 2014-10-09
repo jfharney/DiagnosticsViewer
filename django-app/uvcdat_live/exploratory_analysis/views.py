@@ -60,10 +60,128 @@ figures_store = {}
 from django.http import HttpResponseRedirect
 
 
+def group_dataset(request,group_name):
+    
+    from exploratory_analysis.models import Dataset_Access
+        
+    if request.method == 'POST':
+    
+        print '\nIn POST\n'    
+    
+        #load the json object
+        json_data = json.loads(request.body)
+            
+        #grab the dataset added
+        dataset = json_data['dataset'] #should be a string
+    
+        #grab the group record
+        da = Dataset_Access.objects.filter(group_name=group_name)
+        
+        #print 'da: ' + str(da)
+        #append dataset to the end of the dataset list
+        
+        new_dataset_list = ''
+        if da:
+            print 'da'
+            new_dataset_list = da[0].dataset_list
+            new_dataset_list = new_dataset_list + ',' + dataset
+        else:
+            print 'no da'
+            new_dataset_list = dataset
+        
+        print 'new_dataset_list: ' + new_dataset_list
+        
+        #update the record
+        #delete the record and rewrite the record with the new dataset list
+        da.delete()
+        
+        
+        all = Dataset_Access.objects.all()
+        print 'all1: ' + str(all)
+        
+        
+        dataset_access_record = Dataset_Access(
+                                                  group_name=group_name,
+                                                  dataset_list=new_dataset_list
+                                                  )
+            
+        #save to the database
+        dataset_access_record.save()
+        
+        all = Dataset_Access.objects.all()
+        print 'all2: ' + str(all)
+        
+        print '\n\n'    
+        return HttpResponse("POST Done\n")
+    
+    elif request.method == 'GET':
+
+        print '\nIn GET\n'    
+        
+        #grab the group record
+        da = Dataset_Access.objects.filter(group_name=group_name)
+        
+        dataset_list = []
+        
+        for dataset in da[0].dataset_list.split(','):
+            dataset_list.append(dataset)
+            
+        data = {'dataset_list' : dataset_list}
+        data_string = json.dumps(data,sort_keys=False,indent=2)
+
+        return HttpResponse(data_string + "\n")
+    
+    elif request.method == 'DELETE':
+
+        print '\nIn DELETE\n'    
+        
+        #not sure if this is the right behavior but this will delete the ENTIRE record given the group
+        #grab the group record
+        da = Dataset_Access.objects.filter(group_name=group_name)
+        
+        da.delete()
+        
+        all = Dataset_Access.objects.all()
+        
+        return HttpResponse("DELETE Done\n")
+
+    return HttpResponse('Shouldnt get here')    
+
+def group_datasets(request):
+
+    print '\n\n'    
+    from exploratory_analysis.models import Dataset_Access
+
+    
+    print 'in group datasets'
+    
+    json_data = json.loads(request.body)
+        
+    dataset = json_data['dataset'] #should be a string
+        
+    print 'dataset: ' + dataset
+    
+    myList = ['a','b']
+    myJsonList = json.dumps(myList)
+    print str(myJsonList)
+    
+    
+    dad = Dataset_Access.objects.filter(group_name="ACME")
+    dad.delete()
+    
+    dad = Dataset_Access.objects.filter(group_name="OTHER")
+    dad.delete()
 
 
 
+    dac = Dataset_Access.objects.create(group_name="ACME",dataset_list="tropics_warming_th_q_co2_3year,tropics_warming_th_q")
+    dac = Dataset_Access.objects.create(group_name="OTHER",dataset_list="tropics_warming_th_q_co2_2year")
 
+    all = Dataset_Access.objects.all()
+    print 'all: ' + str(all)
+
+    print '\n\n'
+    return HttpResponse("Done\n")
 
 
   ############
@@ -741,14 +859,17 @@ def auth(request):
                              password = password1,
                              peernode = peernode1)
         
-        print 'username...' + user.username
-        print 'password...' + user.password
         
-        print 'user: ' + str(user)
     
         if user is not None:
+            print 'username...' + user.username
+            print 'password...' + user.password
+        
+            print 'user: ' + str(user)
             if user.is_active:
                 #redirect to a success page
+                #user = authenticate(username='jfharney',password='Mattryan12')
+                user.backend='django.contrib.auth.backends.ModelBackend'
                 login(request,user)
                 return HttpResponse('Authenticated')
             else:
@@ -756,6 +877,7 @@ def auth(request):
                 #print 'disabled account'
                 return HttpResponse('Disabled')
         else:
+            print 'Invalid Login'
             #return an 'invalid login error
             return HttpResponse('InvalidLogin')
     
