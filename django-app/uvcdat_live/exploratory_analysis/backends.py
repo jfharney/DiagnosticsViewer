@@ -31,16 +31,17 @@ def authenticate1(username=None,password=None,peernode=None):
         #substitute
         #settings.PROXY_CERT_DIR = /tmp
         #username = 'jfharney'
-        proxy_cert_dir = config.get("options", "proxy_cert_dir")
+        #proxy_cert_dir = config.get("options", "proxy_cert_dir")
         #username = 'jfharney'
-        cert_path=os.path.join(proxy_cert_dir,username)
-        print 'cert_path: ' + cert_path
-        if not os.path.exists(cert_path):
+        #cert_path=os.path.join(proxy_cert_dir,username)
+        #print 'cert_path: ' + cert_path
+	'''        
+	if not os.path.exists(cert_path):
             try:
                 os.makedirs(cert_path)
             except:
                 pass
-        
+        '''
         outfile = '/tmp/x509up_u%s' % (os.getuid()) 
         
         import myproxy_logon

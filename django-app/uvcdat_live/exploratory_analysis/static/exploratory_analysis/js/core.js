@@ -5,7 +5,7 @@ var EA = EA || {};
 EA.cache_location = '../../../static/exploratory_analysis/img/treeex/';
 
 
-EA.host = 'localhost';
+EA.host = 'acme-dev-4';
 
 EA.port = document.location.port
 //EA.port = '8081';
