@@ -1050,7 +1050,7 @@ def classic_views(request):
                   #JOHN's example code
             #########################################
             #change this to the specified directory structure
-            url_prefix = "/home/user/Desktop/AptanaWorkspace/climate/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
+            url_prefix = paths.uvcdat_live_root + "exploratory_analysis/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
             url_prefixIMAGE = "\'/static/exploratory_analysis/img/classic/" + package + "/" + set + "/set1_"
             
             #assemble the url to be returned
@@ -1151,7 +1151,8 @@ def classic_views(request):
         elif set == 'set2':
             #########################################
             #change this to the specified directory structure
-            url_prefix = "/home/user/Desktop/AptanaWorkspace/climate/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
+            #url_prefix = "/home/user/Desktop/AptanaWorkspace/climate/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
+            url_prefix = paths.uvcdat_live_root + "exploratory_analysis/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
             url_prefixIMAGE = "\'/static/exploratory_analysis/img/classic/" + package + "/" + set + "/set2_"
             
             #assemble the url to be returned
@@ -1239,7 +1240,7 @@ def classic_views(request):
         elif set == 'set3':
              #########################################
             #change this to the specified directory structure
-            url_prefix = "/home/user/Desktop/AptanaWorkspace/climate/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
+            url_prefix = paths.uvcdat_live_root + "exploratory_analysis/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
             url_prefixIMAGE = "\'/static/exploratory_analysis/img/classic/" + package + "/" + set + "/set3_"
             
             #assemble the url to be returned
@@ -1325,7 +1326,7 @@ def classic_views(request):
         elif set == 'set5':
             #########################################
             #change this to the specified directory structure
-            url_prefix = "/home/user/Desktop/AptanaWorkspace/climate/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
+            url_prefix = paths.uvcdat_live_root + "exploratory_analysis/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
             url_prefixIMAGE = "\'/static/exploratory_analysis/img/classic/" + package + "/" + set + "/set5_"
             
             #assemble the url to be returned
