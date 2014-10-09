@@ -857,14 +857,18 @@ def classic_views(request):
         package = json_data['package'] #should be a string
         dataset = json_data['dataset']
         
-          
-        #assemble the variable dictionary here per Brian's email
+       #To be added region = json_data['region'] #should be a list
+        regions = ['Global Land','Northern Hemisphere Land', 'Southern Hemisphere Land', 'Alaskan Arctic', 'Central U.S.', 'diterranean and Western Asia']  
+        set3Headers = ['reg', 'landf','randf','turbf','cnFlx','frFlx','moistEnergyFlx','snow','albedo','hydro']
+        #DONE to be added
+        
+        
+        
+        
         
         print 'set: ' + set
         print 'vars: ' + str(vars) + ' ' #+ vars.length
         print 'times: ' + str(times) + ' ' #+ times.length
-        print 'package: ' + package
-        print 'dataset: ' + dataset
 
     
     
@@ -872,6 +876,10 @@ def classic_views(request):
         #change this to the specified directory structure
         #url_prefix = "/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
 
+        print 'package: ' + str(package)
+        print 'dataset: ' + str(dataset)
+        
+        print 'regions: ' + str(regions)
         
         #RAY's new code
         ####################################################
@@ -967,10 +975,8 @@ def classic_views(request):
                   #JOHN's example code
             #########################################
             #change this to the specified directory structure
-            url_prefix = "/home/user/Desktop/AptanaWorkspace/climate/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
             url_prefix = paths.uvcdat_live_root + "exploratory_analysis/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
-            
-            
+
             url_prefixIMAGE = "\'/static/exploratory_analysis/img/classic/" + package + "/" + set + "/set1_"
             
             #assemble the url to be returned
@@ -991,7 +997,7 @@ def classic_views(request):
             file.write("<br clear=left>")
             file.write("</p>\n")
             file.write("<p>\n")
-            file.write("<A HREF=\"variableList_1.html\" target=\"set1_Variables\">\n")
+            file.write("<A HREF=\"/static/exploratory_analysis/img/classic/lmwg/set1/variableList_1.html\" target=\"set1_Variables\">\n")
             file.write("<font color=maroon size=+1 text-align: right><b>Lookup Table: Set 1 Variable Definition</b></font></a>\n")
             file.write("</br>\n")
             file.write("</p>\n") 
@@ -1008,6 +1014,8 @@ def classic_views(request):
             
             #python for loop----------
             #Descriptions are (predefinedBrianSmithDictionary[key]) 
+            
+            
             
             for key in vardict:
                 if 1 in vardict[key]['sets'] and key in vars:
@@ -1061,6 +1069,288 @@ def classic_views(request):
         
         
             #assemble the url to be returned
+            url = url_prefix + set + ".html"
+            
+            response = url;
+        
+        
+        elif set == 'set2':
+            #########################################
+            #change this to the specified directory structure
+            #url_prefix = "/home/user/Desktop/AptanaWorkspace/climate/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
+            url_prefix = paths.uvcdat_live_root + "exploratory_analysis/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
+            url_prefixIMAGE = "\'/static/exploratory_analysis/img/classic/" + package + "/" + set + "/set2_"
+            
+            #assemble the url to be returned
+            url = url_prefix + set + ".html"
+            #END JOHN's code
+        
+            #Construct table with description (variable) and link to plot
+            #Input from json object from user selection
+            #user_selected_vars = {'TSA', 'PREC'}
+            
+            #Start writing file (SPECIFY LOCATION TO WRITE FILE TO HERE)     Example: land/tropics_warming_th_q/img/
+            file = open(url, "w")
+                    
+            #Header
+            file.write("<p>\n") 
+            file.write("<b><font color=maroon size=+2>Set 2 Description: <b></font>Horizontal contour plots of DJF, MAM, JJA, SON, and ANN means </b><br>\n")
+            file.write("<br clear=left>")
+            file.write("</p>\n")
+            file.write("<p>\n")
+            file.write("<A HREF=\"/static/exploratory_analysis/img/classic/lmwg/set2/variableList_2.html\" target=\"set2_Variables\">\n")
+            file.write("<font color=maroon size=+1 text-align: right><b>Lookup Table: Set 2 Variable Definition</b></font></a>\n")
+            file.write("</br>\n")
+            file.write("</p>\n") 
+                   
+                        
+            #Start table
+            file.write("<p>\n")
+            file.write("<hr noshade size=2 size=\"100%\">\n</hr>")
+            file.write("<TABLE> \n")
+            file.write("<TR>\n")
+            file.write("<td ALIGN=LEFT><font color=maroon>Description (variable)</font>\n</td>")
+            for time in times:  
+               file.write("<td ALIGN=LEFT><font color=maroon>"+time+"</font>\n</td>")
+            file.write("</TR>\n")
+          
+            
+            #python for loop----------
+            #Descriptions are (predefinedBrianSmithDictionary[key]) 
+            
+            for key in vardict:
+                if 2 in vardict[key]['sets'] and key in vars:
+                    file.write("<TR>\n")
+                    file.write('<Td ALIGN=LEFT>') 
+                    file.write(vardict[key]['desc'])
+                    file.write('(')
+                    file.write(key)
+                    file.write(')</td>')
+                    
+                    
+                    for time in times:                
+                        file.write('<td ALIGN=LEFT>') 
+                        file.write('<a href="#" onclick="displayImageClick(')
+                        file.write(url_prefixIMAGE)#Here we write gif name
+                        file.write(time+'_')
+                        file.write(key)
+                        file.write('.gif\'') 
+                        file.write(');" onmouseover="displayImageHover(')
+                        file.write(url_prefixIMAGE)#Here we write gif name again
+                        file.write(time+'_')
+                        file.write(key)
+                        file.write('.gif\'') 
+                        file.write(');" onmouseout="nodisplayImage();">plot</A>\n')
+                        file.write('</td>')
+                    file.write("</TR>\n")
+                    
+                    
+            #end for loop and end table generation-------------------------
+            
+       
+            file.write("</TABLE> \n")
+            file.write("</p>\n")
+            file.close()
+    
+                    
+            
+            url_prefix = "/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"      
+        
+            #assemble the url to be returned
+            url = url_prefix + set + ".html"
+            
+            response = url;
+            
+            
+            
+        elif set == 'set3':
+             #########################################
+            #change this to the specified directory structure
+            url_prefix = paths.uvcdat_live_root + "exploratory_analysis/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
+            url_prefixIMAGE = "\'/static/exploratory_analysis/img/classic/" + package + "/" + set + "/set3_"
+            
+            #assemble the url to be returned
+            url = url_prefix + set + ".html"
+            #END JOHN's code
+        
+            #Construct table with description (variable) and link to plot
+            #Input from json object from user selection
+            #user_selected_vars = {'TSA', 'PREC'}
+            
+            #Start writing file (SPECIFY LOCATION TO WRITE FILE TO HERE)     Example: land/tropics_warming_th_q/img/
+            file = open(url, "w")
+                    
+            #Header
+            file.write("<p>\n") 
+            file.write("<b><font color=maroon size=+2>Set 3 Description: <b></font>Line plots of monthly climatology: regional air temperature, precipitation, runoff, snow depth, radiative fluxes, and turbulent fluxes</b><br>\n")
+            file.write("<br clear=left>")
+            file.write("</p>\n")
+            file.write("<p>\n")
+            file.write("<A HREF=\"/static/exploratory_analysis/img/classic/lmwg/set3/variableList_3.html\" target=\"set3_Variables\">\n")
+            file.write("<font color=maroon size=+1 text-align: right><b>Lookup Table: Set 3 Variable Definition</b></font></a>\n")
+            file.write("</br>\n")
+            file.write("</p>\n") 
+                   
+                        
+            #Start table
+            file.write("<p>\n")
+            file.write("<hr noshade size=2 size=\"100%\">\n</hr>")
+            file.write("<TABLE> \n")
+            file.write("<TR>\n")
+            file.write("<td ALIGN=LEFT><font color=maroon>Description (variable)</font>\n</td>")
+            for time in times:  
+               file.write("<td ALIGN=LEFT><font color=maroon>"+time+"</font>\n</td>")
+            file.write("</TR>\n")
+          
+            
+            #python for loop----------
+            #Descriptions are (predefinedBrianSmithDictionary[key]) 
+            
+            for key in vardict:
+                if 3 in vardict[key]['sets'] and key in vars:
+                    file.write("<TR>\n")
+                    file.write('<Td ALIGN=LEFT>') 
+                    file.write(vardict[key]['desc'])
+                    file.write('(')
+                    file.write(key)
+                    file.write(')</td>')
+                    
+                    
+                    for time in times:                
+                        file.write('<td ALIGN=LEFT>') 
+                        file.write('<a href="#" onclick="displayImageClick(')
+                        file.write(url_prefixIMAGE)#Here we write gif name
+                        file.write(time+'_')
+                        file.write(key)
+                        file.write('.gif\'') 
+                        file.write(');" onmouseover="displayImageHover(')
+                        file.write(url_prefixIMAGE)#Here we write gif name again
+                        file.write(time+'_')
+                        file.write(key)
+                        file.write('.gif\'') 
+                        file.write(');" onmouseout="nodisplayImage();">plot</A>\n')
+                        file.write('</td>')
+                    file.write("</TR>\n")
+                    
+                    
+            #end for loop and end table generation-------------------------
+            
+       
+            file.write("</TABLE> \n")
+            file.write("</p>\n")
+            file.close()
+    
+                    
+            
+            url_prefix = "/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"      
+        
+            #assemble the url to be returned
+            url = url_prefix + set + ".html"
+            
+            response = url;
+            
+        elif set == 'set5':
+            #########################################
+            #change this to the specified directory structure
+            url_prefix = paths.uvcdat_live_root + "exploratory_analysis/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
+            url_prefixIMAGE = "\'/static/exploratory_analysis/img/classic/" + package + "/" + set + "/set5_"
+            
+            #assemble the url to be returned
+            url = url_prefix + set + ".html"
+            #END JOHN's code
+        
+            #Construct table with description (variable) and link to plot
+            #Input from json object from user selection
+            #user_selected_vars = {'TSA', 'PREC'}
+            
+            #Start writing file (SPECIFY LOCATION TO WRITE FILE TO HERE)     Example: land/tropics_warming_th_q/img/
+            file = open(url, "w")
+                    
+            #Header
+            file.write("<p>\n") 
+            file.write("<b><font color=maroon size=+2>Set 5 Description: <b></font>Tables of annual means </b><br>\n")
+            file.write("<br clear=left>")
+            file.write("</p>\n")
+            file.write("<p>\n")
+            file.write("<A HREF=\"/static/exploratory_analysis/img/classic/lmwg/set5/variableList_5.html\" target=\"set5_Variables\">\n")
+            file.write("<font color=maroon size=+1 text-align: right><b>Lookup Table: Set 5 Variable Definition</b></font></a>\n")
+            file.write("</br>\n")
+            file.write("</p>\n") 
+                   
+                        
+            #Start table
+            file.write("<p>\n")
+            file.write("<hr noshade size=2 size=\"100%\">\n</hr>")
+            file.write("<TABLE> \n")
+            file.write("<TR>\n")
+            file.write("<td ALIGN=LEFT><font color=maroon>TABLE</font>\n</td>")
+            file.write("</TR>\n")
+          
+          
+          
+          
+          
+          
+            file.write("<tr>")
+            file.write('<TH ALIGN=LEFT>Regional Hydrologic Cycle')
+            file.write('<TH ALIGN=LEFT><font color=black><A HREF= "#" onclick="displayImageClick(')
+            file.write(url_prefixIMAGE);
+            file.write('hydReg.txt\')\";>Table</a></font>')
+            file.write('</tr>') 
+                        
+            file.write("<tr>")
+            file.write('<TH ALIGN=LEFT>Global Biogeophysics')
+            file.write('<TH ALIGN=LEFT><font color=black><A HREF= "#" onclick="displayImageClick(')
+            file.write(url_prefixIMAGE);
+            file.write('clm.txt\')\";>Table</a></font>')
+            file.write('</tr>') 
+            
+            file.write('<tr>')     
+            file.write('<TH ALIGN=LEFT>Global Carbon/Nitrogen')      
+            file.write('<TH ALIGN=LEFT><font color=black><A HREF= "#" onclick="displayImageClick(')
+            file.write(url_prefixIMAGE);
+            file.write('cn.txt\')\";>Table</a></font>')     
+            file.write('</tr>')
+                 
+                 
+            #end for loop and end table generation-------------------------
+            file.write("</TABLE> \n")
+            file.write("</p>\n")
+            file.close()
+    
+                    
+            
+            url_prefix = "/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"      
+        
+            #assemble the url to be returned
+            url = url_prefix + set + ".html"
+            
+            response = url;
+            
+        elif set == 'set6':
+            
+            
+            
+             #assemble the url to be returned
+            url = url_prefix + set + ".html"
+            
+            response = url;
+            
+            
+        elif set == 'set7':
+            
+            
+            
+             #assemble the url to be returned
+            url = url_prefix + set + ".html"
+            
+            response = url;
+            
+        elif set == 'set9':
+            
+            
+            
+             #assemble the url to be returned
             url = url_prefix + set + ".html"
             
             response = url;
@@ -1592,485 +1882,4 @@ def postStateExample(request):
     return HttpResponse('hello')
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-'''old bookmark is something
-        treeloaded = 'true'
-        bookmark_name = bookmark
-    
-    
-        fileName = bookmark + ".json"
-    
-        cached_file_name = front_end_cache_dir + fileName
-        
-        #cached_file_name = exploratory_analysis/static/exploratory_analysis/cache/tree/u1/json/tropics_warming_th_q_co2
-           
-        #check if bookmark exists
-        #mapping
-        #/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/cache/
-        #----------->
-        #../../../static/cache/Bookmark2.json
-        #
-        mapped_file_name = paths.uvcdat_live_root + '/exploratory_analysis/'
-        #exploratory_analysis/static/exploratory_analysis/cache/tree/u1/json/tropics_warming_th_q_co2
-        
-        
-        p = re.compile('../../../')
-        
-        print '\ncached_file_name: ' + cached_file_name
-        print '\nmapped_file_name: ' + mapped_file_name
-        check_file_name = p.sub( mapped_file_name, cached_file_name)
-        print '\n\n\ncheck_file_name: ' + check_file_name + '\n\n\n'
-        
-        treeFile = None
-       
-        import os
-        
-        #GET RID OF THIS
-        #temp_file = 
-        
-        #if exists then return the tree state of that bookmark
-        if os.path.exists(check_file_name):
-            print 'Bookmark is there - proceed'   
-            treeFile = diagsHelper(user_id,bookmark_name,check_file_name)
-        else:
-            print 'Bookmark is not there - do not proceed'
-            treeloaded = 'false'
-        
-        
-        print 'treeFile---->: ' + str(treeFile)
-        
-        template = loader.get_template('exploratory_analysis/treeex.html')
-    
-        print 'figure bookmark list -> ' + str(figure_bookmark_list)
-       
-    
-        context = RequestContext(request, {
-            'loggedIn' : str(loggedIn),
-            'username' : username,
-            'treeloaded' : treeloaded,
-            'cachedfile' : cached_file_name,
-            'package_list' : package_list,
-            'dataset_list' : dataset_list,
-            'variable_list' : variable_list,
-            'season_list' : season_list,
-            'set_list' : set_list,
-            'bookmark_list' : bookmark_list,
-            'figure_bookmark_list' : figure_bookmark_list,
-            'treefile': treeFile,
-            'current_bookmark': bookmark,
-            'posttype':'save'
-            #'treeFile' : treeFile,
-            })
-        
-
-        print '\n\n\t\tloggedIn: ' + str(loggedIn) 
-        return HttpResponse(template.render(context))
-'''
-
-
-        
-'''
-def bookmarkHandler(request,user_id):
-
-  print '\nin bookmarkHandler'
-  #print '\nrequest user authenticate: ' + str(request.user.is_authenticated()) + '\n'
-    
-  #need a flag to indicated whether a tree 
-  #print '\n\n\t\tuser_id: ' + str(user_id)
-  #print 'user: ' + str(request.user)
-    
-  loggedIn = paths.noAuthReq
-    
-  if (str(request.user) == str(user_id)):
-    loggedIn = True
-    
-  username = 'jfharney'
-    
-  #grab the username
-  if user_id != None:
-    username = user_id
-    
-    
-  #get the predefined tree bookmarks of the user
-  from exploratory_analysis.models import Tree_Bookmarks
-  bookmark_list_obj = Tree_Bookmarks.objects.filter(tree_bookmark_username=username)
-  
-  bookmark_list = [] 
-  for obj in bookmark_list_obj:
-    bookmark_list.append(obj.tree_bookmark_name)
- 
- 
-
-  #get the figure bookmarks of the user
-  from exploratory_analysis.models import Figure_Bookmarks
-  figure_bookmark_list_obj = Figure_Bookmarks.objects.filter(figure_bookmark_username=username)
- 
-  figure_bookmark_list = [] 
-  for obj in figure_bookmark_list_obj:
-    figure_bookmark_list.append(obj.figure_bookmark_name)
- 
- 
-  print 'bookmark list: ' + str(bookmark_list)
-  #print 'figure bookmark list ' + str(figure_bookmark_list)
- 
- 
-  defaults = parameter_defaults.get_parameter_defaults()
-  package_list = defaults['package_list']
-  dataset_list = defaults['dataset_list']
-  variable_list = defaults['variable_list']
-  season_list = defaults['season_list']
-  set_list = defaults['set_list']
-    
- 
-    
-  #first we check if the request is in the cache or if it is the initial call
-  #if it is in the cache, no need to do any back end generation
-  bookmark = request.GET.get('bookmark')
-    
-  #print '\nbookmark: ' + str(bookmark)  
-      
-
-        
-  treeloaded = 'true'
-  bookmark_name = bookmark
-    
-    
-  fileName = bookmark + ".json"
-    
-  cached_file_name = front_end_cache_dir + fileName
-        
-    
-  mapped_file_name = paths.uvcdat_live_root + 'exploratory_analysis/'
-        #exploratory_analysis/static/exploratory_analysis/cache/tree/u1/json/tropics_warming_th_q_co2
-        
-        
-  p = re.compile('../../../')
-        
-  print '\ncached_file_name: ' + cached_file_name
-  print '\nmapped_file_name: ' + mapped_file_name
-  check_file_name = p.sub( mapped_file_name, cached_file_name)
-  print '\n\n\ncheck_file_name: ' + check_file_name + '\n\n\n'
-        
-  treeFile = None
-       
-  import os
-        
-        #GET RID OF THIS
-        #temp_file = 
-  
-  print 'treeFile----> ' + str(check_file_name)      
-        #if exists then return the tree state of that bookmark
-  if os.path.exists(check_file_name):
-    #print 'Bookmark is there - proceed'   
-    treeFile = diagsHelper(user_id,bookmark_name,check_file_name)
-  else:
-    #print 'Bookmark is not there - do not proceed'
-    treeloaded = 'false'
-        
-        
-  print 'treeFile---->: ' + str(treeFile)
-        
-  template = loader.get_template('exploratory_analysis/treeex.html')
-    
-  #print 'figure bookmark list -> ' + str(figure_bookmark_list)
-       
-    
-  context = RequestContext(request, {
-            'loggedIn' : str(loggedIn),
-            'username' : username,
-            'treeloaded' : treeloaded,
-            'cachedfile' : cached_file_name,
-            'package_list' : package_list,
-            'dataset_list' : dataset_list,
-            'variable_list' : variable_list,
-            'season_list' : season_list,
-            'set_list' : set_list,
-            'bookmark_list' : bookmark_list,
-            'figure_bookmark_list' : figure_bookmark_list,
-            'treefile': treeFile,
-            'current_bookmark': bookmark,
-            'posttype':'save'
-            #'treeFile' : treeFile,
-  })
-        
-
-  #print '\n\n\t\tloggedIn: ' + str(loggedIn) 
-  return HttpResponse(template.render(context))
-
-'''
-
-
-
-'''
-def noBookmarkHandler(request,user_id):
-
-  print '\nrequest user authenticate: ' + str(request.user.is_authenticated()) + '\n'
-    
-  #need a flag to indicated whether a tree 
-  #print '\n\n\t\tuser_id: ' + str(user_id)
-  #print 'user: ' + str(request.user)
-    
-  loggedIn = paths.noAuthReq
-    
-  if (str(request.user) == str(user_id)):
-    loggedIn = True
-    
-  username = 'jfharney'
-    
-  #grab the username
-  if user_id != None:
-    username = user_id
-    
-    
-  #get the predefined tree bookmarks of the user
-  from exploratory_analysis.models import Tree_Bookmarks
-  bookmark_list_obj = Tree_Bookmarks.objects.filter(tree_bookmark_username=username)
-  
-  bookmark_list = [] 
-  for obj in bookmark_list_obj:
-    bookmark_list.append(obj.tree_bookmark_name)
- 
- 
-
-  #get the figure bookmarks of the user
-  from exploratory_analysis.models import Figure_Bookmarks
-  figure_bookmark_list_obj = Figure_Bookmarks.objects.filter(figure_bookmark_username=username)
- 
-  figure_bookmark_list = [] 
-  for obj in figure_bookmark_list_obj:
-    figure_bookmark_list.append(obj.figure_bookmark_name)
- 
- 
-  print 'bookmark list: ' + str(bookmark_list)
-  print 'figure bookmark list ' + str(figure_bookmark_list)
- 
- 
-  defaults = parameter_defaults.get_parameter_defaults()
-  package_list = defaults['package_list']
-  dataset_list = defaults['dataset_list']
-  variable_list = defaults['variable_list']
-  season_list = defaults['season_list']
-  set_list = defaults['set_list']
-    
- 
-    
-  #first we check if the request is in the cache or if it is the initial call
-  #if it is in the cache, no need to do any back end generation
-  bookmark = request.GET.get('bookmark')
-    
-  #print '\nbookmark: ' + str(bookmark)  
-      
-
-  print '\nin noBookmarkHandler'
-
-
-  #if something has been posted, then a tree could be built       
-  if request.POST:
-            
-      posttype = request.POST['posttype']
-            
-      tree_bookmark_datasetname = request.POST['dataset']
-            
-      print 'tree_bookmark_datasetname----->' + tree_bookmark_datasetname + '\n\n\n\n'
-            
-      #print 'in a post request with parameters'
-            
-            
-      treename = request.POST['treename']
-            
-      #if there is no tree name give the tree a default name based on the timestamp
-      if treename == None or treename == '':
-        import time
-        millis = int(round(time.time() * 1000))
-        treename = 'tree' + str(millis)
-            
-            
-            
-      packages = ''
-      #defaults here
-      if request.POST['package'] == None:
-        packages = ['lmwg']
-      else:
-        packages = [request.POST['package'] ]
-            
-            
-            
-      vars= ''
-      variable_arr_str = request.POST['variable_arr_str']
-      if variable_arr_str == None:
-        #print 'variable_arr_str is None'
-        vars = ['TLAI', 'TG','NPP']
-      else:
-        #print 'variable_arr_str: ' + variable_arr_str
-        variable_arr = variable_arr_str.split(';')
-        vars = variable_arr
-                
-      times = ''
-      season_arr_str = request.POST['season_arr_str']
-      if season_arr_str == None:
-        #print 'season_arr_str is None'
-        times = ['MAR','APR','MAY','JUNE','JULY']
-      else:
-        season_arr = season_arr_str.split(';')
-        times = season_arr
-        
-      sets_arr = ''
-      sets_arr_str = request.POST['sets_arr_str']
-      if sets_arr_str == None:
-        print 'sets_arr_str is None'
-      else:
-        sets_arr = sets_arr_str.split(';')
-        print 's: ' + sets_arr[0] 
-            
-        
-      dataset = ''
-      path = ''
-      if request.POST['dataset'] == None:
-        dataset = 'tropics_warming_th_q_co2'
-        path = [default_tree_sample_data_dir + paths.dataset_name ]
-      else:
-        dataset = request.POST['dataset']
-        path = path = [default_tree_sample_data_dir + request.POST['dataset']]
-            
-            
-            
-            
-      #    username
-                
-      #static/exploratory_analysis/cache/tree/' username + '/json/' + dataset_name
-      #build tree here 
-      #if the post type is "submit" then grab "temp.json", otherwise it is a saved bookmark
-            
-      #old
-      #if posttype == 'submit':
-      #    treeFile = cache_dir + 'temp' + '.json'
-      #else:
-      #    treeFile = cache_dir + treename + '.json'
-            
-      if posttype == 'submit':
-        treeFile = cache_dir + username + '/json/' + 'temp' + '.json'
-      else:
-        treeFile = cache_dir + username + '/json/' + dataset + '/' + treename + '.json'
-            
-      import os
-      import os.path
-      #print 'created tree bookmark file: ' + (cache_dir + username + '/json/' + dataset)
-      #print 'treeFile exists? ' + str(os.path.isdir(cache_dir + username + '/json/' + dataset))
-      if not os.path.isdir(cache_dir + username + '/json/' + dataset):
-        print 'create dir'
-        os.makedirs(cache_dir + username + '/json/' + dataset)
-            
-      #### Start diagnostics generation here...
-      #username = user_id
-        
-      o = Options()
-       
-            
-      #print 'varsssss---->' + str(vars)
-       
-      ##### SET THESE BASED ON USER INPUT FROM THE GUI
-      o._opts['packages'] = packages
-      o._opts['vars'] = vars
-      o._opts['path'] = path
-      o._opts['times'] = times
-        
-            
-            
-      ### NOTE: 'ANN' won't work for times this way, but that shouldn't be a problem
-      datafiles = []
-      filetables = []
-      vars = o._opts['vars']
-      #   print vars
-    
-      #print 'packages--->' + str(packages)
-      #print 'vars--->' + str(vars)
-      #print 'times--->' + str(times)
-      #print 'dataset_list[0]--->' + dataset_list[0]
-    
-      print 'PATHS -------> ', o._opts['path']
-      for p in range(len(o._opts['path'])):
-        #print '\ndirtree\n',dirtree_datafiles(o,pathid=p)
-        datafiles.append(dirtree_datafiles(o,pathid=p))
-        filetables.append(basic_filetable(datafiles[p],o))
-            
-      #print 'Creating diags tree view JSON file...'
-        
-      #print 'ftnames->' + dataset_list[0]
-      #print 'filetables->' + str(filetables)
-        
-      print '\n\n\n\nFILENAME!!!! ' + treeFile
-        
-      tv = TreeView()
-      dtree = tv.makeTree(o, filetables,None,user=username,ftnames=[dataset_list[0]])
-      tv.dump(filename=treeFile)
-            
-            
-            
-      response_data = {}
-      response_data['treename'] = treename
-      response_data['username'] = username
-      return HttpResponse(json.dumps(response_data), content_type="application/json")
-            
-  #end if request.POST  
-            
-  if(loggedIn == True):
-    template = loader.get_template('exploratory_analysis/treeex.html')
-  else:
-    print 'username: ' + username
-        #print 'func: ' + str(func)
-            
-    func = treeviewer_treeex.func()
-    template = loader.get_template('exploratory_analysis/not_logged_in.html')
-    
-        
-        
-  treeloaded = 'false'
-        
-        
-        
-        
-  print 'figure bookmark list -> ' + str(figure_bookmark_list)
-        
-  print '\n\t\t\tloggedIn: ' + str(loggedIn) 
-        
-  context = RequestContext(request, {
-            'loggedIn' : str(loggedIn),
-            'username' : username,
-            'treeloaded' : treeloaded,
-            'package_list' : package_list,
-            'dataset_list' : dataset_list,
-            'variable_list' : variable_list,
-            'season_list' : season_list,
-            'set_list' : set_list,
-            'bookmark_list' : bookmark_list,
-            'figure_bookmark_list' : figure_bookmark_list,
-            'posttype':'save'
-                                          
-  })
-        
-
-  return HttpResponse(template.render(context))
-
-'''
 
