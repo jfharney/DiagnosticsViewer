@@ -290,4 +290,3 @@ function hide_atm_home() {
 	document.getElementById('atmHome').style.display = 'none';
 }
 
-
