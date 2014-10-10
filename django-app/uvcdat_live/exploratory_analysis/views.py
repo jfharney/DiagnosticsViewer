@@ -545,7 +545,6 @@ def token(request,filename):
           
 def variables(request,dataset_id,package_id):
 
-    print generate_token_url('/lmwg/set1/set1Diff_SOILC.gif')
     opts = Options()
     opts['path'] = ['/data/tropics/' + dataset_id + '/']
     opts['packages'] = [package_id.upper()]
@@ -582,6 +581,7 @@ def variables(request,dataset_id,package_id):
             variables['seasons'] = seasons
             print 'seasons:' , seasons
             print 'variables: ', variables
+    variables['vars']=list(set(variables['vars']))
   
     return HttpResponse(json.dumps(variables))
  
@@ -1556,112 +1556,6 @@ def classic_views(request):
         elif set == 'set5':
             #########################################
             #change this to the specified directory structure
-            url_prefix = paths.uvcdat_live_root + "exploratory_analysis/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
-            url_prefixIMAGE = "\'/static/exploratory_analysis/img/classic/" + package + "/" + set + "/set5_"
-            
-            #assemble the url to be returned
-            url = url_prefix + set + ".html"
-            #END JOHN's code
-        
-            #Construct table with description (variable) and link to plot
-            #Input from json object from user selection
-            #user_selected_vars = {'TSA', 'PREC'}
-            
-            #Start writing file (SPECIFY LOCATION TO WRITE FILE TO HERE)     Example: land/tropics_warming_th_q/img/
-            file = open(url, "w")
-                    
-            #Header
-            file.write("<p>\n") 
-            file.write("<b><font color=maroon size=+2>Set 5 Description: <b></font>Tables of annual means </b><br>\n")
-            file.write("<br clear=left>")
-            file.write("</p>\n")
-            file.write("<p>\n")
-            file.write("<A HREF=\"/static/exploratory_analysis/img/classic/lmwg/set5/variableList_5.html\" target=\"set5_Variables\">\n")
-            file.write("<font color=maroon size=+1 text-align: right><b>Lookup Table: Set 5 Variable Definition</b></font></a>\n")
-            file.write("</br>\n")
-            file.write("</p>\n") 
-                   
-                        
-            #Start table
-            file.write("<p>\n")
-            file.write("<hr noshade size=2 size=\"100%\">\n</hr>")
-            file.write("<TABLE> \n")
-            file.write("<TR>\n")
-            file.write("<td ALIGN=LEFT><font color=maroon>TABLE</font>\n</td>")
-            file.write("</TR>\n")
-          
-          
-          
-          
-          
-          
-            file.write("<tr>")
-            file.write('<TH ALIGN=LEFT>Regional Hydrologic Cycle')
-            file.write('<TH ALIGN=LEFT><font color=black><A HREF= "#" onclick="displayImageClick(')
-            file.write(url_prefixIMAGE);
-            file.write('hydReg.txt\')\";>Table</a></font>')
-            file.write('</tr>') 
-                        
-            file.write("<tr>")
-            file.write('<TH ALIGN=LEFT>Global Biogeophysics')
-            file.write('<TH ALIGN=LEFT><font color=black><A HREF= "#" onclick="displayImageClick(')
-            file.write(url_prefixIMAGE);
-            file.write('clm.txt\')\";>Table</a></font>')
-            file.write('</tr>') 
-            
-            file.write('<tr>')     
-            file.write('<TH ALIGN=LEFT>Global Carbon/Nitrogen')      
-            file.write('<TH ALIGN=LEFT><font color=black><A HREF= "#" onclick="displayImageClick(')
-            file.write(url_prefixIMAGE);
-            file.write('cn.txt\')\";>Table</a></font>')     
-            file.write('</tr>')
-                 
-                 
-            #end for loop and end table generation-------------------------
-            file.write("</TABLE> \n")
-            file.write("</p>\n")
-            file.close()
-    
-                    
-            
-            url_prefix = "/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"      
-        
-            #assemble the url to be returned
-            url = url_prefix + set + ".html"
-            
-            response = url;
-            
-        elif set == 'set6':
-            
-            
-            
-             #assemble the url to be returned
-            url = url_prefix + set + ".html"
-            
-            response = url;
-            
-            
-        elif set == 'set7':
-            
-            
-            
-             #assemble the url to be returned
-            url = url_prefix + set + ".html"
-            
-            response = url;
-            
-        elif set == 'set9':
-            
-            
-            
-             #assemble the url to be returned
-            url = url_prefix + set + ".html"
-            
-            response = url;
-            
-        elif set == 'set5':
-            #########################################
-            #change this to the specified directory structure
             url_prefix = paths.staticfiles_dirs + "/img/classic/" + package + "/" + set + "/"
             url_prefixIMAGE = "\'/static/exploratory_analysis/img/classic/" + package + "/" + set + "/set5_"
             
@@ -1714,7 +1608,7 @@ def classic_views(request):
             file.write('<TH ALIGN=LEFT>Global Carbon/Nitrogen')      
             file.write('<TH ALIGN=LEFT><font color=black><A HREF= "#" onclick="displayTable(')
             file.write(url_prefixIMAGE);
-            file.write('cn.txt\')\";>Table</a></font>')     
+            file.write('cn.json\')\";>Table</a></font>')     
             file.write('</tr>')
                  
                  
