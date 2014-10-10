@@ -121,7 +121,16 @@ def group_dataset(request,group_name):
         #grab the group record
         da = Dataset_Access.objects.filter(group_name=group_name)
         
+        print 'da: ' + str(da)
+        
+        if not da:
+            print 'list is empty'
+            data = {'dataset_list' : ''}
+            data_string = json.dumps(data,sort_keys=False,indent=2)
+            return HttpResponse(data_string + "\n")
+        
         dataset_list = []
+        
         
         for dataset in da[0].dataset_list.split(','):
             dataset_list.append(dataset)
