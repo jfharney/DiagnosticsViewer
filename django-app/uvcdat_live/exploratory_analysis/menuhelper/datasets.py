@@ -21,18 +21,27 @@ paths_cache_dir = paths.cache_dir
 default_sample_data_dir = paths.default_sample_data_dir
 
 def getGroupsFromESGF(username):
-    
-    defaultGroups = '{ "groups" : [] }'
-    import requests
+        
+    defaultGroups = '{ "groups" : [] }'    
 
-    response = requests.get('http://esg.ccs.ornl.gov:7070/groups/jfhCSSEF')
-                         #auth=('user', 'password'))
-    data = response.json()
+
+    import json
+    import urllib2
     
-    print 'datastr: ' + str(data)    
-    groups = defaultGroups
-    return groups
+    #data = json.loads(urllib2.open('http://esg.ccs.ornl.gov:7070/groups/jfhCS
+
+    import httplib 
+    '''
     
+    '''
+
+    import urllib2
+    data = urllib2.urlopen("http://esg.ccs.ornl.gov:7070/groups/" + username).read()
+
+    print str(data)
+
+    return data
+
 
 def datasetListHelper1(request,user_id):
 
