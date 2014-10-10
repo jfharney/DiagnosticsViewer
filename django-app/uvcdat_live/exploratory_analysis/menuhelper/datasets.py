@@ -20,8 +20,19 @@ paths_cache_dir = paths.cache_dir
 
 default_sample_data_dir = paths.default_sample_data_dir
 
-def is_in_ACME(user):
-    return user.groups.filter(name='ACME-test').exists()
+def getGroupsFromESGF(username):
+    
+    defaultGroups = '{ "groups" : [] }'
+    import requests
+
+    response = requests.get('http://esg.ccs.ornl.gov:7070/groups/jfhCSSEF')
+                         #auth=('user', 'password'))
+    data = response.json()
+    
+    print 'datastr: ' + str(data)    
+    groups = defaultGroups
+    return groups
+    
 
 def datasetListHelper1(request,user_id):
 
@@ -56,7 +67,9 @@ def datasetListHelper1(request,user_id):
     #print 'groups: ' + str(user.groups.all())
     
     #example
-    groups_list = ['ACME','OTHER']
+    groups_list = getGroupsFromESGF(user_id)
+    
+    print 'groups_list: ' + str(groups_list)
     
     #examples
     jfhNone_response_str = '{ "groups" : [] }'
