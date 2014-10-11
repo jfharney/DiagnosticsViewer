@@ -25,11 +25,10 @@ def getGroupsFromESGF(username):
     defaultGroups = '{ "groups" : [] }'
     import requests
 
-    response = requests.get('http://esg.ccs.ornl.gov:7070/groups/jfhCSSEF')
-                         #auth=('user', 'password'))
-    data = response.json()
+    response = requests.get('http://esg.ccs.ornl.gov:7070/groups/' + username)
     
-    print 'datastr: ' + str(data)    
+    data = response.json()
+        
     groups = defaultGroups
     return groups
     
@@ -67,9 +66,9 @@ def datasetListHelper1(request,user_id):
     #print 'groups: ' + str(user.groups.all())
     
     #example
-    groups_list = getGroupsFromESGF(user_id)
+    groups_list_str = getGroupsFromESGF(user_id)
     
-    print 'groups_list: ' + str(groups_list)
+    print 'groups_list_str: ' + groups_list_str
     
     #examples
     jfhNone_response_str = '{ "groups" : [] }'
@@ -97,6 +96,10 @@ def datasetListHelper1(request,user_id):
         response_str = jfharney_response_str
     else:
         response_str = jfhNone_response_str
+    
+    response_str = groups_list_str
+    
+    print 'response_str: ' + response_str
     
     import json 
     
