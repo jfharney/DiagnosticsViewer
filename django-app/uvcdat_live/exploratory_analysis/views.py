@@ -1243,9 +1243,6 @@ def classic_views(request):
         set3Headers = ['reg', 'landf','randf','turbf','cnFlx','frFlx','moistEnergyFlx','snow','albedo','hydro']
         #DONE to be added
         
-        #Remove later
-        vars=['PFT_FIRE_CLOSS','SNOWDP','LITHR', 'QSOIL']
-        
         
         print 'set: ' + set
         print 'vars: ' + str(vars) + ' ' #+ vars.length
@@ -1631,14 +1628,6 @@ def classic_views(request):
             #Input from json object from user selection
             #user_selected_vars = {'TSA', 'PREC'}
             
-            def containedInDictionary( set ):
-                "This prints a passed string into this function"
-                for key in vardict:
-                    if set in vardict[key]['sets']:  
-                        return True
-                    else:
-                        return False
-                    
             #Start writing file (SPECIFY LOCATION TO WRITE FILE TO HERE)     Example: land/tropics_warming_th_q/img/
             html=""
             
@@ -1659,51 +1648,70 @@ def classic_views(request):
             html+="<hr noshade size=2 size=\"100%\">\n</hr>"
             html+="<TABLE> \n"
             html+="<TR>\n"
-            html+="<td ALIGN=LEFT><font color=maroon>Description (variable)</font>\n</td>"
-            for time in times:  
-               html+="<td ALIGN=LEFT><font color=maroon>"+time+"</font>\n</td>"
+            html+="<td ALIGN=LEFT><B>All Model Data Regions</font>\n</td>"
+            html+='<td>'
+            html+='<a href="#" onclick="displayImageClick(\'set3_reg_all.gif\''
+            html+=');" onmouseover="displayImageHover(\'set3_reg_all.gif\''
+            html+=');" onmouseout="nodisplayImage();">Map</A>\n'
+            html+='</td>'
             html+="</TR>\n"
-          
-            
-            #python for loop----------
-            #Descriptions are (predefinedBrianSmithDictionary[key]
-            
-            for key in vardict:
-                if 3 in vardict[key]['sets'] and key in vars:
-                    html+="<TR>\n"
-                    html+='<Td ALIGN=LEFT>'
-                    html+=vardict[key]['desc']
-                    html+='('
-                    html+=key
-                    html+=')</td>'
-                    
-                    
-                    for time in times:                
-                        html+='<td ALIGN=LEFT>'
-                        html+='<a href="#" onclick="displayImageClick('
-                        html+=url_prefixIMAGE#Here we write gif name
-                        html+=time+'_'
-                        html+=key
-                        html+='.gif\''
-                        html+=');" onmouseover="displayImageHover('
-                        html+=url_prefixIMAGE#Here we write gif name again
-                        html+=time+'_'
-                        html+=key
-                        html+='.gif\''
-                        html+=');" onmouseout="nodisplayImage();">plot</A>\n'
-                        html+='</td>'
-                    html+="</TR>\n"
-
+            html+="<TR>\n"
+            html+="<td>Region(s)"
+            html+="</td>"
+            html+="<td ALIGN=LEFT>Map</font>\n</td>"
+            for var in vars:  
+               html+="<td ALIGN=LEFT>"+var+"</font>\n</td>"
+            html+="</tr>\n"
           
             
             #python for loop----------
             #Descriptions are (predefinedBrianSmithDictionary[key]) 
             
+            def containedInDictionary( set ):
+                "This prints a passed string into this function"
+                for key in vardict:
+                    if set in vardict[key]['sets']:  
+                        return True
+                    else:
+                        return False
                     
+            
+            for region in regions:
+                if containedInDictionary( 3 ):  
+                    html+="<TR>\n"           
+                    html+='<Td ALIGN=LEFT>'
+                    html+=region
+                    html+='</td>\n'
+                    html+='\n'
+                    html+='<td>'
+                    html+='<a href="#" onclick="displayImageClick(\'set3_reg_'+region+'.gif\''
+                    html+=');" onmouseover="displayImageHover(\'set3_reg_'+region+'.gif\''
+                    html+=');" onmouseout="nodisplayImage();">Map</A>'
+                    html+='</td>\n'
+                    for var in vars:              
+                        html+='<td ALIGN=center>'
+                        html+='<a href="#" onclick="displayImageClick('
+                        html+=url_prefixIMAGE#Here we write gif name
+                        #html+=vardict[var]['filekey']+'_'
+                        html+=var+'_'
+                        #html+=regdict[region]['filekey']
+                        html+=region
+                        html+='.gif\''
+                        html+=');" onmouseover="displayImageHover('
+                        html+=url_prefixIMAGE#Here we write gif name again
+                        #html+=vardict[var]['filekey']+'_'
+                        html+=var+'_'
+                        #html+=regdict[region]['filekey']
+                        html+=region
+                        html+='.gif\''
+                        html+=');" onmouseout="nodisplayImage();">Plot</A>'
+                        html+='</td>\n'
+                    html+="</TR>\n"
                     
                     
             #end for loop and end table generation-------------------------
             
+       
             html+="</TABLE> \n"
             html+="</p>\n"
                     
