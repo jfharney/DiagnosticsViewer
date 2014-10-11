@@ -20,7 +20,7 @@ paths_cache_dir = paths.cache_dir
 
 default_sample_data_dir = paths.default_sample_data_dir
 
-esgfFlag = true
+esgfFlag = True
 
 
 def getGroupsFromESGF(username):
