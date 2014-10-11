@@ -751,6 +751,30 @@ def token(request,filename):
     return HttpResponse(url)
           
 def variables(request,dataset_id,package_id):
+    from exploratory_analysis.models import Variables
+    print '\nIn GET\n'  
+    
+    #grab the record with the given dataset_name
+    dataset_name = dataset_id
+    da = Variables.objects.filter(dataset_name=dataset_name)
+    
+    if da:
+   
+    #otherwise grab the contents and return as a list
+    #note: da[0] is the only record in the filtering of the Dataset_Access objects
+        dataset_list = []
+        
+        for dataset in da[0].variables.split(','):
+            dataset_list.append(dataset)
+            
+        data = {'dataset_list' : dataset_list}
+        data_string = json.dumps(data,sort_keys=False,indent=2)
+    
+        print("GET Done\n")
+        print(data_string)
+        if data_string != "":
+             return HttpResponse(data_string + "\n")
+
 
     opts = Options()
     opts['path'] = ['/data/tropics/' + dataset_id + '/']
@@ -1433,8 +1457,8 @@ def classic_views(request):
                   #JOHN's example code
             #########################################
             #change this to the specified directory structure
-            url_prefix = paths.staticfiles_dirs + "/img/classic/" + package + "/" + set + "/"
-            url_prefixIMAGE = "/" + package + "/" + set + "/set1_"
+            url_prefix = paths.staticfiles_dirs + "/img/classic/" + dataset + "/" + package + "/"
+            url_prefixIMAGE = "/" + dataset + "/" + package + "/set1_"
             
             #assemble the url to be returned
             url = url_prefix + set + ".html"
@@ -1507,6 +1531,19 @@ def classic_views(request):
             #######################################################
             #end Ray's code
     
+<<<<<<< HEAD
+=======
+    
+    
+        
+            url_prefix = "/static/exploratory_analysis/img/classic/" + dataset + "/" + package + "/"
+            
+            
+        
+        
+            #assemble the url to be returned
+            url = url_prefix + set + ".html"
+>>>>>>> daa82cd72710d22900e936376ad651f50761b206
             
             return HttpResponse(html)
         
@@ -1516,7 +1553,8 @@ def classic_views(request):
             #change this to the specified directory structure
 
             url_prefix = paths.staticfiles_dirs + "/img/classic/" + package + "/" + set + "/"
-            url_prefixIMAGE = "\'/static/exploratory_analysis/img/classic/" + package + "/" + set + "/set2_"
+            #url_prefixIMAGE = "\'/static/exploratory_analysis/img/classic/" + package + "/" + dataset + "/set2_"
+            url_prefixIMAGE = "/" + dataset + "/" + package + "/set2_"
 
             
             #assemble the url to be returned
@@ -1571,6 +1609,7 @@ def classic_views(request):
                     
                     
                     for time in times:                
+<<<<<<< HEAD
                         html+='<td ALIGN=LEFT>'
                         html+='<a href="#" onclick="displayImageClick('
                         html+=url_prefixIMAGE#Here we write gif name
@@ -1585,6 +1624,24 @@ def classic_views(request):
                         html+=');" onmouseout="nodisplayImage();">plot</A>\n'
                         html+='</td>'
                     html+="</TR>\n"
+=======
+                        file.write('<td ALIGN=LEFT>') 
+                        file.write('<a href="#" onclick="displayImageClick(')
+                        file.write('\'' + generate_token_url(url_prefixIMAGE + key + '.gif'))
+                        #file.write(url_prefixIMAGE)#Here we write gif name
+                        file.write(time+'_')
+                        file.write(key)
+                        file.write('.gif\'') 
+                        file.write(');" onmouseover="displayImageHover(')
+                        file.write('\'' + generate_token_url(url_prefixIMAGE + key + '.gif'))
+                        #file.write(url_prefixIMAGE)#Here we write gif name again
+                        file.write(time+'_')
+                        file.write(key)
+                        file.write('.gif\'') 
+                        file.write(');" onmouseout="nodisplayImage();">plot</A>\n')
+                        file.write('</td>')
+                    file.write("</TR>\n")
+>>>>>>> daa82cd72710d22900e936376ad651f50761b206
                     
                     
             #end for loop and end table generation-------------------------
@@ -1613,6 +1670,7 @@ def classic_views(request):
             #user_selected_vars = {'TSA', 'PREC'}
             
             #Start writing file (SPECIFY LOCATION TO WRITE FILE TO HERE)     Example: land/tropics_warming_th_q/img/
+<<<<<<< HEAD
             html=""
             
             #Header
@@ -1666,11 +1724,92 @@ def classic_views(request):
                         html+=');" onmouseout="nodisplayImage();">plot</A>\n'
                         html+='</td>'
                     html+="</TR>\n"
+=======
+            file = open(url, "w")
+                    
+            #Header
+            file.write("<p>\n") 
+            file.write("<b><font color=maroon size=+2>Set 3 Description: <b></font>Line plots of monthly climatology: regional air temperature, precipitation, runoff, snow depth, radiative fluxes, and turbulent fluxes</b><br>\n")
+            file.write("<br clear=left>")
+            file.write("</p>\n")
+            file.write("<p>\n")
+            file.write("<A HREF=\"/static/exploratory_analysis/img/classic/lmwg/set3/variableList_3.html\" target=\"set3_Variables\">\n")
+            file.write("<font color=maroon size=+1 text-align: right><b>Lookup Table: Set 3 Variable Definition</b></font></a>\n")
+            file.write("</br>\n")
+            file.write("</p>\n") 
+                   
+                        
+            #Start table
+            file.write("<p>\n")
+            file.write("<hr noshade size=2 size=\"100%\">\n</hr>")
+            file.write("<TABLE> \n")
+            file.write("<TR>\n")
+            file.write("<td ALIGN=LEFT><B>All Model Data Regions</font>\n</td>")
+            file.write('<td>')
+            file.write('<a href="#" onclick="displayImageClick(\'set3_reg_all.gif\'')
+            file.write(');" onmouseover="displayImageHover(\'set3_reg_all.gif\'')
+            file.write(');" onmouseout="nodisplayImage();">Map</A>\n')
+            file.write('</td>')
+            file.write("</TR>\n")
+            file.write("<TR>\n")
+            file.write("<td>Region(s)")
+            file.write("</td>")
+            file.write("<td ALIGN=LEFT>Map</font>\n</td>")
+            for var in vars:  
+               file.write("<td ALIGN=LEFT>"+var+"</font>\n</td>")
+            file.write("</tr>\n")
+          
+            
+            #python for loop----------
+            #Descriptions are (predefinedBrianSmithDictionary[key]) 
+            
+            def containedInDictionary( set ):
+                "This prints a passed string into this function"
+                for key in vardict:
+                    if set in vardict[key]['sets']:  
+                        return True
+                    else:
+                        return False
+                    
+            
+            for region in regions:
+                if containedInDictionary( 3 ):  
+                    file.write("<TR>\n")             
+                    file.write('<Td ALIGN=LEFT>') 
+                    file.write(region)
+                    file.write('</td>\n')
+                    file.write('\n')
+                    file.write('<td>')
+                    file.write('<a href="#" onclick="displayImageClick(\'set3_reg_'+region+'.gif\'')
+                    file.write(');" onmouseover="displayImageHover(\'set3_reg_'+region+'.gif\'')
+                    file.write(');" onmouseout="nodisplayImage();">Map</A>')
+                    file.write('</td>\n')
+                    for var in vars:              
+                        file.write('<td ALIGN=center>') 
+                        file.write('<a href="#" onclick="displayImageClick(')
+                        file.write(url_prefixIMAGE)#Here we write gif name
+                        #file.write(vardict[var]['filekey']+'_')
+                        file.write(var+'_')
+                        #file.write(regdict[region]['filekey'])
+                        file.write(region)
+                        file.write('.gif\'') 
+                        file.write(');" onmouseover="displayImageHover(')
+                        file.write(url_prefixIMAGE)#Here we write gif name again
+                        #file.write(vardict[var]['filekey']+'_')
+                        file.write(var+'_')
+                        #file.write(regdict[region]['filekey'])
+                        file.write(region)
+                        file.write('.gif\'') 
+                        file.write(');" onmouseout="nodisplayImage();">Plot</A>')
+                        file.write('</td>\n')
+                    file.write("</TR>\n")
+>>>>>>> daa82cd72710d22900e936376ad651f50761b206
                     
                     
             #end for loop and end table generation-------------------------
             
        
+<<<<<<< HEAD
             html+="</TABLE> \n"
             html+="</p>\n"
                     
@@ -1679,6 +1818,23 @@ def classic_views(request):
             
         
             
+=======
+            file.write("</TABLE> \n")
+            file.write("</p>\n")
+            file.close()
+    
+                    
+            
+            url_prefix = "/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"      
+        
+            #assemble the url to be returned
+            url = url_prefix + set + ".html"
+            
+            response = url;
+        
+        
+
+>>>>>>> daa82cd72710d22900e936376ad651f50761b206
             
         elif set == 'set5':
             #########################################

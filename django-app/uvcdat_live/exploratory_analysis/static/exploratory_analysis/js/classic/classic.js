@@ -130,6 +130,7 @@ function nodisplayImage()
 function toggle_varSelect()
 {
 	var dataset = $('#selectD').val();
+	
 	$('#dataset_selected').hide();
 	$('#variables_div').show();
 	getVariables('ul');
@@ -140,6 +141,11 @@ function toggle_vis(set) {
 	
 	var dataset = $('#selectD').val();
 	var pckg = $('#selectP').val();
+	
+	//make some defaults for testing
+	//TODO: replace or just dump this
+	if(dataset == null && pckg == 'lmwg') dataset = 'tropics_warming_th_q';
+	else if(dataset == null) dataset = 'f40_amip_cam5_c03_78b';
 	
 	//document.getElementById('landHome').style.display = 'none';
 	hide_land_home();
