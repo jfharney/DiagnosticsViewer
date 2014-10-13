@@ -60,13 +60,24 @@ figures_store = {}
 from django.http import HttpResponseRedirect
 
 
+#Service API for the Dataset_Access table
+#GET
+#http://<host>:<port>/exploratory_analysis/group_dataset/<group>
+#POST
+#echo '{ "dataset" :  <dataset_name> }' | curl -d @- 'http://<host>:<port>/exploratory_analysis/group_dataset/<group>/' -H "Accept:application/json" -H "Context-Type:application/json"
+#DELETE
+#http://<host>:<port>/exploratory_analysis/group_dataset/<group>/
+
+#Models table has the form
+#group_name  |   dataset_list
+#where dataset_list is a comma separated text blob
 def group_dataset(request,group_name):
     
     from exploratory_analysis.models import Dataset_Access
         
     if request.method == 'POST':
     
-        print '\nIn POST\n'    
+        print '\nPOSTING new Dataset\n'    
     
         #load the json object
         json_data = json.loads(request.body)
@@ -77,19 +88,15 @@ def group_dataset(request,group_name):
         #grab the group record
         da = Dataset_Access.objects.filter(group_name=group_name)
         
-        #print 'da: ' + str(da)
         #append dataset to the end of the dataset list
         
         new_dataset_list = ''
         if da:
-            print 'da'
             new_dataset_list = da[0].dataset_list
             new_dataset_list = new_dataset_list + ',' + dataset
         else:
-            print 'no da'
             new_dataset_list = dataset
         
-        print 'new_dataset_list: ' + new_dataset_list
         
         #update the record
         #delete the record and rewrite the record with the new dataset list
@@ -97,7 +104,6 @@ def group_dataset(request,group_name):
         
         
         all = Dataset_Access.objects.all()
-        print 'all1: ' + str(all)
         
         
         dataset_access_record = Dataset_Access(
@@ -109,9 +115,9 @@ def group_dataset(request,group_name):
         dataset_access_record.save()
         
         all = Dataset_Access.objects.all()
-        print 'all2: ' + str(all)
         
-        print '\n\n'    
+        print '\nEND POSTING new Dataset\n'    
+    
         return HttpResponse("POST Done\n")
     
     elif request.method == 'GET':
@@ -121,16 +127,15 @@ def group_dataset(request,group_name):
         #grab the group record
         da = Dataset_Access.objects.filter(group_name=group_name)
         
-        print 'da: ' + str(da)
-        
+        #if the dataset list is empty then return empty list
         if not da:
-            print 'list is empty'
             data = {'dataset_list' : ''}
             data_string = json.dumps(data,sort_keys=False,indent=2)
             return HttpResponse(data_string + "\n")
         
+        #otherwise grab the contents and return as a list
+        #note: da[0] is the only record in the filtering of the Dataset_Access objects
         dataset_list = []
-        
         
         for dataset in da[0].dataset_list.split(','):
             dataset_list.append(dataset)
@@ -154,8 +159,12 @@ def group_dataset(request,group_name):
         
         return HttpResponse("DELETE Done\n")
 
-    return HttpResponse('Shouldnt get here')    
+    return HttpResponse('DeleteError')    
 
+
+
+
+'''
 def group_datasets(request):
 
     print '\n\n'    
@@ -191,7 +200,7 @@ def group_datasets(request):
 
     print '\n\n'
     return HttpResponse("Done\n")
-
+'''
 
   ############
   #Page views#
@@ -210,6 +219,9 @@ def index(request):
     })
 
     return HttpResponse(template.render(context))
+
+
+
 
 #Home page view...nothing fancy here just points to the view located at index.html
 #corresponds with url: http://<host>/exploratory_analysis
@@ -847,13 +859,14 @@ def auth(request):
         password1 = request.POST['password']
     
     
+    print 'username: ' + str(username1)
+    print 'password: ' + str(password1)
+    print 'peer node: ' + str(peernode1)
+    
+    
     #if request.POST['username'] == None or request.POST['password'] == None:
     #    return HttpResponse("Error")
     
-    
-    #peernode = ''
-    #if request.POST['peernode'] == None:
-    #    peernode = 'esg.ccs.ornl.gov'
     
     from OpenSSL import crypto,SSL
     
@@ -864,12 +877,17 @@ def auth(request):
         from backends import authenticate1
         
         #authenticates to ESGF
-        user = authenticate1(username = username1,
+        if paths.esgfAccess:
+            user = authenticate1(username = username1,
                              password = password1,
                              peernode = peernode1)
         
-        
-    
+        else:
+            user = authenticate(username=username1,password=password1)
+            print 'user n: ' + user.username + ' ' + user.password
+            login(request,user)
+            return HttpResponse('Authenticated')
+        '''
         if user is not None:
             print 'username...' + user.username
             print 'password...' + user.password
@@ -889,7 +907,8 @@ def auth(request):
             print 'Invalid Login'
             #return an 'invalid login error
             return HttpResponse('InvalidLogin')
-    
+        '''
+        return HttpResponse('Authenticated')
 
     else:
         print 'it is not a post'

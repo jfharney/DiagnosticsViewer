@@ -20,7 +20,8 @@ paths_cache_dir = paths.cache_dir
 
 default_sample_data_dir = paths.default_sample_data_dir
 
-esgfFlag = True
+
+datasetListDebug = True
 
 
 def getGroupsFromESGF(username):
@@ -31,17 +32,24 @@ def getGroupsFromESGF(username):
     import urllib2
     data = urllib2.urlopen("http://esg.ccs.ornl.gov:7070/groups/" + username).read()
 
-    print str(data)
 
     return data
 
 
+
 def datasetListHelper1(request,user_id):
 
-    print 'in datasetListHelper1 for user_id: ' + user_id
+
+    import glob
+    import json
+    from django.http import HttpResponse
+    from django.http import HttpResponseServerError
+    
+    
+    if datasetListDebug:
+        print 'in datasetListHelper1 for user_id: ' + user_id
     #datasets = ['tropics_warming_th_q_co2']
     
-    import glob
     
     datasets = []
     
@@ -52,26 +60,36 @@ def datasetListHelper1(request,user_id):
     
     from django.contrib.auth.models import User
     
-    '''
-    if User.DoesNotExist:
-        user = User(username=user_id,
-                         password='password is not used, ESGF handles authentication for us')
-        user.save()
-    '''
     
+    
+    if datasetListDebug:
+        print 'paths.esgfAccess: ' + str(paths.esgfAccess)
+        
     
     #Step 0 - get the user object
     user = User.objects.get(username=user_id)    
     
+    print 'userrrrrrrr: ' + user.username
     
+    if User.DoesNotExist:
+        data = {'dataset_list' : ''}
+        data_string = json.dumps(data,sort_keys=False,indent=2)
+        
+        if datasetListDebug:
+            print 'user does not exist - no datasets will be listed'
+    
+        return HttpResponse(data_string + "\n")
+        
     #Step 1 - grab the groups that this user belongs to
     #This will involve a call to the ESGF node
     
-    #flag for ESGF needed for debugging locally or when the ESGF node is down
-    if esgfFlag:
+    if paths.esgfAccess:
         groups_list_str = getGroupsFromESGF(user_id)
+        
+        if datasetListDebug:
+            print 'Groups returned by ESGF: ' + groups_list_str
+            
         response_str = groups_list_str
-        print 'groups_list_str: ' + groups_list_str
     else:
         #examples
         jfhNone_response_str = '{ "groups" : [] }'
@@ -134,13 +152,6 @@ def datasetListHelper1(request,user_id):
     #list of datasets
     disk_datasets = []
     
-    '''
-    import glob
-    for f in glob.glob(default_sample_data_dir + '/*'):
-      f_arr = f.split('/')
-      #print 'f: ' + f_arr[len(f_arr)-1]
-      disk_datasets.append(f_arr[len(f_arr)-1])
-    '''
     
     print '\nIn GET functionality\n'    
         
@@ -183,8 +194,24 @@ def datasetListHelper1(request,user_id):
     
     
     return data_string
+
+
+
+'''
+        user = User(username=user_id,
+                         password='password is not used, ESGF handles authentication for us')
+        user.save()
+'''
+
+'''
+    import glob
+    for f in glob.glob(default_sample_data_dir + '/*'):
+      f_arr = f.split('/')
+      #print 'f: ' + f_arr[len(f_arr)-1]
+      disk_datasets.append(f_arr[len(f_arr)-1])
+'''
     
-    
+
 '''
 def datasetListHelper(request,user_id):
     print 'in datasetListHelper for user_id: ' + user_id

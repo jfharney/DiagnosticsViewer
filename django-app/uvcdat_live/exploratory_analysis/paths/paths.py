@@ -24,6 +24,13 @@ if type(noAuthReq) is str and noAuthReq == 'True':
    noAuthReq = True
 else:
    noAuthReq = False
+   
+esgfAccess = config.get("options","esgfAccess")
+if type(esgfAccess) is str and esgfAccess == 'True':
+   esgfAccess = True
+else:
+   esgfAccess = False
+   
 
 database_name = database_root +"/mydb.db"
 
