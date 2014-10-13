@@ -883,8 +883,11 @@ def auth(request):
                              peernode = peernode1)
         
         else:
+            #authenticate to django
             user = authenticate(username=username1,password=password1)
             print 'user n: ' + user.username + ' ' + user.password
+            
+            #login to the app and return the string "Authenticated"
             login(request,user)
             return HttpResponse('Authenticated')
         '''
