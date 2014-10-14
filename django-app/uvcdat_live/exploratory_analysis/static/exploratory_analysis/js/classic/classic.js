@@ -298,6 +298,8 @@ function hide_land_sets() {
 
 function hide_atm_sets() {
 	
+	
+	document.getElementById('amwg_settopten_html').style.display = 'none';
 	document.getElementById('amwg_set1_html').style.display = 'none';
 	document.getElementById('amwg_set2_html').style.display = 'none';
 	document.getElementById('amwg_set3_html').style.display = 'none';
