@@ -60,6 +60,98 @@ figures_store = {}
 from django.http import HttpResponseRedirect
 
 
+def dataset_variables(request,dataset_name):
+    
+    from exploratory_analysis.models import Variables
+        
+    if request.method == 'POST':
+        
+        print '\nIn POST\n'  
+        
+        #load the json object
+        json_data = json.loads(request.body)
+            
+        #grab the dataset added
+        variables = json_data['variables'] #should be a string
+        
+        #grab the record with the given dataset_name
+        da = Variables.objects.filter(dataset_name=dataset_name)
+        
+        new_dataset_list = ''
+        if da:
+            #delete the record and rewrite the record with the new dataset list
+            da.delete()
+        
+        
+        all = Variables.objects.all()
+        
+        dataset_variables_record = Variables(
+                                                  dataset_name=dataset_name,
+                                                  variables=variables
+                                                  )
+            
+        #save to the database
+        dataset_variables_record.save()
+        
+        all = Variables.objects.all()
+        
+        
+        return HttpResponse("POST Done\n")
+
+    elif request.method == 'GET':
+        
+        print '\nIn GET\n'  
+        
+        #grab the record with the given dataset_name
+        da = Variables.objects.filter(dataset_name=dataset_name)
+        
+        if not da:
+            data = {'variables' : ''}
+            data_string = json.dumps(data,sort_keys=False,indent=2)
+            return HttpResponse(data_string + "\n")
+       
+        #otherwise grab the contents and return as a list
+        #note: da[0] is the only record in the filtering of the Dataset_Access objects
+        dataset_list = []
+        
+        for dataset in da[0].variables.split(','):
+            dataset_list.append(dataset)
+            
+        data = {'dataset_list' : dataset_list}
+        data_string = json.dumps(data,sort_keys=False,indent=2)
+
+        print("GET Done\n")
+        return HttpResponse(data_string + "\n")
+        
+    
+    elif request.method == 'DELETE':
+        
+        print '\nIn DELETE\n'    
+        
+        #not sure if this is the right behavior but this will delete the ENTIRE record given the group
+        #grab the group record
+        da = Variables.objects.filter(dataset_name=dataset_name)
+        
+        if da:
+            da.delete()
+        
+        all = Variables.objects.all()
+        
+        return HttpResponse("DELETE Done\n")
+
+    else:
+        return HttpResponse("Error\n")
+
+
+
+
+
+
+
+
+
+
+
 
 
 

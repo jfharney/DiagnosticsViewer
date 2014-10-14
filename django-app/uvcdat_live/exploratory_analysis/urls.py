@@ -132,6 +132,11 @@ urlpatterns = patterns('',
   url(r'^postStateExample/$',views.postStateExample,name='postStateExample'),
   
   
+  #service API for retrieving dataset variables
+  url(r'^dataset_variables/(?P<dataset_name>\w+)/$',views.dataset_variables,name='dataset_variables'),
+  
+  
+  
   #for generation of classic views on the fly
   url(r'^classic_views/$',views.classic_views,name='classic_views'),
   
