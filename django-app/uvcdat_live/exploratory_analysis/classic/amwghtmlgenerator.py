@@ -251,7 +251,9 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
                      html += '<TR>'
                      html += '   <TH ALIGN=LEFT>'+v
                      html += '   <TH ALIGN=LEFT>'+varinfo[v]['desc']
-                     if sets == '15':
+                     if sets == 'topten':
+                        fname = img_prefix+'set'+sets+'_ANN_'+v+'_'+obsfname+'.png'
+                     elif sets == '15':
                         fname = img_prefix+'set'+sets+'_'+obsfname+'_'+v+'.png'
                      else:
                         fname = img_prefix+'set'+sets+'_'+v+'_'+obsfname+'.png'
