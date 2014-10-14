@@ -5,6 +5,8 @@ import ConfigParser
 config = ConfigParser.ConfigParser()
 config.read('eaconfig.cfg')
 
+ea_hostname = config.get("paths",'ea_hostname')
+
 try:
    ea_root = config.get("paths", "ea_root")
 except:

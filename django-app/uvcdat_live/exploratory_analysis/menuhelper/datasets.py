@@ -59,9 +59,13 @@ def datasetListHelper1(request,user_id):
       datasets.append(f_arr[len(f_arr)-1])
     
     from django.contrib.auth.models import User
+    print 'dataset_list: ' + str(datasets)
     
     
+    data = {'datasets' : datasets } #datasets_in_groups}
+    data_string = json.dumps(data,sort_keys=False,indent=2)
     
+    '''Commented out 10-14 so that a commit will be stable - still marked as TODO
     if datasetListDebug:
         print 'paths.esgfAccess: ' + str(paths.esgfAccess)
         
@@ -69,7 +73,7 @@ def datasetListHelper1(request,user_id):
     #Step 0 - get the user object
     user = User.objects.get(username=user_id)    
     
-    print 'userrrrrrrr: ' + user.username
+    #print 'userrrrrrrr: ' + user.username
     
     if User.DoesNotExist:
         data = {'dataset_list' : ''}
@@ -192,7 +196,10 @@ def datasetListHelper1(request,user_id):
     print 'data_string: ' + str(data_string)
     
     
+    data = {'datasets' : datasets_lists_returned } #datasets_in_groups}
+    data_string = json.dumps(data,sort_keys=False,indent=2)
     
+    '''
     return data_string
 
 

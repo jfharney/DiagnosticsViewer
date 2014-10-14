@@ -64,6 +64,18 @@ figures_store = {}
 from django.http import HttpResponseRedirect
 
 
+def core_parameters(request):
+    
+    host = 'localhost'
+    
+    data = {}
+    
+    data['host'] = paths.ea_hostname
+    
+    data_string = json.dumps(data,sort_keys=False,indent=2)
+    
+    return HttpResponse(data_string)
+
 #Service API for the Dataset_Access table
 #GET
 #http://<host>:<port>/exploratory_analysis/group_dataset/<group>
@@ -1020,13 +1032,32 @@ def auth(request):
                              peernode = peernode1)
         
         else:
-            #authenticate to django
-            user = authenticate(username=username1,password=password1)
-            print 'user n: ' + user.username + ' ' + user.password
             
-            #login to the app and return the string "Authenticated"
-            login(request,user)
-            return HttpResponse('Authenticated')
+            user = authenticate(username=username1,password=password1)
+            if user is not None:
+                
+                #authenticate to django
+                
+                print 'user n: ' + str(user.username) + ' ' + str(user.password)
+            
+                #login to the app and return the string "Authenticated"
+                login(request,user)
+                return HttpResponse('Authenticated')
+            else:
+                print 'user is None'
+                
+                from django.contrib.auth.models import User
+                
+                user = User.objects.create_user(username1, str(username1 + '@acme.com'), password1)
+                user = authenticate(username=username1,password=password1)
+            
+                print str('username1: ' + username1)
+                print str('password1: ' + password1)
+                
+                #login to the app and return the string "Authenticated"
+                login(request,user)
+                
+                return HttpResponse('Authenticated')
         '''
         if user is not None:
             print 'username...' + user.username
