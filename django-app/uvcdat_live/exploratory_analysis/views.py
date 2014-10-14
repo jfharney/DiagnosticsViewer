@@ -430,7 +430,7 @@ def figureGenerator(request):
                 
 #                v.png(fname)
 # was this:
-		        v.png(filepath)
+                v.png(filepath)
           
     
     
@@ -1889,19 +1889,176 @@ def classic_views(request):
             response = url;
             
         elif set == 'set7':
+            #########################################
+            #change this to the specified directory structure
+            #url_prefix = "/home/user/Desktop/AptanaWorkspace/climate/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
+            url_prefixIMAGE = "\'/static/exploratory_analysis/img/classic/" + package + "/" + set + "/set7_"
+            url_prefix = paths.staticfiles_dirs + "/img/classic/" + package + "/" + set + "/"
+            
+            #assemble the url to be returned
+            url = url_prefix + set + ".html"
+            #END JOHN's code
+        
+            #Construct table with description (variable) and link to plot
+            #Input from json object from user selection
+            #user_selected_vars = {'TSA', 'PREC'}
+            
+            #Start writing file (SPECIFY LOCATION TO WRITE FILE TO HERE)     Example: land/tropics_warming_th_q/img/
+            file = open(url, "w")
+            
+            file.write("<p>\n") 
+            file.write("<b><font color=maroon size=+2>Set 7 Description: <b></font>Line plots, tables, and maps of RTM river flow and discharge to oceans </b><br>\n")
+            file.write("<br clear=left>\n")
+            file.write("<p>\n") 
+            file.write("<hr noshade size=2 size=\"100%\">\n")
+            file.write("<TABLE>\n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT><font color=red>TABLE</font>\n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT>RTM flow at station for world's 50 largest rivers\\n")
+            file.write("<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayTable("+url_prefixIMAGE+"table_RIVER_STN_VOL.txt');\">Table</A> \n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT><font color=red>SCATTER PLOTS</font>\n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT>RTM flow at station versus obs for world's 10 largest rivers (QCHANR) \n")
+            file.write("<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"scatter_50riv.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"scatter_50riv.gif');\" onmouseout=\"nodisplayImage();\">plot</A> \n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT><font color=red>LINE PLOTS</font>\n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT>Mean annual cycle of river flow at station for world's 10 largest rivers (QCHANR) \n")
+            file.write("<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"mon_stndisch_10riv.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"mon_stndisch_10riv.gif');\" onmouseout=\"nodisplayImage();\">plot</A> \n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT>Annual discharge into the Global Ocean (QCHOCNR) \n")
+            file.write("<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"ann_disch_globalocean.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"ann_disch_globalocean.gif');\" onmouseout=\"nodisplayImage();\">plot</A> \n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT>Annual discharge into the Atlantic Ocean (QCHOCNR) \n")
+            file.write("<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"ann_disch_atlantic.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"ann_disch_atlantic.gif');\" onmouseout=\"nodisplayImage();\">plot</A> \n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT>Annual discharge into the Indian Ocean (QCHOCNR) \n")
+            file.write("<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"ann_disch_indian.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"ann_disch_indian.gif');\" onmouseout=\"nodisplayImage();\">plot</A> \n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT>Annual discharge into the Pacific Ocean (QCHOCNR) \n")
+            file.write("<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"ann_disch_pacific.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"ann_disch_pacific.gif');\" onmouseout=\"nodisplayImage();\">plot</A> \n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT>Mean annual cycle of discharge into the oceans (QCHOCNR) \n")
+            file.write("<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"mon_disch.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"mon_disch.gif');\" onmouseout=\"nodisplayImage();\">plot</A> \n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT><font color=red>MAPS</font>\n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT>Station locations (50 largest rivers)\n")
+            file.write("<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"stations.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"stations.gif');\" onmouseout=\"nodisplayImage();\">Map</A> \n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT>Ocean Basins\n")
+            file.write("<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"ocean_basin_index.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"ocean_basin_index.gif');\" onmouseout=\"nodisplayImage();\">Map</A> \n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT>River Flow (QCHANR) \n")
+            file.write("<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"ANN_QCHANR_Ac.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"ANN_QCHANR_Ac.gif');\" onmouseout=\"nodisplayImage();\">Model1</A> \n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT><font color=red>VARIABLES</font>\n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT>QCHANR \n")
+            file.write("<TH ALIGN=LEFT>NativeUnits [m^3/s] \n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT>QCHOCNR \n")
+            file.write("<TH ALIGN=LEFT>NativeUnits [m^3/s] \n")
+            file.write("<TR>\n")
+            file.write("</table>\n")
             
             
+
             
-             #assemble the url to be returned
+            file.write("</p>\n")
+            file.close()
+    
+                    
+            
+            url_prefix = "/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"      
+        
+            #assemble the url to be returned
             url = url_prefix + set + ".html"
             
             response = url;
+        
+        
             
         elif set == 'set9':
+            #########################################
+            #change this to the specified directory structure
+            #url_prefix = "/home/user/Desktop/AptanaWorkspace/climate/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
+            url_prefixIMAGE = "\'/static/exploratory_analysis/img/classic/" + package + "/" + set + "/set9_"
+            url_prefix = paths.staticfiles_dirs + "/img/classic/" + package + "/" + set + "/"
             
+            #assemble the url to be returned
+            url = url_prefix + set + ".html"
+            #END JOHN's code
+        
+            #Construct table with description (variable) and link to plot
+            #Input from json object from user selection
+            #user_selected_vars = {'TSA', 'PREC'}
             
+            #Start writing file (SPECIFY LOCATION TO WRITE FILE TO HERE)     Example: land/tropics_warming_th_q/img/
+            file = open(url, "w")
+                    
+            file.write("<p>\n") 
+            file.write("<b><font color=maroon size=+2>Set 9 Description: <b></font>Contour plots and statistics for precipitation and temperature.  Statistics include DJF, JJA, and ANN biases, and RMSE, correlation and standard deviation of the annual cycle relative to observations</b><br>\n")
+            file.write("<br clear=left>\n")
+            file.write("<p>\n") 
+            file.write("<hr noshade size=2 size=\"100%\"> \n")
+            file.write("<TABLE> \n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT><font color=navy size=+1> 1. RMSE </font>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"rmse_TSA.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"rmse_TSA.gif\');\" onmouseout=\"nodisplayImage();\">TSA</A>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"rmse_PREC.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"rmse_PREC.gif\');\" onmouseout=\"nodisplayImage();\">PREC</A>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"rmse_ASA.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"rmse_ASA.gif\');\" onmouseout=\"nodisplayImage();\">ASA</A>\n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT><font color=navy size=+1> 2. Seasonal bias </font>\n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT><font color=navy size=+1>&nbsp&nbsp&nbsp&nbsp TSA </font>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_TSA_DJF.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_TSA_DJF.gif\');\" onmouseout=\"nodisplayImage();\">DJF</A>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_TSA_MAM.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_TSA_MAM.gif\');\" onmouseout=\"nodisplayImage();\">MAM</A>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_TSA_JJA.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_TSA_JJA.gif\');\" onmouseout=\"nodisplayImage();\">JJA</A>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_TSA_SON.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_TSA_SON.gif\');\" onmouseout=\"nodisplayImage();\">SON</A>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_TSA_ANN.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_TSA_ANN.gif\');\" onmouseout=\"nodisplayImage();\">ANN</A>\n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT><font color=navy size=+1>&nbsp&nbsp&nbsp&nbsp PREC </font>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_PREC_DJF.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_PREC_DJF.gif\');\" onmouseout=\"nodisplayImage();\">DJF</A>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_PREC_MAM.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_PREC_MAM.gif\');\" onmouseout=\"nodisplayImage();\">MAM</A>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_PREC_JJA.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_PREC_JJA.gif\');\" onmouseout=\"nodisplayImage();\">JJA</A>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_PREC_SON.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_PREC_SON.gif\');\" onmouseout=\"nodisplayImage();\">SON</A>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_PREC_ANN.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_PREC_ANN.gif\');\" onmouseout=\"nodisplayImage();\">ANN</A>\n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT><font color=navy size=+1>&nbsp&nbsp&nbsp&nbsp ASA </font>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_ASA_DJF.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_ASA_DJF.gif\');\" onmouseout=\"nodisplayImage();\">DJF</A>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_ASA_MAM.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_ASA_MAM.gif\');\" onmouseout=\"nodisplayImage();\">MAM</A>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_ASA_JJA.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_ASA_JJA.gif\');\" onmouseout=\"nodisplayImage();\">JJA</A>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_ASA_SON.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_ASA_SON.gif\');\" onmouseout=\"nodisplayImage();\">SON</A>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_ASA_ANN.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_ASA_ANN.gif\');\" onmouseout=\"nodisplayImage();\">ANN</A>\n")
+            file.write("<TR>\n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT><font color=navy size=+1> 3. Correlation </font>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"corr_TSA.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"corr_TSA.gif\');\" onmouseout=\"nodisplayImage();\">TSA</A>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"corr_PREC.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"corr_PREC.gif\');\" onmouseout=\"nodisplayImage();\">PREC</A>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"corr_ASA.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"corr_ASA.gif\');\" onmouseout=\"nodisplayImage();\">ASA</A>\n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT><font color=navy size=+1> 4. Standard Deviation </font>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"stdev_TSA.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"stdev_TSA.gif\');\" onmouseout=\"nodisplayImage();\">TSA</A>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"stdev_PREC.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"stdev_PREC.gif\');\" onmouseout=\"nodisplayImage();\">PREC</A>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"stdev_ASA.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"stdev_ASA.gif\');\" onmouseout=\"nodisplayImage();\">ASA</A>\n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT><font color=navy size=+1> 5. Tables</font>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayTable("+url_prefixIMAGE+"statTable.html\');\">All Variables</A>\n")
+            file.write("<TR>\n")
+            file.write("<TR>\n")
+            file.write("<TR>\n")
+            file.write("</TABLE>\n")
+            file.write("</p>\n")
+            file.close()
+    
+                    
             
-             #assemble the url to be returned
+            url_prefix = "/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"      
+        
+            #assemble the url to be returned
             url = url_prefix + set + ".html"
             
             response = url;
