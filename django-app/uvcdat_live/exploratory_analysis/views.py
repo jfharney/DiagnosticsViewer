@@ -38,15 +38,19 @@ if isConnected:
     #sys.path.append(syspath_append_uvcmetrics)
     #sys.path.append(syspath_append_cdscan)
    
-    from metrics import *
+    
     from metrics.frontend.options import Options
     from metrics.computation.reductions import *
     from metrics.fileio.filetable import *
     from metrics.fileio.findfiles import *
     from metrics.packages.diagnostic_groups import *
-    import metrics.frontend.defines as defines
+
     from metrics.exploratory.treeview import TreeView 
-    
+    from metrics import *
+
+    from metrics.packages.diagnostic_groups import *
+    from metrics.frontend.options import *
+    import metrics.frontend.defines as defines
 
 cache_dir = paths_cache_dir
 #front_end_cache_dir = paths_front_end_cache_dir#'../../../static/cache/'
@@ -67,6 +71,90 @@ from django.http import HttpResponseRedirect
 #echo '{ "dataset" :  <dataset_name> }' | curl -d @- 'http://<host>:<port>/exploratory_analysis/group_dataset/<group>/' -H "Accept:application/json" -H "Context-Type:application/json"
 #DELETE
 #http://<host>:<port>/exploratory_analysis/group_dataset/<group>/
+def dataset_variables(request,dataset_name):
+    
+    from exploratory_analysis.models import Variables
+        
+    if request.method == 'POST':
+        
+        print '\nIn POST\n'  
+        
+        #load the json object
+        json_data = json.loads(request.body)
+            
+        #grab the dataset added
+        variables = json_data['variables'] #should be a string
+        
+        #grab the record with the given dataset_name
+        da = Variables.objects.filter(dataset_name=dataset_name)
+        
+        new_dataset_list = ''
+        if da:
+            #delete the record and rewrite the record with the new dataset list
+            da.delete()
+        
+        
+        all = Variables.objects.all()
+        
+        dataset_variables_record = Variables(
+                                                  dataset_name=dataset_name,
+                                                  variables=variables
+                                                  )
+            
+        #save to the database
+        dataset_variables_record.save()
+        
+        all = Variables.objects.all()
+        
+        
+        return HttpResponse("POST Done\n")
+
+    elif request.method == 'GET':
+        
+        print '\nIn GET\n'  
+        
+        #grab the record with the given dataset_name
+        da = Variables.objects.filter(dataset_name=dataset_name)
+        
+        if not da:
+            data = {'variables' : ''}
+            data_string = json.dumps(data,sort_keys=False,indent=2)
+            return HttpResponse(data_string + "\n")
+       
+        #otherwise grab the contents and return as a list
+        #note: da[0] is the only record in the filtering of the Dataset_Access objects
+        dataset_list = []
+        
+        for dataset in da[0].variables.split(','):
+            dataset_list.append(dataset)
+            
+        data = {'dataset_list' : dataset_list}
+        data_string = json.dumps(data,sort_keys=False,indent=2)
+
+        print("GET Done\n")
+        return HttpResponse(data_string + "\n")
+        
+    
+    elif request.method == 'DELETE':
+        
+        print '\nIn DELETE\n'    
+        
+        #not sure if this is the right behavior but this will delete the ENTIRE record given the group
+        #grab the group record
+        da = Variables.objects.filter(dataset_name=dataset_name)
+        
+        if da:
+            da.delete()
+        
+        all = Variables.objects.all()
+        
+        return HttpResponse("DELETE Done\n")
+
+    else:
+        return HttpResponse("Error\n")
+
+
+
 
 #Models table has the form
 #group_name  |   dataset_list
@@ -390,6 +478,7 @@ def figureGenerator(request):
       '''
     
       inCache = False
+      
 
       # First, see if it is in cache_dir (the shared cache; typically pregenerated figures
       filename = str(packages[0] + '_set' + sets[0][0] + '_' + times[0] + '_' + variables[0] + '.png')
@@ -408,9 +497,9 @@ def figureGenerator(request):
          if os.path.exists(filepath):
             print 'Found in user cache'
             inCache=True
-
+    
       if(not inCache):
-          print 'Image was not in either cache'
+          print 'not in cache'
           o= Options()
           
           ''' Old defaults
@@ -432,7 +521,7 @@ def figureGenerator(request):
           o._opts['realms']=realms
           dm = diagnostics_menu()
         
-          #filepath is currently set to generated_img_path plus the filename
+	  #filepath is currently set to generated_img_path plus the filename
 
           import metrics.fileio.filetable as ft
           import metrics.fileio.findfiles as fi
@@ -456,11 +545,13 @@ def figureGenerator(request):
           setname = o._opts['sets'][0]
           varid = o._opts['vars'][0]
           seasonid = o._opts['times'][0]
+          print 'CALLING LIST SETS'
           slist = pclass.list_diagnostic_sets()
+          print 'DONE CALLIGN LIST SETS'
           keys = slist.keys()
           keys.sort()
           import vcs
-          print 'generating ', filepath
+	  print 'generating ', filepath
           v = vcs.init()
 #          diag_template = diagnostics_template()
           for k in keys:
@@ -469,14 +560,23 @@ def figureGenerator(request):
                 print 'calling init for ', k, 'varid: ', varid, 'seasonid: ', seasonid
                 plot = slist[k](filetable1, filetable2, varid, seasonid)
                 res = plot.compute()
+                print type(res)
                 v.clear()
                 v.plot(res[0].vars, res[0].presentation, bg=1)
-
+#### BES - Merge issues. Not sure what to do here. Need to think about it.
+#                filename = filename+'_'+varid+'.png'
+#                fname = os.path.join(filepath, dataset, filename)
+##                fname = filepath+filename+'_'+varid+'.png'
+#                print 'fname: ', fname
+                
+#                v.png(fname)
+# was this:
                 v.png(filepath)
           
     
     
       #return HttpResponse()
+#      return HttpResponse(cachedFile)
       return HttpResponse(filepath)
 
 
@@ -637,30 +737,51 @@ def datasets1(request,user_id):
     
     return HttpResponse(data_string)
 
-  #grabs variables given a dataset
-  #http://<host>/exploratory_analysis/variables/dataset_id'
-def setnum( setname ):
-    """extracts the plot set number from the full plot set name, and returns the number.
-    The plot set name should begin with the set number, e.g.
-       setname = ' 2- Line Plots of Annual Implied Northward Transport'"""
-    mo = re.search( r'\d', setname )   # matches decimal digits
-    if mo is None:
-        return None
-    index1 = mo.start()                        # index of first match
-    mo = re.search( r'\D', setname[index1:] )  # matches anything but decimal digits
-    if mo is None:                             # everything past the first digit is another digit
-        setnumber = setname[index1:]
-    else:
-        index2 = mo.start()                    # index of first match
-        setnumber = setname[index1:index1+index2]
-    return setnumber
-  
-def variables(request,dataset_id):
+def generate_token_url(filename):
+    #!/usr/bin/env python
+    import os, time, hashlib
     
+    secret = "secret string"                                # Same as AuthTokenSecret
+    protectedPath = "/acme-data/"                           # Same as AuthTokenPrefix
+    ipLimitation = False                                    # Same as AuthTokenLimitByIp
+    hexTime = "{0:x}".format(int(time.time()))              # Time in Hexadecimal      
+    fileName = filename                       # The file to access
+    
+    # Let's generate the token depending if we set AuthTokenLimitByIp
+    if ipLimitation:
+      token = hashlib.md5(''.join([secret, fileName, hexTime, os.environ["REMOTE_ADDR"]])).hexdigest()
+    else:
+      token = hashlib.md5(''.join([secret, fileName, hexTime])).hexdigest()
+    
+    # We build the url
+    url = ''.join([protectedPath, token, "/", hexTime, fileName])
+    return url   
+
+def token(request,filename):
+    #!/usr/bin/env python
+    import os, time, hashlib
+    
+    secret = "secret string"                                # Same as AuthTokenSecret
+    protectedPath = "/downloads/"                           # Same as AuthTokenPrefix
+    ipLimitation = False                                    # Same as AuthTokenLimitByIp
+    hexTime = "{0:x}".format(int(time.time()))              # Time in Hexadecimal      
+    fileName = filename                       # The file to access
+    
+    # Let's generate the token depending if we set AuthTokenLimitByIp
+    if ipLimitation:
+      token = hashlib.md5(''.join([secret, fileName, hexTime, os.environ["REMOTE_ADDR"]])).hexdigest()
+    else:
+      token = hashlib.md5(''.join([secret, fileName, hexTime])).hexdigest()
+    
+    # We build the url
+    url = ''.join([protectedPath, token, "/", hexTime, fileName])
+    return HttpResponse(url)
+          
+def variables(request,dataset_id,package_id):
+
     opts = Options()
-    opts['path'] = ['/path/to/some/data']
-    opts['path'] = ['/data/tropics/tropics_warming_th_q/']
-    opts['packages'] = ['LMWG']
+    opts['path'] = ['/data/tropics/' + dataset_id + '/']
+    opts['packages'] = [package_id.upper()]
     path1 = opts['path'][0]
     filt1 = None
 
@@ -694,21 +815,37 @@ def variables(request,dataset_id):
             variables['seasons'] = seasons
             print 'seasons:' , seasons
             print 'variables: ', variables
+    variables['vars']=list(set(variables['vars']))
   
     return HttpResponse(json.dumps(variables))
  
+def setnum( setname ):
+    """extracts the plot set number from the full plot set name, and returns the number.
+    The plot set name should begin with the set number, e.g.
+       setname = ' 2- Line Plots of Annual Implied Northward Transport'"""
+    mo = re.search( r'\d', setname )   # matches decimal digits
+    if mo is None:
+        return None
+    index1 = mo.start()                        # index of first match
+    mo = re.search( r'\D', setname[index1:] )  # matches anything but decimal digits
+    if mo is None:                             # everything past the first digit is another digit
+        setnumber = setname[index1:]
+    else:
+        index2 = mo.start()                    # index of first match
+        setnumber = setname[index1:index1+index2]
+    return setnumber
 
 def variables1(request):
     
-    print '\n\nIn variables'
+    #print '\n\nIn variables'
     
     from menuhelper import variablelist
     
     data_string = variablelist.variableListHelper1(request)
     
     return HttpResponse(data_string)
-  
-  
+
+
 #times service
 #gets time ranges for a given variable id
 #http://<host>/exploratory_analysis/times/variable_id'
@@ -1058,13 +1195,13 @@ def classic_views_html(request):
     
     return HttpResponse(html);
     
-    
 @csrf_exempt
 def classic_views(request):
     
     print 'in classic views'
     
     
+    curlFlag = False
     
     response = 'error'
     
@@ -1083,121 +1220,229 @@ def classic_views(request):
         package = json_data['package'] #should be a string
         dataset = json_data['dataset']
         
-          
-        #assemble the variable dictionary here per Brian's email
+       #To be added region = json_data['region'] #should be a list
+
+        regions = ['Global Land','Northern Hemisphere Land', 'Southern Hemisphere Land', 'Alaskan Arctic', 'Central U.S.', 'Mediterranean and Western Asia']  
+
+        set3Headers = ['reg', 'landf','randf','turbf','cnFlx','frFlx','moistEnergyFlx','snow','albedo','hydro']
+        #DONE to be added
+        
+        
+        
+        
         
         print 'set: ' + set
         print 'vars: ' + str(vars) + ' ' #+ vars.length
         print 'times: ' + str(times) + ' ' #+ times.length
-        print 'package: ' + package
-        print 'dataset: ' + dataset
 
-    
-    
-    
+      
         #change this to the specified directory structure
         #url_prefix = "/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
 
+        print 'package: ' + str(package)
+        print 'dataset: ' + str(dataset)
+        
+        print 'regions: ' + str(regions)
         
         #RAY's new code
         ####################################################
 
-        if package == 'lmwg':
-            
-            from classic import lmwgvardict
-            
-            vardict = lmwgvardict.vardict
-            
-            print 'vardict: ' + str(vardict)
-            
-            #JOHN's example code
-            #########################################
-            #change this to the specified directory structure
-            
-            
-            url_prefix = paths.uvcdat_live_root + "exploratory_analysis/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
-            
-            print 'url_prefix: ' + url_prefix
         
-            #assemble the url to be returned
-            url = url_prefix + set + ".html"
-            #END JOHN's code
-            
-            
-            
-            
-            #Construct table with description (variable) and link to plot
-            #Input from json object from user selection
-            #user_selected_vars = {'TSA', 'PREC'}
-            
-            #Start writing file (SPECIFY LOCATION TO WRITE FILE TO HERE)     Example: land/tropics_warming_th_q/img/
-            file = open(url, "w")
-                    
-            
-            #Header
-            file.write("<p>\n") 
-            file.write("<b><font color=maroon size=+2>Set 1 Description: <b></font>Line plots of annual trends in energy balance, soil water/ice and temperature, runoff, snow water/ice, photosynthesis </b><br>\n")
-            file.write("<br clear=left>")
-            file.write("</p>\n")
-            file.write("<p>\n")
-            file.write("<A HREF=\"variableList_1.html\" target=\"set1_Variables\">\n")
-            file.write("<font color=maroon size=+1 text-align: right><b>Lookup Table: Set 1 Variable Definition</b></font></a>\n")
-            file.write("</br>\n")
-            file.write("</p>\n") 
-            
-            
-            #Start table
-            file.write("<p>\n")
-            file.write("<hr noshade size=2 size=\"100%\">\n")
-            file.write("<TABLE> \n")
-            file.write("<TR>\n")
-            file.write("<TH><TH ALIGN=LEFT><font color=maroon>Trend</font>\n")
-            file.write("</TR>\n")
-            
-            
-            #python for loop----------
-            #Descriptions are (predefinedBrianSmithDictionary[key]) 
-            
-            for key in vardict:
-                if 1 in vardict[key]['sets'] and key in vars:
-                    file.write("<TR>\n")
-                    file.write('<TH ALIGN=LEFT>') 
-                    file.write(vardict[key]['desc'])
-                    file.write('(')
-                    file.write(key)
-                    file.write(')')
-                    file.write('<TH ALIGN=LEFT>') 
-                    file.write('<a href="#" onclick="displayImageClick(')
-                    file.write('/static/exploratory_analysis/img/classic/lmwg/set1/set1_')#Here we write gif name
-                    file.write(key)
-                    file.write('.gif') 
-                    file.write(');" onmouseover="displayImageHover(')
-                    file.write('/static/exploratory_analysis/img/classic/lmwg/set1/set1_')#Here we write gif name again
-                    file.write(key)
-                    file.write('.gif') 
-                    file.write(');" onmouseout="nodisplayImage();">plot</A>\n')
-                    file.write("</TR>\n")
-            
-       
+        vardict={}
+        vardict['PFT_FIRE_CLOSS']={'RepUnits': 'PgC/y', 'sets': [1, 2, 3, 5, 6], 'NatUnits': 'gC/m^2/s', 'desc': 'total pft-level fire C loss'}
+        vardict['SNOWDP']={'RepUnits': 'NA', 'sets': [2, 3, 5, 6], 'NatUnits': 'm', 'desc': 'snow height'}
+        vardict['LITHR']={'RepUnits': 'PgC/y', 'sets': [1, 2, 5], 'NatUnits': 'gC/m^2/s', 'desc': 'litter hetereotrophic respiration'}
+        vardict['QSOIL']={'RepUnits': 'mm/d', 'sets': [1, 2, 5], 'NatUnits': 'mm/s', 'desc': 'ground evaporation'}
+        vardict['WA']={'RepUnits': 'mm', 'sets': [1, 2, 3, 5, 6], 'NatUnits': 'mm', 'desc': 'water in the unconfined aquifer'}
+        vardict['FSA']={'RepUnits': 'NA', 'sets': [2, 3, 5, 6], 'NatUnits': 'W/m^2', 'desc': 'absorbed solar radiation'}
+        vardict['GROSS_NMIN']={'RepUnits': 'TgN/y', 'sets': [1, 2, 5], 'NatUnits': 'gN/m^2/s', 'desc': 'Gross N Mineralization'}
+        vardict['ACTUAL_IMMOB']={'RepUnits': 'TgN/y', 'sets': [1, 2, 5], 'NatUnits': 'gN/m^2/s', 'desc': 'Actual Immobilization'}
+        vardict['ZBOT']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'm', 'desc': 'atmospheric reference height'}
+        vardict['WT']={'RepUnits': 'mm', 'sets': [1, 2, 3, 5, 6], 'NatUnits': 'mm', 'desc': 'total water storage'}
+        vardict['LHEAT']={'RepUnits': 'NA', 'sets': [2, 3, 5, 6], 'NatUnits': 'W/m^2', 'desc': 'latent heat:FCTR+FCEV+FGEV'}
+        vardict['NBSA']={'RepUnits': 'NA', 'sets': [2, 3, 5], 'NatUnits': 'proportion', 'desc': 'near-IR black-sky albedo'}
+        vardict['SNOWAGE']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'unitless', 'desc': 'snow age'}
+        vardict['POTENTIAL_IMMOB']={'RepUnits': 'TgN/y', 'sets': [1, 2, 5], 'NatUnits': 'gN/m^2/s', 'desc': 'Potential Immobilization'}
+        vardict['RR']={'RepUnits': 'PgC/y', 'sets': [1, 2, 5], 'NatUnits': 'gC/m^2/s', 'desc': 'root respiration (fine root MR + total root GR)'}
+        vardict['FSNO']={'RepUnits': 'NA', 'sets': [2, 3, 5], 'NatUnits': 'unitless', 'desc': 'fraction of ground covered by snow'}
+        vardict['FGR']={'RepUnits': 'NA', 'sets': [2, 3, 5, 6], 'NatUnits': 'W/m^2', 'desc': 'heat flux into snow/soil (includes snow melt)'}
+        vardict['CWDC_LOSS']={'RepUnits': 'PgC/y', 'sets': [1, 2, 5], 'NatUnits': 'gC/m2s', 'desc': 'Coarse Woody Debris C Loss'}
+        vardict['FSH']={'RepUnits': 'NA', 'sets': [2, 3, 5, 6], 'NatUnits': 'W/m^2', 'desc': 'sensible heat'}
+        vardict['SOIL3N']={'RepUnits': 'TgN', 'sets': [1, 2, 5], 'NatUnits': 'gN/m^2', 'desc': 'soil organic matter N (slow pool)'}
+        vardict['LITTERC']={'RepUnits': 'PgC', 'sets': [1, 2, 5], 'NatUnits': 'gC/m2', 'desc': 'Total Litter C'}
+        vardict['SOIL3C']={'RepUnits': 'PgC', 'sets': [1, 2, 5], 'NatUnits': 'gC/m^2', 'desc': 'Soil organic matter C (slow pool)'}
+        vardict['FSDSVDLN']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'W/m^2', 'desc': 'direct vis incident solar radiation at local noon'}
+        vardict['LIVESTEMC']={'RepUnits': 'PgC', 'sets': [1, 2, 5], 'NatUnits': 'gC/m^2', 'desc': 'live stem C'}
+        vardict['QBOT']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'kg/kg', 'desc': 'atmospheric specific humidity'}
+        vardict['GR']={'RepUnits': 'PgC/y', 'sets': [1, 2, 5], 'NatUnits': 'gC/m^2/s', 'desc': 'total growth respiration'}
+        vardict['TBOT']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'K', 'desc': 'atmospheric air temperature'}
+        vardict['RETRANSN']={'RepUnits': 'TgN', 'sets': [1, 2, 5], 'NatUnits': 'gN/m^2', 'desc': 'plant pool of retranslocated N'}
+        vardict['XIM']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': '+/-1', 'desc': 'moisture index'}
+        vardict['FLDS']={'RepUnits': 'NA', 'sets': [2, 3, 5, 6], 'NatUnits': 'W/m^2', 'desc': 'atmospheric longwave radiation'}
+        vardict['VWSA']={'RepUnits': 'NA', 'sets': [2, 3, 5], 'NatUnits': 'proportion', 'desc': 'visible white-sky albedo'}
+        vardict['AGNPP']={'RepUnits': 'PgC/y', 'sets': [1, 2, 5], 'NatUnits': 'gC/m^2/s', 'desc': 'above ground net primary production'}
+        vardict['GPP']={'RepUnits': 'PgC/y', 'sets': [1, 2, 3, 5, 6], 'NatUnits': 'gC/m^2/s', 'desc': 'gross primary production'}
+        vardict['TAUX']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'kg/m/s^2', 'desc': 'zonal surface stress'}
+        vardict['FIRE_PROB']={'RepUnits': '0-1', 'sets': [1, 2, 3, 5, 6], 'NatUnits': '0-1', 'desc': 'daily fire probability'}
+        vardict['FSRNI']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'W/m^2', 'desc': 'diffuse nir reflected solar radiation'}
+        vardict['RSSUN']={'RepUnits': 's/m', 'sets': [1, 2], 'NatUnits': 's/m', 'desc': 'Sunlit leaf stomatal resistance'}
+        vardict['FIRESEASONL']={'RepUnits': 'days', 'sets': [1, 2, 3, 5, 6], 'NatUnits': 'days', 'desc': 'annual fire season length'}
+        vardict['SOIL4N']={'RepUnits': 'TgN', 'sets': [1, 2, 5], 'NatUnits': 'gN/m^2', 'desc': 'Soil organic matter N (slowest pool)'}
+        vardict['FSDSNDLN']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'W/m^2', 'desc': 'direct nir incident solar radiation at local noon'}
+        vardict['RNET']={'RepUnits': 'NA', 'sets': [2, 3, 5, 6], 'NatUnits': 'W/m^2', 'desc': 'net radiation:fsa-fira'}
+        vardict['SOIL4C']={'RepUnits': 'PgC', 'sets': [1, 2, 5], 'NatUnits': 'gC/m^2', 'desc': 'Soil organic matter C (slowest pool)'}
+        vardict['NPP']={'RepUnits': 'PgC/y', 'sets': [1, 2, 3, 5, 6], 'NatUnits': 'gC/m^2/s', 'desc': 'net primary production'}
+        vardict['TLAI']={'RepUnits': 'm2/m2', 'sets': [1, 2, 3, 5, 6], 'NatUnits': 'm2/m2', 'desc': 'total one-sided leaf area index'}
+        vardict['FSDS']={'RepUnits': 'NA', 'sets': [2, 3, 5, 6], 'NatUnits': 'W/m^2', 'desc': 'atmospheric incident solar radiation'}
+        vardict['FSDSVI']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'W/m^2', 'desc': 'diffuse vis incident solar radiation'}
+        vardict['LAISHA']={'RepUnits': 'm^2/m^2', 'sets': [1, 2, 5], 'NatUnits': 'm^2/m^2', 'desc': 'Shaded Projected Leaf Area Index'}
+        vardict['TREFMXAV']={'RepUnits': 'K', 'sets': [2], 'NatUnits': 'K', 'desc': 'daily maximum of average 2m temperature'}
+        vardict['HR']={'RepUnits': 'PgC/y', 'sets': [1, 2, 3, 5, 6], 'NatUnits': 'gC/m^2/s', 'desc': 'total hetereotrophic respiration'}
+        vardict['TOTVEGC']={'RepUnits': 'PgC', 'sets': [1, 2, 5], 'NatUnits': 'gC/m^2', 'desc': 'total vegetation C, excluding cpool'}
+        vardict['Q2M']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'kg/kg', 'desc': '2m specific humidity'}
+        vardict['FSDSVD']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'W/m^2', 'desc': 'direct vis incident solar radiation'}
+        vardict['TSA']={'RepUnits': 'K', 'sets': [1, 2, 3, 5, 6, 9], 'NatUnits': 'K', 'desc': '2m air temperature'}
+        vardict['QDRIP']={'RepUnits': 'mm/y', 'sets': [2], 'NatUnits': 'mm/s', 'desc': 'throughfall'}
+        vardict['PREC']={'RepUnits': 'mm/d', 'sets': [1, 2, 3, 5, 6, 9], 'NatUnits': 'mm/s', 'desc': 'ppt: rain+snow'}
+        vardict['QCHARGE']={'RepUnits': 'mm/d', 'sets': [1, 2, 3, 5, 6], 'NatUnits': 'mm/s', 'desc': 'aquifer recharge rate'}
+        vardict['SOMHR']={'RepUnits': 'PgC/y', 'sets': [1, 2, 5], 'NatUnits': 'gC/m^2/s', 'desc': 'SOM hetereotrophic respiration'}
+        vardict['SMINN']={'RepUnits': 'TgN', 'sets': [1, 2, 5], 'NatUnits': 'gN/m^2', 'desc': 'soil mineral N'}
+        vardict['H2OCAN']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'mm', 'desc': 'intercepted water'}
+        vardict['ZWT']={'RepUnits': 'm', 'sets': [1, 2, 3, 5, 6], 'NatUnits': 'm', 'desc': 'water table depth'}
+        vardict['ALBEDO']={'RepUnits': '% reflected ', 'sets': [3, 6], 'NatUnits': 'proportion', 'desc': 'all-sky albedo:FSR/FSDS'}
+        vardict['FCEV']={'RepUnits': 'NA', 'sets': [2, 3, 5, 6], 'NatUnits': 'W/m^2', 'desc': 'canopy evaporation'}
+        vardict['SOILC_HR']={'RepUnits': 'PgC/y', 'sets': [1, 2, 5], 'NatUnits': 'gC/m2s', 'desc': 'Soil C hetereotrophic respiration'}
+        vardict['TOTCOLC']={'RepUnits': 'PgC', 'sets': [1, 2, 5], 'NatUnits': 'gC/m^2', 'desc': 'total ecosystem C, incl veg and cpool'}
+        vardict['SABV']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'W/m^2', 'desc': 'solar rad absorbed by vegetation'}
+        vardict['COL_NTRUNC']={'RepUnits': 'TgN', 'sets': [1, 5], 'NatUnits': 'gN/m^2', 'desc': 'column-level sink for N truncation'}
+        vardict['FSRNDLN']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'W/m^2', 'desc': 'direct nir reflected solar radiation at local noon'}
+        vardict['ERRSEB']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'W/m^2', 'desc': 'surface energy conservation error'}
+        vardict['QVEGT']={'RepUnits': 'mm/d', 'sets': [1, 2, 5], 'NatUnits': 'mm/s', 'desc': 'canopy transpiration'}
+        vardict['TAUY']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'kg/m/s^2', 'desc': 'meridional surface stress'}
+        vardict['ERRH2O']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'mm', 'desc': 'total water conservation error'}
+        vardict['SABG']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'W/m^2', 'desc': 'solar rad absorbed by ground'}
+        vardict['CPOOL']={'RepUnits': 'PgC', 'sets': [1, 2, 5], 'NatUnits': 'gC/m^2', 'desc': 'temporary photosynthate C pool'}
+        vardict['TOTLITC']={'RepUnits': 'PgC', 'sets': [1, 2, 5], 'NatUnits': 'gC/m^2', 'desc': 'total litter carbon'}
+        vardict['EVAPFRAC']={'RepUnits': 'NA', 'sets': [2, 3], 'NatUnits': 'unitless', 'desc': 'LHEAT/(LHEAT+FSH)'}
+        vardict['PFT_CTRUNC']={'RepUnits': 'PgC', 'sets': [1, 5], 'NatUnits': 'gC/m^2', 'desc': 'pft-level sink for C truncation'}
+        vardict['LIVECROOTC']={'RepUnits': 'PgC', 'sets': [1, 2, 5], 'NatUnits': 'gC/m^2', 'desc': 'live coarse root carbon'}
+        vardict['FIRA']={'RepUnits': 'NA', 'sets': [2, 3, 6], 'NatUnits': 'W/m^2', 'desc': 'net infrared (longwave) radiation'}
+        vardict['SOILLIQ']={'RepUnits': 'kg/m^2', 'sets': [1, 2], 'NatUnits': 'kg/m^2', 'desc': 'soil liquid water : layers 1-10'}
+        vardict['SOILC_LOSS']={'RepUnits': 'PgC/y', 'sets': [1, 2, 5], 'NatUnits': 'gC/m2s', 'desc': 'Soil C Loss'}
+        vardict['COL_FIRE_CLOSS']={'RepUnits': 'PgC/y', 'sets': [1, 2, 3, 5, 6], 'NatUnits': 'gC/m^2/s', 'desc': 'total column-level fire C loss'}
+        vardict['TREFMNAV']={'RepUnits': 'K', 'sets': [2], 'NatUnits': 'K', 'desc': 'daily minimum of average 2m temperature'}
+        vardict['SOILICE']={'RepUnits': 'kg/m^2', 'sets': [1, 2], 'NatUnits': 'kg/m^2', 'desc': 'soil ice : layers 1-10'}
+        vardict['COL_FIRE_NLOSS']={'RepUnits': 'TgN/y', 'sets': [1, 2, 3, 5, 6], 'NatUnits': 'gN/m^2/s', 'desc': 'total column-level fire N loss'}
+        vardict['ER']={'RepUnits': 'PgC/y', 'sets': [1, 2, 3, 5, 6], 'NatUnits': 'gC/m^2/s', 'desc': 'total ecosystem respiration (AR + HR)'}
+        vardict['QDRAI']={'RepUnits': 'mm/d', 'sets': [1, 2, 5], 'NatUnits': 'mm/s', 'desc': 'sub-surface drainage'}
+        vardict['WOODC']={'RepUnits': 'PgC', 'sets': [1, 2, 5], 'NatUnits': 'gC/m2', 'desc': 'Wood C'}
+        vardict['FCOV']={'RepUnits': 'unitless [0-1]', 'sets': [1, 2, 3, 5, 6], 'NatUnits': 'unitless [0-1]', 'desc': 'fractional area with water table at surface'}
+        vardict['TSAI']={'RepUnits': 'm2/m2', 'sets': [1, 2, 5], 'NatUnits': 'm2/m2', 'desc': 'total one-sided stem area index'}
+        vardict['FSRVDLN']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'W/m^2', 'desc': 'direct vis reflected solar radiation at local noon'}
+        vardict['ESAI']={'RepUnits': 'm2/m2', 'sets': [1, 2], 'NatUnits': 'm2/m2', 'desc': 'exposed one-sided stem area index'}
+        vardict['FPSN']={'RepUnits': 'PgC/y', 'sets': [1, 2], 'NatUnits': 'umol/m^2/s', 'desc': 'photosynthesis'}
+        vardict['MR']={'RepUnits': 'PgC/y', 'sets': [1, 2, 5], 'NatUnits': 'gC/m^2/s', 'desc': 'maintenance respiration'}
+        vardict['FSH_G']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'W/m^2', 'desc': 'sensible heat from ground'}
+        vardict['SNOWICE']={'RepUnits': 'kg/m^2', 'sets': [1, 2], 'NatUnits': 'kg/m^2', 'desc': 'snow ice'}
+        vardict['WIND']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'm/s', 'desc': 'atmospheric wind velocity magnitude'}
+        vardict['PSNSHADE_TO_CPOOL']={'RepUnits': 'PgC/y', 'sets': [1, 2, 5], 'NatUnits': 'gC/m^2/s', 'desc': 'GPP from Shaded Canopy'}
+        vardict['RETRANSN_TO_NPOOL']={'RepUnits': 'TgN/y', 'sets': [1, 2, 5], 'NatUnits': 'gN/m^2/s', 'desc': 'Retranslocated N to NPool'}
+        vardict['QVEGE']={'RepUnits': 'mm/y', 'sets': [2, 5], 'NatUnits': 'mm/s', 'desc': 'canopy evaporation'}
+        vardict['CANOPY_EVAPORATION']={'RepUnits': 'mm/d', 'sets': [1], 'NatUnits': 'mm/s', 'desc': 'Canopy Evaporation'}
+        vardict['SMINN_TO_NPOOL']={'RepUnits': 'TgN/y', 'sets': [1, 2, 5], 'NatUnits': 'gN/m^2/s', 'desc': 'Mineral N to NPool'}
+        vardict['CWDC_HR']={'RepUnits': 'PgC/y', 'sets': [1, 2, 5], 'NatUnits': 'gC/m2s', 'desc': 'Coarse Woody Debris C Hetereotrophic respiration'}
+        vardict['NEE']={'RepUnits': 'PgC/y', 'sets': [1, 2, 3, 5, 6], 'NatUnits': 'gC/m^2/s', 'desc': 'net ecosys exchange of C;incl fire flx;pos for source'}
+        vardict['FSM']={'RepUnits': 'NA', 'sets': [2, 5], 'NatUnits': 'W/m^2', 'desc': 'snow melt heat flux'}
+        vardict['FROOTC_LOSS']={'RepUnits': 'PgC/m2y', 'sets': [1, 2, 5], 'NatUnits': 'gC/m2s', 'desc': 'Fine root C Loss'}
+        vardict['FSR']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'W/m^2', 'desc': 'reflected solar radiation'}
+        vardict['FGNET']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'W/m^2', 'desc': 'net ground heat flux:fgr-fsm'}
+        vardict['ET']={'RepUnits': 'mm/d ', 'sets': [3, 5], 'NatUnits': 'mm/s', 'desc': 'Evapotranspiration'}
+        vardict['NEP']={'RepUnits': 'PgC/y', 'sets': [1, 2, 3, 5, 6], 'NatUnits': 'gC/m^2/s', 'desc': 'net ecosystem production;excl fire flx;pos for sink'}
+        vardict['ANN_FAREA_BURNED']={'RepUnits': 'proportion', 'sets': [1, 2, 3, 5, 6], 'NatUnits': 'proportion', 'desc': 'annual total fractional area burned'}
+        vardict['SMINN_LEACHED']={'RepUnits': 'TgN/y', 'sets': [1, 2, 3, 5, 6], 'NatUnits': 'gN/m^2/s', 'desc': 'Nitrogen Leached'}
+        vardict['ERRSOL']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'W/m^2', 'desc': 'solar radiation conservation error'}
+        vardict['TLAKE']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'K', 'desc': 'lake temperature'}
+        vardict['BGNPP']={'RepUnits': 'PgC/y', 'sets': [1, 2, 5], 'NatUnits': 'gC/m^2/s', 'desc': 'below ground net primary production'}
+        vardict['ASA']={'RepUnits': 'NA', 'sets': [2, 3, 9], 'NatUnits': 'proportion', 'desc': 'all-sky albedo:FSR/FSDS'}
+        vardict['PFT_FIRE_NLOSS']={'RepUnits': 'TgN/y', 'sets': [1, 2, 3, 5, 6], 'NatUnits': 'gN/m^2/s', 'desc': 'total pft-level fire N loss'}
+        vardict['FSRND']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'W/m^2', 'desc': 'direct nir reflected solar radiation'}
+        vardict['LEAFC_ALLOC']={'RepUnits': 'PgC/m2y', 'sets': [1, 2, 5], 'NatUnits': 'gC/m2s', 'desc': 'Leaf C Allocation'}
+        vardict['TOTRUNOFF']={'RepUnits': 'mm/d', 'sets': [1, 2, 3, 5, 6], 'NatUnits': 'mm/s', 'desc': 'Runoff:qover+qdrai+qrgwl'}
+        vardict['CO2_PPMV']={'RepUnits': 'ppmv', 'sets': [1, 5], 'NatUnits': 'ppmv', 'desc': 'CO2 concentration'}
+        vardict['BTRAN']={'RepUnits': 'unitless', 'sets': [1, 2, 3, 6], 'NatUnits': 'unitless', 'desc': 'transpiration beta factor'}
+        vardict['SNOWLIQ']={'RepUnits': 'kg/m^2', 'sets': [1, 2], 'NatUnits': 'kg/m^2', 'desc': 'snow liquid water'}
+        vardict['FSRVI']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'W/m^2', 'desc': 'diffuse vis reflected solar radiation'}
+        vardict['FSDSND']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'W/m^2', 'desc': 'direct nir incident solar radiation'}
+        vardict['FSDSNI']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'W/m^2', 'desc': 'diffuse nir incident solar radiation'}
+        vardict['CWDC']={'RepUnits': 'PgC', 'sets': [1, 2, 5], 'NatUnits': 'gC/m^2', 'desc': 'coarse woody debris carbon'}
+        vardict['FCTR']={'RepUnits': 'NA', 'sets': [2, 3, 5, 6], 'NatUnits': 'W/m^2', 'desc': 'canopy transpiration'}
+        vardict['LEAFC']={'RepUnits': 'PgC', 'sets': [1, 2, 5], 'NatUnits': 'gC/m^2', 'desc': 'leaf carbon'}
+        vardict['P-E']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'mm/s', 'desc': 'PREC-ET'}
+        vardict['SR']={'RepUnits': 'PgC/y', 'sets': [1, 2, 5], 'NatUnits': 'gC/m^2/s', 'desc': 'total soil respiration (HR + root resp)'}
+        vardict['SUPPLEMENT_TO_SMINN']={'RepUnits': 'TgN/y', 'sets': [1, 2, 3, 5, 6], 'NatUnits': 'gN/m^2/s', 'desc': 'supplement to mineral nitrogen'}
+        vardict['NDEP_TO_SMINN']={'RepUnits': 'TgN/y', 'sets': [1, 2, 5], 'NatUnits': 'gN/m^2/s', 'desc': 'nitrogen deposition'}
+        vardict['RSSHA']={'RepUnits': 's/m', 'sets': [1, 2], 'NatUnits': 's/m', 'desc': 'shaded leaf stomatal resistance'}
+        vardict['FSH_V']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'W/m^2', 'desc': 'sensible heat from vegetation'}
+        vardict['XSMRPOOL']={'RepUnits': 'PgC', 'sets': [1, 2, 5], 'NatUnits': 'gC/m^2', 'desc': 'Temporary Photosynthate C Pool'}
+        vardict['FGEV']={'RepUnits': 'NA', 'sets': [2, 3, 5, 6], 'NatUnits': 'W/m^2', 'desc': 'ground evaporation'}
+        vardict['QOVER']={'RepUnits': 'mm/d', 'sets': [1, 2, 5], 'NatUnits': 'mm/s', 'desc': 'surface runoff'}
+        vardict['DEADSTEMC']={'RepUnits': 'PgC', 'sets': [1, 2, 5], 'NatUnits': 'gC/m^2', 'desc': 'dead stem carbon'}
+        vardict['QMELT']={'RepUnits': 'mm/y', 'sets': [2], 'NatUnits': 'mm/s', 'desc': 'snow melt'}
+        vardict['MEAN_FIRE_PROB']={'RepUnits': 'proportion', 'sets': [1, 2, 3, 5, 6], 'NatUnits': '0-1', 'desc': 'e-folding mean of daily fire probability'}
+        vardict['COL_CTRUNC']={'RepUnits': 'PgC', 'sets': [1, 5], 'NatUnits': 'gC/m^2', 'desc': 'column-level sink for C truncation'}
+        vardict['LEAFC_LOSS']={'RepUnits': 'PgC/m2y', 'sets': [1, 2, 5], 'NatUnits': 'gC/m2s', 'desc': 'Leaf C Loss'}
+        vardict['NET_NMIN']={'RepUnits': 'TgN/y', 'sets': [1, 2, 5], 'NatUnits': 'gN/m^2/s', 'desc': 'Net N Mineralization'}
+        vardict['SNOW']={'RepUnits': 'NA', 'sets': [2, 5], 'NatUnits': 'mm/s', 'desc': 'atmospheric snow'}
+        vardict['TOTSOMC']={'RepUnits': 'PgC', 'sets': [1, 2, 5], 'NatUnits': 'gC/m^2', 'desc': 'total SOM carbon'}
+        vardict['FROOTC']={'RepUnits': 'PgC', 'sets': [1, 2, 5], 'NatUnits': 'gC/m^2', 'desc': 'fine root carbon'}
+        vardict['ELAI']={'RepUnits': 'm2/m2', 'sets': [1, 2], 'NatUnits': 'm2/m2', 'desc': 'exposed one-sided leaf area index'}
+        vardict['TOTSOILLIQ']={'RepUnits': 'kg/m^2', 'sets': [1], 'NatUnits': 'kg/m^2', 'desc': 'total soil liquid water'}
+        vardict['SOILC']={'RepUnits': 'PgC', 'sets': [1, 2, 5], 'NatUnits': 'gC/m2', 'desc': 'soil organic matter C (fast pool)'}
+        vardict['H2OSOI']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'mm3/mm3', 'desc': 'volumetric soil water'}
+        vardict['NDEPLOY']={'RepUnits': 'TgN/y', 'sets': [1, 2, 5], 'NatUnits': 'gN/m^2/s', 'desc': 'Total N Deployed in New Growth'}
+        vardict['TV']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'K', 'desc': 'vegetation temperature'}
+        vardict['PSNSUN_TO_CPOOL']={'RepUnits': 'PgC/y', 'sets': [1, 2, 5], 'NatUnits': 'gC/m^2/s', 'desc': 'GPP from Sunlit Canopy'}
+        vardict['FROOTC_ALLOC']={'RepUnits': 'PgC/m2y', 'sets': [1, 2, 5], 'NatUnits': 'gC/m2s', 'desc': 'Fine root C allocation'}
+        vardict['WOODC_ALLOC']={'RepUnits': 'PgC/y', 'sets': [1, 2, 5], 'NatUnits': 'gC/m2s', 'desc': 'Wood C Allocation'}
+        vardict['TOTECOSYSC']={'RepUnits': 'PgC', 'sets': [1, 2, 5], 'NatUnits': 'gC/m^2', 'desc': 'total ecosystem C, incl veg but excl cpool'}
+        vardict['TOTSOILICE']={'RepUnits': 'kg/m^2', 'sets': [1], 'NatUnits': 'kg/m^2', 'desc': 'soil ice'}
+        vardict['QRGWL']={'RepUnits': 'mm/d', 'sets': [1, 2, 5], 'NatUnits': 'mm/s', 'desc': 'surface runoff at glaciers, wetlands, lakes'}
+        vardict['TG']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'K', 'desc': 'ground temperature'}
+        vardict['QINFL']={'RepUnits': 'mm/d', 'sets': [1, 2], 'NatUnits': 'mm/s', 'desc': 'infiltration'}
+        vardict['VBSA']={'RepUnits': 'NA', 'sets': [2, 3, 5], 'NatUnits': 'proportion', 'desc': 'visible black-sky albedo'}
+        vardict['TOTECOSYSN']={'RepUnits': 'TgN', 'sets': [1], 'NatUnits': 'gN/m^2', 'desc': 'total ecosystem N'}
+        vardict['TSNOW']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'K', 'desc': 'snow temperature'}
+        vardict['FSRVD']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'W/m^2', 'desc': 'direct vis reflected solar radiation'}
+        vardict['FPG']={'RepUnits': 'proportion', 'sets': [1, 2, 5], 'NatUnits': 'proportion', 'desc': 'fraction of potential GPP'}
+        vardict['TSOI']={'RepUnits': 'K', 'sets': [1, 2], 'NatUnits': 'K', 'desc': 'soil temperature : layers 1-10'}
+        vardict['FIRE']={'RepUnits': 'NA', 'sets': [2, 3, 5, 6], 'NatUnits': 'W/m^2', 'desc': 'emitted infrared (longwave) radiation'}
+        vardict['QINTR']={'RepUnits': 'mm/d', 'sets': [1, 2], 'NatUnits': 'mm/s', 'desc': 'interception'}
+        vardict['FPI']={'RepUnits': 'proportion', 'sets': [1, 2, 5], 'NatUnits': 'proportion', 'desc': 'fraction of potential immobilization'}
+        vardict['RAIN']={'RepUnits': 'NA', 'sets': [2, 5], 'NatUnits': 'mm/s', 'desc': 'atmospheric rain'}
+        vardict['LITTERC_HR']={'RepUnits': 'PgC/m2y', 'sets': [1, 2, 5], 'NatUnits': 'gC/m2s', 'desc': 'Litter Hetereotrophic Respiration'}
+        vardict['AR']={'RepUnits': 'PgC/y', 'sets': [1, 2, 3, 5, 6], 'NatUnits': 'gC/m^2/s', 'desc': 'autotrophic respiration (MR + GR)'}
+        vardict['PFT_NTRUNC']={'RepUnits': 'TgN', 'sets': [1, 5], 'NatUnits': 'gN/m^2', 'desc': 'pft-level sink for N truncation'}
+        vardict['QVEGEP']={'RepUnits': '%', 'sets': [5], 'NatUnits': '%', 'desc': 'canopy evap:QVEGE/(RAIN+SNOW)*100'}
+        vardict['ERRSOI']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'W/m^2', 'desc': 'soil/lake energy conservation error'}
+        vardict['LITTERC_LOSS']={'RepUnits': 'PgC/m2y', 'sets': [1, 2, 5], 'NatUnits': 'gC/m2s', 'desc': 'Litter C Loss'}
+        vardict['DEADCROOTC']={'RepUnits': 'PgC', 'sets': [1, 2, 5], 'NatUnits': 'gC/m^2', 'desc': 'dead coarse root carbon'}
+        vardict['H2OSNO']={'RepUnits': 'NA', 'sets': [2, 3, 5], 'NatUnits': 'mm', 'desc': 'total snow water equiv (SNOWICE + SNOWLIQ)'}
+        vardict['LAISUN']={'RepUnits': 'm^2/m^2', 'sets': [1, 2, 5], 'NatUnits': 'm2/m2', 'desc': 'Sunlit Projected Leaf Area Index'}
+        vardict['SOILPSI']={'RepUnits': 'MPa', 'sets': [1], 'NatUnits': 'MPa', 'desc': 'Soil Water Potential in Each Soil Layer'}
+        vardict['WOODC_LOSS']={'RepUnits': 'PgC/y', 'sets': [1, 2, 5], 'NatUnits': 'gC/m2s', 'desc': 'Wood C Loss'}
+        vardict['THBOT']={'RepUnits': 'NA', 'sets': [2], 'NatUnits': 'K', 'desc': 'atmospheric air potential temperature'}
+        vardict['DENIT']={'RepUnits': 'TgN/y', 'sets': [1, 2, 5], 'NatUnits': 'gN/m^2/s', 'desc': 'Total Denitrification'}
+        vardict['NWSA']={'RepUnits': 'NA', 'sets': [2, 3, 5], 'NatUnits': 'proportion', 'desc': 'near-IR white-sky albedo'}
+        vardict['NFIX_TO_SMINN']={'RepUnits': 'TgN/y', 'sets': [1, 2, 5], 'NatUnits': 'gN/m^2/s', 'desc': 'nitrogen fixation'}
         
-        #end for loop and end table generation-------------------------
-        
-        file.write("</TABLE> \n")
-        file.write("</p>\n")
-        file.close()
-
-
         
         if set == 'set1': 
         
                   #JOHN's example code
             #########################################
             #change this to the specified directory structure
-            url_prefix = "/home/user/Desktop/AptanaWorkspace/climate/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
-            url_prefix = paths.uvcdat_live_root + "exploratory_analysis/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
-            
-            
-            url_prefixIMAGE = "\'/static/exploratory_analysis/img/classic/" + package + "/" + set + "/set1_"
+            url_prefix = paths.staticfiles_dirs + "/img/classic/" + package + "/" + set + "/"
+            url_prefixIMAGE = "/" + package + "/" + set + "/set1_"
             
             #assemble the url to be returned
             url = url_prefix + set + ".html"
@@ -1205,7 +1450,7 @@ def classic_views(request):
         
             #Construct table with description (variable) and link to plot
             #Input from json object from user selection
-            #user_selected_vars = {'TSA', 'PREC'}
+            #user_selected_vars = {'TSA', 'PREC'}        
             
             #Start writing file (SPECIFY LOCATION TO WRITE FILE TO HERE)     Example: land/tropics_warming_th_q/img/
             file = open(url, "w")
@@ -1217,7 +1462,7 @@ def classic_views(request):
             file.write("<br clear=left>")
             file.write("</p>\n")
             file.write("<p>\n")
-            file.write("<A HREF=\"variableList_1.html\" target=\"set1_Variables\">\n")
+            file.write("<A HREF=\"/static/exploratory_analysis/img/classic/lmwg/set1/variableList_1.html\" target=\"set1_Variables\">\n")
             file.write("<font color=maroon size=+1 text-align: right><b>Lookup Table: Set 1 Variable Definition</b></font></a>\n")
             file.write("</br>\n")
             file.write("</p>\n") 
@@ -1235,6 +1480,8 @@ def classic_views(request):
             #python for loop----------
             #Descriptions are (predefinedBrianSmithDictionary[key]) 
             
+            
+            
             for key in vardict:
                 if 1 in vardict[key]['sets'] and key in vars:
                     file.write("<TR>\n")
@@ -1245,13 +1492,14 @@ def classic_views(request):
                     file.write(')')
                     file.write('<TH ALIGN=LEFT>') 
                     file.write('<a href="#" onclick="displayImageClick(')
-                    file.write(url_prefixIMAGE)#Here we write gif name
-                    file.write(key)
-                    file.write('.gif\'') 
-                    file.write(');" onmouseover="displayImageHover(')
-                    file.write(url_prefixIMAGE)#Here we write gif name again
-                    file.write(key)
-                    file.write('.gif\'') 
+                    #file.write(url_prefixIMAGE)#Here we write gif name
+                    file.write('\'')
+                    file.write('http://acme-dev-2.ornl.gov' + generate_token_url(url_prefixIMAGE + key + '.gif'))
+                    file.write('\'') 
+                    file.write(');" onmouseover="displayImageHover(\'')
+                    #file.write(url_prefixIMAGE)#Here we write gif name again
+                    file.write('http://acme-dev-2.ornl.gov' + generate_token_url(url_prefixIMAGE + key + '.gif'))
+                    file.write('\'')
                     file.write(');" onmouseout="nodisplayImage();">plot</A>\n')
                     file.write("</TR>\n")
             
@@ -1290,6 +1538,747 @@ def classic_views(request):
             url = url_prefix + set + ".html"
             
             response = url;
+        
+        
+        elif set == 'set2':
+            #########################################
+            #change this to the specified directory structure
+
+            url_prefix = paths.staticfiles_dirs + "/img/classic/" + package + "/" + set + "/"
+            url_prefixIMAGE = "\'/static/exploratory_analysis/img/classic/" + package + "/" + set + "/set2_"
+
+            
+            #assemble the url to be returned
+            url = url_prefix + set + ".html"
+            #END JOHN's code
+        
+            #Construct table with description (variable) and link to plot
+            #Input from json object from user selection
+            #user_selected_vars = {'TSA', 'PREC'}
+            
+            #Start writing file (SPECIFY LOCATION TO WRITE FILE TO HERE)     Example: land/tropics_warming_th_q/img/
+            file = open(url, "w")
+                    
+            #Header
+            file.write("<p>\n") 
+            file.write("<b><font color=maroon size=+2>Set 2 Description: <b></font>Horizontal contour plots of DJF, MAM, JJA, SON, and ANN means </b><br>\n")
+            file.write("<br clear=left>")
+            file.write("</p>\n")
+            file.write("<p>\n")
+
+            file.write("<A HREF=\"/static/exploratory_analysis/img/classic/lmwg/set2/variableList_2.html\" target=\"set2_Variables\">\n")
+            file.write("<font color=maroon size=+1 text-align: right><b>Lookup Table: Set 2 Variable Definition</b></font></a>\n")
+
+            file.write("</br>\n")
+            file.write("</p>\n") 
+                   
+                        
+            #Start table
+            file.write("<p>\n")
+            file.write("<hr noshade size=2 size=\"100%\">\n</hr>")
+            file.write("<TABLE> \n")
+            file.write("<TR>\n")
+            file.write("<td ALIGN=LEFT><font color=maroon>Description (variable)</font>\n</td>")
+            for time in times:  
+               file.write("<td ALIGN=LEFT><font color=maroon>"+time+"</font>\n</td>")
+            file.write("</TR>\n")
+          
+            
+            #python for loop----------
+            #Descriptions are (predefinedBrianSmithDictionary[key]) 
+            
+            
+            
+            for key in vardict:
+                if 2 in vardict[key]['sets'] and key in vars:
+                    file.write("<TR>\n")
+                    file.write('<Td ALIGN=LEFT>') 
+                    file.write(vardict[key]['desc'])
+                    file.write('(')
+                    file.write(key)
+                    file.write(')</td>')
+                    
+                    
+                    for time in times:                
+                        file.write('<td ALIGN=LEFT>') 
+                        file.write('<a href="#" onclick="displayImageClick(')
+                        file.write(url_prefixIMAGE)#Here we write gif name
+                        file.write(time+'_')
+                        file.write(key)
+                        file.write('.gif\'') 
+                        file.write(');" onmouseover="displayImageHover(')
+                        file.write(url_prefixIMAGE)#Here we write gif name again
+                        file.write(time+'_')
+                        file.write(key)
+                        file.write('.gif\'') 
+                        file.write(');" onmouseout="nodisplayImage();">plot</A>\n')
+                        file.write('</td>')
+                    file.write("</TR>\n")
+                    
+                    
+            #end for loop and end table generation-------------------------
+            
+       
+            file.write("</TABLE> \n")
+            file.write("</p>\n")
+            file.close()
+    
+                    
+            
+            url_prefix = "/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"      
+        
+            #assemble the url to be returned
+            url = url_prefix + set + ".html"
+            
+            response = url;
+            
+            
+            
+        elif set == 'set3':
+             #########################################
+            #change this to the specified directory structure
+            url_prefix = paths.staticfiles_dirs + "/img/classic/" + package + "/" + set + "/"
+            url_prefixIMAGE = "\'/static/exploratory_analysis/img/classic/" + package + "/" + set + "/set3_"
+            
+            #assemble the url to be returned
+            url = url_prefix + set + ".html"
+            #END JOHN's code
+        
+            #Construct table with description (variable) and link to plot
+            #Input from json object from user selection
+            #user_selected_vars = {'TSA', 'PREC'}
+            
+            #Start writing file (SPECIFY LOCATION TO WRITE FILE TO HERE)     Example: land/tropics_warming_th_q/img/
+            file = open(url, "w")
+                    
+            #Header
+            file.write("<p>\n") 
+            file.write("<b><font color=maroon size=+2>Set 3 Description: <b></font>Line plots of monthly climatology: regional air temperature, precipitation, runoff, snow depth, radiative fluxes, and turbulent fluxes</b><br>\n")
+            file.write("<br clear=left>")
+            file.write("</p>\n")
+            file.write("<p>\n")
+            file.write("<A HREF=\"/static/exploratory_analysis/img/classic/lmwg/set3/variableList_3.html\" target=\"set3_Variables\">\n")
+            file.write("<font color=maroon size=+1 text-align: right><b>Lookup Table: Set 3 Variable Definition</b></font></a>\n")
+            file.write("</br>\n")
+            file.write("</p>\n") 
+                   
+                        
+            #Start table
+            file.write("<p>\n")
+            file.write("<hr noshade size=2 size=\"100%\">\n</hr>")
+            file.write("<TABLE> \n")
+            file.write("<TR>\n")
+            file.write("<td ALIGN=LEFT><B>All Model Data Regions</font>\n</td>")
+            file.write('<td>')
+            file.write('<a href="#" onclick="displayImageClick(\'set3_reg_all.gif\'')
+            file.write(');" onmouseover="displayImageHover(\'set3_reg_all.gif\'')
+            file.write(');" onmouseout="nodisplayImage();">Map</A>\n')
+            file.write('</td>')
+            file.write("</TR>\n")
+            file.write("<TR>\n")
+            file.write("<td>Region(s)")
+            file.write("</td>")
+            file.write("<td ALIGN=LEFT>Map</font>\n</td>")
+            for var in vars:  
+               file.write("<td ALIGN=LEFT>"+var+"</font>\n</td>")
+            file.write("</tr>\n")
+          
+            
+            #python for loop----------
+            #Descriptions are (predefinedBrianSmithDictionary[key]) 
+            
+            def containedInDictionary( set ):
+                "This prints a passed string into this function"
+                for key in vardict:
+                    if set in vardict[key]['sets']:  
+                        return True
+                    else:
+                        return False
+                    
+            
+            for region in regions:
+                if containedInDictionary( 3 ):  
+                    file.write("<TR>\n")             
+                    file.write('<Td ALIGN=LEFT>') 
+                    file.write(region)
+                    file.write('</td>\n')
+                    file.write('\n')
+                    file.write('<td>')
+                    file.write('<a href="#" onclick="displayImageClick(\'set3_reg_'+region+'.gif\'')
+                    file.write(');" onmouseover="displayImageHover(\'set3_reg_'+region+'.gif\'')
+                    file.write(');" onmouseout="nodisplayImage();">Map</A>')
+                    file.write('</td>\n')
+                    for var in vars:              
+                        file.write('<td ALIGN=center>') 
+                        file.write('<a href="#" onclick="displayImageClick(')
+                        file.write(url_prefixIMAGE)#Here we write gif name
+                        #file.write(vardict[var]['filekey']+'_')
+                        file.write(var+'_')
+                        #file.write(regdict[region]['filekey'])
+                        file.write(region)
+                        file.write('.gif\'') 
+                        file.write(');" onmouseover="displayImageHover(')
+                        file.write(url_prefixIMAGE)#Here we write gif name again
+                        #file.write(vardict[var]['filekey']+'_')
+                        file.write(var+'_')
+                        #file.write(regdict[region]['filekey'])
+                        file.write(region)
+                        file.write('.gif\'') 
+                        file.write(');" onmouseout="nodisplayImage();">Plot</A>')
+                        file.write('</td>\n')
+                    file.write("</TR>\n")
+                    
+                    
+            #end for loop and end table generation-------------------------
+            
+       
+            file.write("</TABLE> \n")
+            file.write("</p>\n")
+            file.close()
+    
+                    
+            
+            url_prefix = "/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"      
+        
+            #assemble the url to be returned
+            url = url_prefix + set + ".html"
+            
+            response = url;
+        
+        
+        elif set == 'set2':
+            #########################################
+            #change this to the specified directory structure
+            #url_prefix = "/home/user/Desktop/AptanaWorkspace/climate/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
+            url_prefix = paths.uvcdat_live_root + "exploratory_analysis/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
+            url_prefixIMAGE = "\'/static/exploratory_analysis/img/classic/" + package + "/" + set + "/set2_"
+            
+            #assemble the url to be returned
+            url = url_prefix + set + ".html"
+            #END JOHN's code
+        
+            #Construct table with description (variable) and link to plot
+            #Input from json object from user selection
+            #user_selected_vars = {'TSA', 'PREC'}
+            
+            #Start writing file (SPECIFY LOCATION TO WRITE FILE TO HERE)     Example: land/tropics_warming_th_q/img/
+            file = open(url, "w")
+                    
+            #Header
+            file.write("<p>\n") 
+            file.write("<b><font color=maroon size=+2>Set 2 Description: <b></font>Horizontal contour plots of DJF, MAM, JJA, SON, and ANN means </b><br>\n")
+            file.write("<br clear=left>")
+            file.write("</p>\n")
+            file.write("<p>\n")
+            file.write("<A HREF=\"/static/exploratory_analysis/img/classic/lmwg/set2/variableList_2.html\" target=\"set2_Variables\">\n")
+            file.write("<font color=maroon size=+1 text-align: right><b>Lookup Table: Set 2 Variable Definition</b></font></a>\n")
+            file.write("</br>\n")
+            file.write("</p>\n") 
+                   
+                        
+            #Start table
+            file.write("<p>\n")
+            file.write("<hr noshade size=2 size=\"100%\">\n</hr>")
+            file.write("<TABLE> \n")
+            file.write("<TR>\n")
+            file.write("<td ALIGN=LEFT><font color=maroon>Description (variable)</font>\n</td>")
+            for time in times:  
+               file.write("<td ALIGN=LEFT><font color=maroon>"+time+"</font>\n</td>")
+            file.write("</TR>\n")
+          
+            
+            #python for loop----------
+            #Descriptions are (predefinedBrianSmithDictionary[key]) 
+            
+            for key in vardict:
+                if 2 in vardict[key]['sets'] and key in vars:
+                    file.write("<TR>\n")
+                    file.write('<Td ALIGN=LEFT>') 
+                    file.write(vardict[key]['desc'])
+                    file.write('(')
+                    file.write(key)
+                    file.write(')</td>')
+                    
+                    
+                    for time in times:                
+                        file.write('<td ALIGN=LEFT>') 
+                        file.write('<a href="#" onclick="displayImageClick(')
+                        file.write(url_prefixIMAGE)#Here we write gif name
+                        file.write(time+'_')
+                        file.write(key)
+                        file.write('.gif\'') 
+                        file.write(');" onmouseover="displayImageHover(')
+                        file.write(url_prefixIMAGE)#Here we write gif name again
+                        file.write(time+'_')
+                        file.write(key)
+                        file.write('.gif\'') 
+                        file.write(');" onmouseout="nodisplayImage();">plot</A>\n')
+                        file.write('</td>')
+                    file.write("</TR>\n")
+                    
+                    
+            #end for loop and end table generation-------------------------
+            
+       
+            file.write("</TABLE> \n")
+            file.write("</p>\n")
+            file.close()
+    
+                    
+            
+            url_prefix = "/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"      
+        
+            #assemble the url to be returned
+            url = url_prefix + set + ".html"
+            
+            response = url;
+            
+            
+            
+        elif set == 'set3':
+             #########################################
+            #change this to the specified directory structure
+            url_prefix = paths.uvcdat_live_root + "exploratory_analysis/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
+            url_prefixIMAGE = "\'/static/exploratory_analysis/img/classic/" + package + "/" + set + "/set3_"
+            
+            #assemble the url to be returned
+            url = url_prefix + set + ".html"
+            #END JOHN's code
+        
+            #Construct table with description (variable) and link to plot
+            #Input from json object from user selection
+            #user_selected_vars = {'TSA', 'PREC'}
+            
+            #Start writing file (SPECIFY LOCATION TO WRITE FILE TO HERE)     Example: land/tropics_warming_th_q/img/
+            file = open(url, "w")
+                    
+            #Header
+            file.write("<p>\n") 
+            file.write("<b><font color=maroon size=+2>Set 3 Description: <b></font>Line plots of monthly climatology: regional air temperature, precipitation, runoff, snow depth, radiative fluxes, and turbulent fluxes</b><br>\n")
+            file.write("<br clear=left>")
+            file.write("</p>\n")
+            file.write("<p>\n")
+            file.write("<A HREF=\"/static/exploratory_analysis/img/classic/lmwg/set3/variableList_3.html\" target=\"set3_Variables\">\n")
+            file.write("<font color=maroon size=+1 text-align: right><b>Lookup Table: Set 3 Variable Definition</b></font></a>\n")
+            file.write("</br>\n")
+            file.write("</p>\n") 
+                   
+                        
+            #Start table
+            file.write("<p>\n")
+            file.write("<hr noshade size=2 size=\"100%\">\n</hr>")
+            file.write("<TABLE> \n")
+            file.write("<TR>\n")
+            file.write("<td ALIGN=LEFT><font color=maroon>Description (variable)</font>\n</td>")
+            for time in times:  
+               file.write("<td ALIGN=LEFT><font color=maroon>"+time+"</font>\n</td>")
+            file.write("</TR>\n")
+          
+            
+            #python for loop----------
+            #Descriptions are (predefinedBrianSmithDictionary[key]) 
+            
+            for key in vardict:
+                if 3 in vardict[key]['sets'] and key in vars:
+                    file.write("<TR>\n")
+                    file.write('<Td ALIGN=LEFT>') 
+                    file.write(vardict[key]['desc'])
+                    file.write('(')
+                    file.write(key)
+                    file.write(')</td>')
+                    
+                    
+                    for time in times:                
+                        file.write('<td ALIGN=LEFT>') 
+                        file.write('<a href="#" onclick="displayImageClick(')
+                        file.write(url_prefixIMAGE)#Here we write gif name
+                        file.write(time+'_')
+                        file.write(key)
+                        file.write('.gif\'') 
+                        file.write(');" onmouseover="displayImageHover(')
+                        file.write(url_prefixIMAGE)#Here we write gif name again
+                        file.write(time+'_')
+                        file.write(key)
+                        file.write('.gif\'') 
+                        file.write(');" onmouseout="nodisplayImage();">plot</A>\n')
+                        file.write('</td>')
+                    file.write("</TR>\n")
+                    
+                    
+            #end for loop and end table generation-------------------------
+            
+       
+            file.write("</TABLE> \n")
+            file.write("</p>\n")
+            file.close()
+    
+                    
+            
+            url_prefix = "/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"      
+        
+            #assemble the url to be returned
+            url = url_prefix + set + ".html"
+            
+            response = url;
+            
+        elif set == 'set5':
+            #########################################
+            #change this to the specified directory structure
+            url_prefix = paths.staticfiles_dirs + "/img/classic/" + package + "/" + set + "/"
+            url_prefixIMAGE = "\'/static/exploratory_analysis/img/classic/" + package + "/" + set + "/set5_"
+            
+            #assemble the url to be returned
+            url = url_prefix + set + ".html"
+            #END JOHN's code
+        
+            #Construct table with description (variable) and link to plot
+            #Input from json object from user selection
+            #user_selected_vars = {'TSA', 'PREC'}
+            
+            #Start writing file (SPECIFY LOCATION TO WRITE FILE TO HERE)     Example: land/tropics_warming_th_q/img/
+            file = open(url, "w")
+                    
+            #Header
+            file.write("<p>\n") 
+            file.write("<b><font color=maroon size=+2>Set 5 Description: <b></font>Tables of annual means </b><br>\n")
+            file.write("<br clear=left>")
+            file.write("</p>\n")
+            file.write("<p>\n")
+            file.write("<A HREF=\"/static/exploratory_analysis/img/classic/lmwg/set5/variableList_5.html\" target=\"set5_Variables\">\n")
+            file.write("<font color=maroon size=+1 text-align: right><b>Lookup Table: Set 5 Variable Definition</b></font></a>\n")
+            file.write("</br>\n")
+            file.write("</p>\n") 
+                   
+                        
+            #Start table
+            file.write("<p>\n")
+            file.write("<hr noshade size=2 size=\"100%\">\n</hr>")
+            file.write("<TABLE> \n")
+            file.write("<TR>\n")
+            file.write("<td ALIGN=LEFT><font color=maroon>TABLE</font>\n</td>")
+            file.write("</TR>\n")
+          
+            file.write("<tr>")
+            file.write('<TH ALIGN=LEFT>Regional Hydrologic Cycle')
+            file.write('<TH ALIGN=LEFT><font color=black><A HREF= "#" onclick="displayTable(')
+            file.write(url_prefixIMAGE);
+            file.write('hydReg.txt\')\";>Table</a></font>')
+            file.write('</tr>') 
+                        
+            file.write("<tr>")
+            file.write('<TH ALIGN=LEFT>Global Biogeophysics')
+            file.write('<TH ALIGN=LEFT><font color=black><A HREF= "#" onclick="displayTable(')
+            file.write(url_prefixIMAGE);
+            file.write('clm.txt\')\";>Table</a></font>')
+            file.write('</tr>') 
+            
+            file.write('<tr>')     
+            file.write('<TH ALIGN=LEFT>Global Carbon/Nitrogen')      
+            file.write('<TH ALIGN=LEFT><font color=black><A HREF= "#" onclick="displayTable(')
+            file.write(url_prefixIMAGE);
+            file.write('cn.json\')\";>Table</a></font>')     
+            file.write('</tr>')
+                 
+                 
+            #end for loop and end table generation-------------------------
+            file.write("</TABLE> \n")
+            file.write("</p>\n")
+            file.close()
+    
+                    
+            
+            url_prefix = "/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"      
+        
+            #assemble the url to be returned
+            url = url_prefix + set + ".html"
+            
+            response = url;
+            
+        elif set == 'set6':
+             #########################################
+            #change this to the specified directory structure
+            url_prefix = paths.staticfiles_dirs + "/img/classic/" + package + "/" + set + "/"
+            url_prefixIMAGE = "\'/static/exploratory_analysis/img/classic/" + package + "/" + set + "/set3_"
+            
+            #assemble the url to be returned
+            url = url_prefix + set + ".html"
+            #END JOHN's code
+        
+            #Construct table with description (variable) and link to plot
+            #Input from json object from user selection
+            #user_selected_vars = {'TSA', 'PREC'}
+            
+            #Start writing file (SPECIFY LOCATION TO WRITE FILE TO HERE)     Example: land/tropics_warming_th_q/img/
+            file = open(url, "w")
+                    
+            #Header
+            file.write("<p>\n") 
+            file.write("<b><font color=maroon size=+2>Set 3 Description: <b></font>Line plots of monthly climatology: regional air temperature, precipitation, runoff, snow depth, radiative fluxes, and turbulent fluxes</b><br>\n")
+            file.write("<br clear=left>")
+            file.write("</p>\n")
+            file.write("<p>\n")
+            file.write("<A HREF=\"/static/exploratory_analysis/img/classic/lmwg/set3/variableList_3.html\" target=\"set3_Variables\">\n")
+            file.write("<font color=maroon size=+1 text-align: right><b>Lookup Table: Set 3 Variable Definition</b></font></a>\n")
+            file.write("</br>\n")
+            file.write("</p>\n") 
+                   
+                        
+            #Start table
+            file.write("<p>\n")
+            file.write("<hr noshade size=2 size=\"100%\">\n</hr>")
+            file.write("<TABLE> \n")
+            file.write("<TR>\n")
+            file.write("<td ALIGN=LEFT><B>All Model Data Regions</font>\n</td>")
+            file.write('<td>')
+            file.write('<a href="#" onclick="displayImageClick(\'set3_reg_all.gif\'')
+            file.write(');" onmouseover="displayImageHover(\'set3_reg_all.gif\'')
+            file.write(');" onmouseout="nodisplayImage();">Map</A>\n')
+            file.write('</td>')
+            file.write("</TR>\n")
+            file.write("<TR>\n")
+            file.write("<td>Region(s)")
+            file.write("</td>")
+            file.write("<td ALIGN=LEFT>Map</font>\n</td>")
+            for var in vars:  
+               file.write("<td ALIGN=LEFT>"+var+"</font>\n</td>")
+            file.write("</tr>\n")
+          
+            
+            #python for loop----------
+            #Descriptions are (predefinedBrianSmithDictionary[key]) 
+            
+            def containedInDictionary( set ):
+                "This prints a passed string into this function"
+                for key in vardict:
+                    if set in vardict[key]['sets']:  
+                        return True
+                    else:
+                        return False
+                    
+            
+            for region in regions:
+                if containedInDictionary( 3 ):  
+                    file.write("<TR>\n")             
+                    file.write('<Td ALIGN=LEFT>') 
+                    file.write(region)
+                    file.write('</td>\n')
+                    file.write('\n')
+                    file.write('<td>')
+                    file.write('<a href="#" onclick="displayImageClick(\'set3_reg_'+region+'.gif\'')
+                    file.write(');" onmouseover="displayImageHover(\'set3_reg_'+region+'.gif\'')
+                    file.write(');" onmouseout="nodisplayImage();">Map</A>')
+                    file.write('</td>\n')
+                    for var in vars:              
+                        file.write('<td ALIGN=center>') 
+                        file.write('<a href="#" onclick="displayImageClick(')
+                        file.write(url_prefixIMAGE)#Here we write gif name
+                        #file.write(vardict[var]['filekey']+'_')
+                        file.write(var+'_')
+                        #file.write(regdict[region]['filekey'])
+                        file.write(region)
+                        file.write('.gif\'') 
+                        file.write(');" onmouseover="displayImageHover(')
+                        file.write(url_prefixIMAGE)#Here we write gif name again
+                        #file.write(vardict[var]['filekey']+'_')
+                        file.write(var+'_')
+                        #file.write(regdict[region]['filekey'])
+                        file.write(region)
+                        file.write('.gif\'') 
+                        file.write(');" onmouseout="nodisplayImage();">Plot</A>')
+                        file.write('</td>\n')
+                    file.write("</TR>\n")
+                    
+                    
+            #end for loop and end table generation-------------------------
+            
+       
+            file.write("</TABLE> \n")
+            file.write("</p>\n")
+            file.close()
+    
+                    
+            
+            url_prefix = "/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"      
+        
+            #assemble the url to be returned
+            url = url_prefix + set + ".html"
+            
+            response = url;
+            
+        elif set == 'set7':
+            #########################################
+            #change this to the specified directory structure
+            #url_prefix = "/home/user/Desktop/AptanaWorkspace/climate/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
+            url_prefixIMAGE = "\'/static/exploratory_analysis/img/classic/" + package + "/" + set + "/set7_"
+            url_prefix = paths.staticfiles_dirs + "/img/classic/" + package + "/" + set + "/"
+            
+            #assemble the url to be returned
+            url = url_prefix + set + ".html"
+            #END JOHN's code
+        
+            #Construct table with description (variable) and link to plot
+            #Input from json object from user selection
+            #user_selected_vars = {'TSA', 'PREC'}
+            
+            #Start writing file (SPECIFY LOCATION TO WRITE FILE TO HERE)     Example: land/tropics_warming_th_q/img/
+            file = open(url, "w")
+            
+            file.write("<p>\n") 
+            file.write("<b><font color=maroon size=+2>Set 7 Description: <b></font>Line plots, tables, and maps of RTM river flow and discharge to oceans </b><br>\n")
+            file.write("<br clear=left>\n")
+            file.write("<p>\n") 
+            file.write("<hr noshade size=2 size=\"100%\">\n")
+            file.write("<TABLE>\n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT><font color=red>TABLE</font>\n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT>RTM flow at station for world's 50 largest rivers\\n")
+            file.write("<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayTable("+url_prefixIMAGE+"table_RIVER_STN_VOL.txt');\">Table</A> \n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT><font color=red>SCATTER PLOTS</font>\n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT>RTM flow at station versus obs for world's 10 largest rivers (QCHANR) \n")
+            file.write("<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"scatter_50riv.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"scatter_50riv.gif');\" onmouseout=\"nodisplayImage();\">plot</A> \n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT><font color=red>LINE PLOTS</font>\n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT>Mean annual cycle of river flow at station for world's 10 largest rivers (QCHANR) \n")
+            file.write("<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"mon_stndisch_10riv.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"mon_stndisch_10riv.gif');\" onmouseout=\"nodisplayImage();\">plot</A> \n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT>Annual discharge into the Global Ocean (QCHOCNR) \n")
+            file.write("<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"ann_disch_globalocean.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"ann_disch_globalocean.gif');\" onmouseout=\"nodisplayImage();\">plot</A> \n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT>Annual discharge into the Atlantic Ocean (QCHOCNR) \n")
+            file.write("<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"ann_disch_atlantic.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"ann_disch_atlantic.gif');\" onmouseout=\"nodisplayImage();\">plot</A> \n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT>Annual discharge into the Indian Ocean (QCHOCNR) \n")
+            file.write("<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"ann_disch_indian.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"ann_disch_indian.gif');\" onmouseout=\"nodisplayImage();\">plot</A> \n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT>Annual discharge into the Pacific Ocean (QCHOCNR) \n")
+            file.write("<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"ann_disch_pacific.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"ann_disch_pacific.gif');\" onmouseout=\"nodisplayImage();\">plot</A> \n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT>Mean annual cycle of discharge into the oceans (QCHOCNR) \n")
+            file.write("<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"mon_disch.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"mon_disch.gif');\" onmouseout=\"nodisplayImage();\">plot</A> \n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT><font color=red>MAPS</font>\n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT>Station locations (50 largest rivers)\n")
+            file.write("<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"stations.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"stations.gif');\" onmouseout=\"nodisplayImage();\">Map</A> \n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT>Ocean Basins\n")
+            file.write("<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"ocean_basin_index.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"ocean_basin_index.gif');\" onmouseout=\"nodisplayImage();\">Map</A> \n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT>River Flow (QCHANR) \n")
+            file.write("<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"ANN_QCHANR_Ac.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"ANN_QCHANR_Ac.gif');\" onmouseout=\"nodisplayImage();\">Model1</A> \n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT><font color=red>VARIABLES</font>\n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT>QCHANR \n")
+            file.write("<TH ALIGN=LEFT>NativeUnits [m^3/s] \n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT>QCHOCNR \n")
+            file.write("<TH ALIGN=LEFT>NativeUnits [m^3/s] \n")
+            file.write("<TR>\n")
+            file.write("</table>\n")
+            
+            
+
+            
+            file.write("</p>\n")
+            file.close()
+    
+                    
+            
+            url_prefix = "/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"      
+        
+            #assemble the url to be returned
+            url = url_prefix + set + ".html"
+            
+            response = url;
+        
+        
+            
+        elif set == 'set9':
+            #########################################
+            #change this to the specified directory structure
+            #url_prefix = "/home/user/Desktop/AptanaWorkspace/climate/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
+            url_prefixIMAGE = "\'/static/exploratory_analysis/img/classic/" + package + "/" + set + "/set9_"
+            url_prefix = paths.staticfiles_dirs + "/img/classic/" + package + "/" + set + "/"
+            
+            #assemble the url to be returned
+            url = url_prefix + set + ".html"
+            #END JOHN's code
+        
+            #Construct table with description (variable) and link to plot
+            #Input from json object from user selection
+            #user_selected_vars = {'TSA', 'PREC'}
+            
+            #Start writing file (SPECIFY LOCATION TO WRITE FILE TO HERE)     Example: land/tropics_warming_th_q/img/
+            file = open(url, "w")
+                    
+            file.write("<p>\n") 
+            file.write("<b><font color=maroon size=+2>Set 9 Description: <b></font>Contour plots and statistics for precipitation and temperature.  Statistics include DJF, JJA, and ANN biases, and RMSE, correlation and standard deviation of the annual cycle relative to observations</b><br>\n")
+            file.write("<br clear=left>\n")
+            file.write("<p>\n") 
+            file.write("<hr noshade size=2 size=\"100%\"> \n")
+            file.write("<TABLE> \n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT><font color=navy size=+1> 1. RMSE </font>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"rmse_TSA.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"rmse_TSA.gif\');\" onmouseout=\"nodisplayImage();\">TSA</A>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"rmse_PREC.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"rmse_PREC.gif\');\" onmouseout=\"nodisplayImage();\">PREC</A>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"rmse_ASA.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"rmse_ASA.gif\');\" onmouseout=\"nodisplayImage();\">ASA</A>\n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT><font color=navy size=+1> 2. Seasonal bias </font>\n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT><font color=navy size=+1>&nbsp&nbsp&nbsp&nbsp TSA </font>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_TSA_DJF.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_TSA_DJF.gif\');\" onmouseout=\"nodisplayImage();\">DJF</A>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_TSA_MAM.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_TSA_MAM.gif\');\" onmouseout=\"nodisplayImage();\">MAM</A>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_TSA_JJA.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_TSA_JJA.gif\');\" onmouseout=\"nodisplayImage();\">JJA</A>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_TSA_SON.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_TSA_SON.gif\');\" onmouseout=\"nodisplayImage();\">SON</A>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_TSA_ANN.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_TSA_ANN.gif\');\" onmouseout=\"nodisplayImage();\">ANN</A>\n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT><font color=navy size=+1>&nbsp&nbsp&nbsp&nbsp PREC </font>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_PREC_DJF.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_PREC_DJF.gif\');\" onmouseout=\"nodisplayImage();\">DJF</A>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_PREC_MAM.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_PREC_MAM.gif\');\" onmouseout=\"nodisplayImage();\">MAM</A>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_PREC_JJA.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_PREC_JJA.gif\');\" onmouseout=\"nodisplayImage();\">JJA</A>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_PREC_SON.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_PREC_SON.gif\');\" onmouseout=\"nodisplayImage();\">SON</A>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_PREC_ANN.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_PREC_ANN.gif\');\" onmouseout=\"nodisplayImage();\">ANN</A>\n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT><font color=navy size=+1>&nbsp&nbsp&nbsp&nbsp ASA </font>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_ASA_DJF.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_ASA_DJF.gif\');\" onmouseout=\"nodisplayImage();\">DJF</A>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_ASA_MAM.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_ASA_MAM.gif\');\" onmouseout=\"nodisplayImage();\">MAM</A>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_ASA_JJA.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_ASA_JJA.gif\');\" onmouseout=\"nodisplayImage();\">JJA</A>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_ASA_SON.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_ASA_SON.gif\');\" onmouseout=\"nodisplayImage();\">SON</A>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_ASA_ANN.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_ASA_ANN.gif\');\" onmouseout=\"nodisplayImage();\">ANN</A>\n")
+            file.write("<TR>\n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT><font color=navy size=+1> 3. Correlation </font>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"corr_TSA.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"corr_TSA.gif\');\" onmouseout=\"nodisplayImage();\">TSA</A>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"corr_PREC.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"corr_PREC.gif\');\" onmouseout=\"nodisplayImage();\">PREC</A>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"corr_ASA.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"corr_ASA.gif\');\" onmouseout=\"nodisplayImage();\">ASA</A>\n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT><font color=navy size=+1> 4. Standard Deviation </font>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"stdev_TSA.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"stdev_TSA.gif\');\" onmouseout=\"nodisplayImage();\">TSA</A>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"stdev_PREC.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"stdev_PREC.gif\');\" onmouseout=\"nodisplayImage();\">PREC</A>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"stdev_ASA.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"stdev_ASA.gif\');\" onmouseout=\"nodisplayImage();\">ASA</A>\n")
+            file.write("<TR>\n")
+            file.write("<TH ALIGN=LEFT><font color=navy size=+1> 5. Tables</font>\n")
+            file.write("<TH ALIGN=center><a href=\"#\" onclick=\"displayTable("+url_prefixIMAGE+"statTable.html\');\">All Variables</A>\n")
+            file.write("<TR>\n")
+            file.write("<TR>\n")
+            file.write("<TR>\n")
+            file.write("</TABLE>\n")
+            file.write("</p>\n")
+            file.close()
+    
+                    
+            
+            url_prefix = "/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"      
+        
+            #assemble the url to be returned
+            url = url_prefix + set + ".html"
+            
+            response = url;
             
         else:
             url_prefix = "/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
@@ -1298,7 +2287,6 @@ def classic_views(request):
             url = url_prefix + set + ".html"
             response = url;
         
-        print 'response: ' + response
         
         
         #except KeyError:
@@ -1312,8 +2300,6 @@ def classic_views(request):
     #added the '\n' for 
     return HttpResponse(response + '\n')  
   
-
-
 
 
 
@@ -1818,485 +2804,4 @@ def postStateExample(request):
     return HttpResponse('hello')
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-'''old bookmark is something
-        treeloaded = 'true'
-        bookmark_name = bookmark
-    
-    
-        fileName = bookmark + ".json"
-    
-        cached_file_name = front_end_cache_dir + fileName
-        
-        #cached_file_name = exploratory_analysis/static/exploratory_analysis/cache/tree/u1/json/tropics_warming_th_q_co2
-           
-        #check if bookmark exists
-        #mapping
-        #/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/cache/
-        #----------->
-        #../../../static/cache/Bookmark2.json
-        #
-        mapped_file_name = paths.uvcdat_live_root + '/exploratory_analysis/'
-        #exploratory_analysis/static/exploratory_analysis/cache/tree/u1/json/tropics_warming_th_q_co2
-        
-        
-        p = re.compile('../../../')
-        
-        print '\ncached_file_name: ' + cached_file_name
-        print '\nmapped_file_name: ' + mapped_file_name
-        check_file_name = p.sub( mapped_file_name, cached_file_name)
-        print '\n\n\ncheck_file_name: ' + check_file_name + '\n\n\n'
-        
-        treeFile = None
-       
-        import os
-        
-        #GET RID OF THIS
-        #temp_file = 
-        
-        #if exists then return the tree state of that bookmark
-        if os.path.exists(check_file_name):
-            print 'Bookmark is there - proceed'   
-            treeFile = diagsHelper(user_id,bookmark_name,check_file_name)
-        else:
-            print 'Bookmark is not there - do not proceed'
-            treeloaded = 'false'
-        
-        
-        print 'treeFile---->: ' + str(treeFile)
-        
-        template = loader.get_template('exploratory_analysis/treeex.html')
-    
-        print 'figure bookmark list -> ' + str(figure_bookmark_list)
-       
-    
-        context = RequestContext(request, {
-            'loggedIn' : str(loggedIn),
-            'username' : username,
-            'treeloaded' : treeloaded,
-            'cachedfile' : cached_file_name,
-            'package_list' : package_list,
-            'dataset_list' : dataset_list,
-            'variable_list' : variable_list,
-            'season_list' : season_list,
-            'set_list' : set_list,
-            'bookmark_list' : bookmark_list,
-            'figure_bookmark_list' : figure_bookmark_list,
-            'treefile': treeFile,
-            'current_bookmark': bookmark,
-            'posttype':'save'
-            #'treeFile' : treeFile,
-            })
-        
-
-        print '\n\n\t\tloggedIn: ' + str(loggedIn) 
-        return HttpResponse(template.render(context))
-'''
-
-
-        
-'''
-def bookmarkHandler(request,user_id):
-
-  print '\nin bookmarkHandler'
-  #print '\nrequest user authenticate: ' + str(request.user.is_authenticated()) + '\n'
-    
-  #need a flag to indicated whether a tree 
-  #print '\n\n\t\tuser_id: ' + str(user_id)
-  #print 'user: ' + str(request.user)
-    
-  loggedIn = paths.noAuthReq
-    
-  if (str(request.user) == str(user_id)):
-    loggedIn = True
-    
-  username = 'jfharney'
-    
-  #grab the username
-  if user_id != None:
-    username = user_id
-    
-    
-  #get the predefined tree bookmarks of the user
-  from exploratory_analysis.models import Tree_Bookmarks
-  bookmark_list_obj = Tree_Bookmarks.objects.filter(tree_bookmark_username=username)
-  
-  bookmark_list = [] 
-  for obj in bookmark_list_obj:
-    bookmark_list.append(obj.tree_bookmark_name)
- 
- 
-
-  #get the figure bookmarks of the user
-  from exploratory_analysis.models import Figure_Bookmarks
-  figure_bookmark_list_obj = Figure_Bookmarks.objects.filter(figure_bookmark_username=username)
- 
-  figure_bookmark_list = [] 
-  for obj in figure_bookmark_list_obj:
-    figure_bookmark_list.append(obj.figure_bookmark_name)
- 
- 
-  print 'bookmark list: ' + str(bookmark_list)
-  #print 'figure bookmark list ' + str(figure_bookmark_list)
- 
- 
-  defaults = parameter_defaults.get_parameter_defaults()
-  package_list = defaults['package_list']
-  dataset_list = defaults['dataset_list']
-  variable_list = defaults['variable_list']
-  season_list = defaults['season_list']
-  set_list = defaults['set_list']
-    
- 
-    
-  #first we check if the request is in the cache or if it is the initial call
-  #if it is in the cache, no need to do any back end generation
-  bookmark = request.GET.get('bookmark')
-    
-  #print '\nbookmark: ' + str(bookmark)  
-      
-
-        
-  treeloaded = 'true'
-  bookmark_name = bookmark
-    
-    
-  fileName = bookmark + ".json"
-    
-  cached_file_name = front_end_cache_dir + fileName
-        
-    
-  mapped_file_name = paths.uvcdat_live_root + 'exploratory_analysis/'
-        #exploratory_analysis/static/exploratory_analysis/cache/tree/u1/json/tropics_warming_th_q_co2
-        
-        
-  p = re.compile('../../../')
-        
-  print '\ncached_file_name: ' + cached_file_name
-  print '\nmapped_file_name: ' + mapped_file_name
-  check_file_name = p.sub( mapped_file_name, cached_file_name)
-  print '\n\n\ncheck_file_name: ' + check_file_name + '\n\n\n'
-        
-  treeFile = None
-       
-  import os
-        
-        #GET RID OF THIS
-        #temp_file = 
-  
-  print 'treeFile----> ' + str(check_file_name)      
-        #if exists then return the tree state of that bookmark
-  if os.path.exists(check_file_name):
-    #print 'Bookmark is there - proceed'   
-    treeFile = diagsHelper(user_id,bookmark_name,check_file_name)
-  else:
-    #print 'Bookmark is not there - do not proceed'
-    treeloaded = 'false'
-        
-        
-  print 'treeFile---->: ' + str(treeFile)
-        
-  template = loader.get_template('exploratory_analysis/treeex.html')
-    
-  #print 'figure bookmark list -> ' + str(figure_bookmark_list)
-       
-    
-  context = RequestContext(request, {
-            'loggedIn' : str(loggedIn),
-            'username' : username,
-            'treeloaded' : treeloaded,
-            'cachedfile' : cached_file_name,
-            'package_list' : package_list,
-            'dataset_list' : dataset_list,
-            'variable_list' : variable_list,
-            'season_list' : season_list,
-            'set_list' : set_list,
-            'bookmark_list' : bookmark_list,
-            'figure_bookmark_list' : figure_bookmark_list,
-            'treefile': treeFile,
-            'current_bookmark': bookmark,
-            'posttype':'save'
-            #'treeFile' : treeFile,
-  })
-        
-
-  #print '\n\n\t\tloggedIn: ' + str(loggedIn) 
-  return HttpResponse(template.render(context))
-
-'''
-
-
-
-'''
-def noBookmarkHandler(request,user_id):
-
-  print '\nrequest user authenticate: ' + str(request.user.is_authenticated()) + '\n'
-    
-  #need a flag to indicated whether a tree 
-  #print '\n\n\t\tuser_id: ' + str(user_id)
-  #print 'user: ' + str(request.user)
-    
-  loggedIn = paths.noAuthReq
-    
-  if (str(request.user) == str(user_id)):
-    loggedIn = True
-    
-  username = 'jfharney'
-    
-  #grab the username
-  if user_id != None:
-    username = user_id
-    
-    
-  #get the predefined tree bookmarks of the user
-  from exploratory_analysis.models import Tree_Bookmarks
-  bookmark_list_obj = Tree_Bookmarks.objects.filter(tree_bookmark_username=username)
-  
-  bookmark_list = [] 
-  for obj in bookmark_list_obj:
-    bookmark_list.append(obj.tree_bookmark_name)
- 
- 
-
-  #get the figure bookmarks of the user
-  from exploratory_analysis.models import Figure_Bookmarks
-  figure_bookmark_list_obj = Figure_Bookmarks.objects.filter(figure_bookmark_username=username)
- 
-  figure_bookmark_list = [] 
-  for obj in figure_bookmark_list_obj:
-    figure_bookmark_list.append(obj.figure_bookmark_name)
- 
- 
-  print 'bookmark list: ' + str(bookmark_list)
-  print 'figure bookmark list ' + str(figure_bookmark_list)
- 
- 
-  defaults = parameter_defaults.get_parameter_defaults()
-  package_list = defaults['package_list']
-  dataset_list = defaults['dataset_list']
-  variable_list = defaults['variable_list']
-  season_list = defaults['season_list']
-  set_list = defaults['set_list']
-    
- 
-    
-  #first we check if the request is in the cache or if it is the initial call
-  #if it is in the cache, no need to do any back end generation
-  bookmark = request.GET.get('bookmark')
-    
-  #print '\nbookmark: ' + str(bookmark)  
-      
-
-  print '\nin noBookmarkHandler'
-
-
-  #if something has been posted, then a tree could be built       
-  if request.POST:
-            
-      posttype = request.POST['posttype']
-            
-      tree_bookmark_datasetname = request.POST['dataset']
-            
-      print 'tree_bookmark_datasetname----->' + tree_bookmark_datasetname + '\n\n\n\n'
-            
-      #print 'in a post request with parameters'
-            
-            
-      treename = request.POST['treename']
-            
-      #if there is no tree name give the tree a default name based on the timestamp
-      if treename == None or treename == '':
-        import time
-        millis = int(round(time.time() * 1000))
-        treename = 'tree' + str(millis)
-            
-            
-            
-      packages = ''
-      #defaults here
-      if request.POST['package'] == None:
-        packages = ['lmwg']
-      else:
-        packages = [request.POST['package'] ]
-            
-            
-            
-      vars= ''
-      variable_arr_str = request.POST['variable_arr_str']
-      if variable_arr_str == None:
-        #print 'variable_arr_str is None'
-        vars = ['TLAI', 'TG','NPP']
-      else:
-        #print 'variable_arr_str: ' + variable_arr_str
-        variable_arr = variable_arr_str.split(';')
-        vars = variable_arr
-                
-      times = ''
-      season_arr_str = request.POST['season_arr_str']
-      if season_arr_str == None:
-        #print 'season_arr_str is None'
-        times = ['MAR','APR','MAY','JUNE','JULY']
-      else:
-        season_arr = season_arr_str.split(';')
-        times = season_arr
-        
-      sets_arr = ''
-      sets_arr_str = request.POST['sets_arr_str']
-      if sets_arr_str == None:
-        print 'sets_arr_str is None'
-      else:
-        sets_arr = sets_arr_str.split(';')
-        print 's: ' + sets_arr[0] 
-            
-        
-      dataset = ''
-      path = ''
-      if request.POST['dataset'] == None:
-        dataset = 'tropics_warming_th_q_co2'
-        path = [default_tree_sample_data_dir + paths.dataset_name ]
-      else:
-        dataset = request.POST['dataset']
-        path = path = [default_tree_sample_data_dir + request.POST['dataset']]
-            
-            
-            
-            
-      #    username
-                
-      #static/exploratory_analysis/cache/tree/' username + '/json/' + dataset_name
-      #build tree here 
-      #if the post type is "submit" then grab "temp.json", otherwise it is a saved bookmark
-            
-      #old
-      #if posttype == 'submit':
-      #    treeFile = cache_dir + 'temp' + '.json'
-      #else:
-      #    treeFile = cache_dir + treename + '.json'
-            
-      if posttype == 'submit':
-        treeFile = cache_dir + username + '/json/' + 'temp' + '.json'
-      else:
-        treeFile = cache_dir + username + '/json/' + dataset + '/' + treename + '.json'
-            
-      import os
-      import os.path
-      #print 'created tree bookmark file: ' + (cache_dir + username + '/json/' + dataset)
-      #print 'treeFile exists? ' + str(os.path.isdir(cache_dir + username + '/json/' + dataset))
-      if not os.path.isdir(cache_dir + username + '/json/' + dataset):
-        print 'create dir'
-        os.makedirs(cache_dir + username + '/json/' + dataset)
-            
-      #### Start diagnostics generation here...
-      #username = user_id
-        
-      o = Options()
-       
-            
-      #print 'varsssss---->' + str(vars)
-       
-      ##### SET THESE BASED ON USER INPUT FROM THE GUI
-      o._opts['packages'] = packages
-      o._opts['vars'] = vars
-      o._opts['path'] = path
-      o._opts['times'] = times
-        
-            
-            
-      ### NOTE: 'ANN' won't work for times this way, but that shouldn't be a problem
-      datafiles = []
-      filetables = []
-      vars = o._opts['vars']
-      #   print vars
-    
-      #print 'packages--->' + str(packages)
-      #print 'vars--->' + str(vars)
-      #print 'times--->' + str(times)
-      #print 'dataset_list[0]--->' + dataset_list[0]
-    
-      print 'PATHS -------> ', o._opts['path']
-      for p in range(len(o._opts['path'])):
-        #print '\ndirtree\n',dirtree_datafiles(o,pathid=p)
-        datafiles.append(dirtree_datafiles(o,pathid=p))
-        filetables.append(basic_filetable(datafiles[p],o))
-            
-      #print 'Creating diags tree view JSON file...'
-        
-      #print 'ftnames->' + dataset_list[0]
-      #print 'filetables->' + str(filetables)
-        
-      print '\n\n\n\nFILENAME!!!! ' + treeFile
-        
-      tv = TreeView()
-      dtree = tv.makeTree(o, filetables,None,user=username,ftnames=[dataset_list[0]])
-      tv.dump(filename=treeFile)
-            
-            
-            
-      response_data = {}
-      response_data['treename'] = treename
-      response_data['username'] = username
-      return HttpResponse(json.dumps(response_data), content_type="application/json")
-            
-  #end if request.POST  
-            
-  if(loggedIn == True):
-    template = loader.get_template('exploratory_analysis/treeex.html')
-  else:
-    print 'username: ' + username
-        #print 'func: ' + str(func)
-            
-    func = treeviewer_treeex.func()
-    template = loader.get_template('exploratory_analysis/not_logged_in.html')
-    
-        
-        
-  treeloaded = 'false'
-        
-        
-        
-        
-  print 'figure bookmark list -> ' + str(figure_bookmark_list)
-        
-  print '\n\t\t\tloggedIn: ' + str(loggedIn) 
-        
-  context = RequestContext(request, {
-            'loggedIn' : str(loggedIn),
-            'username' : username,
-            'treeloaded' : treeloaded,
-            'package_list' : package_list,
-            'dataset_list' : dataset_list,
-            'variable_list' : variable_list,
-            'season_list' : season_list,
-            'set_list' : set_list,
-            'bookmark_list' : bookmark_list,
-            'figure_bookmark_list' : figure_bookmark_list,
-            'posttype':'save'
-                                          
-  })
-        
-
-  return HttpResponse(template.render(context))
-
-'''
 

@@ -118,3 +118,9 @@ class Dataset_Access(models.Model):
         return 'group_name: ' + self.group_name + ' datasets_list: ' + self.dataset_list
 
 
+
+class Variables(models.Model):
+    dataset_name = models.CharField(max_length=1000)
+    variables = models.TextField(null=True)
+    def __unicode__(self):
+        return self.dataset_name + ' ' + str(self.variables)

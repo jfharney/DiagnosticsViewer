@@ -13,7 +13,7 @@ EA.port = document.location.port
 EA.spinnerFlag = true;
 
 //EA.uvcdat_live_root = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live';
-EA.uvcdat_live_root = '/Users/i7j/DiagnosticsViewer/django-app/uvcdat_live/';
+EA.uvcdat_live_root = '/usr/local/uvcdat/DiagnosticsViewer/django-app/uvcdat_live/';
 
 
 //---------Tree settings----------//

@@ -70,6 +70,39 @@ function displayImageClick(imageURL)
 	clicked =1;
 }
 
+function displayTable(textTableURL)
+{
+	textTableURL = "http://acme-dev-2.ornl.gov:8081" + textTableURL;
+	if(textTableURL.endsWith('.json'))
+	{
+		var tableHTML = '<table id="r22" width="100%" height="600" cellspacing="0"><thead><tr><th>Name</th><th>Position</th><th>Office</th><th>Extn.</th><th>Start date</th><th>Salary</th> </tr></thead><tfoot><tr><th>Name</th><th>Position</th><th>Office</th><th>Extn.</th><th>Start date</th><th>Salary</th></tr></tfoot></table>';
+		document.getElementById("plotArea").style.visibility='visible';
+		document.getElementById("plotArea").innerHTML= '' + tableHTML;		
+
+//$(document).ready(function(){
+    $('#r22').DataTable( {
+        "ajax": {
+            "url": textTableURL,
+            "dataSrc": ""
+        },
+        "columns": [
+            { "data": "name" },
+            { "data": "position" },
+            { "data": "office" },
+            { "data": "extn" },
+            { "data": "start_date" },
+            { "data": "salary" }
+        ]
+    //} );
+    } );
+	}
+	else
+	{
+		document.getElementById("plotArea").style.visibility='visible';
+		document.getElementById("plotArea").innerHTML='<iframe src="' + textTableURL + '" width=100% height=800 frameborder=0 ></iframe>';
+	}
+	
+}
 
 function displayImageHover(imageURL)
 {
@@ -265,6 +298,8 @@ function hide_land_sets() {
 
 function hide_atm_sets() {
 	
+	
+	document.getElementById('amwg_settopten_html').style.display = 'none';
 	document.getElementById('amwg_set1_html').style.display = 'none';
 	document.getElementById('amwg_set2_html').style.display = 'none';
 	document.getElementById('amwg_set3_html').style.display = 'none';
@@ -289,5 +324,4 @@ function hide_land_home() {
 function hide_atm_home() {
 	document.getElementById('atmHome').style.display = 'none';
 }
-
 

@@ -53,7 +53,7 @@ urlpatterns = patterns('',
   
   
   #grabs variables given a dataset
-  url(r'^variables/(?P<dataset_id>\w+)/$',views.variables,name='variables'),
+  url(r'^variables/(?P<dataset_id>\w+)/(?P<package_id>\w+)/$',views.variables,name='variables'),
   
   url(r'^variables1/$',views.variables1,name='variables1'),
   
@@ -132,17 +132,22 @@ urlpatterns = patterns('',
   url(r'^postStateExample/$',views.postStateExample,name='postStateExample'),
   
   
+  #service API for retrieving dataset variables
+  url(r'^dataset_variables/(?P<dataset_name>\w+)/$',views.dataset_variables,name='dataset_variables'),
+  
+  
+  
   #for generation of classic views on the fly
   url(r'^classic_views/$',views.classic_views,name='classic_views'),
-  
-  #for generation of classic views on the fly
   url(r'^classic_views_html/$',views.classic_views_html,name='classic_views_html'),
   
+
   #for posting a new dataset to a group
   #url(r'^group_datasets/$',views.group_datasets,name='group_datasets'),
   
   #for posting a new dataset to a group
   url(r'^group_dataset/(?P<group_name>\w+)/$',views.group_dataset,name='group_dataset'),
+
   
 )
 
