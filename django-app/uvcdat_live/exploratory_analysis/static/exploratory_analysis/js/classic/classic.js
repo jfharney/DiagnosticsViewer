@@ -80,7 +80,7 @@ function displayTable(textTableURL)
 		document.getElementById("plotArea").innerHTML= '' + tableHTML;		
 
 //$(document).ready(function(){
-    document.getElementById("r22").dataTable( {
+    $('#r22').DataTable( {
         "ajax": {
             "url": textTableURL,
             "dataSrc": ""
