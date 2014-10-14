@@ -70,6 +70,39 @@ function displayImageClick(imageURL)
 	clicked =1;
 }
 
+function displayTable(textTableURL)
+{
+	textTableURL = "http://acme-dev-2.ornl.gov:8081" + textTableURL;
+	if(textTableURL.endsWith('.json'))
+	{
+		var tableHTML = '<table id="r22" width="100%" height="600" cellspacing="0"><thead><tr><th>Name</th><th>Position</th><th>Office</th><th>Extn.</th><th>Start date</th><th>Salary</th> </tr></thead><tfoot><tr><th>Name</th><th>Position</th><th>Office</th><th>Extn.</th><th>Start date</th><th>Salary</th></tr></tfoot></table>';
+		document.getElementById("plotArea").style.visibility='visible';
+		document.getElementById("plotArea").innerHTML= '' + tableHTML;		
+
+//$(document).ready(function(){
+    document.getElementById("r22").dataTable( {
+        "ajax": {
+            "url": textTableURL,
+            "dataSrc": ""
+        },
+        "columns": [
+            { "data": "name" },
+            { "data": "position" },
+            { "data": "office" },
+            { "data": "extn" },
+            { "data": "start_date" },
+            { "data": "salary" }
+        ]
+    //} );
+    } );
+	}
+	else
+	{
+		document.getElementById("plotArea").style.visibility='visible';
+		document.getElementById("plotArea").innerHTML='<iframe src="' + textTableURL + '" width=100% height=800 frameborder=0 ></iframe>';
+	}
+	
+}
 
 function displayImageHover(imageURL)
 {
