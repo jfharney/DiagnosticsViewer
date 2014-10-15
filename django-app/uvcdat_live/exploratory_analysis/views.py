@@ -64,6 +64,23 @@ figures_store = {}
 from django.http import HttpResponseRedirect
 
 
+def core_parameters(request):
+    
+    data = {}
+    
+    data['host'] = paths.ea_hostname
+    
+    data_string = json.dumps(data,sort_keys=False,indent=2)
+    
+    return HttpResponse(data_string)
+
+#Service API for the Dataset_Access table
+#GET
+#http://<host>:<port>/exploratory_analysis/group_dataset/<group>
+#POST
+#echo '{ "dataset" :  <dataset_name> }' | curl -d @- 'http://<host>:<port>/exploratory_analysis/group_dataset/<group>/' -H "Accept:application/json" -H "Context-Type:application/json"
+#DELETE
+#http://<host>:<port>/exploratory_analysis/group_dataset/<group>/
 def dataset_variables(request,dataset_name):
     
     from exploratory_analysis.models import Variables
@@ -149,16 +166,98 @@ def dataset_variables(request,dataset_name):
 
 
 
+#Models table has the form
+#group_name  |   dataset_list
+#where dataset_list is a comma separated text blob
+def group_dataset(request,group_name):
+    
+    from exploratory_analysis.models import Dataset_Access
+        
+    if request.method == 'POST':
+    
+        print '\nPOSTING new Dataset\n'    
+    
+        #load the json object
+        json_data = json.loads(request.body)
+            
+        #grab the dataset added
+        dataset = json_data['dataset'] #should be a string
+    
+        #grab the group record
+        da = Dataset_Access.objects.filter(group_name=group_name)
+        
+        #append dataset to the end of the dataset list
+        
+        new_dataset_list = ''
+        if da:
+            new_dataset_list = da[0].dataset_list
+            new_dataset_list = new_dataset_list + ',' + dataset
+        else:
+            new_dataset_list = dataset
+        
+        
+        #update the record
+        #delete the record and rewrite the record with the new dataset list
+        da.delete()
+        
+        
+        all = Dataset_Access.objects.all()
+        
+        
+        dataset_access_record = Dataset_Access(
+                                                  group_name=group_name,
+                                                  dataset_list=new_dataset_list
+                                                  )
+            
+        #save to the database
+        dataset_access_record.save()
+        
+        all = Dataset_Access.objects.all()
+        
+        print '\nEND POSTING new Dataset\n'    
+    
+        return HttpResponse("POST Done\n")
+    
+    elif request.method == 'GET':
 
+        print '\nIn GET\n'    
+        
+        #grab the group record
+        da = Dataset_Access.objects.filter(group_name=group_name)
+        
+        #if the dataset list is empty then return empty list
+        if not da:
+            data = {'dataset_list' : ''}
+            data_string = json.dumps(data,sort_keys=False,indent=2)
+            return HttpResponse(data_string + "\n")
+        
+        #otherwise grab the contents and return as a list
+        #note: da[0] is the only record in the filtering of the Dataset_Access objects
+        dataset_list = []
+        
+        for dataset in da[0].dataset_list.split(','):
+            dataset_list.append(dataset)
+            
+        data = {'dataset_list' : dataset_list}
+        data_string = json.dumps(data,sort_keys=False,indent=2)
 
+        return HttpResponse(data_string + "\n")
+    
+    elif request.method == 'DELETE':
 
+        print '\nIn DELETE\n'    
+        
+        #not sure if this is the right behavior but this will delete the ENTIRE record given the group
+        #grab the group record
+        da = Dataset_Access.objects.filter(group_name=group_name)
+        
+        da.delete()
+        
+        all = Dataset_Access.objects.all()
+        
+        return HttpResponse("DELETE Done\n")
 
-
-
-
-
-
-
+    return HttpResponse('DeleteError')    
 
 
 
@@ -180,21 +279,24 @@ def index(request):
 
     return HttpResponse(template.render(context))
 
+
+
+
 #Home page view...nothing fancy here just points to the view located at index.html
 #corresponds with url: http://<host>/exploratory_analysis
 def main(request,user_id):
     
     
-    print '\n\n\t\tuser_id: ' + str(user_id)
-    print 'user: ' + str(request.user)
+  
     
-    print 'main: noAuthReq: ', paths.noAuthReq
-    loggedIn = paths.noAuthReq
-    
-    if (str(request.user) == str(user_id)):
-        loggedIn = True
+    loggedIn = isLoggedIn(request,user_id)
     
     template = loader.get_template('exploratory_analysis/index.html')
+    if(loggedIn == False):
+        template = loader.get_template('exploratory_analysis/not_logged_in.html')
+    
+    
+    
     
     context = RequestContext(request, {
         'username' : str(user_id),
@@ -204,7 +306,17 @@ def main(request,user_id):
     return HttpResponse(template.render(context))
 
 
-
+def isLoggedIn(request,user_id):
+    print '\n\n\t\tuser_id: ' + str(user_id)
+    print 'user: ' + str(request.user)
+    
+    print 'main: noAuthReq: ', paths.noAuthReq
+    loggedIn = paths.noAuthReq
+    
+    if (str(request.user) == str(user_id)):
+        loggedIn = True
+        
+    return loggedIn
 
 
 #geo map/time series view
@@ -445,29 +557,19 @@ def classic(request,user_id):
       #print '\n\n\n\n\nrequest user authenticate: ' + str(request.user.is_authenticated()) + '\n\n\n\n'
     
     
-    #need a flag to indicated whether a tree 
-    #print '\n\n\n\n\n\n\n\t\t\tuser_id: ' + str(user_id)
-    #print 'user: ' + str(request.user)
-    
-    loggedIn = True
-    
-    if (str(request.user) == str(user_id)):
-        loggedIn = True
-    
     username = 'jfharney'
     
     #grab the username
     if user_id != None:
         username = user_id
-    
-    print 'LoggedIn: ' + str(loggedIn)
-    
-    if(loggedIn == True):
-        template = loader.get_template('exploratory_analysis/classic.html')
-    else:
-        print 'username: ' + username
-        template = loader.get_template('exploratory_analysis/not_logged_in.html')
         
+    loggedIn = isLoggedIn(request,user_id)
+    
+    template = loader.get_template('exploratory_analysis/classic.html')
+    if(loggedIn == False):
+        template = loader.get_template('exploratory_analysis/not_logged_in.html')
+    
+    
     context = RequestContext(request, {
       'loggedIn' : str(loggedIn),
       'username' : username,
@@ -596,11 +698,15 @@ def datasets(request,user_id):
 
 def datasets1(request,user_id):
     
-    print '\n\nIn datasets'
+    print request.META['REMOTE_ADDR']
+    
+    print '\n\nIn datasets for user_id: ' + user_id
     
     from menuhelper import datasets
     
     data_string = datasets.datasetListHelper1(request,user_id)
+    
+    print '\nEnd in datasets for user_id: ' + user_id
     
     return HttpResponse(data_string)
 
@@ -774,6 +880,8 @@ def diagplot(request):
 def login1(request):
     template = loader.get_template('exploratory_analysis/login1.html')
 
+
+    print 'going to login1.html...'
     context = RequestContext(request, {
         
     })
@@ -786,6 +894,7 @@ def login1(request):
 def logout1(request):
     
     
+    print 'going to logout1.html...'
     from django.contrib.auth import logout
     logout(request)
     
@@ -806,7 +915,7 @@ def logout1(request):
 def login(request):
     template = loader.get_template('exploratory_analysis/login.html')
 
-    print 'going to login1.html...'
+    print 'going to login.html...'
     context = RequestContext(request, {
         
     })
@@ -819,11 +928,14 @@ def login(request):
 def logout(request):
     
     
+    print 'going to logout.html...'
+    
     from django.contrib.auth import logout
     logout(request)
     
     template = loader.get_template('exploratory_analysis/logout.html')
 
+    
     context = RequestContext(request, {
         
     })
@@ -833,12 +945,108 @@ def logout(request):
 
 def auth(request):
     
+    print '\n\n\n\n\n\n\n\nin auth\n\n'
+    
     from django.contrib.auth import authenticate, login
     
-    if request.POST['username'] == None or request.POST['password'] == None:
-        return HttpResponse("Error")
     
     
+    
+    username1 = ''
+    password1 = ''
+    peernode1 = 'esg.ccs.ornl.gov'
+    
+    curlFlag = False
+    
+    if curlFlag:
+        json_data = json.loads(request.body)
+        username1 = json_data['username'] #should be a string
+        password1 = json_data['password'] #should be a list
+    
+    else:
+        
+        username1 = request.POST['username']
+        password1 = request.POST['password']
+    
+    
+    print 'username: ' + str(username1)
+    print 'password: ' + str(password1)
+    print 'peer node: ' + str(peernode1)
+    
+    
+    #if request.POST['username'] == None or request.POST['password'] == None:
+    #    return HttpResponse("Error")
+    
+    
+    from OpenSSL import crypto,SSL
+    
+    # for POST requests, attempt logging-in
+    if request.POST:
+        print 'it is a post...authenticating'
+        
+        from backends import authenticate1
+        
+        #authenticates to ESGF
+        if paths.esgfAccess:
+            user = authenticate1(username = username1,
+                             password = password1,
+                             peernode = peernode1)
+        
+        else:
+            
+            user = authenticate(username=username1,password=password1)
+            if user is not None:
+                
+                #authenticate to django
+                
+                print 'user n: ' + str(user.username) + ' ' + str(user.password)
+            
+                #login to the app and return the string "Authenticated"
+                login(request,user)
+                return HttpResponse('Authenticated')
+            else:
+                print 'user is None'
+                
+                from django.contrib.auth.models import User
+                
+                user = User.objects.create_user(username1, str(username1 + '@acme.com'), password1)
+                user = authenticate(username=username1,password=password1)
+            
+                print str('username1: ' + username1)
+                print str('password1: ' + password1)
+                
+                #login to the app and return the string "Authenticated"
+                login(request,user)
+                
+                return HttpResponse('Authenticated')
+        '''
+        if user is not None:
+            print 'username...' + user.username
+            print 'password...' + user.password
+        
+            print 'user: ' + str(user)
+            if user.is_active:
+                #redirect to a success page
+                #user = authenticate(username='jfharney',password='Mattryan12')
+                user.backend='django.contrib.auth.backends.ModelBackend'
+                login(request,user)
+                return HttpResponse('Authenticated')
+            else:
+                #return a 'disabled account'
+                #print 'disabled account'
+                return HttpResponse('Disabled')
+        else:
+            print 'Invalid Login'
+            #return an 'invalid login error
+            return HttpResponse('InvalidLogin')
+        '''
+        return HttpResponse('Authenticated')
+
+    else:
+        print 'it is not a post'
+        
+        
+    '''
     username = request.POST['username']
     password = request.POST['password']
     
@@ -877,7 +1085,8 @@ def auth(request):
         #return an 'invalid login error
         return HttpResponse('InvalidLogin')
     
-    
+    '''
+    return HttpResponse('Authenticatedd')
 
 
 def register(request):

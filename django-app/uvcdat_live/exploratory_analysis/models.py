@@ -110,6 +110,13 @@ class Long_Names(models.Model):
     def __unicode__(self):
         return self.short_name
 
+class Dataset_Access(models.Model):
+    group_name = models.CharField(max_length=1000)
+    dataset_list = models.TextField(null=True)
+    
+    def __unicode__(self):
+        return 'group_name: ' + self.group_name + ' datasets_list: ' + self.dataset_list
+
 
 
 class Variables(models.Model):

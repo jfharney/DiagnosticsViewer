@@ -5,10 +5,29 @@ var EA = EA || {};
 EA.cache_location = '../../../static/exploratory_analysis/img/treeex/';
 
 
-EA.host = 'acme-dev-2.ornl.gov';
+EA.host = 'localhost';
 
-EA.port = document.location.port
-//EA.port = '8081';
+EA.port = document.location.port;
+
+var core_parameters_url = '/exploratory_analysis/core_parameters';
+
+$.ajax({
+	type : "GET",
+	url : core_parameters_url,
+	async : false,
+	success : function(data) {
+		
+		var obj = JSON.parse(data);
+		
+		EA.host = obj['host'];
+	},
+	error: function() {
+		
+		alert('error in getting core parameters');
+		
+	}
+});
+
 
 EA.spinnerFlag = true;
 

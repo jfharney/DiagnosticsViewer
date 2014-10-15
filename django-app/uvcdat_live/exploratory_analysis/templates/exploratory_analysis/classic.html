@@ -564,7 +564,27 @@ body.loading #modal1 {
 
 <script>
 
-
+/* commented out 10-14
+function getUsernameFromURL(url) {
+	
+	//reverse the string
+	var i = url.length-1
+	var username = '';
+	var done = false;
+	while (!done) {
+		console.log('i: ' + i + ' ' + url[i]);
+		if((url[i] == '/') && (i != url.length-1)) {
+			done = true;
+		}
+		if(url[i] != '/') {
+			username = url[i] + username;
+		}
+		i--;		
+	}
+	
+	return username;
+}
+*/
 
 $(document).ready(function(){
 
@@ -572,10 +592,13 @@ $(document).ready(function(){
 	$body = $("body");
 	
 	
+	console.log('get the user name here ' + document.URL);
+	//var current_username = getUsernameFromURL(document.URL)
 	
+	var current_username = $('#username_posted').html();
+	//var current_username = 'jfhCSSEF';
+	console.log('current_username: ' + current_username);
 	
-	
-	var current_username = 'u1';
 	
 	getDatasets(current_username);
 	

@@ -5,6 +5,8 @@ import ConfigParser
 config = ConfigParser.ConfigParser()
 config.read('eaconfig.cfg')
 
+ea_hostname = config.get("paths",'ea_hostname')
+
 try:
    ea_root = config.get("paths", "ea_root")
 except:
@@ -24,6 +26,13 @@ if type(noAuthReq) is str and noAuthReq == 'True':
    noAuthReq = True
 else:
    noAuthReq = False
+   
+esgfAccess = config.get("options","esgfAccess")
+if type(esgfAccess) is str and esgfAccess == 'True':
+   esgfAccess = True
+else:
+   esgfAccess = False
+   
 
 database_name = database_root +"/mydb.db"
 
