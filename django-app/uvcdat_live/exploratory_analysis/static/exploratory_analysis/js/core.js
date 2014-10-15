@@ -5,9 +5,10 @@ var EA = EA || {};
 EA.cache_location = '../../../static/exploratory_analysis/img/treeex/';
 
 
-EA.host = 'localhost';
+EA.host = 'acme-dev-2.ornl.gov';
 
 EA.port = document.location.port;
+
 
 var core_parameters_url = '/exploratory_analysis/core_parameters';
 

@@ -103,8 +103,14 @@ function getPackages(current_username) {
 }
 
 function getVariables(current_username) {
-	console.log($("#selectP").val());
-	url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/variables' + '/' + $('#selectD').val() + '/' + $('#selectP').val() + '/';
+	var pckg = $("#selectP").val();
+	var dataset = $('#selectD').val();
+	//make some defaults for testing
+	//TODO: replace or just dump this
+	if(dataset == null && pckg == 'lmwg') dataset = 'tropics_warming_th_q';
+	else if(dataset == null) dataset = 'f40_amip_cam5_c03_78b';
+	
+	url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/variables' + '/' + dataset + '/' + pckg + '/';
 	
 	
 	var varList = EA.varList;//["GPP","NEE","HR","ER","NPP","QVEGT","QVEGE","QSOIL","GROSSNMIN"];
