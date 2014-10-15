@@ -772,8 +772,12 @@ def variables(request,dataset_id,package_id):
     
         print("GET Done\n")
         print(data_string)
+        variables = {'vars': [], 'seasons': []} 
+        variables['seasons'] = ['ANN', 'DJF', 'MAM', 'JJA', 'SON', 'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
+        variables['vars'] = dataset_list;
+        
         if data_string != "":
-             return HttpResponse(data_string + "\n")
+             return HttpResponse(json.dumps(variables))
 
 
     opts = Options()
@@ -1507,7 +1511,7 @@ def classic_views(request):
                     html+='<a href="#" onclick="displayImageClick('
                     #file.write(url_prefixIMAGE)#Here we write gif name
                     html+='\''
-                    html+='http://acme-dev-2.ornl.gov' + generate_token_url(url_prefixIMAGE + key + '.gif')
+                    html+= paths.ea_hostname + generate_token_url(url_prefixIMAGE + key + '.gif')
                     html+='\''
                     html+=');" onmouseover="displayImageHover(\''
                     #file.write(url_prefixIMAGE)#Here we write gif name again
