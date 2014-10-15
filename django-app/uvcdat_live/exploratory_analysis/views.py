@@ -263,45 +263,6 @@ def group_dataset(request,group_name):
 
 
 
-
-'''
-def group_datasets(request):
-
-    print '\n\n'    
-    from exploratory_analysis.models import Dataset_Access
-
-    
-    print 'in group datasets'
-    
-    json_data = json.loads(request.body)
-        
-    dataset = json_data['dataset'] #should be a string
-        
-    print 'dataset: ' + dataset
-    
-    myList = ['a','b']
-    myJsonList = json.dumps(myList)
-    print str(myJsonList)
-    
-    
-    dad = Dataset_Access.objects.filter(group_name="ACME")
-    dad.delete()
-    
-    dad = Dataset_Access.objects.filter(group_name="OTHER")
-    dad.delete()
-
-
-
-    dac = Dataset_Access.objects.create(group_name="ACME",dataset_list="tropics_warming_th_q_co2_3year,tropics_warming_th_q")
-    dac = Dataset_Access.objects.create(group_name="OTHER",dataset_list="tropics_warming_th_q_co2_2year")
-
-    all = Dataset_Access.objects.all()
-    print 'all: ' + str(all)
-
-    print '\n\n'
-    return HttpResponse("Done\n")
-'''
-
   ############
   #Page views#
   ############
