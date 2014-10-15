@@ -110,6 +110,9 @@ function getVariables(current_username) {
 	if(dataset == null && pckg == 'lmwg') dataset = 'tropics_warming_th_q';
 	else if(dataset == null) dataset = 'f40_amip_cam5_c03_78b';
 	
+	
+	dataset = encodeURIComponent(dataset);
+	
 	url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/variables' + '/' + dataset + '/' + pckg + '/';
 	
 	

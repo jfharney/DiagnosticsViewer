@@ -110,7 +110,7 @@ def datasetListHelper1(request,user_id):
        data = {'datasets' : dataset_list_returned } #datasets_in_groups}
        data_string = json.dumps(data,sort_keys=False,indent=2)
        print 'returning disks: ' + str(datasets_lists_returned)
-       return data_string
+       #return data_string
     
     
     #get the datasets from the groups
@@ -149,7 +149,7 @@ def datasetListHelper1(request,user_id):
             print 'jfharney user'
             response_str = jfharney_response_str
         else:
-            response_str = jfhNone_response_str
+            response_str = jfhACME_response_str
         
     
     
