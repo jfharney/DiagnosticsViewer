@@ -74,8 +74,9 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
          html += '<TH>'+season
       for r in regions:
          html +='<TR>'
+         html+='<TH>'+r+'</TH>'
          for season in seasons:
-            html +='   <TH ALIGN=LEFT><A HREF="table_'+regions[r]+'_'+season+'.asc">table<\/a>'
+            html +='   <TH ALIGN=LEFT><A HREF="table_'+regions[r]+'_'+season+'.asc">table</a>'
       html += '</TABLE>'
       return html
 
