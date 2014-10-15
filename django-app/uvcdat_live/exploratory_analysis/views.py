@@ -66,8 +66,6 @@ from django.http import HttpResponseRedirect
 
 def core_parameters(request):
     
-    host = 'localhost'
-    
     data = {}
     
     data['host'] = paths.ea_hostname
@@ -707,6 +705,8 @@ def datasets1(request,user_id):
     from menuhelper import datasets
     
     data_string = datasets.datasetListHelper1(request,user_id)
+    
+    print '\nEnd in datasets for user_id: ' + user_id
     
     return HttpResponse(data_string)
 

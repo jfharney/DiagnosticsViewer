@@ -35,21 +35,11 @@ def getGroupsFromESGF(username):
 
     return data
 
-
-
-def datasetListHelper1(request,user_id):
-
-
+def getGroupsFromFileSystem():
+    
     import glob
     import json
-    from django.http import HttpResponse
-    from django.http import HttpResponseServerError
-    
-    
-    if datasetListDebug:
-        print 'in datasetListHelper1 for user_id: ' + user_id
-    #datasets = ['tropics_warming_th_q_co2']
-    
+    from django.contrib.auth.models import User
     
     datasets = []
     
@@ -58,24 +48,152 @@ def datasetListHelper1(request,user_id):
       #print 'f: ' + f_arr[len(f_arr)-1]
       datasets.append(f_arr[len(f_arr)-1])
     
-    from django.contrib.auth.models import User
     print 'dataset_list: ' + str(datasets)
     
+    return datasets
     
-    data = {'datasets' : datasets } #datasets_in_groups}
-    data_string = json.dumps(data,sort_keys=False,indent=2)
+
+def datasetListHelper1(request,user_id):
+
+
+    import glob
+    import json
+    from django.http import HttpResponse
+    from django.http import HttpResponseServerError
+    from django.contrib.auth.models import User
     
-    '''Commented out 10-14 so that a commit will be stable - still marked as TODO
+    
     if datasetListDebug:
+        print 'in datasetListHelper1 for user_id: ' + user_id
         print 'paths.esgfAccess: ' + str(paths.esgfAccess)
+    
+    #if user doesn't exist or if user is not active then return nothing
+    try:
+        print 'user does exist'
+        
+        User.objects.get(username=user_id)
+        #get the user object
+        user = User.objects.get(username=user_id)    
+    
+        
+        print 'username: ' + str(user.is_active)
+    
+        if not user.is_active:
+            print 'user is not active - return blank list'
+            data = {'dataset_list' : ''}
+            data_string = json.dumps(data,sort_keys=False,indent=2)
+            return data_string
+        
+    except User.DoesNotExist:
+        print 'user does not exist'
+        
+        data = {'datasets' : '' } #datasets_in_groups}
+        data_string = json.dumps(data,sort_keys=False,indent=2)
+    
+        return data_string
+    
+    
+    print 'user is active and exists'
+    
+    #get the datasets from the filesystem
+    disk_datasets = getGroupsFromFileSystem()
+    
+    
+    
+    
+    
+    datasets_lists_returned = disk_datasets
+    
+    if datasetListDebug:
+        print 'returning disks: ' + str(datasets_lists_returned)
+    
+    
+    #get the datasets from the groups
+    response_str = ''
+    
+    if paths.esgfAccess:
+        groups_list_str = getGroupsFromESGF(user_id)
+        
+        if datasetListDebug:
+            print 'Groups returned by ESGF: ' + groups_list_str
+            
+        response_str = groups_list_str
+    else:
+        #examples
+        jfhNone_response_str = '{ "groups" : [] }'
+        jfhCSSEF_response_str = '{ "groups": [ "CSSEF" ] }'
+        jfhACME_response_str = '{ "groups": [ "ACME" ] }'
+        jfhACMECSSEF_response_str = '{ "groups" : [ "ACME" , "CSSEF" ] }'
+        jfharney_response_str = '{ "groups" : [ "ACME" , "CSSEF" ] }'
+        
+        response_str = ''
+        
+        if user.username == 'None':
+            print 'None user'
+            response_str = jfhNone_response_str
+        elif user.username == 'jfhCSSEF':
+            print 'jfhCSSEF user'
+            response_str = jfhCSSEF_response_str
+        elif user.username == 'jfhACME':
+            print 'jfhACME user'
+            response_str = jfhACME_response_str
+        elif user.username == 'jfhACMECSSEF':
+            print 'jfhACMECSSEF user'
+            response_str = jfhACMECSSEF_response_str
+        elif user.username == 'jfharney':
+            print 'jfharney user'
+            response_str = jfharney_response_str
+        else:
+            response_str = jfhNone_response_str
         
     
-    #Step 0 - get the user object
-    user = User.objects.get(username=user_id)    
     
-    #print 'userrrrrrrr: ' + user.username
+    groups_response_json = json.loads(response_str)
     
-    if User.DoesNotExist:
+    groups_list = []
+    for group in groups_response_json['groups']:
+        groups_list.append(group)
+    
+    if datasetListDebug:
+        print 'groups_list: ' + str(groups_list)
+    
+    from exploratory_analysis.models import Dataset_Access
+    
+    datasets_in_groups = []
+    
+    for group_name in groups_list:
+        da = Dataset_Access.objects.filter(group_name=group_name)
+        if da:
+            new_dataset_list_str = da[0].dataset_list
+            
+            #take intersection of these groups ^^^^
+            for dataset_item in new_dataset_list_str.split(','):
+                datasets_in_groups.append(dataset_item)
+                print 'dataset_item: ' + dataset_item
+   
+    
+    #take the intersection of datasets on disk and datasets from the group database
+    dataset_list_returned = list(set(datasets_in_groups).intersection(disk_datasets))
+    
+    data = {'datasets' : dataset_list_returned } #datasets_in_groups}
+    data_string = json.dumps(data,sort_keys=False,indent=2)
+    
+    return data_string
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    '''
+    
+    
+    #if user doesn't exist, user cannot see any datasets
+    if user.DoesNotExist:
         data = {'dataset_list' : ''}
         data_string = json.dumps(data,sort_keys=False,indent=2)
         
@@ -83,8 +201,15 @@ def datasetListHelper1(request,user_id):
             print 'user does not exist - no datasets will be listed'
     
         return HttpResponse(data_string + "\n")
-        
-    #Step 1 - grab the groups that this user belongs to
+    
+    
+    print str(datasets_lists_returned)
+    
+    
+    
+    
+    
+    #grab the groups that this user belongs to
     #This will involve a call to the ESGF node
     
     if paths.esgfAccess:
@@ -194,13 +319,9 @@ def datasetListHelper1(request,user_id):
     data_string = json.dumps(data,sort_keys=False,indent=2)
     
     print 'data_string: ' + str(data_string)
-    
-    
-    data = {'datasets' : datasets_lists_returned } #datasets_in_groups}
-    data_string = json.dumps(data,sort_keys=False,indent=2)
-    
     '''
-    return data_string
+    
+    
 
 
 
