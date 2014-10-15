@@ -1224,8 +1224,8 @@ def classic_views(request):
                   #JOHN's example code
             #########################################
             #change this to the specified directory structure
-            url_prefix = paths.staticfiles_dirs + "/img/classic/" + package + "/" + set + "/"
-            url_prefixIMAGE = "/" + package + "/" + set + "/set1_"
+            url_prefix = paths.staticfiles_dirs + "/img/classic/" + dataset + "/" + package + "/"
+            url_prefixIMAGE = "/" + dataset + "/" + package + "/set1_"
             
             #assemble the url to be returned
             url = url_prefix + set + ".html"
@@ -1312,7 +1312,7 @@ def classic_views(request):
     
     
         
-            url_prefix = "/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
+            url_prefix = "/static/exploratory_analysis/img/classic/" + dataset + "/" + package + "/"
             
             
         
@@ -1327,8 +1327,8 @@ def classic_views(request):
             #########################################
             #change this to the specified directory structure
 
-            url_prefix = paths.staticfiles_dirs + "/img/classic/" + package + "/" + set + "/"
-            url_prefixIMAGE = "\'/static/exploratory_analysis/img/classic/" + package + "/" + set + "/set2_"
+            url_prefix = paths.staticfiles_dirs + "/img/classic/" + package + "/" + dataset + "/"
+            url_prefixIMAGE = "\'/static/exploratory_analysis/img/classic/" + package + "/" + dataset + "/set2_"
 
             
             #assemble the url to be returned
