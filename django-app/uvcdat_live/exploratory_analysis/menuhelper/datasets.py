@@ -105,7 +105,12 @@ def datasetListHelper1(request,user_id):
     datasets_lists_returned = disk_datasets
     
     if datasetListDebug:
-        print 'returning disks: ' + str(datasets_lists_returned)
+       dataset_list_returned = disk_datasets
+       
+       data = {'datasets' : dataset_list_returned } #datasets_in_groups}
+       data_string = json.dumps(data,sort_keys=False,indent=2)
+       print 'returning disks: ' + str(datasets_lists_returned)
+       return data_string
     
     
     #get the datasets from the groups
