@@ -149,6 +149,7 @@
 								<li>
 									<a href="#" id="logout_link">Logout</a>
 								</li> 
+								
 							{% else %}
 							
 								<li>
@@ -156,6 +157,13 @@
 								</li> 
 							
 							
+							{% endif %}
+						</ul>
+						<ul class="nav navbar-nav navbar-right">
+							{% if loggedIn == "True" %}
+							<li>
+								<a href="#" id="stamp">user: https://esg.ccs.ornl.gov/esgf-idp/openid/{{username}}</a>
+							</li>
 							{% endif %}
 						</ul>
 
