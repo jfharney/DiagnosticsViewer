@@ -772,8 +772,12 @@ def variables(request,dataset_id,package_id):
     
         print("GET Done\n")
         print(data_string)
+        variables = {'vars': [], 'seasons': []} 
+        variables['seasons'] = ['ANN', 'DJF', 'MAM', 'JJA', 'SON', 'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
+        variables['vars'] = dataset_list;
+        
         if data_string != "":
-             return HttpResponse(data_string + "\n")
+             return HttpResponse(json.dumps(variables))
 
 
     opts = Options()
@@ -1507,11 +1511,11 @@ def classic_views(request):
                     html+='<a href="#" onclick="displayImageClick('
                     #file.write(url_prefixIMAGE)#Here we write gif name
                     html+='\''
-                    html+='http://acme-dev-2.ornl.gov' + generate_token_url(url_prefixIMAGE + key + '.gif')
+                    html+= 'http://' + paths.ea_hostname + generate_token_url(url_prefixIMAGE + key + '.gif')
                     html+='\''
                     html+=');" onmouseover="displayImageHover(\''
                     #file.write(url_prefixIMAGE)#Here we write gif name again
-                    html+='http://acme-dev-2.ornl.gov' + generate_token_url(url_prefixIMAGE + key + '.gif')
+                    html+='http://' + paths.ea_hostname + generate_token_url(url_prefixIMAGE + key + '.gif')
                     html+='\''
                     html+=');" onmouseout="nodisplayImage();">plot</A>\n'
                     html+="</TR>\n"
@@ -1589,15 +1593,10 @@ def classic_views(request):
                     for time in times:                
                         html+='<td ALIGN=LEFT>'
                         html+='<a href="#" onclick="displayImageClick('
-                        html+=url_prefixIMAGE#Here we write gif name
-                        html+=time+'_'
-                        html+=key
-                        html+='.gif\''
+                        html+='http://' + paths.ea_hostname + generate_token_url(url_prefixIMAGE + time +'_' + key + '.gif')
                         html+=');" onmouseover="displayImageHover('
-                        html+=url_prefixIMAGE#Here we write gif name again
-                        html+=time+'_'
-                        html+=key
-                        html+='.gif\''
+                        html+='http://' + paths.ea_hostname + generate_token_url(url_prefixIMAGE + time +'_' + key + '.gif')
+                        html+='\''
                         html+=');" onmouseout="nodisplayImage();">plot</A>\n'
                         html+='</td>'
                     html+="</TR>\n"
@@ -1618,7 +1617,7 @@ def classic_views(request):
              #########################################
             #change this to the specified directory structure
             url_prefix = paths.staticfiles_dirs + "/img/classic/" + package + "/" + set + "/"
-            url_prefixIMAGE = "\'/static/exploratory_analysis/img/classic/" + package + "/" + set + "/set3_"
+            url_prefixIMAGE = "/" + dataset + "/" + package +  "/set3_"
             
             #assemble the url to be returned
             url = url_prefix + set + ".html"
@@ -1650,8 +1649,8 @@ def classic_views(request):
             html+="<TR>\n"
             html+="<td ALIGN=LEFT><B>All Model Data Regions</font>\n</td>"
             html+='<td>'
-            html+='<a href="#" onclick="displayImageClick(\'set3_reg_all.gif\''
-            html+=');" onmouseover="displayImageHover(\'set3_reg_all.gif\''
+            html+='<a href="#" onclick="displayImageClick(\'' + 'http://' + paths.ea_hostname + generate_token_url(url_prefixIMAGE + 'reg_all.gif') + '\''
+            html+=');" onmouseover="displayImageHover(\'' + 'http://' + paths.ea_hostname + generate_token_url(url_prefixIMAGE + 'reg_all.gif') + '\''
             html+=');" onmouseout="nodisplayImage();">Map</A>\n'
             html+='</td>'
             html+="</TR>\n"
@@ -1684,26 +1683,16 @@ def classic_views(request):
                     html+='</td>\n'
                     html+='\n'
                     html+='<td>'
-                    html+='<a href="#" onclick="displayImageClick(\'set3_reg_'+region+'.gif\''
-                    html+=');" onmouseover="displayImageHover(\'set3_reg_'+region+'.gif\''
+                    html+='<a href="#" onclick="displayImageClick(\'' + 'http://' + paths.ea_hostname + generate_token_url(url_prefixIMAGE + 'reg_' + region + '.gif') + '\''
+                    html+=');" onmouseover="displayImageHover(\'' + 'http://' + paths.ea_hostname + generate_token_url(url_prefixIMAGE + 'reg_' + region + '.gif') + '\''
                     html+=');" onmouseout="nodisplayImage();">Map</A>'
                     html+='</td>\n'
                     for var in vars:              
                         html+='<td ALIGN=center>'
                         html+='<a href="#" onclick="displayImageClick('
-                        html+=url_prefixIMAGE#Here we write gif name
-                        #html+=vardict[var]['filekey']+'_'
-                        html+=var+'_'
-                        #html+=regdict[region]['filekey']
-                        html+=region
-                        html+='.gif\''
+                        html+='http://' + paths.ea_hostname + generate_token_url(url_prefixIMAGE + var+'_'+region+'.gif') +'\''
                         html+=');" onmouseover="displayImageHover('
-                        html+=url_prefixIMAGE#Here we write gif name again
-                        #html+=vardict[var]['filekey']+'_'
-                        html+=var+'_'
-                        #html+=regdict[region]['filekey']
-                        html+=region
-                        html+='.gif\''
+                        html+='http://' + paths.ea_hostname + generate_token_url(url_prefixIMAGE + var+'_'+region+'.gif') +'\''
                         html+=');" onmouseout="nodisplayImage();">Plot</A>'
                         html+='</td>\n'
                     html+="</TR>\n"
@@ -1723,7 +1712,7 @@ def classic_views(request):
             #########################################
             #change this to the specified directory structure
             url_prefix = paths.staticfiles_dirs + "/img/classic/" + package + "/" + set + "/"
-            url_prefixIMAGE = "\'/static/exploratory_analysis/img/classic/" + package + "/" + set + "/set5_"
+            url_prefixIMAGE = "/" + dataset + "/" + package +  "/set5_"
             
             #assemble the url to be returned
             url = url_prefix + set + ".html"
@@ -1759,22 +1748,22 @@ def classic_views(request):
             html+="<tr>"
             html+='<TH ALIGN=LEFT>Regional Hydrologic Cycle'
             html+='<TH ALIGN=LEFT><font color=black><A HREF= "#" onclick="displayTable('
-            html+=url_prefixIMAGE
-            html+='hydReg.txt\')\";>Table</a></font>'
+            html+='http://' + paths.ea_hostname + generate_token_url(url_prefixIMAGE + 'hydReg.txt') +'\''
+            html+=')\";>Table</a></font>'
             html+='</tr>'
                         
             html+="<tr>"
             html+='<TH ALIGN=LEFT>Global Biogeophysics'
             html+='<TH ALIGN=LEFT><font color=black><A HREF= "#" onclick="displayTable('
-            html+=url_prefixIMAGE
-            html+='clm.txt\')\";>Table</a></font>'
+            html+=u'http://' + paths.ea_hostname + generate_token_url(url_prefixIMAGE + 'clm.txt')
+            html+='\')\";>Table</a></font>'
             html+='</tr>'
             
             html+='<tr>'
             html+='<TH ALIGN=LEFT>Global Carbon/Nitrogen'     
             html+='<TH ALIGN=LEFT><font color=black><A HREF= "#" onclick="displayTable('
-            html+=url_prefixIMAGE
-            html+='cn.json\')\";>Table</a></font>'
+            html+='http://' + paths.ea_hostname + generate_token_url(url_prefixIMAGE + 'cn.json')
+            html+='\')\";>Table</a></font>'
             html+='</tr>'
                  
                  
@@ -1790,7 +1779,7 @@ def classic_views(request):
              #########################################
             #change this to the specified directory structure
             url_prefix = paths.staticfiles_dirs + "/img/classic/" + package + "/" + set + "/"
-            url_prefixIMAGE = "\'/static/exploratory_analysis/img/classic/" + package + "/" + set + "/set3_"
+            url_prefixIMAGE = "/" + dataset + "/" + package +  "/set3_"
             
             #assemble the url to be returned
             url = url_prefix + set + ".html"
@@ -1830,8 +1819,8 @@ def classic_views(request):
             html+="<TR>\n"
             html+="<td ALIGN=LEFT><B>All Model Data Regions</font>\n</td>"
             html+='<td>'
-            html+='<a href="#" onclick="displayImageClick(\'set6_reg_all.gif\''
-            html+=');" onmouseover="displayImageHover(\'set6_reg_all.gif\''
+            html+='<a href="#" onclick="displayImageClick(\'' + 'http://' + paths.ea_hostname + generate_token_url(url_prefixIMAGE + 'reg_all.gif') + '\''
+            html+=');" onmouseover="displayImageHover(\'' + 'http://' + paths.ea_hostname + generate_token_url(url_prefixIMAGE + 'reg_all.gif') + '\''
             html+=');" onmouseout="nodisplayImage();">Map</A>\n'
             html+='</td>'
             html+="</TR>\n"
@@ -1865,19 +1854,9 @@ def classic_views(request):
                     for var in vars:              
                         html+='<td ALIGN=center>'
                         html+='<a href="#" onclick="displayImageClick('
-                        html+=url_prefixIMAGE#Here we write gif name
-                        #html+=vardict[var]['filekey']+'_'
-                        html+=var+'_'
-                        #html+=regdict[region]['filekey']
-                        html+=region
-                        html+='.gif\''
+                        html+='http://' + paths.ea_hostname + generate_token_url(url_prefixIMAGE + var+'_'+region+'.gif') +'\''
                         html+=');" onmouseover="displayImageHover('
-                        html+=url_prefixIMAGE#Here we write gif name again
-                        #html+=vardict[var]['filekey']+'_'
-                        html+=var+'_'
-                        #html+=regdict[region]['filekey']
-                        html+=region
-                        html+='.gif\''
+                        html+='http://' + paths.ea_hostname + generate_token_url(url_prefixIMAGE + var+'_'+region+'.gif') +'\''
                         html+=');" onmouseout="nodisplayImage();">Plot</A>'
                         html+='</td>\n'
                     html+="</TR>\n"
@@ -1896,7 +1875,7 @@ def classic_views(request):
             #########################################
             #change this to the specified directory structure
             #url_prefix = "/home/user/Desktop/AptanaWorkspace/climate/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
-            url_prefixIMAGE = "\'/static/exploratory_analysis/img/classic/" + package + "/" + set + "/set7_"
+            url_prefixIMAGE = "/" + dataset + "/" + package +  "/set7_"
             url_prefix = paths.staticfiles_dirs + "/img/classic/" + package + "/" + set + "/"
             
             #assemble the url to be returned
@@ -1920,12 +1899,12 @@ def classic_views(request):
             html+="<TH ALIGN=LEFT><font color=red>TABLE</font>\n"
             html+="<TR>\n"
             html+="<TH ALIGN=LEFT>RTM flow at station for world's 50 largest rivers\\n"
-            html+="<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayTable("+url_prefixIMAGE+"table_RIVER_STN_VOL.txt');\">Table</A> \n"
+            html+="<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayTable(\'http://"+generate_token_url(url_prefixIMAGE+"table_RIVER_STN_VOL.txt") + "\');\">Table</A> \n"
             html+="<TR>\n"
             html+="<TH ALIGN=LEFT><font color=red>SCATTER PLOTS</font>\n"
             html+="<TR>\n"
             html+="<TH ALIGN=LEFT>RTM flow at station versus obs for world's 10 largest rivers (QCHANR) \n"
-            html+="<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"scatter_50riv.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"scatter_50riv.gif');\" onmouseout=\"nodisplayImage();\">plot</A> \n"
+            html+="<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick(\'http://"+generate_token_url(url_prefixIMAGE+"scatter_50riv.gif") + "\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"scatter_50riv.gif');\" onmouseout=\"nodisplayImage();\">plot</A> \n"
             html+="<TR>\n"
             html+="<TH ALIGN=LEFT><font color=red>LINE PLOTS</font>\n"
             html+="<TR>\n"
@@ -1977,7 +1956,7 @@ def classic_views(request):
             #########################################
             #change this to the specified directory structure
             #url_prefix = "/home/user/Desktop/AptanaWorkspace/climate/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/img/classic/" + package + "/" + set + "/"
-            url_prefixIMAGE = "\'/static/exploratory_analysis/img/classic/" + package + "/" + set + "/set9_"
+            url_prefixIMAGE = "/" + dataset + "/" + package +  "/set9_"
             url_prefix = paths.staticfiles_dirs + "/img/classic/" + package + "/" + set + "/"
             
             #assemble the url to be returned

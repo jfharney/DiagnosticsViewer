@@ -2,6 +2,26 @@ from paths import paths
 from amwgmaster import *
 import os
 
+def generate_token_url(filename):
+    #!/usr/bin/env python
+    import os, time, hashlib
+    
+    secret = "secret string"                                # Same as AuthTokenSecret
+    protectedPath = "/acme-data/"                           # Same as AuthTokenPrefix
+    ipLimitation = False                                    # Same as AuthTokenLimitByIp
+    hexTime = "{0:x}".format(int(time.time()))              # Time in Hexadecimal      
+    fileName = filename                       # The file to access
+    
+    # Let's generate the token depending if we set AuthTokenLimitByIp
+    if ipLimitation:
+      token = hashlib.md5(''.join([secret, fileName, hexTime, os.environ["REMOTE_ADDR"]])).hexdigest()
+    else:
+      token = hashlib.md5(''.join([secret, fileName, hexTime])).hexdigest()
+    
+    # We build the url
+    url = ''.join([protectedPath, token, "/", hexTime, fileName])
+    return url 
+
 def pageGenerator(sets, varlist, times, package, dataset, options):
    dataset = 'f40_amip_cam5_c03_78b'
    img_prefix = os.path.join(paths.img_cache_path, package, dataset,'')
@@ -84,7 +104,7 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
    if sets == '14':
       html += '<TR>'
       html += ' <TH ALIGN=LEFT>Space and Time'
-      fname = img_prefix+'set14_ANN_SPACE_TIME.png'
+      fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package + '/set14_ANN_SPACE_TIME.png')
       click = 'onclick="displayImageClick(\''+fname+'\');" '
       over = 'onmouseover="displayImageHover(\''+fname+'\');" '
       out = 'onmouseout="nodisplayImage();" '
@@ -94,7 +114,7 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
       html += ' <TH ALIGN=LEFT>Space only'
       seasons = ['ANN', 'DJF', 'MAM', 'JJA', 'SON']
       for season in seasons:
-         fname = img_prefix+'set14_'+season+'_SPACE.png'
+         fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package + '/set14_'+season+'_SPACE.png')
          click = 'onclick="displayImageClick(\''+fname+'\');" '
          over = 'onmouseover="displayImageHover(\''+fname+'\');" '
          out = 'onmouseout="nodisplayImage();" '
@@ -109,7 +129,7 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
       html += '<TH ALIGN=LEFT>Space and Time'
       varl = {'Correlation':'CC', 'Variance': 'VAR', 'Bias':'BIAS'}
       for v in varl.keys():
-         fname = img_prefix+'set14.METRICS_'+varl[v]+'_SPACE_TIME.png'
+         fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package + '/set14.METRICS_'+varl[v]+'_SPACE_TIME.png')
          click = 'onclick="displayImageClick(\''+fname+'\');" '
          over = 'onmouseover="displayImageHover(\''+fname+'\');" '
          out = 'onmouseout="nodisplayImage();" '
@@ -117,14 +137,14 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
       html += '<TR>'
       html += '<TH ALIGN=LEFT>Space only'
       for v in varl.keys():
-         fname = img_prefix+'set14.METRICS_'+varl[v]+'_SPACE.png'
+         fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package + '/set14.METRICS_'+varl[v]+'_SPACE.png')
          click = 'onclick="displayImageClick(\''+fname+'\');" '
          over = 'onmouseover="displayImageHover(\''+fname+'\');" '
          out = 'onmouseout="nodisplayImage();" '
          html += ' <TH ALIGN=LEFT><A HREF="#" '+click+over+out+'">'+v+'</a>'
       html += '<TR>'
       html += '<TH ALIGN=LEFT>Time only'
-      fname = img_prefix+'set14.METRICS_CC_TIME.png'
+      fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set14.METRICS_CC_TIME.png')
       click = 'onclick="displayImageClick(\''+fname+'\');" '
       over = 'onmouseover="displayImageHover(\''+fname+'\');" '
       out = 'onmouseout="nodisplayImage();" '
@@ -140,7 +160,7 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
       for v in varl.keys():
          html += '<TR>'
          html += ' <TH ALIGN=LEFT>'+v
-         fname =img_prefix+'set2_'+varl[v]+'.png'
+         fname ='http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package + '/set2_'+varl[v]+'.png')
          click = 'onclick="displayImageClick(\''+fname+'\');" '
          over = 'onmouseover="displayImageHover(\''+fname+'\');" '
          out = 'onmouseout="nodisplayImage();" '
@@ -187,22 +207,22 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
                   for season in seasons:
                      if sets == '7':
                         if '_VISIR' in v:
-                           fname = img_prefix+'set'+sets+'_'+season+'_'+v.replace('_NORTH','')+'_NP.png'
+                           fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package + '/set'+sets+'_'+season+'_'+v.replace('_NORTH','')+'_NP.png')
                         elif 'SURF_WIND' in v:
-                           fname = img_prefix+'set'+sets+'_'+season+'_WIND_SURF_'+obsfname+'_NP.png'
+                           fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+season+'_WIND_SURF_'+obsfname+'_NP.png')
                         else:
-                           fname = img_prefix+'set'+sets+'_'+season+'_'+v.replace('_NORTH','')+'_'+obsfname+'_NP.png'
+                           fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+season+'_'+v.replace('_NORTH','')+'_'+obsfname+'_NP.png')
                      else:
                         if '_VISIR' in v:
-                           fname = img_prefix+'set'+sets+'_'+season+'_'+v+'.png'
+                           fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+season+'_'+v+'.png')
                         elif '_TROP' in v:
-                           fname = img_prefix+'set'+sets+'_'+season+'_'+v.replace('_TROP','')+'_'+obsfname+'.png'
+                           fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+season+'_'+v.replace('_TROP','')+'_'+obsfname+'.png')
                         elif '_LAND' in v:
-                           fname = img_prefix+'set'+sets+'_'+season+'_PRECT_PRECL.png'
+                           fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+season+'_PRECT_PRECL.png')
                         elif 'TTRP' in v:
-                           fname = img_prefix+'set'+sets+'_'+season+'_'+v+'_'+obsfname+'_TROP.png'
+                           fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+season+'_'+v+'_'+obsfname+'_TROP.png')
                         else:
-                           fname = img_prefix+'set'+sets+'_'+season+'_'+v+'_'+obsfname+'.png'
+                           fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+season+'_'+v+'_'+obsfname+'.png')
                      click = 'onclick="displayImageClick(\''+fname+'\');" '
                      over = 'onmouseover="displayImageHover(\''+fname+'\');" '
                      out = 'onmouseout="nodisplayImage();" '
@@ -221,11 +241,11 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
                      html += '    <TH ALIGN=LEFT>' + varinfo[v]['desc']
                      for season in seasons:
                         if '_VISIR' in v:
-                           fname = img_prefix+'set'+sets+'_'+season+'_'+v.replace('_SOUTH','')+'_SP.png'
+                           fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+season+'_'+v.replace('_SOUTH','')+'_SP.png')
                         elif 'SURF_WIND' in v:
-                           fname = img_prefix+'set'+sets+'_'+season+'_WIND_SURF_'+obsfname+'_SP.png'
+                           fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+season+'_WIND_SURF_'+obsfname+'_SP.png')
                         else:
-                           fname = img_prefix+'set'+sets+'_'+season+'_'+v.replace('_SOUTH','')+'_'+obsfname+'_SP.png'
+                           fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+season+'_'+v.replace('_SOUTH','')+'_'+obsfname+'_SP.png')
                         click = 'onclick="displayImageClick(\''+fname+'\');" '
                         over = 'onmouseover="displayImageHover(\''+fname+'\');" '
                         out = 'onmouseout="nodisplayImage();" '
@@ -253,17 +273,17 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
                      html += '   <TH ALIGN=LEFT>'+v
                      html += '   <TH ALIGN=LEFT>'+varinfo[v]['desc']
                      if sets == 'topten':
-                        fname = img_prefix+'set'+sets+'_ANN_'+v+'_'+obsfname+'.png'
+                        fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_ANN_'+v+'_'+obsfname+'.png')
                      elif sets == '15':
-                        fname = img_prefix+'set'+sets+'_'+obsfname+'_'+v+'.png'
+                        fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+obsfname+'_'+v+'.png')
                      else:
-                        fname = img_prefix+'set'+sets+'_'+v+'_'+obsfname+'.png'
+                        fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+v+'_'+obsfname+'.png')
                      if '_VISIR' in v:
-                        fname = img_prefix+'set'+sets+'_'+v+'.png'
+                        fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+v+'.png')
                      if '_NORTH' in v:
-                        fname = img_prefix+'set'+sets+'_'+v.replace('_NORTH','')+'_'+obsfname+'_NP.png'
+                        fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+v.replace('_NORTH','')+'_'+obsfname+'_NP.png')
                      if '_SOUTH' in v:
-                        fname = img_prefix+'set'+sets+'_'+v.replace('_SOUTH','')+'_'+obsfname+'_SP.png'
+                        fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+v.replace('_SOUTH','')+'_'+obsfname+'_SP.png')
 
                      click = 'onclick="displayImageClick(\''+fname+'\');" '
                      over = 'onmouseover="displayImageHover(\''+fname+'\');" '
@@ -296,7 +316,7 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
          html += '  <TH ALIGN=LEFT>SW/LW Cloud Forcing'
          html += '  <TH ALIGN=LEFT><font color="navy">'+o+'</font>'
          obsfname = set1obs[o]
-         fname = img_prefix+'set11_SWCF_LWCF_'+obsfname+'.png'
+         fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set11_SWCF_LWCF_'+obsfname+'.png')
          click = 'onclick="displayImageClick(\''+fname+'\');" '
          over = 'onmouseover="displayImageHover(\''+fname+'\');" '
          out = 'onmouseout="nodisplayImage();" '
@@ -312,7 +332,7 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
             html += '<TR>'
             html += '  <TH ALIGN=LEFT>'+set2list[v]['desc']
             html += '  <TH ALIGN=LEFT>'+o
-            fname = img_prefix+'set11_'+v+'_'+set2list[v]['obssets'][o]+'.png'
+            fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set11_'+v+'_'+set2list[v]['obssets'][o]+'.png')
             click = 'onclick="displayImageClick(\''+fname+'\');" '
             over = 'onmouseover="displayImageHover(\''+fname+'\');" '
             out = 'onmouseout="nodisplayImage();" '
@@ -346,9 +366,9 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
         
          for col in cols:
             if sets == '13':
-               fname = img_prefix + 'set13_' + col + '_' + vlist[var] + '.png'
+               fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package  + 'set13_' + col + '_' + vlist[var] + '.png')
             else:
-               fname = img_prefix + 'set12_' + vlist[var] + '_' + col + '.png'
+               fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package  + 'set12_' + vlist[var] + '_' + col + '.png')
 
             click = 'onclick="displayImageClick(\''+fname+'\');" '
             over = 'onmouseover="displayImageHover(\''+fname+'\');" '
