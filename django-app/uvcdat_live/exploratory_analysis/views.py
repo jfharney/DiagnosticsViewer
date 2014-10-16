@@ -1071,7 +1071,7 @@ def auth(request):
                 print traceback.print_exc()
                 print '*****End ESGF login*****'
                 
-                return None
+                return HttpResponse('Not Authenticated')
         
             user = authenticate(username=username1,password=password1)
             #return HttpResponse('Authenticated')
