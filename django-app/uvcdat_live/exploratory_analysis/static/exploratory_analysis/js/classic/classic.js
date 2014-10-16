@@ -72,7 +72,7 @@ function displayImageClick(imageURL)
 
 function displayTable(textTableURL)
 {
-	textTableURL = "http://acme-dev-2.ornl.gov:8081" + textTableURL;
+	textTableURL = textTableURL;
 	if(textTableURL.endsWith('.json'))
 	{
 		var tableHTML = '<table id="r22" width="100%" height="600" cellspacing="0"><thead><tr><th>Name</th><th>Position</th><th>Office</th><th>Extn.</th><th>Start date</th><th>Salary</th> </tr></thead><tfoot><tr><th>Name</th><th>Position</th><th>Office</th><th>Extn.</th><th>Start date</th><th>Salary</th></tr></tfoot></table>';

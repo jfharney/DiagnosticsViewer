@@ -1242,7 +1242,8 @@ def classic_views(request):
         
        #To be added region = json_data['region'] #should be a list
 
-        regions = ['Global Land','Northern Hemisphere Land', 'Southern Hemisphere Land', 'Alaskan Arctic', 'Central U.S.', 'Mediterranean and Western Asia']  
+        #regions = ['Global Land','Northern Hemisphere Land', 'Southern Hemisphere Land', 'Alaskan Arctic', 'Central U.S.', 'Mediterranean and Western Asia']  
+        regions = ['Global','Alaska','Alaskan_Arctic','Amazonia','Antarctica','Arabian_Peninsula','Asia','Australia','Alaskan_Arctic', 'Central_US', 'Mediterranean'] 
 
         set3Headers = ['reg', 'landf','randf','turbf','cnFlx','frFlx','moistEnergyFlx','snow','albedo','hydro']
         #DONE to be added
@@ -1689,9 +1690,9 @@ def classic_views(request):
                     html+='</td>\n'
                     for var in vars:              
                         html+='<td ALIGN=center>'
-                        html+='<a href="#" onclick="displayImageClick('
+                        html+='<a href="#" onclick="displayImageClick(\''
                         html+='http://' + paths.ea_hostname + generate_token_url(url_prefixIMAGE + var+'_'+region+'.gif') +'\''
-                        html+=');" onmouseover="displayImageHover('
+                        html+=');" onmouseover="displayImageHover(\''
                         html+='http://' + paths.ea_hostname + generate_token_url(url_prefixIMAGE + var+'_'+region+'.gif') +'\''
                         html+=');" onmouseout="nodisplayImage();">Plot</A>'
                         html+='</td>\n'
@@ -1747,22 +1748,22 @@ def classic_views(request):
           
             html+="<tr>"
             html+='<TH ALIGN=LEFT>Regional Hydrologic Cycle'
-            html+='<TH ALIGN=LEFT><font color=black><A HREF= "#" onclick="displayTable('
+            html+='<TH ALIGN=LEFT><font color=black><A HREF= "#" onclick="displayTable(\''
             html+='http://' + paths.ea_hostname + generate_token_url(url_prefixIMAGE + 'hydReg.txt') +'\''
             html+=')\";>Table</a></font>'
             html+='</tr>'
                         
             html+="<tr>"
             html+='<TH ALIGN=LEFT>Global Biogeophysics'
-            html+='<TH ALIGN=LEFT><font color=black><A HREF= "#" onclick="displayTable('
+            html+='<TH ALIGN=LEFT><font color=black><A HREF= "#" onclick="displayTable(\''
             html+=u'http://' + paths.ea_hostname + generate_token_url(url_prefixIMAGE + 'clm.txt')
             html+='\')\";>Table</a></font>'
             html+='</tr>'
             
             html+='<tr>'
             html+='<TH ALIGN=LEFT>Global Carbon/Nitrogen'     
-            html+='<TH ALIGN=LEFT><font color=black><A HREF= "#" onclick="displayTable('
-            html+='http://' + paths.ea_hostname + generate_token_url(url_prefixIMAGE + 'cn.json')
+            html+='<TH ALIGN=LEFT><font color=black><A HREF= "#" onclick="displayTable(\''
+            html+='http://' + paths.ea_hostname + generate_token_url(url_prefixIMAGE + 'cn.txt')
             html+='\')\";>Table</a></font>'
             html+='</tr>'
                  
@@ -1847,15 +1848,15 @@ def classic_views(request):
                     html+='</td>\n'
                     html+='\n'
                     html+='<td>'
-                    html+='<a href="#" onclick="displayImageClick(\'set6_reg_'+region+'.gif\''
-                    html+=');" onmouseover="displayImageHover(\'set6_reg_'+region+'.gif\''
+                    html+='<a href="#" onclick="displayImageClick(\'http://' + paths.ea_hostname + generate_token_url(url_prefixIMAGE + 'reg_'+region+'.gif') + '\''
+                    html+=');" onmouseover="displayImageHover(\'http://' + paths.ea_hostname + generate_token_url(url_prefixIMAGE + 'reg_'+region+'.gif') + '\''
                     html+=');" onmouseout="nodisplayImage();">Map</A>'
                     html+='</td>\n'
                     for var in vars:              
                         html+='<td ALIGN=center>'
-                        html+='<a href="#" onclick="displayImageClick('
+                        html+='<a href="#" onclick="displayImageClick(\''
                         html+='http://' + paths.ea_hostname + generate_token_url(url_prefixIMAGE + var+'_'+region+'.gif') +'\''
-                        html+=');" onmouseover="displayImageHover('
+                        html+=');" onmouseover="displayImageHover(\''
                         html+='http://' + paths.ea_hostname + generate_token_url(url_prefixIMAGE + var+'_'+region+'.gif') +'\''
                         html+=');" onmouseout="nodisplayImage();">Plot</A>'
                         html+='</td>\n'
@@ -1899,43 +1900,53 @@ def classic_views(request):
             html+="<TH ALIGN=LEFT><font color=red>TABLE</font>\n"
             html+="<TR>\n"
             html+="<TH ALIGN=LEFT>RTM flow at station for world's 50 largest rivers\\n"
-            html+="<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayTable(\'http://"+generate_token_url(url_prefixIMAGE+"table_RIVER_STN_VOL.txt") + "\');\">Table</A> \n"
+            html+="<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayTable(\'http://"+ paths.ea_hostname +generate_token_url(url_prefixIMAGE+"table_RIVER_STN_VOL.txt") + "\');\">Table</A> \n"
             html+="<TR>\n"
             html+="<TH ALIGN=LEFT><font color=red>SCATTER PLOTS</font>\n"
             html+="<TR>\n"
             html+="<TH ALIGN=LEFT>RTM flow at station versus obs for world's 10 largest rivers (QCHANR) \n"
-            html+="<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick(\'http://"+generate_token_url(url_prefixIMAGE+"scatter_50riv.gif") + "\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"scatter_50riv.gif');\" onmouseout=\"nodisplayImage();\">plot</A> \n"
+            html+="<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick(\'http://"+ paths.ea_hostname +generate_token_url(url_prefixIMAGE+"scatter_50riv.gif") + "\');\" onmouseover=\"displayImageHover(\'http://"+ paths.ea_hostname +generate_token_url(url_prefixIMAGE+"scatter_50riv.gif")+ "');\" onmouseout=\"nodisplayImage();\">plot</A> \n"
             html+="<TR>\n"
             html+="<TH ALIGN=LEFT><font color=red>LINE PLOTS</font>\n"
             html+="<TR>\n"
             html+="<TH ALIGN=LEFT>Mean annual cycle of river flow at station for world's 10 largest rivers (QCHANR) \n"
-            html+="<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"mon_stndisch_10riv.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"mon_stndisch_10riv.gif');\" onmouseout=\"nodisplayImage();\">plot</A> \n"
+            html+="<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick(\'http://"+ paths.ea_hostname +generate_token_url(url_prefixIMAGE+"mon_stndisch_10riv.gif") + "\');\" onmouseover=\"displayImageHover(\'http://"+ paths.ea_hostname +generate_token_url(url_prefixIMAGE+"mon_stndisch_10riv.gif")+ "');\" onmouseout=\"nodisplayImage();\">plot</A> \n"            
+            #html+="<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"mon_stndisch_10riv.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"mon_stndisch_10riv.gif');\" onmouseout=\"nodisplayImage();\">plot</A> \n"
             html+="<TR>\n"
             html+="<TH ALIGN=LEFT>Annual discharge into the Global Ocean (QCHOCNR) \n"
-            html+="<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"ann_disch_globalocean.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"ann_disch_globalocean.gif');\" onmouseout=\"nodisplayImage();\">plot</A> \n"
+            html+="<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick(\'http://"+ paths.ea_hostname +generate_token_url(url_prefixIMAGE+"ann_disch_globalocean.gif") + "\');\" onmouseover=\"displayImageHover(\'http://"+ paths.ea_hostname +generate_token_url(url_prefixIMAGE+"ann_disch_globalocean.gif")+ "');\" onmouseout=\"nodisplayImage();\">plot</A> \n"
+            #html+="<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"ann_disch_globalocean.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"ann_disch_globalocean.gif');\" onmouseout=\"nodisplayImage();\">plot</A> \n"
             html+="<TR>\n"
             html+="<TH ALIGN=LEFT>Annual discharge into the Atlantic Ocean (QCHOCNR) \n"
-            html+="<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"ann_disch_atlantic.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"ann_disch_atlantic.gif');\" onmouseout=\"nodisplayImage();\">plot</A> \n"
+            html+="<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick(\'http://"+ paths.ea_hostname +generate_token_url(url_prefixIMAGE+"ann_disch_atlantic.gif") + "\');\" onmouseover=\"displayImageHover(\'http://"+ paths.ea_hostname +generate_token_url(url_prefixIMAGE+"ann_disch_atlantic.gif")+ "');\" onmouseout=\"nodisplayImage();\">plot</A> \n"            
+            #html+="<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"ann_disch_atlantic.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"ann_disch_atlantic.gif');\" onmouseout=\"nodisplayImage();\">plot</A> \n"
             html+="<TR>\n"
             html+="<TH ALIGN=LEFT>Annual discharge into the Indian Ocean (QCHOCNR) \n"
-            html+="<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"ann_disch_indian.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"ann_disch_indian.gif');\" onmouseout=\"nodisplayImage();\">plot</A> \n"
+            html+="<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick(\'http://"+ paths.ea_hostname +generate_token_url(url_prefixIMAGE+"ann_disch_indian.gif") + "\');\" onmouseover=\"displayImageHover(\'http://"+ paths.ea_hostname +generate_token_url(url_prefixIMAGE+"ann_disch_indian.gif")+ "');\" onmouseout=\"nodisplayImage();\">plot</A> \n"            
+            #html+="<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"ann_disch_indian.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"ann_disch_indian.gif');\" onmouseout=\"nodisplayImage();\">plot</A> \n"
             html+="<TR>\n"
             html+="<TH ALIGN=LEFT>Annual discharge into the Pacific Ocean (QCHOCNR) \n"
-            html+="<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"ann_disch_pacific.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"ann_disch_pacific.gif');\" onmouseout=\"nodisplayImage();\">plot</A> \n"
+            html+="<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick(\'http://"+ paths.ea_hostname +generate_token_url(url_prefixIMAGE+"ann_disch_pacific.gif") + "\');\" onmouseover=\"displayImageHover(\'http://"+ paths.ea_hostname +generate_token_url(url_prefixIMAGE+"ann_disch_pacific.gif")+ "');\" onmouseout=\"nodisplayImage();\">plot</A> \n"            
+            #html+="<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"ann_disch_pacific.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"ann_disch_pacific.gif');\" onmouseout=\"nodisplayImage();\">plot</A> \n"
             html+="<TR>\n"
             html+="<TH ALIGN=LEFT>Mean annual cycle of discharge into the oceans (QCHOCNR) \n"
-            html+="<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"mon_disch.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"mon_disch.gif');\" onmouseout=\"nodisplayImage();\">plot</A> \n"
+            html+="<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick(\'http://"+ paths.ea_hostname +generate_token_url(url_prefixIMAGE+"mon_disch.gif") + "\');\" onmouseover=\"displayImageHover(\'http://"+ paths.ea_hostname +generate_token_url(url_prefixIMAGE+"mon_disch.gif")+ "');\" onmouseout=\"nodisplayImage();\">plot</A> \n"            
+            #html+="<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"mon_disch.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"mon_disch.gif');\" onmouseout=\"nodisplayImage();\">plot</A> \n"
             html+="<TR>\n"
             html+="<TH ALIGN=LEFT><font color=red>MAPS</font>\n"
             html+="<TR>\n"
             html+="<TH ALIGN=LEFT>Station locations (50 largest rivers)\n"
-            html+="<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"stations.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"stations.gif');\" onmouseout=\"nodisplayImage();\">Map</A> \n"
+            html+="<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick(\'http://"+ paths.ea_hostname +generate_token_url(url_prefixIMAGE+"stations.gif") + "\');\" onmouseover=\"displayImageHover(\'http://"+ paths.ea_hostname +generate_token_url(url_prefixIMAGE+"stations.gif")+ "');\" onmouseout=\"nodisplayImage();\">Map</A> \n"            
+            #html+="<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"stations.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"stations.gif');\" onmouseout=\"nodisplayImage();\">Map</A> \n"
             html+="<TR>\n"
             html+="<TH ALIGN=LEFT>Ocean Basins\n"
-            html+="<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"ocean_basin_index.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"ocean_basin_index.gif');\" onmouseout=\"nodisplayImage();\">Map</A> \n"
+            html+="<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick(\'http://"+ paths.ea_hostname +generate_token_url(url_prefixIMAGE+"ocean_basin_index.gif") + "\');\" onmouseover=\"displayImageHover(\'http://"+ paths.ea_hostname +generate_token_url(url_prefixIMAGE+"ocean_basin_index.gif")+ "');\" onmouseout=\"nodisplayImage();\">Map</A> \n"            
+            #html+="<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"ocean_basin_index.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"ocean_basin_index.gif');\" onmouseout=\"nodisplayImage();\">Map</A> \n"
             html+="<TR>\n"
             html+="<TH ALIGN=LEFT>River Flow (QCHANR) \n"
-            html+="<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"ANN_QCHANR_Ac.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"ANN_QCHANR_Ac.gif');\" onmouseout=\"nodisplayImage();\">Model1</A> \n"
+            html+="<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick(\'http://"+ paths.ea_hostname +generate_token_url(url_prefixIMAGE+"ANN_QCHANR_Ac.gif") + "\');\" onmouseover=\"displayImageHover(\'http://"+ paths.ea_hostname +generate_token_url(url_prefixIMAGE+"ANN_QCHANR_Ac.gif")+ "');\" onmouseout=\"nodisplayImage();\">Model1</A> \n"
+            
+            #html+="<TH ALIGN=LEFT><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"ANN_QCHANR_Ac.gif');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"ANN_QCHANR_Ac.gif');\" onmouseout=\"nodisplayImage();\">Model1</A> \n"
             html+="<TR>\n"
             html+="<TH ALIGN=LEFT><font color=red>VARIABLES</font>\n"
             html+="<TR>\n"
@@ -1978,46 +1989,46 @@ def classic_views(request):
             html+="<TABLE> \n"
             html+="<TR>\n"
             html+="<TH ALIGN=LEFT><font color=navy size=+1> 1. RMSE </font>\n"
-            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"rmse_TSA.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"rmse_TSA.gif\');\" onmouseout=\"nodisplayImage();\">TSA</A>\n"
-            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"rmse_PREC.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"rmse_PREC.gif\');\" onmouseout=\"nodisplayImage();\">PREC</A>\n"
-            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"rmse_ASA.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"rmse_ASA.gif\');\" onmouseout=\"nodisplayImage();\">ASA</A>\n"
+            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"rmse_TSA.gif")+ "\');\" onmouseover=\"displayImageHover(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"rmse_TSA.gif")+ "\');\" onmouseout=\"nodisplayImage();\">TSA</A>\n"
+            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"rmse_PREC.gif")+ "\');\" onmouseover=\"displayImageHover(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"rmse_PREC.gif")+ "\');\" onmouseout=\"nodisplayImage();\">PREC</A>\n"
+            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"rmse_ASA.gif")+ "\');\" onmouseover=\"displayImageHover(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"rmse_ASA.gif")+ "\');\" onmouseout=\"nodisplayImage();\">ASA</A>\n"
             html+="<TR>\n"
             html+="<TH ALIGN=LEFT><font color=navy size=+1> 2. Seasonal bias </font>\n"
             html+="<TR>\n"
             html+="<TH ALIGN=LEFT><font color=navy size=+1>&nbsp&nbsp&nbsp&nbsp TSA </font>\n"
-            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_TSA_DJF.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_TSA_DJF.gif\');\" onmouseout=\"nodisplayImage();\">DJF</A>\n"
-            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_TSA_MAM.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_TSA_MAM.gif\');\" onmouseout=\"nodisplayImage();\">MAM</A>\n"
-            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_TSA_JJA.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_TSA_JJA.gif\');\" onmouseout=\"nodisplayImage();\">JJA</A>\n"
-            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_TSA_SON.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_TSA_SON.gif\');\" onmouseout=\"nodisplayImage();\">SON</A>\n"
-            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_TSA_ANN.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_TSA_ANN.gif\');\" onmouseout=\"nodisplayImage();\">ANN</A>\n"
+            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"bias_TSA_DJF.gif")+ "\');\" onmouseover=\"displayImageHover(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"bias_TSA_DJF.gif")+ "\');\" onmouseout=\"nodisplayImage();\">DJF</A>\n"
+            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"bias_TSA_MAM.gif")+ "\');\" onmouseover=\"displayImageHover(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"bias_TSA_MAM.gif")+ "\');\" onmouseout=\"nodisplayImage();\">MAM</A>\n"
+            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"bias_TSA_JJA.gif")+ "\');\" onmouseover=\"displayImageHover(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"bias_TSA_JJA.gif")+ "\');\" onmouseout=\"nodisplayImage();\">JJA</A>\n"
+            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"bias_TSA_SON.gif")+ "\');\" onmouseover=\"displayImageHover(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"bias_TSA_SON.gif")+ "\');\" onmouseout=\"nodisplayImage();\">SON</A>\n"
+            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"bias_TSA_ANN.gif")+ "\');\" onmouseover=\"displayImageHover(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"bias_TSA_ANN.gif")+ "\');\" onmouseout=\"nodisplayImage();\">ANN</A>\n"
             html+="<TR>\n"
             html+="<TH ALIGN=LEFT><font color=navy size=+1>&nbsp&nbsp&nbsp&nbsp PREC </font>\n"
-            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_PREC_DJF.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_PREC_DJF.gif\');\" onmouseout=\"nodisplayImage();\">DJF</A>\n"
-            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_PREC_MAM.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_PREC_MAM.gif\');\" onmouseout=\"nodisplayImage();\">MAM</A>\n"
-            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_PREC_JJA.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_PREC_JJA.gif\');\" onmouseout=\"nodisplayImage();\">JJA</A>\n"
-            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_PREC_SON.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_PREC_SON.gif\');\" onmouseout=\"nodisplayImage();\">SON</A>\n"
-            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_PREC_ANN.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_PREC_ANN.gif\');\" onmouseout=\"nodisplayImage();\">ANN</A>\n"
+            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"bias_PREC_DJF.gif")+ "\');\" onmouseover=\"displayImageHover(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"bias_PREC_DJF.gif")+ "\');\" onmouseout=\"nodisplayImage();\">DJF</A>\n"
+            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"bias_PREC_MAM.gif")+ "\');\" onmouseover=\"displayImageHover(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"bias_PREC_MAM.gif")+ "\');\" onmouseout=\"nodisplayImage();\">MAM</A>\n"
+            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"bias_PREC_JJA.gif")+ "\');\" onmouseover=\"displayImageHover(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"bias_PREC_JJA.gif")+ "\');\" onmouseout=\"nodisplayImage();\">JJA</A>\n"
+            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"bias_PREC_SON.gif")+ "\');\" onmouseover=\"displayImageHover(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"bias_PREC_SON.gif")+ "\');\" onmouseout=\"nodisplayImage();\">SON</A>\n"
+            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"bias_PREC_ANN.gif")+ "\');\" onmouseover=\"displayImageHover(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"bias_PREC_ANN.gif")+ "\');\" onmouseout=\"nodisplayImage();\">ANN</A>\n"
             html+="<TR>\n"
             html+="<TH ALIGN=LEFT><font color=navy size=+1>&nbsp&nbsp&nbsp&nbsp ASA </font>\n"
-            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_ASA_DJF.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_ASA_DJF.gif\');\" onmouseout=\"nodisplayImage();\">DJF</A>\n"
-            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_ASA_MAM.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_ASA_MAM.gif\');\" onmouseout=\"nodisplayImage();\">MAM</A>\n"
-            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_ASA_JJA.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_ASA_JJA.gif\');\" onmouseout=\"nodisplayImage();\">JJA</A>\n"
-            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_ASA_SON.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_ASA_SON.gif\');\" onmouseout=\"nodisplayImage();\">SON</A>\n"
-            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"bias_ASA_ANN.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"bias_ASA_ANN.gif\');\" onmouseout=\"nodisplayImage();\">ANN</A>\n"
+            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"bias_ASA_DJF.gif")+ "\');\" onmouseover=\"displayImageHover(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"bias_ASA_DJF.gif")+ "\');\" onmouseout=\"nodisplayImage();\">DJF</A>\n"
+            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"bias_ASA_MAM.gif")+ "\');\" onmouseover=\"displayImageHover(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"bias_ASA_MAM.gif")+ "\');\" onmouseout=\"nodisplayImage();\">MAM</A>\n"
+            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"bias_ASA_JJA.gif")+ "\');\" onmouseover=\"displayImageHover(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"bias_ASA_JJA.gif")+ "\');\" onmouseout=\"nodisplayImage();\">JJA</A>\n"
+            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"bias_ASA_SON.gif")+ "\');\" onmouseover=\"displayImageHover(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"bias_ASA_SON.gif")+ "\');\" onmouseout=\"nodisplayImage();\">SON</A>\n"
+            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"bias_ASA_ANN.gif")+ "\');\" onmouseover=\"displayImageHover(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"bias_ASA_ANN.gif")+ "\');\" onmouseout=\"nodisplayImage();\">ANN</A>\n"
             html+="<TR>\n"
             html+="<TR>\n"
             html+="<TH ALIGN=LEFT><font color=navy size=+1> 3. Correlation </font>\n"
-            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"corr_TSA.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"corr_TSA.gif\');\" onmouseout=\"nodisplayImage();\">TSA</A>\n"
-            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"corr_PREC.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"corr_PREC.gif\');\" onmouseout=\"nodisplayImage();\">PREC</A>\n"
-            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"corr_ASA.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"corr_ASA.gif\');\" onmouseout=\"nodisplayImage();\">ASA</A>\n"
+            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"corr_TSA.gif")+ "\');\" onmouseover=\"displayImageHover(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"corr_TSA.gif")+ "\');\" onmouseout=\"nodisplayImage();\">TSA</A>\n"
+            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"corr_PREC.gif")+ "\');\" onmouseover=\"displayImageHover(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"corr_PREC.gif")+ "\');\" onmouseout=\"nodisplayImage();\">PREC</A>\n"
+            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"corr_ASA.gif")+ "\');\" onmouseover=\"displayImageHover(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"corr_ASA.gif")+ "\');\" onmouseout=\"nodisplayImage();\">ASA</A>\n"
             html+="<TR>\n"
             html+="<TH ALIGN=LEFT><font color=navy size=+1> 4. Standard Deviation </font>\n"
-            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"stdev_TSA.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"stdev_TSA.gif\');\" onmouseout=\"nodisplayImage();\">TSA</A>\n"
-            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"stdev_PREC.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"stdev_PREC.gif\');\" onmouseout=\"nodisplayImage();\">PREC</A>\n"
-            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick("+url_prefixIMAGE+"stdev_ASA.gif\');\" onmouseover=\"displayImageHover("+url_prefixIMAGE+"stdev_ASA.gif\');\" onmouseout=\"nodisplayImage();\">ASA</A>\n"
+            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"stdev_TSA.gif")+ "\');\" onmouseover=\"displayImageHover(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"stdev_TSA.gif")+ "\');\" onmouseout=\"nodisplayImage();\">TSA</A>\n"
+            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"stdev_PREC.gif")+ "\');\" onmouseover=\"displayImageHover(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"stdev_PREC.gif")+ "\');\" onmouseout=\"nodisplayImage();\">PREC</A>\n"
+            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayImageClick(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"stdev_ASA.gif")+ "\');\" onmouseover=\"displayImageHover(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"stdev_ASA.gif")+ "\');\" onmouseout=\"nodisplayImage();\">ASA</A>\n"
             html+="<TR>\n"
             html+="<TH ALIGN=LEFT><font color=navy size=+1> 5. Tables</font>\n"
-            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayTable("+url_prefixIMAGE+"statTable.html\');\">All Variables</A>\n"
+            html+="<TH ALIGN=center><a href=\"#\" onclick=\"displayTable(\'http://"+paths.ea_hostname + generate_token_url(url_prefixIMAGE+"statTable.html") + "\');\">All Variables</A>\n"
             html+="<TR>\n"
             html+="<TR>\n"
             html+="<TR>\n"
