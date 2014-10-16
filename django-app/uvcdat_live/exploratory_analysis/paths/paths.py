@@ -33,6 +33,12 @@ if type(esgfAccess) is str and esgfAccess == 'True':
 else:
    esgfAccess = False
    
+esgfAuth = config.get("options","esgfAuth")
+if type(esgfAuth) is str and esgfAuth == 'True':
+   esgfAuth = True
+else:
+   esgfAuth = False
+   
 
 database_name = database_root +"/mydb.db"
 

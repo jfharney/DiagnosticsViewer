@@ -11,6 +11,7 @@ dataset_names = tropics_warming_th_q
 
 [options]
 loggedIn = True
-esgfAccess = True
+esgfAccess = False
+esgfAuth = True
 img_prefix = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis/'
 proxy_cert_dir = '/tmp'

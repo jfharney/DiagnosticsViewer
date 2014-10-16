@@ -1010,12 +1010,101 @@ def auth(request):
         
         from backends import authenticate1
         
+        
+        
         #authenticates to ESGF
-        if paths.esgfAccess:
+        if paths.esgfAuth:
+            
+            print '\n\n\nin esgfAuth'
+            
+            '''
             user = authenticate1(username = username1,
                              password = password1,
                              peernode = peernode1)
+            '''
+            
+            #authenticate to esgf here
+            print "AUTHENTICATE NOW"
+
+            from fcntl import flock, LOCK_EX, LOCK_UN
+
+
+            print '*****Begin ESGF Login*****'
+
+            import traceback
         
+            try:
+            #substitute
+            #settings.PROXY_CERT_DIR = /tmp
+            #username = 'jfharney'
+            #proxy_cert_dir = config.get("options", "proxy_cert_dir")
+            #username = 'jfharney'
+            #cert_path=os.path.join(proxy_cert_dir,username)
+            #print 'cert_path: ' + cert_path
+                '''        
+                if not os.path.exists(cert_path):
+                try:
+                    os.makedirs(cert_path)
+                except:
+                    pass
+                '''
+                outfile = '/tmp/x509up_u%s' % (os.getuid()) 
+        
+                import myproxy_logon
+           
+                username = username1
+                password = password1
+                peernode = peernode1
+           
+                myproxy_logon.myproxy_logon(peernode,
+                      username,
+                      password,
+                      outfile,#os.path.join(cert_path,username + '.pem').encode("UTF-8"),
+                      lifetime=43200,
+                      port=7512
+                      )
+            
+                print '*****End ESGF login*****'
+                
+            except:
+                print 'in the exception'
+                print traceback.print_exc()
+                print '*****End ESGF login*****'
+                
+                return None
+        
+            user = authenticate(username=username1,password=password1)
+            #return HttpResponse('Authenticated')
+            
+            
+            
+            if user is not None:
+                
+                #authenticate to django
+                
+                print 'user n: ' + str(user.username) + ' ' + str(user.password)
+            
+                #login to the app and return the string "Authenticated"
+                login(request,user)
+                return HttpResponse('Authenticated')
+            else:
+                print 'user is None'
+                
+                from django.contrib.auth.models import User
+                
+                user = User.objects.create_user(username1, str(username1 + '@acme.com'), password1)
+                user = authenticate(username=username1,password=password1)
+            
+                print str('username1: ' + username1)
+                print str('password1: ' + password1)
+                
+                #login to the app and return the string "Authenticated"
+                login(request,user)
+                
+                return HttpResponse('Authenticated')
+            
+            
+            
         else:
             
             user = authenticate(username=username1,password=password1)
