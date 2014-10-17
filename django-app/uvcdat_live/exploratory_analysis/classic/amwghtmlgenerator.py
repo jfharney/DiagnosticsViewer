@@ -2,6 +2,7 @@ from paths import paths
 from amwgmaster import *
 import os
 
+
 def generate_token_url(filename):
     #!/usr/bin/env python
     import os, time, hashlib
@@ -23,14 +24,14 @@ def generate_token_url(filename):
     return url 
 
 def pageGenerator(sets, varlist, times, package, dataset, options):
-   dataset = 'f40_amip_cam5_c03_78b'
-   img_prefix = os.path.join(paths.img_cache_path, package, dataset,'')
+
+   img_prefix = os.path.join(paths.img_cache_path, dataset, package, 'img', '')
 
    obssort = 1 
    html = ''
 
    html = '<p>'
-   html += '<img src="'+paths.img_cache_path+'/classic/amwg/SET'+sets+'.gif" border=1 hspace=10 align=left alt="set '+sets+'">'
+   html += '<img src="/static/exploratory_analysis/img/classic/amwg/SET'+sets+'.gif" border=1 hspace=10 align=left alt="set '+sets+'">'
    html += '<font color=maroon size=+3><b>'
    html += dataset+'<br>and<br>OBS data'
    html += '</b></font>'
