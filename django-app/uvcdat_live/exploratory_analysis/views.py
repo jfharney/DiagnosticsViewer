@@ -605,38 +605,7 @@ def treeex(request,user_id):
     
     loggedIn = paths.noAuthReq
     
-    '''
-    #get the predefined tree bookmarks of the user
-    from exploratory_analysis.models import Tree_Bookmarks
-    bookmark_list_obj = Tree_Bookmarks.objects.filter(tree_bookmark_username=username)
-  
-    bookmark_list = [] 
-    for obj in bookmark_list_obj:
-        bookmark_list.append(obj.tree_bookmark_name)
- 
- 
-
-    #get the figure bookmarks of the user
-    from exploratory_analysis.models import Figure_Bookmarks
-    figure_bookmark_list_obj = Figure_Bookmarks.objects.filter(figure_bookmark_username=username)
- 
-    figure_bookmark_list = [] 
-    for obj in figure_bookmark_list_obj:
-        figure_bookmark_list.append(obj.figure_bookmark_name)
- 
- 
-    ##print 'bookmark list: ' + str(bookmark_list)
-    #print 'figure bookmark list ' + str(figure_bookmark_list)
- 
- 
-    defaults = parameter_defaults.get_parameter_defaults()
-    package_list = defaults['package_list']
-    dataset_list = defaults['dataset_list']
-    variable_list = defaults['variable_list']
-    season_list = defaults['season_list']
-    set_list = defaults['set_list']
-    '''
- 
+    
     
     #first we check if the request is in the cache or if it is the initial call
     #if it is in the cache, no need to do any back end generation
@@ -901,38 +870,6 @@ def diagplot(request):
     return HttpResponse("Here's the text of the Web page.")
 
 
-
-#Tree Figures BookmarksAPI
-#http://<host>/exploratory_analysis/login
-#Need to store Bookmark name, bookmark variables, bookmark time periods, bookmark description
-def login1(request):
-    template = loader.get_template('exploratory_analysis/login1.html')
-
-
-    print 'going to login1.html...'
-    context = RequestContext(request, {
-        
-    })
-
-    return HttpResponse(template.render(context))
-
-#Tree Figures BookmarksAPI
-#http://<host>/exploratory_analysis/logout
-#Need to store Bookmark name, bookmark variables, bookmark time periods, bookmark description
-def logout1(request):
-    
-    
-    print 'going to logout1.html...'
-    from django.contrib.auth import logout
-    logout(request)
-    
-    template = loader.get_template('exploratory_analysis/logout1.html')
-
-    context = RequestContext(request, {
-        
-    })
-
-    return HttpResponse(template.render(context))
 
 
 
@@ -1915,64 +1852,6 @@ def classic_views(request):
 
 
 
-def datasetsList(request,user_id):
-    
-    print 'in dataset list'
-    
-    #get user query parameter
-    user = ''
-    if(request.GET.get('user') == None):
-        user = 'Chad'
-    else:
-        user = request.GET.get('user')
-      
-  
-  
-    #from the user, get all the datasets that are available to that user
-    print user_id
-  
-    jsonStr = getDatasetListJSONStr(user_id)
-  
-  
-    #print 'Returning dataset list for user ' + user
-  
-    return HttpResponse(jsonStr['year_range'][0])  
-
-
-  
-
-def getDatasetListJSONStr(user_id):
-    
-    #list of paths
-    paths = ['path1','path2','path3']
-
-    #list of datasets
-    datasets = ['dataset1','dataset2','dataset3']
-
-
-    #list of year range per dataset
-    dataset1years = ['150','151','152']
-    dataset2years = ['150','151','152']
-    dataset3years = ['150','151','152']
-
-    year_range = [dataset1years, dataset2years, dataset3years]
-    
-    data =  { 'datasets' : datasets, 'paths' : paths, 'year_range' : year_range }
-    print 'DATA:',repr(data)
-    data_string = json.dumps(data,sort_keys=True,indent=2)
-    print 'JSON:',data_string
-    data_string = json.dumps(data,sort_keys=False,indent=2)
-    print 'JSON:',data_string
-
-    jsonStr = json.loads(data_string)
-
-    print jsonStr
-
-    return jsonStr
-
-
-
-
 
 
 
@@ -2417,3 +2296,126 @@ def postStateExample(request):
 
 
 
+''' commented out by John H 10-16
+def datasetsList(request,user_id):
+    
+    print 'in dataset list'
+    
+    #get user query parameter
+    user = ''
+    if(request.GET.get('user') == None):
+        user = 'Chad'
+    else:
+        user = request.GET.get('user')
+      
+  
+  
+    #from the user, get all the datasets that are available to that user
+    print user_id
+  
+    jsonStr = getDatasetListJSONStr(user_id)
+  
+  
+    #print 'Returning dataset list for user ' + user
+  
+    return HttpResponse(jsonStr['year_range'][0])  
+
+
+  
+
+def getDatasetListJSONStr(user_id):
+    
+    #list of paths
+    paths = ['path1','path2','path3']
+
+    #list of datasets
+    datasets = ['dataset1','dataset2','dataset3']
+
+
+    #list of year range per dataset
+    dataset1years = ['150','151','152']
+    dataset2years = ['150','151','152']
+    dataset3years = ['150','151','152']
+
+    year_range = [dataset1years, dataset2years, dataset3years]
+    
+    data =  { 'datasets' : datasets, 'paths' : paths, 'year_range' : year_range }
+    print 'DATA:',repr(data)
+    data_string = json.dumps(data,sort_keys=True,indent=2)
+    print 'JSON:',data_string
+    data_string = json.dumps(data,sort_keys=False,indent=2)
+    print 'JSON:',data_string
+
+    jsonStr = json.loads(data_string)
+
+    print jsonStr
+
+    return jsonStr
+'''
+
+''' Commented out by John H 10-16
+#Tree Figures BookmarksAPI
+#http://<host>/exploratory_analysis/login
+#Need to store Bookmark name, bookmark variables, bookmark time periods, bookmark description
+def login1(request):
+    template = loader.get_template('exploratory_analysis/login1.html')
+
+
+    print 'going to login1.html...'
+    context = RequestContext(request, {
+        
+    })
+
+    return HttpResponse(template.render(context))
+
+#Tree Figures BookmarksAPI
+#http://<host>/exploratory_analysis/logout
+#Need to store Bookmark name, bookmark variables, bookmark time periods, bookmark description
+def logout1(request):
+    
+    
+    print 'going to logout1.html...'
+    from django.contrib.auth import logout
+    logout(request)
+    
+    template = loader.get_template('exploratory_analysis/logout1.html')
+
+    context = RequestContext(request, {
+        
+    })
+
+    return HttpResponse(template.render(context))
+'''
+
+''' Taken out from treeex by John H 10-16
+    #get the predefined tree bookmarks of the user
+    from exploratory_analysis.models import Tree_Bookmarks
+    bookmark_list_obj = Tree_Bookmarks.objects.filter(tree_bookmark_username=username)
+  
+    bookmark_list = [] 
+    for obj in bookmark_list_obj:
+        bookmark_list.append(obj.tree_bookmark_name)
+ 
+ 
+
+    #get the figure bookmarks of the user
+    from exploratory_analysis.models import Figure_Bookmarks
+    figure_bookmark_list_obj = Figure_Bookmarks.objects.filter(figure_bookmark_username=username)
+ 
+    figure_bookmark_list = [] 
+    for obj in figure_bookmark_list_obj:
+        figure_bookmark_list.append(obj.figure_bookmark_name)
+ 
+ 
+    ##print 'bookmark list: ' + str(bookmark_list)
+    #print 'figure bookmark list ' + str(figure_bookmark_list)
+ 
+ 
+    defaults = parameter_defaults.get_parameter_defaults()
+    package_list = defaults['package_list']
+    dataset_list = defaults['dataset_list']
+    variable_list = defaults['variable_list']
+    season_list = defaults['season_list']
+    set_list = defaults['set_list']
+'''
+ 
