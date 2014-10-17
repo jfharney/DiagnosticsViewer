@@ -44,7 +44,7 @@ $(document).ready(function(){
 			//var url = 'http://localhost:8081/exploratory_analysis/timeseries1/';
 			//var url = 'http://localhost:8081/exploratory_analysis/auth/';
 			var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/auth/';
-			
+			$('#auth_notice').hide();
 			
 			$.ajax({
 				  type: "POST",
@@ -61,6 +61,7 @@ $(document).ready(function(){
 						  window.location = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/main/' + username;
 					  } else {
 						  console.log('Not authenticated - stay on page');
+						  $('#auth_notice').show();
 					  }
 					  
 				  },

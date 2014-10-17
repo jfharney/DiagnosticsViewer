@@ -62,16 +62,19 @@
 		
 
 	 <div class="form-signin">
-	        <h2 class="form-signin-heading">Please sign inn</h2>
+	        <h2 class="form-signin-heading">Please sign in</h2>
 	        <input type="text" class="input-block-level" id='username' placeholder="Username">
 	        <input type="password" class="input-block-level" id='password' placeholder="Password">
 	        
+	        <!-- 
 	        <label class="checkbox">
 	          <input type="checkbox" value="remember-me"> Remember me
 	        </label>
+	         -->
 	        <button class="btn btn-large btn-primary" type="submit" id="signin">Sign in</button>
+	        <!-- 
 	        <button class="btn btn-large btn-primary" type="submit" id="register">Register</button>
-	     
+	      	-->
 	     	<div id="registration_form" style="display:none">
 		     	<br>
 		        </br>
@@ -81,6 +84,8 @@
 		        <input type="text" class="input-block-level" id='register_email' placeholder="email">
 		        
 	     	</div>
+
+	     	<div id="auth_notice" style="display:none;color:red;margin-top:15px">Username or password are incorrect</div>
 	     	
 	</div>	
 	

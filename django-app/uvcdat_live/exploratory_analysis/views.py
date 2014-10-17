@@ -605,38 +605,7 @@ def treeex(request,user_id):
     
     loggedIn = paths.noAuthReq
     
-    '''
-    #get the predefined tree bookmarks of the user
-    from exploratory_analysis.models import Tree_Bookmarks
-    bookmark_list_obj = Tree_Bookmarks.objects.filter(tree_bookmark_username=username)
-  
-    bookmark_list = [] 
-    for obj in bookmark_list_obj:
-        bookmark_list.append(obj.tree_bookmark_name)
- 
- 
-
-    #get the figure bookmarks of the user
-    from exploratory_analysis.models import Figure_Bookmarks
-    figure_bookmark_list_obj = Figure_Bookmarks.objects.filter(figure_bookmark_username=username)
- 
-    figure_bookmark_list = [] 
-    for obj in figure_bookmark_list_obj:
-        figure_bookmark_list.append(obj.figure_bookmark_name)
- 
- 
-    ##print 'bookmark list: ' + str(bookmark_list)
-    #print 'figure bookmark list ' + str(figure_bookmark_list)
- 
- 
-    defaults = parameter_defaults.get_parameter_defaults()
-    package_list = defaults['package_list']
-    dataset_list = defaults['dataset_list']
-    variable_list = defaults['variable_list']
-    season_list = defaults['season_list']
-    set_list = defaults['set_list']
-    '''
- 
+    
     
     #first we check if the request is in the cache or if it is the initial call
     #if it is in the cache, no need to do any back end generation
@@ -902,38 +871,6 @@ def diagplot(request):
 
 
 
-#Tree Figures BookmarksAPI
-#http://<host>/exploratory_analysis/login
-#Need to store Bookmark name, bookmark variables, bookmark time periods, bookmark description
-def login1(request):
-    template = loader.get_template('exploratory_analysis/login1.html')
-
-
-    print 'going to login1.html...'
-    context = RequestContext(request, {
-        
-    })
-
-    return HttpResponse(template.render(context))
-
-#Tree Figures BookmarksAPI
-#http://<host>/exploratory_analysis/logout
-#Need to store Bookmark name, bookmark variables, bookmark time periods, bookmark description
-def logout1(request):
-    
-    
-    print 'going to logout1.html...'
-    from django.contrib.auth import logout
-    logout(request)
-    
-    template = loader.get_template('exploratory_analysis/logout1.html')
-
-    context = RequestContext(request, {
-        
-    })
-
-    return HttpResponse(template.render(context))
-
 
 
     
@@ -970,151 +907,17 @@ def logout(request):
 
     return HttpResponse(template.render(context))
 
-
+#Authentication to ESGF and synching with django User database
+#Caled when the user tries to login
 def auth(request):
     
-    print '\n\n\n\n\n\n\n\nin auth\n\n'
+    print '\nin auth\n\n'
     
-    from django.contrib.auth import authenticate, login
+    from security import signin
     
+    response = signin.esgf_login(request)
     
-    
-    
-    username1 = ''
-    password1 = ''
-    peernode1 = 'esg.ccs.ornl.gov'
-    
-    curlFlag = False
-    
-    if curlFlag:
-        json_data = json.loads(request.body)
-        username1 = json_data['username'] #should be a string
-        password1 = json_data['password'] #should be a list
-    
-    else:
-        
-        username1 = request.POST['username']
-        password1 = request.POST['password']
-    
-    
-    print 'username: ' + str(username1)
-    print 'password: ' + str(password1)
-    print 'peer node: ' + str(peernode1)
-    
-    
-    #if request.POST['username'] == None or request.POST['password'] == None:
-    #    return HttpResponse("Error")
-    
-    
-    from OpenSSL import crypto,SSL
-    
-    # for POST requests, attempt logging-in
-    if request.POST:
-        print 'it is a post...authenticating'
-        
-        from backends import authenticate1
-        
-        #authenticates to ESGF
-        if paths.esgfAccess:
-            user = authenticate1(username = username1,
-                             password = password1,
-                             peernode = peernode1)
-        
-        else:
-            
-            user = authenticate(username=username1,password=password1)
-            if user is not None:
-                
-                #authenticate to django
-                
-                print 'user n: ' + str(user.username) + ' ' + str(user.password)
-            
-                #login to the app and return the string "Authenticated"
-                login(request,user)
-                return HttpResponse('Authenticated')
-            else:
-                print 'user is None'
-                
-                from django.contrib.auth.models import User
-                
-                user = User.objects.create_user(username1, str(username1 + '@acme.com'), password1)
-                user = authenticate(username=username1,password=password1)
-            
-                print str('username1: ' + username1)
-                print str('password1: ' + password1)
-                
-                #login to the app and return the string "Authenticated"
-                login(request,user)
-                
-                return HttpResponse('Authenticated')
-        '''
-        if user is not None:
-            print 'username...' + user.username
-            print 'password...' + user.password
-        
-            print 'user: ' + str(user)
-            if user.is_active:
-                #redirect to a success page
-                #user = authenticate(username='jfharney',password='Mattryan12')
-                user.backend='django.contrib.auth.backends.ModelBackend'
-                login(request,user)
-                return HttpResponse('Authenticated')
-            else:
-                #return a 'disabled account'
-                #print 'disabled account'
-                return HttpResponse('Disabled')
-        else:
-            print 'Invalid Login'
-            #return an 'invalid login error
-            return HttpResponse('InvalidLogin')
-        '''
-        return HttpResponse('Authenticated')
-
-    else:
-        print 'it is not a post'
-        
-        
-    '''
-    username = request.POST['username']
-    password = request.POST['password']
-    
-    ######DONT NEED THIS
-    if request.user.is_authenticated():
-        # Do something for authenticated users.
-        print 'user is authenticated'
-        from django.contrib.auth import logout
-        logout(request)
-        if request.user.is_authenticated():
-            print 'user is still logged in'
-        else:
-            print 'user is not authenticated'
-    else:
-        # Do something for anonymous users.
-        print 'user is anonymous'
-    ######END DONT NEED THIS
-    
-    user = authenticate(username=username, password=password)
-    
-    print '\n\nIS active? ' + str(user.is_active) + '\n\n'
-    
-    print 'username: ' + username
-    print 'password: ' + password
-    print 'user: ' + str(user)
-    if user is not None:
-        if user.is_active:
-            #redirect to a success page
-            login(request,user)
-            return HttpResponse('Authenticated')
-        else:
-            #return a 'disabled account'
-            #print 'disabled account'
-            return HttpResponse('Disabled')
-    else:
-        #return an 'invalid login error
-        return HttpResponse('InvalidLogin')
-    
-    '''
-    return HttpResponse('Authenticatedd')
+    return response
 
 
 def register(request):
@@ -2062,64 +1865,6 @@ def classic_views(request):
 
 
 
-def datasetsList(request,user_id):
-    
-    print 'in dataset list'
-    
-    #get user query parameter
-    user = ''
-    if(request.GET.get('user') == None):
-        user = 'Chad'
-    else:
-        user = request.GET.get('user')
-      
-  
-  
-    #from the user, get all the datasets that are available to that user
-    print user_id
-  
-    jsonStr = getDatasetListJSONStr(user_id)
-  
-  
-    #print 'Returning dataset list for user ' + user
-  
-    return HttpResponse(jsonStr['year_range'][0])  
-
-
-  
-
-def getDatasetListJSONStr(user_id):
-    
-    #list of paths
-    paths = ['path1','path2','path3']
-
-    #list of datasets
-    datasets = ['dataset1','dataset2','dataset3']
-
-
-    #list of year range per dataset
-    dataset1years = ['150','151','152']
-    dataset2years = ['150','151','152']
-    dataset3years = ['150','151','152']
-
-    year_range = [dataset1years, dataset2years, dataset3years]
-    
-    data =  { 'datasets' : datasets, 'paths' : paths, 'year_range' : year_range }
-    print 'DATA:',repr(data)
-    data_string = json.dumps(data,sort_keys=True,indent=2)
-    print 'JSON:',data_string
-    data_string = json.dumps(data,sort_keys=False,indent=2)
-    print 'JSON:',data_string
-
-    jsonStr = json.loads(data_string)
-
-    print jsonStr
-
-    return jsonStr
-
-
-
-
 
 
 
@@ -2564,3 +2309,126 @@ def postStateExample(request):
 
 
 
+''' commented out by John H 10-16
+def datasetsList(request,user_id):
+    
+    print 'in dataset list'
+    
+    #get user query parameter
+    user = ''
+    if(request.GET.get('user') == None):
+        user = 'Chad'
+    else:
+        user = request.GET.get('user')
+      
+  
+  
+    #from the user, get all the datasets that are available to that user
+    print user_id
+  
+    jsonStr = getDatasetListJSONStr(user_id)
+  
+  
+    #print 'Returning dataset list for user ' + user
+  
+    return HttpResponse(jsonStr['year_range'][0])  
+
+
+  
+
+def getDatasetListJSONStr(user_id):
+    
+    #list of paths
+    paths = ['path1','path2','path3']
+
+    #list of datasets
+    datasets = ['dataset1','dataset2','dataset3']
+
+
+    #list of year range per dataset
+    dataset1years = ['150','151','152']
+    dataset2years = ['150','151','152']
+    dataset3years = ['150','151','152']
+
+    year_range = [dataset1years, dataset2years, dataset3years]
+    
+    data =  { 'datasets' : datasets, 'paths' : paths, 'year_range' : year_range }
+    print 'DATA:',repr(data)
+    data_string = json.dumps(data,sort_keys=True,indent=2)
+    print 'JSON:',data_string
+    data_string = json.dumps(data,sort_keys=False,indent=2)
+    print 'JSON:',data_string
+
+    jsonStr = json.loads(data_string)
+
+    print jsonStr
+
+    return jsonStr
+'''
+
+''' Commented out by John H 10-16
+#Tree Figures BookmarksAPI
+#http://<host>/exploratory_analysis/login
+#Need to store Bookmark name, bookmark variables, bookmark time periods, bookmark description
+def login1(request):
+    template = loader.get_template('exploratory_analysis/login1.html')
+
+
+    print 'going to login1.html...'
+    context = RequestContext(request, {
+        
+    })
+
+    return HttpResponse(template.render(context))
+
+#Tree Figures BookmarksAPI
+#http://<host>/exploratory_analysis/logout
+#Need to store Bookmark name, bookmark variables, bookmark time periods, bookmark description
+def logout1(request):
+    
+    
+    print 'going to logout1.html...'
+    from django.contrib.auth import logout
+    logout(request)
+    
+    template = loader.get_template('exploratory_analysis/logout1.html')
+
+    context = RequestContext(request, {
+        
+    })
+
+    return HttpResponse(template.render(context))
+'''
+
+''' Taken out from treeex by John H 10-16
+    #get the predefined tree bookmarks of the user
+    from exploratory_analysis.models import Tree_Bookmarks
+    bookmark_list_obj = Tree_Bookmarks.objects.filter(tree_bookmark_username=username)
+  
+    bookmark_list = [] 
+    for obj in bookmark_list_obj:
+        bookmark_list.append(obj.tree_bookmark_name)
+ 
+ 
+
+    #get the figure bookmarks of the user
+    from exploratory_analysis.models import Figure_Bookmarks
+    figure_bookmark_list_obj = Figure_Bookmarks.objects.filter(figure_bookmark_username=username)
+ 
+    figure_bookmark_list = [] 
+    for obj in figure_bookmark_list_obj:
+        figure_bookmark_list.append(obj.figure_bookmark_name)
+ 
+ 
+    ##print 'bookmark list: ' + str(bookmark_list)
+    #print 'figure bookmark list ' + str(figure_bookmark_list)
+ 
+ 
+    defaults = parameter_defaults.get_parameter_defaults()
+    package_list = defaults['package_list']
+    dataset_list = defaults['dataset_list']
+    variable_list = defaults['variable_list']
+    season_list = defaults['season_list']
+    set_list = defaults['set_list']
+'''
+ 

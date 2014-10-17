@@ -279,13 +279,12 @@ body.loading #modal1 {
 			
 			<button type="button" id="go_Land_Home_Button"  onclick="go_Land_Home()">Back to Land Home</button>
 			<button type="button" id="go_Atm_Home_Button" onclick="go_Atm_Home()" style="display:none">Back to Atm Home</button>
-			
+		
 				<div class="row" style="border: 1px solid #000000;" id="dataviewer">
-					<div class="col-md-7" style="overflow:scroll; border-right: 1px solid #000000;height:900px;max-height:900px;">
+					<div class="col-md-7" style="border-right: 1px solid #000000; overflow:scroll; resize: both; padding-bottom: 250px; height:650px;max-height:5000px;">
+						
 						
 						<div id="landHome">
-					
-									
 									<BODY>
 									<TABLE>
 									  <TH><A HREF="http://www.cgd.ucar.edu/tss/clm/diagnostics/index.html">
@@ -466,48 +465,21 @@ body.loading #modal1 {
 						</div>
 						
 						
-						<!--  
-						<div id="1energyBalance" style='display: none'>							
-						</div>
-						-->
-						<!--
-						<div id="2contourPlots"  style='display: none'>
-						</div>
-						-->
-						<!-- 
-						<div id="3monthlyClimatology" style='display: none'>
-						</div>
-						
-						<div id="5tablesAnual" style='display: none'>
-						</div>
-						
-						<div id="6anualTrends" style='display: none'>
-						</div>
-						
-						<div id="7rtm" style='display: none'>
-						</div>
-						
-						<div id="9econtourStats" style='display: none'>
-						</div>
-						 -->
-						
 					</div>
 					
-					<div id="plotArea" style="overflow:scroll">
+					<div id="plotSpace" align="center" style="overflow:scroll">
+						<div id="plotArea">
 						<span style="margin-left:10px;font-weight:bold"> Plot for Selected Dataset</span>
-						<body>
+						<body >
 							<p>	Selected Plots</p>
 						</body>
+						</div>
+						<div align="center" style="padding: 25px; padding-top:25px"><button id="unglue" type="button" onclick="ungluePlot()">Unlock</button></div>
 					</div>
 					
-					
-					<div align="center">
-						<button id="unglue" type="button" onclick="ungluePlot()">Unlock</button>
-					</div>
 					
 				</div>
-			
-			
+				
 			</div>
 			
 

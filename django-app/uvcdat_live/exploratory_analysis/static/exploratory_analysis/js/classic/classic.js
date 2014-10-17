@@ -235,22 +235,6 @@ function toggle_vis(set) {
 			url : url,
 			cache: false,
 			data : JSON.stringify(data),
-			//async : false,
-			// success : function(set_url) {
-// 				
-				// console.log('setData: ' + setData);
-				// console.log('url: ' + set_url);
-// 				
-				// //alert('set_url: ' + set_url);
-// 				
-				// var html_elem_id = packageData + '_' + setData + '_html';
-				// console.log('html_elem_id: ' + html_elem_id);
-// 				
-				// $('#' + html_elem_id).load(set_url);
-// 
-				// document.getElementById(html_elem_id).style.display = 'block';
-// 				
-			// },
 			success : function(html) {
 				
 				var html_elem_id = packageData + '_' + setData + '_html';
@@ -258,7 +242,6 @@ function toggle_vis(set) {
 				$('#' + html_elem_id).empty();
 				$('#' + html_elem_id).append(html);
 				document.getElementById(html_elem_id).style.display = 'block';
-				
 				
 			},
 			error : function(xhr, status, error) {
