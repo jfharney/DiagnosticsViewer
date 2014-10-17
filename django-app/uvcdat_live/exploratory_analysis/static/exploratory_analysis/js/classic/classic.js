@@ -21,7 +21,7 @@ $(document).ready(function() {
 		
 		var set = this.id.substring(index+1);
 		
-		//alert('this.id: ' + this.id);
+		//console.log('this.id: ' + this.id);
 		
 		toggle_vis(set);
 		
@@ -315,7 +315,7 @@ function hide_land_sets() {
 function hide_atm_sets() {
 	
 	
-	document.getElementById('classicatm_topten').style.display = 'none';
+	document.getElementById('amwg_topten_html').style.display = 'none';
 	document.getElementById('amwg_set1_html').style.display = 'none';
 	document.getElementById('amwg_set2_html').style.display = 'none';
 	document.getElementById('amwg_set3_html').style.display = 'none';
