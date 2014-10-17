@@ -1244,6 +1244,8 @@ def classic_views(request):
 
         #regions = ['Global Land','Northern Hemisphere Land', 'Southern Hemisphere Land', 'Alaskan Arctic', 'Central U.S.', 'Mediterranean and Western Asia']  
         regions = ['Global','Alaska','Alaskan_Arctic','Amazonia','Antarctica','Arabian_Peninsula','Asia','Australia','Alaskan_Arctic', 'Central_US', 'Mediterranean'] 
+        set3vars = ['hydro', 'landf', 'moistEnergyFlx', 'radf', 'reg', 'snow', 'turbf']
+        set6vars = ['cnFlx', 'frFlx', 'hydro', 'landf', 'radf', 'reg', 'snowliqIce', 'soilice', 'soilliq', 'soilliiqIce', 'tsoi', 'turbf']
 
         set3Headers = ['reg', 'landf','randf','turbf','cnFlx','frFlx','moistEnergyFlx','snow','albedo','hydro']
         #DONE to be added
@@ -1659,7 +1661,7 @@ def classic_views(request):
             html+="<td>Region(s)"
             html+="</td>"
             html+="<td ALIGN=LEFT>Map</font>\n</td>"
-            for var in vars:  
+            for var in set3vars:  
                html+="<td ALIGN=LEFT>"+var+"</font>\n</td>"
             html+="</tr>\n"
           
@@ -1688,7 +1690,7 @@ def classic_views(request):
                     html+=');" onmouseover="displayImageHover(\'' + 'http://' + paths.ea_hostname + generate_token_url(url_prefixIMAGE + 'reg_' + region + '.gif') + '\''
                     html+=');" onmouseout="nodisplayImage();">Map</A>'
                     html+='</td>\n'
-                    for var in vars:              
+                    for var in set3vars:              
                         html+='<td ALIGN=center>'
                         html+='<a href="#" onclick="displayImageClick(\''
                         html+='http://' + paths.ea_hostname + generate_token_url(url_prefixIMAGE + var+'_'+region+'.gif') +'\''
@@ -1780,7 +1782,7 @@ def classic_views(request):
              #########################################
             #change this to the specified directory structure
             url_prefix = paths.staticfiles_dirs + "/img/classic/" + package + "/" + set + "/"
-            url_prefixIMAGE = "/" + dataset + "/" + package +  "/set3_"
+            url_prefixIMAGE = "/" + dataset + "/" + package +  "/set6_"
             
             #assemble the url to be returned
             url = url_prefix + set + ".html"
@@ -1829,7 +1831,7 @@ def classic_views(request):
             html+="<td>Region(s)"
             html+="</td>"
             html+="<td ALIGN=LEFT>Map</font>\n</td>"
-            for var in vars:  
+            for var in set6vars:  
                html+="<td ALIGN=LEFT>"+var+"</font>\n</td>"
             html+="</tr>\n"
           
@@ -1852,7 +1854,7 @@ def classic_views(request):
                     html+=');" onmouseover="displayImageHover(\'http://' + paths.ea_hostname + generate_token_url(url_prefixIMAGE + 'reg_'+region+'.gif') + '\''
                     html+=');" onmouseout="nodisplayImage();">Map</A>'
                     html+='</td>\n'
-                    for var in vars:              
+                    for var in set6vars:              
                         html+='<td ALIGN=center>'
                         html+='<a href="#" onclick="displayImageClick(\''
                         html+='http://' + paths.ea_hostname + generate_token_url(url_prefixIMAGE + var+'_'+region+'.gif') +'\''
