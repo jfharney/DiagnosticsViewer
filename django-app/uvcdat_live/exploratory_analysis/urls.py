@@ -115,8 +115,8 @@ urlpatterns = patterns('',
   #login view
   url(r'^login/$',views.login,name='login'),
   url(r'^logout/$',views.logout,name='logout'),
-  url(r'^login1/$',views.login1,name='login1'),
-  url(r'^logout1/$',views.logout1,name='logout1'),
+  #url(r'^login1/$',views.login1,name='login1'),
+  #url(r'^logout1/$',views.logout1,name='logout1'),
   
   
   
