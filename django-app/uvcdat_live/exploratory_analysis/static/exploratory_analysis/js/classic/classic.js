@@ -1,5 +1,13 @@
 $(document).ready(function() {
 
+	
+	//clear the page upon load
+	clear_page();
+	
+	
+	
+	
+	
 	//alert('loading classic.js');
 	$('.classic_figure_sets').click(function() {
 	
@@ -68,6 +76,18 @@ function displayImageClick(imageURL)
 	document.getElementById("plotArea").style.visibility='visible';
 	document.getElementById("plotArea").innerHTML=imagePath;
 	clicked =1;
+}
+
+function clear_page() {
+	hide_land_home();
+	hide_atm_home();
+	hide_land_sets();
+	hide_atm_sets();
+
+	$('#go_Land_Home_Button').hide();
+	$('#go_Atm_Home_Button').hide();
+	$("#unglue").hide();
+	$('#plotArea').hide();
 }
 
 function displayTable(textTableURL)
