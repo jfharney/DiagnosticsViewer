@@ -138,11 +138,11 @@ def dataset_variables(request,dataset_name):
         for dataset in da[0].variables.split(','):
             dataset_list.append(dataset)
             
-        data = {'dataset_list' : dataset_list}
-        data_string = json.dumps(data,sort_keys=False,indent=2)
+        data = {'variables' : dataset_list}
+        data_string = json.dumps(data,sort_keys=False)#,indent=2)
 
         print("GET Done\n")
-        return HttpResponse(data_string + "\n")
+        return HttpResponse(data_string)# + "\n")
         
     
     elif request.method == 'DELETE':
