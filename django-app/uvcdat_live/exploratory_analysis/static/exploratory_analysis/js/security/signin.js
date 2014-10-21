@@ -56,7 +56,7 @@ $(document).ready(function(){
 					  
 					  
 					  if(data == 'Authenticated') {
-						  alert('Authenticated - go to the main page with the username');
+						  //alert('Authenticated - go to the main page with the username');
 						  //window.location = 'http://localhost:8081/exploratory_analysis/main/' + username;
 						  window.location = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/main/' + username;
 					  } else {

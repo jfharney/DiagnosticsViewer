@@ -86,8 +86,8 @@ function clear_page() {
 
 	$('#go_Land_Home_Button').hide();
 	$('#go_Atm_Home_Button').hide();
-	$("#unglue").hide();
-	$('#plotArea').hide();
+	//$("#unglue").hide();
+	//$('#plotArea').hide();
 }
 
 function displayTable(textTableURL)
@@ -129,6 +129,7 @@ function displayImageHover(imageURL)
 	if (clicked!=1){
 		var imagePath = "<img src=\"" + imageURL + "\" \/>";
 		document.getElementById("plotArea").style.visibility='visible';
+		$('#plotArea').show();
 		document.getElementById("plotArea").innerHTML=imagePath;
 	}
 }
