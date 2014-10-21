@@ -28,8 +28,28 @@ $(document).ready(function() {
 		
 	});
 	
-	$('#selectP').on('change',function() {
+	$('#selectD').on('change',function() {
 		
+		var pckg = $('#selectP').val();
+		
+		//make amwg home button appear
+		hide_land_home();
+		$('#go_Atm_Home_Button').hide();
+			
+		//make lmwg home button disappear
+		$('#go_Land_Home_Button').hide();
+		hide_atm_home();
+		
+		//hide variable and time selections and display next button
+		hide_varSelect();
+
+		
+		
+	});	
+	$('#save_tree').click(function(){
+		var dataset = $('#selectD').val();
+		var pckg = $('#selectP').val();
+	
 		var pckg = $('#selectP').val();
 		
 		if(pckg == 'lmwg') {
@@ -44,7 +64,7 @@ $(document).ready(function() {
 			go_Land_Home();
 			
 		} else {
-
+	
 			//make amwg home button appear
 			$('#go_Atm_Home_Button').show();
 			
@@ -55,6 +75,21 @@ $(document).ready(function() {
 			go_Atm_Home();
 			
 		}
+	});
+	$('#selectP').on('change',function() {
+		
+		var pckg = $('#selectP').val();
+		
+		//make amwg home button appear
+		hide_land_home();
+		$('#go_Atm_Home_Button').hide();
+			
+		//make lmwg home button disappear
+		$('#go_Land_Home_Button').hide();
+		hide_atm_home();
+		
+		//hide variable and time selections and display next button
+		hide_varSelect();
 		
 		
 	});
@@ -63,13 +98,17 @@ $(document).ready(function() {
 var clicked=0;
 function displayImageClick(imageURL)
 {
-	var imagePath = "<img src=\"" + imageURL + "\" \/>";
+	var imagePath = "<img src=\"" + imageURL + "\" \onerror=\"imgError(this);\"/>";
 	document.getElementById("unglue").style.visibility='visible';
 	document.getElementById("plotArea").style.visibility='visible';
 	document.getElementById("plotArea").innerHTML=imagePath;
 	clicked =1;
 }
-
+function imgError(image) {
+    image.onerror = "";
+    image.src = "/static/exploratory_analysis/img/classic/Noimage.png";
+    return true;
+}
 function displayTable(textTableURL)
 {
 	textTableURL = textTableURL;
@@ -107,7 +146,7 @@ function displayTable(textTableURL)
 function displayImageHover(imageURL)
 {
 	if (clicked!=1){
-		var imagePath = "<img src=\"" + imageURL + "\" \/>";
+		var imagePath = "<img src=\"" + imageURL + "\" \onerror=\"imgError(this);\"/>";
 		document.getElementById("plotArea").style.visibility='visible';
 		document.getElementById("plotArea").innerHTML=imagePath;
 	}
@@ -135,17 +174,50 @@ function toggle_varSelect()
 	$('#variables_div').show();
 	getVariables('ul');
 }
-
+function hide_varSelect()
+{
+	var dataset = $('#selectD').val();
+	
+	$('#dataset_selected').show();
+	$('#variables_div').hide();
+	getVariables('ul');
+}
 function toggle_vis(set) {
 	
 	
 	var dataset = $('#selectD').val();
 	var pckg = $('#selectP').val();
+
+	var pckg = $('#selectP').val();
+	
+	if(pckg == 'lmwg') {
+		
+		//make lmwg home button appear
+		$('#go_Land_Home_Button').show();
+		
+		//make amwg home button disappear
+		$('#go_Atm_Home_Button').hide();
+		
+		//make lmwg home appear
+		go_Land_Home();
+		
+	} else {
+
+		//make amwg home button appear
+		$('#go_Atm_Home_Button').show();
+		
+		//make lmwg home button disappear
+		$('#go_Land_Home_Button').hide();
+		
+		//make atm home appear
+		go_Atm_Home();
+		
+	}
 	
 	//make some defaults for testing
 	//TODO: replace or just dump this
-	if(dataset == null && pckg == 'lmwg') dataset = 'tropics_warming_th_q';
-	else if(dataset == null) dataset = 'f40_amip_cam5_c03_78b';
+	//if(dataset == null && pckg == 'lmwg') dataset = 'tropics_warming_th_q';
+	//else if(dataset == null) dataset = 'f40_amip_cam5_c03_78b';
 	
 	//document.getElementById('landHome').style.display = 'none';
 	hide_land_home();
@@ -323,4 +395,3 @@ function hide_land_home() {
 function hide_atm_home() {
 	document.getElementById('atmHome').style.display = 'none';
 }
-

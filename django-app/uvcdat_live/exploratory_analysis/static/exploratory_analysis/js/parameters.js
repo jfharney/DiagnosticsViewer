@@ -148,12 +148,13 @@ function getVariables(current_username) {
 					noneSelectedText : "Select variables",
 					selectedList : 1
 				});
-
+				d3.select("#selectV").selectAll("option").remove();
 				d3.select("#selectV").selectAll("option").data(varList).enter().append("option").attr("value", String).text(String);
 
-				console.log(varList);
-				$("#selectV").multiselect("refresh");
+				//console.log(varList);
 				
+				$("#selectV").multiselect("refresh");
+				$("#selectV").multiselect("checkAll");
 			  $("#selectT").multiselect().multiselectfilter();
 				
 			  $("#selectT").multiselect({
@@ -162,10 +163,11 @@ function getVariables(current_username) {
 					//noneSelectedText : "tropics_warming_th_q_co2",
 					selectedList : 1
 			  });
-
+		      d3.select("#selectT").selectAll("option").remove();
 			  d3.select("#selectT").selectAll("option").data(timeList).enter().append("option").attr("value", String).text(String);
 
-			  $("#selectT").multiselect("refresh");			  
+			  $("#selectT").multiselect("refresh");		
+			  $("#selectT").multiselect("checkAll");	  
 			  
 		  },
 		  error: function(xhr, status, error) {
