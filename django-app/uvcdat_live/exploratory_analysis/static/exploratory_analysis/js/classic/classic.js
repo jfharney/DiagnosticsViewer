@@ -1,5 +1,13 @@
 $(document).ready(function() {
 
+	
+	//clear the page upon load
+	//clear_page();
+	
+	
+	
+	
+	
 	//alert('loading classic.js');
 	$('.classic_figure_sets').click(function() {
 	
@@ -117,11 +125,28 @@ function displayImageClick(imageURL)
 	document.getElementById("plotArea").innerHTML=imagePath;
 	clicked =1;
 }
+
+
 function imgError(image) {
     image.onerror = "";
     image.src = "/static/exploratory_analysis/img/classic/Noimage.png";
     return true;
 }
+
+/*
+function clear_page() {
+	hide_land_home();
+	hide_atm_home();
+	hide_land_sets();
+	hide_atm_sets();
+
+	$('#go_Land_Home_Button').hide();
+	$('#go_Atm_Home_Button').hide();
+	//$("#unglue").hide();
+	//$('#plotArea').hide();
+}
+*/
+	
 function displayTable(textTableURL)
 {
 	textTableURL = textTableURL;
@@ -161,6 +186,7 @@ function displayImageHover(imageURL)
 	if (clicked!=1){
 		var imagePath = "<img src=\"" + imageURL + "\" \onerror=\"imgError(this);\"/>";
 		document.getElementById("plotArea").style.visibility='visible';
+		$('#plotArea').show();
 		document.getElementById("plotArea").innerHTML=imagePath;
 	}
 }
