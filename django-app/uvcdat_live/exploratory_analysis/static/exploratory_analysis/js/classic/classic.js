@@ -39,7 +39,19 @@ $(document).ready(function() {
 		//make lmwg home button disappear
 		$('#go_Land_Home_Button').hide();
 		hide_atm_home();
-		
+	
+		hide_land_sets();
+/*
+        document.getElementById('lmwg_set1_html').style.display = 'none';
+        document.getElementById('lmwg_set2_html').style.display = 'none';
+        document.getElementById('lmwg_set3_html').style.display = 'none';
+        document.getElementById('lmwg_set5_html').style.display = 'none';
+        document.getElementById('lmwg_set6_html').style.display = 'none';
+        document.getElementById('lmwg_set7_html').style.display = 'none';
+*/
+        	hide_atm_sets();
+
+	
 		//hide variable and time selections and display next button
 		hide_varSelect();
 
@@ -91,7 +103,8 @@ $(document).ready(function() {
 		//hide variable and time selections and display next button
 		hide_varSelect();
 		
-		
+	        hide_land_sets();
+		hide_atm_sets();	
 	});
 });
 
@@ -375,6 +388,7 @@ function hide_atm_sets() {
 	document.getElementById('amwg_set2_html').style.display = 'none';
 	document.getElementById('amwg_set3_html').style.display = 'none';
 	document.getElementById('amwg_set4_html').style.display = 'none';
+	document.getElementById('amwg_set4a_html').style.display = 'none';
 	document.getElementById('amwg_set5_html').style.display = 'none';
 	document.getElementById('amwg_set6_html').style.display = 'none';
 	document.getElementById('amwg_set7_html').style.display = 'none';

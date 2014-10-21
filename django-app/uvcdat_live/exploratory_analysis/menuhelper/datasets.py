@@ -180,7 +180,9 @@ def datasetListHelper1(request,user_id):
     
     #take the intersection of datasets on disk and datasets from the group database
     dataset_list_returned = list(set(datasets_in_groups).intersection(disk_datasets))
-    
+   
+    dataset_list_returned = disk_datasets
+ 
     data = {'datasets' : dataset_list_returned } #datasets_in_groups}
     data_string = json.dumps(data,sort_keys=False,indent=2)
     

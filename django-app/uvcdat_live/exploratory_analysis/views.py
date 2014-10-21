@@ -1399,11 +1399,11 @@ def classic_views(request):
                     for time in times:                
                         html+='<td ALIGN=LEFT>'
                         html+='<a href="#" onclick="displayImageClick('
-                        html+='http://' + paths.ea_hostname + generate_token_url(url_prefixIMAGE + time +'_' + key + '.gif')
-                        html+=');" onmouseover="displayImageHover('
-                        html+='http://' + paths.ea_hostname + generate_token_url(url_prefixIMAGE + time +'_' + key + '.gif')
-                        html+='\''
-                        html+=');" onmouseout="nodisplayImage();">plot</A>\n'
+                        html+='\'http://' + paths.ea_hostname + generate_token_url(url_prefixIMAGE + time +'_' + key + '.gif')
+                        html+='\');" onmouseover="displayImageHover('
+                        html+='\'http://' + paths.ea_hostname + generate_token_url(url_prefixIMAGE + time +'_' + key + '.gif')
+                        #html+='\''
+                        html+='\');" onmouseout="nodisplayImage();">plot</A>\n'
                         html+='</td>'
                     html+="</TR>\n"
                     
