@@ -97,7 +97,13 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
          html +='<TR>'
          html+='<TH>'+r+'</TH>'
          for season in seasons:
-            html +='   <TH ALIGN=LEFT><A HREF="table_'+regions[r]+'_'+season+'.asc">table</a>'
+             #whenever these are generated with diags use this?
+             #fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package + '/set1_'+season+'.txt')
+             fname = '/classic/test/table_' + 'TROPIC' + '_' + season + '.asc'
+             click = 'onclick="displayTable(\''+fname+'\');" '
+             over = 'onmouseover="displayTableHover(\''+fname+'\');" '
+             out = 'onmouseout="nodisplayImage();" '
+             html += ' <TH ALIGN=LEFT><A HREF="#" '+click+over+out+'">'+season+'</a>'
       html += '</TABLE>'
       return html
 
