@@ -153,6 +153,7 @@ function displayTable(textTableURL)
 	if(textTableURL.endsWith('.json'))
 	{
 		var tableHTML = '<table id="r22" width="100%" height="600" cellspacing="0"><thead><tr><th>Name</th><th>Position</th><th>Office</th><th>Extn.</th><th>Start date</th><th>Salary</th> </tr></thead><tfoot><tr><th>Name</th><th>Position</th><th>Office</th><th>Extn.</th><th>Start date</th><th>Salary</th></tr></tfoot></table>';
+		document.getElementById("unglue").style.visibility='visible';
 		document.getElementById("plotArea").style.visibility='visible';
 		document.getElementById("plotArea").innerHTML= '' + tableHTML;		
 
@@ -178,9 +179,46 @@ function displayTable(textTableURL)
 		document.getElementById("plotArea").style.visibility='visible';
 		document.getElementById("plotArea").innerHTML='<iframe src="' + textTableURL + '" width=100% height=800 frameborder=0 ></iframe>';
 	}
+	clicked = 1;
 	
 }
-
+function displayTableHover(textTableURL)
+{
+	if(clicked != 1)
+	{
+		textTableURL = textTableURL;
+		if(textTableURL.endsWith('.json'))
+		{
+			var tableHTML = '<table id="r22" width="100%" height="600" cellspacing="0"><thead><tr><th>Name</th><th>Position</th><th>Office</th><th>Extn.</th><th>Start date</th><th>Salary</th> </tr></thead><tfoot><tr><th>Name</th><th>Position</th><th>Office</th><th>Extn.</th><th>Start date</th><th>Salary</th></tr></tfoot></table>';
+			document.getElementById("plotArea").style.visibility='visible';
+			document.getElementById("plotArea").innerHTML= '' + tableHTML;		
+	
+	//$(document).ready(function(){
+	    $('#r22').DataTable( {
+	        "ajax": {
+	            "url": textTableURL,
+	            "dataSrc": ""
+	        },
+	        "columns": [
+	            { "data": "name" },
+	            { "data": "position" },
+	            { "data": "office" },
+	            { "data": "extn" },
+	            { "data": "start_date" },
+	            { "data": "salary" }
+	        ]
+	    //} );
+	    } );
+		}
+		else
+		{
+			document.getElementById("plotArea").style.visibility='visible';
+			document.getElementById("plotArea").innerHTML='<iframe src="' + textTableURL + '" width=100% height=800 frameborder=0 ></iframe>';
+		}
+		
+	}
+	
+}
 function displayImageHover(imageURL)
 {
 	if (clicked!=1){
@@ -204,7 +242,6 @@ function nodisplayImage()
 		document.getElementById("plotArea").style.visibility='hidden';
 	}
 }
-
 function toggle_varSelect()
 {
 	var dataset = $('#selectD').val();
