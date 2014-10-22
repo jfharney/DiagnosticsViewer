@@ -728,7 +728,7 @@ def variables(request,dataset_id,package_id):
     da = Variables.objects.filter(dataset_name=dataset_name)
     
     if da:
-   
+        print 'da is not None'
     #otherwise grab the contents and return as a list
     #note: da[0] is the only record in the filtering of the Dataset_Access objects
         dataset_list = []
@@ -748,7 +748,7 @@ def variables(request,dataset_id,package_id):
         if data_string != "":
              return HttpResponse(json.dumps(variables))
 
-
+    print 'da is None'
     opts = Options()
     opts['path'] = ['/data/tropics/' + dataset_id + '/']
     opts['packages'] = [package_id.upper()]

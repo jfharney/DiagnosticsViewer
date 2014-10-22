@@ -53,7 +53,7 @@ urlpatterns = patterns('',
   
   
   #grabs variables given a dataset
-  url(r'^variables/(?P<dataset_id>\w+)/(?P<package_id>\w+)/$',views.variables,name='variables'),
+  url(r'^variables/(?P<dataset_id>[\-.:\w]+)/(?P<package_id>\w+)/$',views.variables,name='variables'),
   
   url(r'^variables1/$',views.variables1,name='variables1'),
   
