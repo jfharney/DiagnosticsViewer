@@ -88,7 +88,7 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
 
    # special(er) cases first
    if sets == '1':
-      regions = {'global':'GLBL', 'tropics (20S-20N)':'TROP', 'southern extratropics (90S-20S)':'SEXT', 'northen extratropics (20N-90N)':'NEXT'}
+      regions = {'Global':'global', 'Tropics (20S-20N)':'tropics', 'Southern Extratropics (90S-20S)':'southern_extratropics', 'Northern Extratropics (20N-90N)', 'northern_extratropics'}
       html += '<TR>'
       html += '<TH ALIGN=LEFT><font color="navy" size="+1">Domain</font>'
       for season in seasons:
@@ -98,12 +98,11 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
          html+='<TH>'+r+'</TH>'
          for season in seasons:
              #whenever these are generated with diags use this?
-             #fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package + '/set1_'+season+'.txt')
-             fname = '/classic/test/table_' + 'TROPIC' + '_' + season + '.asc'
+             fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package + '/AMWG_Diagnostics_Set_1:_'+season+'_means_'+regions[r]+'.text'
              click = 'onclick="displayTable(\''+fname+'\');" '
              over = 'onmouseover="displayTableHover(\''+fname+'\');" '
              out = 'onmouseout="nodisplayImage();" '
-             html += ' <TH ALIGN=LEFT><A HREF="#" '+click+over+out+'">'+season+'</a>'
+             html += ' <TH ALIGN=LEFT><A HREF="#" '+click+over+out+'">table</a>'
       html += '</TABLE>'
       return html
 
