@@ -220,15 +220,15 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
                            fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+season+'_'+v.replace('_NORTH','')+'_'+obsfname+'_NP.png')
                      else:
                         if '_VISIR' in v:
-                           fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+season+'_'+v+'.png')
+                           fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+season+'_'+v+'-combined.png')
                         elif '_TROP' in v:
-                           fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+season+'_'+v.replace('_TROP','')+'_'+obsfname+'.png')
+                           fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+season+'_'+v.replace('_TROP','')+'_'+obsfname+'-combined.png')
                         elif '_LAND' in v:
                            fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+season+'_PRECT_PRECL.png')
                         elif 'TTRP' in v:
-                           fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+season+'_'+v+'_'+obsfname+'_TROP.png')
+                           fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+season+'_'+v+'_'+obsfname+'_TROP-combined.png')
                         else:
-                           fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+season+'_'+v+'_'+obsfname+'.png')
+                           fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+season+'_'+v+'_'+obsfname+'-combined.png')
                      fname=fname.replace('.png', '-combined.png')
                      click = 'onclick="displayImageClick(\''+fname+'\');" '
                      over = 'onmouseover="displayImageHover(\''+fname+'\');" '
@@ -283,8 +283,10 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
                         fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_ANN_'+v+'_'+obsfname+'-combined.png')
                      elif sets == '15':
                         fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+obsfname+'_'+v+'.png')
+                     elif sets == '10':
+                        fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_ANN_'+v+'_'+obsfname+'.png')
                      else:
-                        fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+v+'_'+obsfname+'.png')
+                        fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+v+'_'+obsfname+'-combined.png')
                      if '_VISIR' in v:
                         fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+v+'.png')
                      if '_NORTH' in v:
