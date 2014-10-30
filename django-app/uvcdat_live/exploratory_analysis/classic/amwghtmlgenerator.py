@@ -229,6 +229,7 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
                            fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+season+'_'+v+'_'+obsfname+'_TROP.png')
                         else:
                            fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+season+'_'+v+'_'+obsfname+'.png')
+                     fname=fname.replace('.png', '-combined.png')
                      click = 'onclick="displayImageClick(\''+fname+'\');" '
                      over = 'onmouseover="displayImageHover(\''+fname+'\');" '
                      out = 'onmouseout="nodisplayImage();" '
@@ -279,7 +280,7 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
                      html += '   <TH ALIGN=LEFT>'+v
                      html += '   <TH ALIGN=LEFT>'+varinfo[v]['desc']
                      if sets == 'topten':
-                        fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_ANN_'+v+'_'+obsfname+'.png')
+                        fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_ANN_'+v+'_'+obsfname+'-combined.png')
                      elif sets == '15':
                         fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+obsfname+'_'+v+'.png')
                      else:
@@ -291,6 +292,8 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
                      if '_SOUTH' in v:
                         fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+v.replace('_SOUTH','')+'_'+obsfname+'_SP.png')
 
+                     if sets == '8' or sets == '9':
+                        fname = fname.replace('.png','-combined.png')
                      click = 'onclick="displayImageClick(\''+fname+'\');" '
                      over = 'onmouseover="displayImageHover(\''+fname+'\');" '
                      out = 'onmouseout="nodisplayImage();" '
