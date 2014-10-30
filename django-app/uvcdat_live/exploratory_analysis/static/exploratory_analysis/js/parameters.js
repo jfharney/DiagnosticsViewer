@@ -23,6 +23,7 @@ function getDatasets(username) {
 		  $("#selectD").multiselect().multiselectfilter();
 			
 		  $("#selectD").multiselect({
+		  		minWidth: 195,
 				multiple : false,
 				header : "Select a dataset",
 				//noneSelectedText : "tropics_warming_th_q_co2",
@@ -73,6 +74,7 @@ function getPackages(current_username) {
 			  $("#selectP").multiselect().multiselectfilter();
 				
 				$("#selectP").multiselect({
+					minWidth: 195,
 					multiple : false,
 					header : "Select a package",
 					//noneSelectedText : "tropics_warming_th_q_co2",
@@ -146,7 +148,8 @@ function getVariables(current_username) {
 					multiple : true,
 					header : "Select variables",
 					noneSelectedText : "Select variables",
-					selectedList : 1
+					selectedList : 1,
+					minWidth: 195,
 				});
 				d3.select("#selectV").selectAll("option").remove();
 				d3.select("#selectV").selectAll("option").data(varList).enter().append("option").attr("value", String).text(String);
@@ -158,6 +161,7 @@ function getVariables(current_username) {
 			  $("#selectT").multiselect().multiselectfilter();
 				
 			  $("#selectT").multiselect({
+					minWidth: 195,			  	
 					multiple : true,
 					header : "Select a dataset",
 					//noneSelectedText : "tropics_warming_th_q_co2",

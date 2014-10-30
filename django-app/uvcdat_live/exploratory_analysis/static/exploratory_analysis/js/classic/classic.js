@@ -182,6 +182,11 @@ function displayTable(textTableURL)
 	clicked = 1;
 	
 }
+
+String.prototype.endsWith = function(suffix) {
+    return this.indexOf(suffix, this.length - suffix.length) !== -1;
+};
+
 function displayTableHover(textTableURL)
 {
 	if(clicked != 1)
