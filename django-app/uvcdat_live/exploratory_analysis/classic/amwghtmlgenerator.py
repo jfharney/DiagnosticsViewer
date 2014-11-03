@@ -89,11 +89,12 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
    # special(er) cases first
    if sets == '1':
       regions = {'Global':'global', 'Tropics (20S-20N)':'tropics', 'Southern Extratropics (90S-20S)':'southern_extratropics', 'Northern Extratropics (20N-90N)':'northern_extratropics'}
+      order = ['Global', 'Tropics (20S-20N)', 'Southern Extratropics (90S-20S)','Northern Extratropics (20N-90N)']
       html += '<TR>'
       html += '<TH ALIGN=LEFT><font color="navy" size="+1">Domain</font>'
       for season in seasons:
          html += '<TH>'+season
-      for r in regions:
+      for r in order:
          html +='<TR>'
          html+='<TH>'+r+'</TH>'
          for season in seasons:
@@ -229,7 +230,6 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
                            fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+season+'_'+v+'_'+obsfname+'_TROP-combined.png')
                         else:
                            fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+season+'_'+v+'_'+obsfname+'-combined.png')
-                     fname=fname.replace('.png', '-combined.png')
                      click = 'onclick="displayImageClick(\''+fname+'\');" '
                      over = 'onmouseover="displayImageHover(\''+fname+'\');" '
                      out = 'onmouseout="nodisplayImage();" '
@@ -294,8 +294,6 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
                      if '_SOUTH' in v:
                         fname = 'http://' + paths.ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+v.replace('_SOUTH','')+'_'+obsfname+'_SP.png')
 
-                     if sets == '8' or sets == '9':
-                        fname = fname.replace('.png','-combined.png')
                      click = 'onclick="displayImageClick(\''+fname+'\');" '
                      over = 'onmouseover="displayImageHover(\''+fname+'\');" '
                      out = 'onmouseout="nodisplayImage();" '
