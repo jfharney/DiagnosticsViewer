@@ -15,22 +15,11 @@ def pageGenerator(set, varlist, times, package, dataset, options):
         
         
         if set == '1': 
-        
-                  #JOHN's example code
-            #########################################
-            #change this to the specified directory structure
+
             url_prefix = paths.staticfiles_dirs + "/img/classic/" + dataset + "/" + package + "/"
             url_prefixIMAGE = "/" + dataset + "/" + package + "/set1_"
-            
-            #assemble the url to be returned
             url = url_prefix + set + ".html"
-            #END JOHN's code
-        
-            #Construct table with description (variable) and link to plot
-            #Input from json object from user selection
-            #user_selected_varlist = {'TSA', 'PREC'}        
-            
-            #Start writing file (SPECIFY LOCATION TO WRITE FILE TO HERE)     Example: land/tropics_warming_th_q/img/
+
             html=""        
             
             #Header
@@ -57,7 +46,6 @@ def pageGenerator(set, varlist, times, package, dataset, options):
             
             #python for loop----------
             #Descriptions are (predefinedBrianSmithDictionary[key]) 
-            
             
             
             for key in vardict:

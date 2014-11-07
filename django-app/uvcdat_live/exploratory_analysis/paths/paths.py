@@ -39,6 +39,8 @@ if type(esgfAuth) is str and esgfAuth == 'True':
 else:
    esgfAuth = False
    
+secret = config.get("options","secret_key")
+protectedPath = config.get("options", "protectedPath")
 
 database_name = database_root +"/mydb.db"
 
@@ -62,8 +64,6 @@ default_map_sample_data_dir = default_sample_data_dir + dataset_name
 def generate_token_url(filename):
     import os, time, hashlib
     
-    secret = "secret string"                                # Same as AuthTokenSecret
-    protectedPath = "/acme-data/"                           # Same as AuthTokenPrefix
     ipLimitation = False                                    # Same as AuthTokenLimitByIp
     hexTime = "{0:x}".format(int(time.time()))              # Time in Hexadecimal      
     fileName = filename                       # The file to access
