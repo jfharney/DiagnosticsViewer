@@ -343,72 +343,34 @@ function toggle_vis(set) {
 			
 	};
 	
+
 	
-	if(packageData == 'amwg') {
-		
-		var url = '/exploratory_analysis/classic_views_html/' + '?_='+Math.round(Math.random()*10000);
-		
-		
-		
-		
-		$.ajax({
-			type : "POST",
-			url : url,
-			cache: false,
-			data : JSON.stringify(data),
-			//async : false,
-			success : function(html) {
-				
-				var html_elem_id = packageData + '_' + setData + '_html';
-				
-				$('#' + html_elem_id).empty();
-				$('#' + html_elem_id).append(html);
-				document.getElementById(html_elem_id).style.display = 'block';
-				
-				
-			},
-			error : function(xhr, status, error) {
-				
-				console.log('error');
-				if (xhr.status == 404) {
-				}
-			},
-		});
-		
-				
+	var url = '/exploratory_analysis/classic_views_html/' + '?_='+Math.round(Math.random()*10000);
 	
-	} else {
-		
-		var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/classic_views/' + '?_='+Math.round(Math.random()*10000);
-		
-		
-		
-		$.ajax({
-			type : "POST",
-			url : url,
-			cache: false,
-			data : JSON.stringify(data),
-			success : function(html) {
-				
-				var html_elem_id = packageData + '_' + setData + '_html';
-				
-				$('#' + html_elem_id).empty();
-				$('#' + html_elem_id).append(html);
-				document.getElementById(html_elem_id).style.display = 'block';
-				
-			},
-			error : function(xhr, status, error) {
-				
-				console.log('error');
-				if (xhr.status == 404) {
-				}
-				
+	
+	$.ajax({
+		type : "POST",
+		url : url,
+		cache: false,
+		data : JSON.stringify(data),
+		//async : false,
+		success : function(html) {
+			
+			var html_elem_id = packageData + '_' + setData + '_html';
+			
+			$('#' + html_elem_id).empty();
+			$('#' + html_elem_id).append(html);
+			document.getElementById(html_elem_id).style.display = 'block';
+			
+			
+		},
+		error : function(xhr, status, error) {
+			
+			console.log('error');
+			if (xhr.status == 404) {
 			}
-		});
-		
-	}
-	
-	
+		},
+	});
 	
 	
 	
