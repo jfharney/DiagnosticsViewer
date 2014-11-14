@@ -117,12 +117,15 @@ $(document).ready(function() {
 });
 
 var clicked=0;
+var lastURL="";
+
 function displayImageClick(imageURL)
 {
+	$('.plot_btn').show();
 	var imagePath = "<img src=\"" + imageURL + "\" \onerror=\"imgError(this);\"/>";
-	document.getElementById("unglue").style.visibility='visible';
 	document.getElementById("plotArea").style.visibility='visible';
 	document.getElementById("plotArea").innerHTML=imagePath;
+	lastURL = imageURL;
 	clicked =1;
 }
 
@@ -133,27 +136,14 @@ function imgError(image) {
     return true;
 }
 
-/*
-function clear_page() {
-	hide_land_home();
-	hide_atm_home();
-	hide_land_sets();
-	hide_atm_sets();
-
-	$('#go_Land_Home_Button').hide();
-	$('#go_Atm_Home_Button').hide();
-	//$("#unglue").hide();
-	//$('#plotArea').hide();
-}
-*/
 	
 function displayTable(textTableURL)
 {
+	$('.plot_btn').show();
 	textTableURL = textTableURL;
 	if(textTableURL.endsWith('.json'))
 	{
 		var tableHTML = '<table id="r22" width="100%" height="600" cellspacing="0"><thead><tr><th>Name</th><th>Position</th><th>Office</th><th>Extn.</th><th>Start date</th><th>Salary</th> </tr></thead><tfoot><tr><th>Name</th><th>Position</th><th>Office</th><th>Extn.</th><th>Start date</th><th>Salary</th></tr></tfoot></table>';
-		document.getElementById("unglue").style.visibility='visible';
 		document.getElementById("plotArea").style.visibility='visible';
 		document.getElementById("plotArea").innerHTML= '' + tableHTML;		
 
@@ -179,6 +169,7 @@ function displayTable(textTableURL)
 		document.getElementById("plotArea").style.visibility='visible';
 		document.getElementById("plotArea").innerHTML='<iframe src="' + textTableURL + '" width=100% height=800 frameborder=0 ></iframe>';
 	}
+	lastURL = textTableURL;
 	clicked = 1;
 	
 }
@@ -237,8 +228,26 @@ function displayImageHover(imageURL)
 function ungluePlot()
 {
 	clicked =0;
-	document.getElementById("unglue").style.visibility='hidden';
+	$('.plot_btn').hide();
 	document.getElementById("plotArea").style.visibility='hidden';
+}
+
+function downloadPlot()
+{
+	html = '<div class="pull-left">';
+	html += '<a href="#" onclick=\"displayImageClick(\'' + lastURL + '\')\"><< Back</a>';
+	html += '<br><br>';
+	html += '<iframe src=\"' + lastURL + '\" width=150px height=150px syle="overflow:none"><br></iframe>';
+	html += '<span><h3>Downloads</h3></span><hr>';
+	html += '<a href=\"' + lastURL +  '\" download="" target="_blank">png (right-click save as)</a>';
+	html += '<br>';
+
+	document.getElementById("plotArea").innerHTML=html;
+}
+
+function expandPlot()
+{
+	window.open(lastURL);
 }
 
 function nodisplayImage()
