@@ -252,32 +252,42 @@ body.loading #modal1 {
 			<br>
 			 
 			 
-			<div class="row-fluid create_tree_options">
-				<label for="selectV">Variables:</label>
-				<br>
-				<select id="selectV" multiple="multiple"></select>
-				<br>
+				<button type="button" class="btn btn-default create_tree_options" style="display:none" id="dataset_selected" onclick="toggle_varSelect()">
+					Next
+				</button>
+			<br>
+			<br>
+				<div id="variables_div" style="display:none">
+					<hr>
+					<div class="row-fluid create_tree_options">
+						<label for="selectV">Variables:</label>
+						<br>
+						<select id="selectV" multiple="multiple"></select>
+						<br>
 
-			</div>
-			<br class="create_tree_options">
-			
-			<div class="row-fluid create_tree_options">
-				<label for="selectT">Times:</label>
-				<br>
-				<select id="selectT" multiple="multiple"></select>
-				<br>
+					</div>
+					<br class="create_tree_options">
 
-			</div>
-			<br class="create_tree_options">
-			
-			<hr class="create_tree_options">
-			
+					<div class="row-fluid create_tree_options">
+						<label for="selectT">Times:</label>
+						<br>
+						<select id="selectT" multiple="multiple"></select>
+						<br>
+
+					</div>
+					<br class="create_tree_options">
+
+					<hr class="create_tree_options">
+
+					<br>
+
 			<input type="text" class="form-control create_tree_options" placeholder="Tree Bookmark Name" id="tree_name">
 			<br>
 			<div class="row-fluid create_tree_options" id="viz_button">
 				
 				<button type="button" class="btn btn-default" id="save_tree" >Save</button>
 			</div>
+							</div>
 		</div>
 
 		<div class="col-md-10">
@@ -406,17 +416,12 @@ $(document).ready(function(){
 	
 	
 	
-	
-	var current_username = 'u1';
+	var current_username = $('#username_posted').html();
 	
 	getDatasets(current_username);
 	
 	getPackages(current_username);
-	
-	getVariables(current_username);
-	
-	getTimes(current_username);
-	
+
 	
 	
 	

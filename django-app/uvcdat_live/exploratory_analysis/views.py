@@ -436,17 +436,19 @@ def figureGenerator(request):
          realms = [str(x) for x in realms]
       else:
          realms = [str(realms)]
-        
+         
+      return HttpResponse('../../../static/exploratory_analysis/img/treeex/land_lmwg_set1_ANN_ER.png')
+'''
       print 'sets: ', sets
 #      sets = ['1']
     
-      '''
+      
       print 'variables: ' + str(variables)
       print 'times: ' + str(times)
       print 'sets: ' + str(sets)
       print 'packages: ' + str(packages)
       print 'realms: ' + str(realms)
-      '''
+      
     
       inCache = False
       
@@ -473,7 +475,7 @@ def figureGenerator(request):
           print 'not in cache'
           o= Options()
           
-          ''' Old defaults
+           Old defaults
           o._opts['path']=[default_sample_data_dir]
           o._opts['vars']=['TG']
           o._opts['times']=['MAM']
@@ -481,7 +483,7 @@ def figureGenerator(request):
           o._opts['sets']=['1']
           o._opts['packages']=['lmwg']
           o._opts['realms']=['land']
-          '''
+          
         
           o._opts['path']=[default_tree_sample_data_dir + paths.dataset_name ]
           o._opts['vars']=variables
@@ -543,12 +545,12 @@ def figureGenerator(request):
 #                v.png(fname)
 # was this:
                 v.png(filepath)
-          
+'''
     
     
       #return HttpResponse()
 #      return HttpResponse(cachedFile)
-      return HttpResponse(filepath)
+#return HttpResponse('../../../static/exploratory_analysis/img/treeex/land_lmwg_set1_MAY_TG.png')
 
 
 #Test classic view

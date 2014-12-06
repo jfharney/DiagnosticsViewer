@@ -657,7 +657,7 @@ function figure_generator(times, variables, sets, dataset, packages, realms, use
 
 	//var staticImg = "{% static 'exploratory_analysis/img/carousel/set6_turbf_Global.gif' %}";
 	//"../../../static/exploratory_analysis/css/tree/flare13.json"
-	var staticImg = img_prefix + packages + '_set' + sets[0] + '_' + times + '_' + variables + '.png';
+	var staticImg = '../../../static/exploratory_analysis/img/treeex/land_lmwg_set1_MAY_TLAI.png';
 	//computedImg;
 
 	$body = $("body");
@@ -792,4 +792,20 @@ function getCookie(name) {
 		}
 	}
 	return cookieValue;
+}
+function toggle_varSelect()
+{
+	var dataset = $('#selectD').val();
+	
+	$('#dataset_selected').hide();
+	$('#variables_div').show();
+	getVariables('ul');
+}
+function hide_varSelect()
+{
+	var dataset = $('#selectD').val();
+	
+	$('#dataset_selected').show();
+	$('#variables_div').hide();
+	getVariables('ul');
 }

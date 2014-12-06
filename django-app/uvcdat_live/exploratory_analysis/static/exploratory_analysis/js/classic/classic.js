@@ -241,6 +241,10 @@ function downloadPlot()
 	html += '<span><h3>Downloads</h3></span><hr>';
 	html += '<a href=\"' + lastURL +  '\" download="" target="_blank">png (right-click save as)</a>';
 	html += '<br>';
+	html += '<a download="" target="_blank">xml</a>';
+	html += '<br>';
+	html += '<a download="" target="_blank">json</a>';
+	html += '<br>';
 
 	document.getElementById("plotArea").innerHTML=html;
 }
