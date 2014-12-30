@@ -50,7 +50,7 @@ urlpatterns = patterns('',
   url(r'^datasets/(?P<user_id>\w+)/$',views.datasets,name='datasets'),
   url(r'^datasets1/(?P<user_id>\w+)/$',views.datasets1,name='datasets1'),
   
-  
+  url(r'^downloadlist/(?P<dataset_id>[\-.:\w]+)/(?P<package_id>\w+)/(?P<variable_id>\w+)/(?P<time_id>\w+)/$',views.downloadlist,name='downloadlist'),
   
   #grabs variables given a dataset
   url(r'^variables/(?P<dataset_id>[\-.:\w]+)/(?P<package_id>\w+)/$',views.variables,name='variables'),

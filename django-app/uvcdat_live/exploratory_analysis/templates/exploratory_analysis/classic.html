@@ -3,100 +3,7 @@
 {% load staticfiles %}
 
 {% block content %}
-<style>
-	.node {
-		cursor: pointer;
-	}
 
-	.node circle {
-		fill: #fff;
-		stroke: steelblue;
-		stroke-width: 1.5px;
-	}
-
-	.node text {
-		font: 10px sans-serif;
-	}
-
-	.link {
-		fill: none;
-		stroke: #ccc;
-		stroke-width: 1.5px;
-	}
-a.disabled:link, a.disabled:visited { color: grey; }
-	.thumbnail {
-		display: block;
-		padding: 4px;
-		overflow: hidden;
-	}
-
-	.thumbnail {
-		width: 225px;
-		height: 225px;
-		overflow: hidden;
-		padding: 4px;
-		display: block;
-	}
-
-	.thumbnail1 img {
-		display: block;
-		max-height: 100%;
-		max-width: 100%;
-		border: 0;
-	}
-
-	svg {
-		overflow-x: visible;
-	}
-
-	.hiddentext {
-		display: none
-	}
-
-	.hiddenfunctionality {
-		display: none
-	}
-
-	ul.dropdown-menu-form {
-		padding: 5px 10px 0;
-		max-height: 300px;
-		overflow-y: scroll;
-	}
-
-	#myModal1 {
-
-		margin-top: 150px
-	}
-
-	/* Start by setting display:none to make this hidden.
-	 Then we position it in relation to the viewport window
-	 with position:fixed. Width, height, top and left speak
-	 speak for themselves. Background we set to 80% white with
-	 our animation centered, and no-repeating */
-	#modal1 {
-		display: none;
-		position: fixed;
-		z-index: 1000;
-		top: 0;
-		left: 0;
-		height: 100%;
-		width: 100%;
-		background: rgba( 255, 255, 255, .8 )url('http://i.stack.imgur.com/FhHRx.gif')50% 50%no-repeat;
-	}
-
-	/* When the body has the loading class, we turn
-	 the scrollbar off with overflow:hidden */
-	body.loading {
-		overflow: hidden;
-	}
-
-	/* Anytime the body has the loading class, our
-	 modal element will be visible */
-	body.loading #modal1 {
-		display: block;
-	}
-
-</style>
 
 <body>
 	<!-- overlay blocking user input while backend is crunching numbers -->
@@ -180,7 +87,7 @@ a.disabled:link, a.disabled:visited { color: grey; }
 				<hr class="create_tree_options">
 
 				<div class="row-fluid create_tree_options">
-					<label for="selectD">Dataset:</label>
+					<label for="selectD" >Dataset:</label>
 					<br>
 					<select id="selectD" multiple="multiple"></select>
 					<br>
@@ -299,7 +206,6 @@ a.disabled:link, a.disabled:visited { color: grey; }
 				<div id="atmHome" style="display:none">
 
 					<BODY>
-						<hr noshade size=2 size="100%">
 						<TABLE width='1150' >
 							<TR>
 								<TD><TH ALIGN=left VALIGN=top><font color=blue>Set </font><font color=blue>Description</font>
@@ -346,18 +252,22 @@ a.disabled:link, a.disabled:visited { color: grey; }
 							</TR>
 						</TABLE>
 						<hr noshade size=2 size="100%">
-												<TABLE width='1150' >
-							<TR>
+						<TABLE width='1150' >
+							<TR id="dataset_downloads" style='display: none'>
+								
 								<TD><TH ALIGN=left VALIGN=top><font color=blue>Downloads</font>
 								<br>
+								<div id="dataset_downloads_div">
 								<!--
-								<font color=red>Top Ten</font><a class="classic_toggle_sets" id="classicatm_topten" href="#">Tier 1A/Top Ten</a> summary for this dataset.<br>
-								-->
 								<A class="disabled"> Climos</A>
 								<br>
 								<A class="disabled"> Raw</A>
+								-->
+								</div>
 								<br>
 								</TD>
+						
+
 
 							</TR>
 						</TABLE>
@@ -438,79 +348,5 @@ a.disabled:link, a.disabled:visited { color: grey; }
 <script src="{% static 'exploratory_analysis/js/parameters.js' %}"></script>
 <script src="{% static 'exploratory_analysis/js/tree/bookmarks.js' %}"></script>
 <script src="{% static 'exploratory_analysis/js/jquery/overlay.js' %}"></script>
-
-<script>
-	$(document).ready(function() {
-
-		$body = $("body");
-
-		console.log('get the user name here ' + document.URL);
-		//var current_username = getUsernameFromURL(document.URL)
-
-		var current_username = $('#username_posted').html();
-		//var current_username = 'jfhCSSEF';
-		console.log('current_username: ' + current_username);
-
-		getDatasets(current_username);
-
-		getPackages(current_username);
-
-		//getVariables(current_username);
-
-		//getTimes(current_username);
-
-		var treeloaded = $('#treeloaded').html();
-
-		//for post requests, need to get the csrf token
-		function getCookie(name) {
-			var cookieValue = null;
-			if (document.cookie && document.cookie != '') {
-				var cookies = document.cookie.split(';');
-				for (var i = 0; i < cookies.length; i++) {
-					var cookie = jQuery.trim(cookies[i]);
-					// Does this cookie string begin with the name we want?
-					if (cookie.substring(0, name.length + 1) == (name + '=')) {
-						cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-						break;
-					}
-				}
-			}
-			return cookieValue;
-		}
-
-		var csrftoken = getCookie('csrftoken');
-
-		if (treeloaded == 'false')
-			$('#dataviewer').hide();
-
-		$('#test').click(function() {
-
-			console.log('csrftoken in test ' + csrftoken);
-
-			var data = {
-				'csrfmiddlewaretoken' : csrftoken
-			};
-			var fileUrl = 'http://localhost:8081/exploratory_analysis/test/';
-			$.ajax({
-				type : "POST",
-				url : fileUrl,
-				async : false,
-				data : data,
-				success : function() {
-					console.log('success');
-				},
-				error : function(xhr, status, error) {
-					console.log('error');
-					if (xhr.status == 404) {
-
-					}
-				}
-			});
-
-		});
-
-	});
-
-</script>
 
 {% endblock %}

@@ -681,6 +681,14 @@ def datasets1(request,user_id):
     
     return HttpResponse(data_string)
 
+
+def downloadlist(request, dataset_id, package_id, variable_id, time_id):
+    from menuhelper import downloads
+    
+    data_string = downloads.getFileList()
+    print data_string
+    return HttpResponse(data_string)
+
 def generate_token_url(filename):
     #!/usr/bin/env python
     import os, time, hashlib
