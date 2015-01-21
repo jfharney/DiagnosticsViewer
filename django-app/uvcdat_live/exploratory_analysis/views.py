@@ -978,7 +978,45 @@ def tree(request):
 #Test classic view
 from django.views.decorators.csrf import csrf_exempt
 
+def classic_set_list_html(request):
+    
+    print 'in classic views html'
+    
+    options = request.GET.get('options')
+    
+    print 'options: ' + str(options)
+    
+    html = ""
+    
+    response = 'error'
+    
+    if request.method == "POST":
+        sets = None
+        varlist = None
+        times = None
+        package = None
+        dataset = None
+        
+        json_data = json.loads(request.body)
+        
+        varlist = json_data['vars'] #should be a list
+        times = json_data['times'] #should be a list
+        package = json_data['package'] #should be a string
+        dataset = json_data['dataset']
+    
+        print 'varlist: ' + str(varlist) + ' ' #+ vars.length
+        print 'times: ' + str(times) + ' ' #+ times.length
+        print 'package: ' + package
+        print 'dataset: ' + dataset
+                   
+    html = '<b>Placeholder - This works</b>'
+    response = html
+    print html
+    
+    return HttpResponse(html);
+    
 @csrf_exempt
+
 def classic_views_html(request):
     
     print 'in classic views html'
@@ -1035,6 +1073,7 @@ def classic_views_html(request):
                html = '<div>set'+sets+' currently unimplemented</div>'               
     
     response = html
+    print html
     
     return HttpResponse(html);
     

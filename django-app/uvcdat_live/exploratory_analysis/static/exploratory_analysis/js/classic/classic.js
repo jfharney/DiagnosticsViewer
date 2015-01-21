@@ -140,6 +140,7 @@ $(document).ready(function() {
 			$('#go_Land_Home_Button').hide();
 
 			//make atm home appear
+			toggle_set_list();
 			go_Atm_Home();
 
 		}
@@ -321,6 +322,104 @@ function hide_varSelect() {
 	getVariables('ul');
 }
 
+function toggle_set_list() {
+
+	var dataset = $('#selectD').val();
+	var pckg = $('#selectP').val();
+
+	var pckg = $('#selectP').val();
+
+	if (pckg == 'lmwg') {
+
+		//make lmwg home button appear
+		$('#go_Land_Home_Button').show();
+
+		//make amwg home button disappear
+		$('#go_Atm_Home_Button').hide();
+
+		//make lmwg home appear
+		go_Land_Home();
+
+	} else {
+
+		//make amwg home button appear
+		$('#go_Atm_Home_Button').show();
+
+		//make lmwg home button disappear
+		$('#go_Land_Home_Button').hide();
+
+		//make atm home appear
+		go_Atm_Home();
+
+	}
+
+	//make some defaults for testing
+	//TODO: replace or just dump this
+	//if(dataset == null && pckg == 'lmwg') dataset = 'tropics_warming_th_q';
+	//else if(dataset == null) dataset = 'f40_amip_cam5_c03_78b';
+
+	//document.getElementById('landHome').style.display = 'none';
+	hide_land_home();
+	hide_atm_home();
+
+	var variable_arr = $("#selectV").val();
+
+	//it is possible that the variable_arr can be null (if none are selected)
+	//in that case, let the default be ALL variables
+	if (variable_arr == null) {
+		variable_arr = new Array();
+		//NOTE: come back and push all variables onto the array
+		variable_arr.push('TLAI');
+	}
+
+	//it is possible that the season_arr can be null (if none are selected)
+	//in that case, let the default be ALL variables
+	var season_arr = $('#selectT').val();
+	if (season_arr == null) {
+		season_arr = new Array();
+		season_arr.push('JAN');
+	}
+
+	var varsData = variable_arr;
+	//["var1","var2"];
+	var timesData = season_arr;
+	//timesData;
+	var packageData = pckg;
+	//"package1";
+	var datasetData = dataset;
+
+	var data = {
+
+		"vars" : varsData,
+		"times" : timesData,
+		"package" : packageData,
+		"dataset" : datasetData
+
+	};
+
+	var url = '/exploratory_analysis/classic_set_list_html/' + '?_=' + Math.round(Math.random() * 10000);
+
+	$.ajax({
+		type : "POST",
+		url : url,
+		cache : false,
+		data : JSON.stringify(data),
+		//async : false,
+		success : function(html) {
+			console.log(html);
+			$('#atmHome').append(html);
+
+		},
+		error : function(xhr, status, error) {
+
+			console.log('error');
+			if (xhr.status == 404) {
+			}
+		},
+	});
+
+}
+
 function toggle_vis(set) {
 
 	var dataset = $('#selectD').val();
@@ -407,7 +506,7 @@ function toggle_vis(set) {
 		data : JSON.stringify(data),
 		//async : false,
 		success : function(html) {
-
+			console.log(html);
 			var html_elem_id = packageData + '_' + setData + '_html';
 
 			$('#' + html_elem_id).empty();

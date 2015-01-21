@@ -139,6 +139,8 @@ urlpatterns = patterns('',
   
   #for generation of classic views on the fly
 
+  url(r'^classic_set_list_html/$',views.classic_set_list_html,name='classic_set_list_html'),
+  
   url(r'^classic_views_html/$',views.classic_views_html,name='classic_views_html'),
   
 
