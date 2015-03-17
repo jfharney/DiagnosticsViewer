@@ -10,14 +10,7 @@ local_settings.py
 /admin/
 /css/
 /env/
-/filetree/
 /fonts/
 /images/
 /js/
 /jspanel/
-
-acme_site/static/filetree/example.py
-acme_site/static/systemtest/*
-acme_site/static/http.py
-acme_admin/static/
-update.py
