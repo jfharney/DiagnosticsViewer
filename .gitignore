@@ -1,0 +1,16 @@
+*.sqlite3
+*.log
+*.pot
+*.pyc
+*.DS_Store
+local
+
+local_settings.py
+
+/admin/
+/css/
+/env/
+/fonts/
+/images/
+/js/
+/jspanel/
