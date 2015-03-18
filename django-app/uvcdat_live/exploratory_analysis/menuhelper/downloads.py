@@ -22,7 +22,7 @@ default_sample_data_dir = paths.default_sample_data_dir
 
 
 
-def getFileList():
+def getFileList(dataset_id):
     
     import glob
     import json
@@ -30,9 +30,9 @@ def getFileList():
     
     downloads = []
     
-    for f in glob.glob(default_sample_data_dir + '/*'):
+    for f in glob.glob(default_sample_data_dir + '/' + dataset_id + '/climos/*'):
       f_arr = f.split('/')
-      #print 'f: ' + f_arr[len(f_arr)-1]
+      print f
       downloads.append(f_arr[len(f_arr)-1])
     
     print 'file_list: ' + str(downloads)
