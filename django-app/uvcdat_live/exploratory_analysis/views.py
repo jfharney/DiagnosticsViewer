@@ -3,7 +3,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 isConnected = True
 
 # Create your views here.
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.http import HttpResponseServerError
 from django.template import RequestContext, loader
 #from exploratory_analysis.models import Diags
