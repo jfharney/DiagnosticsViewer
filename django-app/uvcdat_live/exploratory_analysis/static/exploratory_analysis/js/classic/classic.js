@@ -116,9 +116,9 @@ $(document).ready(function() {
 		var pckg = $('#selectP').val();
 
 		var pckg = $('#selectP').val();
-		
+
 		//create_download_list();
-		
+
 		if (pckg == 'lmwg') {
 
 			//make lmwg home button appear
@@ -175,6 +175,99 @@ function displayImageClick(imageURL) {
 	document.getElementById("plotArea").innerHTML = imagePath;
 	lastURL = imageURL;
 	clicked = 1;
+}
+
+function populate_downloads() {
+
+	document.getElementById("plotArea").style.visibility = 'visible';
+
+	var dataset = $('#selectD').val();
+	var pckg = $('#selectP').val();
+	url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/downloadlist/' + dataset + '/' + pckg + '/null/null';
+
+	$.ajax({
+		type : "GET",
+		url : url,
+		dataType : 'text',
+		//async: false,
+		//data: data,
+		success : function(response_data) {
+
+			console.log('success in getting downloadlist');
+
+					var download_list = response_data;
+					$('#plotArea').show();
+					document.getElementById("plotArea").innerHTML = download_list;
+
+		},
+		error : function(xhr, status, error) {
+			console.log('error');
+			if (EA.spinnerFlag) {
+				$body.removeClass("loading");
+			}
+			if (xhr.status == 404) {
+
+			}
+		}
+	});
+	
+
+}
+
+function go_publish() {
+	document.getElementById("plotArea").style.visibility = 'visible';
+
+	var dataset = $('#selectD').val();
+	var pckg = $('#selectP').val();
+	
+	var inner_html = "<hr>";
+	inner_html += '<label for="selectF1">Experiment:</label>';
+	inner_html += '<br>';
+	inner_html += '<select id="selectF1" multiple="multiple"></select>';
+inner_html += "<br>";
+	inner_html += '<label for="selectF2">Version:</label>';
+	inner_html += '<br>';
+	inner_html += '<select id="selectF2" multiple="multiple"></select>';
+inner_html += "<br>";
+	inner_html += '<label for="selectF3">Realm:</label>';
+	inner_html += '<br>';
+	inner_html += '<select id="selectF3" multiple="multiple"></select>';	
+inner_html += "<br>";
+	inner_html += '<label for="selectF4">Regridding:</label>';
+	inner_html += '<br>';
+	inner_html += '<select id="selectF4" multiple="multiple"></select>';
+	
+						$('#plotArea').show();
+					document.getElementById("plotArea").innerHTML = inner_html;
+		/*
+		url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/downloadlist/' + dataset + '/' + pckg + '/null/null';
+
+	$.ajax({
+		type : "GET",
+		url : url,
+		dataType : 'text',
+		//async: false,
+		//data: data,
+		success : function(response_data) {
+
+			console.log('success in getting downloadlist');
+
+					var download_list = response_data;
+
+
+		},
+		error : function(xhr, status, error) {
+			console.log('error');
+			if (EA.spinnerFlag) {
+				$body.removeClass("loading");
+			}
+			if (xhr.status == 404) {
+
+			}
+		}
+	});
+	*/
+
 }
 
 function imgError(image) {
@@ -286,12 +379,12 @@ function downloadPlot() {
 	html += '<span><h3>Downloads</h3></span><hr>';
 	html += '<a href=\"' + lastURL + '\" download="" target="_blank">png (right-click save as)</a>';
 	/*
-	html += '<br>';
-	html += '<a download="" target="_blank">xml</a>';
-	html += '<br>';
-	html += '<a download="" target="_blank">json</a>';
-	html += '<br>';
-	*/
+	 html += '<br>';
+	 html += '<a download="" target="_blank">xml</a>';
+	 html += '<br>';
+	 html += '<a download="" target="_blank">json</a>';
+	 html += '<br>';
+	 */
 
 	document.getElementById("plotArea").innerHTML = html;
 }
@@ -408,6 +501,17 @@ function toggle_set_list() {
 		success : function(html) {
 			console.log(html);
 			$('#atmHome').append(html);
+			$('.classic_toggle_sets').click(function() {
+
+				var index = this.id.search('_');
+
+				var set = this.id.substring(index + 1);
+
+				//console.log('this.id: ' + this.id);
+
+				toggle_vis(set);
+
+			});
 
 		},
 		error : function(xhr, status, error) {
@@ -512,7 +616,7 @@ function toggle_vis(set) {
 			$('#' + html_elem_id).empty();
 			$('#' + html_elem_id).append(html);
 			document.getElementById(html_elem_id).style.display = 'block';
-
+			console.log(html_elem_id);
 		},
 		error : function(xhr, status, error) {
 
@@ -575,39 +679,38 @@ function hide_atm_sets() {
 	document.getElementById('amwg_set14_html').style.display = 'none';
 	document.getElementById('amwg_set15_html').style.display = 'none';
 }
-function create_download_list()
-{
-	var dataset = 'null'; // $('#selectD').val();
+
+function create_download_list() {
+	var dataset = 'null';
+	// $('#selectD').val();
 	var pckg = $('#selectP').val();
-	url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/downloadlist/' + dataset + '/' + pckg +'/null/null';
-	
+	url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/downloadlist/' + dataset + '/' + pckg + '/null/null';
+
 	$.ajax({
-		  type: "GET",
-		  url: url,
-		  dataType: 'json',
-		  //async: false,
-		  //data: data,
-		  success: function(response_data)
-		  { 
-				
-			  console.log('success in getting downloadlist');
-			  
-			  var download_list = response_data['file_list'];
-				
-			  
-		  },
-		  error: function(xhr, status, error) {
-			  console.log('error'); 
-			  if (EA.spinnerFlag) {
-				  $body.removeClass("loading"); 
-			  } 
-		    if(xhr.status==404)
-		    { 
-		    	
-		    }
-		  }
-		});	
+		type : "GET",
+		url : url,
+		dataType : 'json',
+		//async: false,
+		//data: data,
+		success : function(response_data) {
+
+			console.log('success in getting downloadlist');
+
+			var download_list = response_data['file_list'];
+
+		},
+		error : function(xhr, status, error) {
+			console.log('error');
+			if (EA.spinnerFlag) {
+				$body.removeClass("loading");
+			}
+			if (xhr.status == 404) {
+
+			}
+		}
+	});
 }
+
 function hide_land_home() {
 	document.getElementById('landHome').style.display = 'none';
 }
