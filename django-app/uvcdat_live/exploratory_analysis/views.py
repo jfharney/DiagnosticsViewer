@@ -64,6 +64,40 @@ figures_store = {}
 from django.http import HttpResponseRedirect
 
 
+def base_facets(request,user_id):
+    
+    
+    import urllib2
+    import urllib
+    
+    url = "http://" + 'localhost' + ":" + '8082' + "/groups/base_facets/" + user_id
+    
+    #curl -X GET http://localhost:8082/groups/base_facets/jfharney
+    
+    print 'calling base facets url = ' + url
+      
+    data = urllib2.urlopen(url).read()
+
+    data_json = json.loads(data)
+    
+    for key in data_json:
+        print 'key: ' + str(key)
+    
+    return HttpResponse("In base facets")
+
+def publish(request,user_id):
+    
+    print 'request.body: ' + str(request.body)
+    
+    json_data = json.loads(request.body)
+    
+    for key in json_data:
+        print 'key: ' + key + ' value: ' + json_data[key]
+    
+    return HttpResponse('in publish')
+
+
+
 def core_parameters(request):
     
     data = {}

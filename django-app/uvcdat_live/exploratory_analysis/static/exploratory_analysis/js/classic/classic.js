@@ -215,59 +215,179 @@ function populate_downloads() {
 }
 
 function go_publish() {
+	
+	
+	//these are all the options for the different facets
+	var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/base_facets/jfharney';
+	
+	var response_data = {};
+	//default values here
+	response_data['project'] = ['ACME']
+	response_data['data_type'] = ['climo','dd','dt','dv','h','h0','h1','h2','h3','h4'];
+	response_data['realm'] = ['atm','ice','lnd','ocn','all','ATM'];
+	response_data['regridding'] = ['bilinear','downscaled,native','fv257x512','ne30_g16','T341_f02_t12'];
+	response_data['range'] = ['all_dir','all','2-9','10-19','20-29','30-39','30-50','40-49','ALL'];
+	response_data['versionnum'] = ['v0_0','v0_1','v01','HIGHRES','pre-v0'];
+	response_data['experiment'] = ['B1850C5_ne30gx1_tuning','341f02.B1850dEdd','B1850C5e1_ne30'];
+	
+	$.ajax({
+		type : "GET",
+		url : url,
+		dataType : 'text',
+		async: false,
+		//data: data,
+		success : function(data) {
+			alert('success in extracting facets');
+			
+		},
+		error: function() {
+			alert('error in extracting facets');
+			
+		}
+	});
+	
+	for (var key in response_data) {
+		console.log( 'key: ' + key + ' value: ' + response_data[key]);
+	}
+	
 	document.getElementById("plotArea").style.visibility = 'visible';
 
 	var dataset = $('#selectD').val();
 	var pckg = $('#selectP').val();
 	
-	var inner_html = "<hr>";
-	inner_html += '<label for="selectF1">Experiment:</label>';
-	inner_html += '<br>';
-	inner_html += '<select id="selectF1" multiple="multiple"></select>';
-inner_html += "<br>";
-	inner_html += '<label for="selectF2">Version:</label>';
-	inner_html += '<br>';
-	inner_html += '<select id="selectF2" multiple="multiple"></select>';
-inner_html += "<br>";
-	inner_html += '<label for="selectF3">Realm:</label>';
-	inner_html += '<br>';
-	inner_html += '<select id="selectF3" multiple="multiple"></select>';	
-inner_html += "<br>";
-	inner_html += '<label for="selectF4">Regridding:</label>';
-	inner_html += '<br>';
-	inner_html += '<select id="selectF4" multiple="multiple"></select>';
+	//$inner = $('<div class="span8" id="info_pane">fff</div>');
+	//$inner = $('<select id="selectF0" multiple="multiple"></select>')
 	
-						$('#plotArea').show();
-					document.getElementById("plotArea").innerHTML = inner_html;
-		/*
-		url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/downloadlist/' + dataset + '/' + pckg + '/null/null';
+	var inner_html = "<hr>";
 
+	inner_html += '<label for="selectF1">Project:</label>';
+	inner_html += '<br>';
+	
+	inner_html += '<select id="selectF1" multiple="multiple">';
+	for (var i=0;i<response_data['project'].length;i++) {
+		inner_html += '<option value="' + response_data['project'][i] + '">' + response_data['project'][i] + '</option>'; 
+	}
+	inner_html += '</select>';
+	
+	inner_html += "<br>";
+	
+	inner_html += '<label for="selectF2">Data Type:</label>';
+	inner_html += '<br>';
+	inner_html += '<select id="selectF2" multiple="multiple">';
+	for (var i=0;i<response_data['data_type'].length;i++) {
+		inner_html += '<option value="' + response_data['data_type'][i] + '">' + response_data['data_type'][i] + '</option>'; 
+	}
+	inner_html += '</select>';
+	
+	inner_html += "<br>";
+	
+	inner_html += '<label for="selectF3">Experiment:</label>';
+	inner_html += '<br>';
+	inner_html += '<select id="selectF3" multiple="multiple">';
+	for (var i=0;i<response_data['experiment'].length;i++) {
+		inner_html += '<option value="' + response_data['experiment'][i] + '">' + response_data['experiment'][i] + '</option>'; 
+	}
+	inner_html += '</select>';
+	
+	inner_html += "<br>";
+	
+	inner_html += '<label for="selectF4">Version:</label>';
+	inner_html += '<br>';
+	inner_html += '<select id="selectF4" multiple="multiple">';
+	for (var i=0;i<response_data['versionnum'].length;i++) {
+		inner_html += '<option value="' + response_data['versionnum'][i] + '">' + response_data['versionnum'][i] + '</option>'; 
+	}
+	inner_html += '</select>';
+	
+	
+	inner_html += "<br>";
+	
+	inner_html += '<label for="selectF5">Range:</label>';
+	inner_html += '<br>';
+	inner_html += '<select id="selectF5" multiple="multiple">';
+	for (var i=0;i<response_data['range'].length;i++) {
+		inner_html += '<option value="' + response_data['range'][i] + '">' + response_data['range'][i] + '</option>'; 
+	}
+	inner_html += '</select>';
+	
+	
+	
+	inner_html += "<br>";
+	
+	
+	inner_html += '<label for="selectF6">Realm:</label>';
+	inner_html += '<br>';
+	inner_html += '<select id="selectF6" multiple="multiple">';
+	for (var i=0;i<response_data['realm'].length;i++) {
+			inner_html += '<option value="' + response_data['realm'][i] + '">' + response_data['realm'][i] + '</option>'; 
+	}		
+	inner_html += '</select>';	
+	
+	inner_html += "<br>";
+	inner_html += '<label for="selectF7">Regridding:</label>';
+	inner_html += '<br>';
+	inner_html += '<select id="selectF7" multiple="multiple" style="margin-bottom:20px;">';
+	for (var i=0;i<response_data['regridding'].length;i++) {
+		inner_html += '<option value="' + response_data['regridding'][i] + '">' + response_data['regridding'][i] + '</option>'; 
+	}		
+	inner_html += '</select>';	
+	
+	
+	inner_html += '<button type="button" class="btn btn-default" id="dataset_selected" onclick="publish()">';
+	inner_html + 'Publish';
+	inner_html += '</button>';
+	
+	$('#plotArea').show();
+	document.getElementById("plotArea").innerHTML = inner_html;
+	
+	
+	
+	
+}
+
+
+function publish() {
+	
+	var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/publish/jfharney/';
+
+	var project = $('#selectF1').val();
+	var data_type = $('#selectF2').val();
+	var experiment = $('#selectF3').val();
+	var version = $('#selectF4').val();
+	var range = $('#selectF5').val();
+	var realm = $('#selectF6').val();
+	var regridding = $('#selectF7').val();
+
+	
+	
+	var data = {
+		'project' : project,
+		'data_type' : data_type,
+		'experiment' : experiment,
+		'version' : version,
+		'range' : range,
+		'realm' : realm,
+		'regridding' : regridding
+	};
+	
+	
 	$.ajax({
-		type : "GET",
+		type : "POST",
 		url : url,
-		dataType : 'text',
-		//async: false,
-		//data: data,
-		success : function(response_data) {
-
-			console.log('success in getting downloadlist');
-
-					var download_list = response_data;
-
-
+		//dataType : 'text',
+		async: false,
+		data: data,
+		success : function(data) {
+			alert('success ' + data);
+			
 		},
-		error : function(xhr, status, error) {
-			console.log('error');
-			if (EA.spinnerFlag) {
-				$body.removeClass("loading");
-			}
-			if (xhr.status == 404) {
-
-			}
+		error: function() {
+			alert('error');
+			
 		}
 	});
-	*/
-
+	
+	
 }
 
 function imgError(image) {
