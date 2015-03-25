@@ -83,7 +83,10 @@ def base_facets(request,user_id):
     for key in data_json:
         print 'key: ' + str(key)
     
-    return HttpResponse("In base facets")
+    
+    data_string = json.dumps(data_json,sort_keys=False,indent=2)
+    
+    return HttpResponse(data_string)
 
 def publish(request,user_id):
     
@@ -93,6 +96,8 @@ def publish(request,user_id):
     
     for key in json_data:
         print 'key: ' + key + ' value: ' + json_data[key]
+    
+    
     
     return HttpResponse('in publish')
 
