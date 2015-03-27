@@ -97,9 +97,28 @@ def publish(request,user_id):
     for key in json_data:
         print 'key: ' + key + ' value: ' + json_data[key]
     
+    import urllib2
+    import urllib
+    
+    url = "http://" + 'localhost' + ":" + '8082' + "/groups/publish/" + user_id
+    
+    # Prepare the data
+    query_args = { 'q':'query string', 'foo':'bar' }
+
+    # This urlencodes your data (that's why we need to import urllib at the top)
+    data = urllib.urlencode(query_args)
+
+    # Send HTTP POST request
+    request = urllib2.Request(url, data)
+
+    response = urllib2.urlopen(request)
+ 
+    html = response.read()
+
     
     
-    return HttpResponse('in publish')
+    
+    return HttpResponse('success')
 
 
 

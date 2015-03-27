@@ -163,6 +163,13 @@ $(document).ready(function() {
 		hide_land_sets();
 		hide_atm_sets();
 	});
+	
+	
+	$('#publish_button').on('click',function(){
+		console.log('publishing...');
+	});
+	
+	
 });
 
 var clicked = 0;
@@ -229,18 +236,11 @@ function go_publish() {
 		url : url,
 		//dataType : 'json',
 		
-		//data: data,
 		success : function(data) {
 				
 			data = JSON.parse(data);
 			console.log('success in extracting facets');
 			
-			for (var key in data) {
-				console.log('data key: ' + key + ' value: ' + data[key]);
-				for (var key2 in data[key]) {
-					console.log('\tkey2: ' + key2 + ' value: ' + data[key][key2]);
-				}
-			}
 					
 			//set response data to the data returned by the service
 			//response_data = data;
@@ -258,13 +258,13 @@ function go_publish() {
 			//for (var facet_key in response_data) {
 				var facet = response_data[i];
 				for (var key in facet) {
-					console.log('\t\tkey: ' + key + ' value: ' + facet[key] + ' length: ' + facet[key].length);
+					//console.log('\t\tkey: ' + key + ' value: ' + facet[key] + ' length: ' + facet[key].length);
 					$inner.append('<label for="selectF0">' + key + ':</label>');
 					$inner.append('<br>');
 					var facet_value_arr = facet[key].split(',');
 					$select = $('<select id="selectF' + i + '"></select>');
 					for (var facet_value in facet_value_arr) {
-						console.log('\t\t\t' + facet_value_arr[facet_value]);
+						//console.log('\t\t\t' + facet_value_arr[facet_value]);
 						$select.append('<option value="' + facet_value_arr[facet_value] + '">' + facet_value_arr[facet_value] + '</option>');
 					}
 					$inner.append($select);
@@ -274,6 +274,7 @@ function go_publish() {
 			}
 			
 			
+			$inner.append('<button type="button" class="btn btn-default" onclick="publish_button()">Publish</button>');
 			
 			
 			
@@ -299,18 +300,63 @@ function go_publish() {
 	
 }
 
+function publish_button() {
+	
+	console.log('in publish button');
+
+	var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/publish/jfharney/';
+
+	var project = $('#selectF0').val();
+	var data_type = $('#selectF1').val();
+	var experiment = $('#selectF2').val();
+	var version = $('#selectF3').val();
+	var range = $('#selectF4').val();
+	var realm = $('#selectF5').val();
+	var regridding = $('#selectF6').val();
+
+	console.log('project: ' + project);
+	console.log('data_type: ' + data_type);
+	console.log('experiment: ' + experiment);
+	
+	var data = {
+			'project' : project,
+			'data_type' : data_type,
+			'experiment' : experiment,
+			'version' : version,
+			'range' : range,
+			'realm' : realm,
+			'regridding' : regridding
+	};
+		
+	$.ajax({
+		type : "POST",
+		url : url,
+		async: false,
+		contentType: "application/json",
+		data: JSON.stringify(data),
+		success : function(response_data) {
+			alert('success ' + response_data);
+			
+		},
+		error: function() {
+			alert('error');
+			
+		}
+	});
+	
+}
 
 function publish() {
 	
 	var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/publish/jfharney/';
 
-	var project = $('#selectF1').val();
-	var data_type = $('#selectF2').val();
-	var experiment = $('#selectF3').val();
-	var version = $('#selectF4').val();
-	var range = $('#selectF5').val();
-	var realm = $('#selectF6').val();
-	var regridding = $('#selectF7').val();
+	var project = $('#selectF0').val();
+	var data_type = $('#selectF1').val();
+	var experiment = $('#selectF2').val();
+	var version = $('#selectF3').val();
+	var range = $('#selectF4').val();
+	var realm = $('#selectF5').val();
+	var regridding = $('#selectF6').val();
 
 	
 	
