@@ -3,7 +3,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 isConnected = True
 
 # Create your views here.
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.http import HttpResponseServerError
 from django.template import RequestContext, loader
 #from exploratory_analysis.models import Diags
@@ -62,6 +62,64 @@ figures_store = {}
 
     
 from django.http import HttpResponseRedirect
+
+
+def base_facets(request,user_id):
+    
+    
+    import urllib2
+    import urllib
+    
+    url = "http://" + 'localhost' + ":" + '8082' + "/groups/base_facets/" + user_id
+    
+    #curl -X GET http://localhost:8082/groups/base_facets/jfharney
+    
+    print 'calling base facets url = ' + url
+      
+    data = urllib2.urlopen(url).read()
+
+    data_json = json.loads(data)
+    
+    for key in data_json:
+        print 'key: ' + str(key)
+    
+    
+    data_string = json.dumps(data_json,sort_keys=False,indent=2)
+    
+    return HttpResponse(data_string)
+
+def publish(request,user_id):
+    
+    print 'request.body: ' + str(request.body)
+    
+    json_data = json.loads(request.body)
+    
+    for key in json_data:
+        print 'key: ' + key + ' value: ' + json_data[key]
+    
+    import urllib2
+    import urllib
+    
+    url = "http://" + 'localhost' + ":" + '8082' + "/groups/publish/" + user_id
+    
+    # Prepare the data
+    query_args = { 'q':'query string', 'foo':'bar' }
+
+    # This urlencodes your data (that's why we need to import urllib at the top)
+    data = urllib.urlencode(query_args)
+
+    # Send HTTP POST request
+    request = urllib2.Request(url, data)
+
+    response = urllib2.urlopen(request)
+ 
+    html = response.read()
+
+    
+    
+    
+    return HttpResponse('success')
+
 
 
 def core_parameters(request):

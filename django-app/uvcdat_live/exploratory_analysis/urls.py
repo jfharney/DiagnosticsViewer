@@ -157,5 +157,11 @@ urlpatterns = patterns('',
   #for retrieving parameters for core.js
   url(r'^core_parameters/$',views.core_parameters,name='core_parameters'),
   
+  
+  #for retrieving base facets
+  url(r'base_facets/(?P<user_id>\w+)/$',views.base_facets,name='base_facets'),
+  
+  url(r'publish/(?P<user_id>\w+)/$',views.publish,name='publish'),
+  
 )
 
