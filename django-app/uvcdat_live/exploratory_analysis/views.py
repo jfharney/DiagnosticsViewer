@@ -81,6 +81,184 @@ def core_parameters(request):
 #echo '{ "dataset" :  <dataset_name> }' | curl -d @- 'http://<host>:<port>/exploratory_analysis/group_dataset/<group>/' -H "Accept:application/json" -H "Context-Type:application/json"
 #DELETE
 #http://<host>:<port>/exploratory_analysis/group_dataset/<group>/
+def dataset_packages(request,dataset_name):
+    
+    from exploratory_analysis.models import Packages
+        
+    if request.method == 'POST':
+        
+        print '\nIn POST\n'  
+        
+        #load the json object
+        json_data = json.loads(request.body)
+            
+        #grab the dataset added
+        packages = json_data['packages'] #should be a string
+        
+        #grab the record with the given dataset_name
+        da = Packages.objects.filter(dataset_name=dataset_name)
+        
+        new_dataset_list = ''
+        if da:
+            #delete the record and rewrite the record with the new dataset list
+            da.delete()
+        
+        
+        all = Packages.objects.all()
+        
+        dataset_packages_record = Packages(
+                                                  dataset_name=dataset_name,
+                                                  packages=packages
+                                                  )
+            
+        #save to the database
+        dataset_packages_record.save()
+        
+        all = Packages.objects.all()
+        
+        
+        return HttpResponse("POST Done\n")
+
+    elif request.method == 'GET':
+        
+        print '\nIn GET\n'  
+        
+        #grab the record with the given dataset_name
+        da = Packages.objects.filter(dataset_name=dataset_name)
+        
+        if not da:
+            data = {'packages' : ''}
+            data_string = json.dumps(data,sort_keys=False,indent=2)
+            return HttpResponse(data_string + "\n")
+       
+        #otherwise grab the contents and return as a list
+        #note: da[0] is the only record in the filtering of the Dataset_Access objects
+        dataset_list = []
+        
+        for dataset in da[0].packages.split(','):
+            dataset_list.append(dataset)
+            
+        data = {'packages' : dataset_list}
+        data_string = json.dumps(data,sort_keys=False)#,indent=2)
+
+        print("GET Done\n")
+        return HttpResponse(data_string)# + "\n")
+        
+    
+    elif request.method == 'DELETE':
+        
+        print '\nIn DELETE\n'    
+        
+        #not sure if this is the right behavior but this will delete the ENTIRE record given the group
+        #grab the group record
+        da = Packages.objects.filter(dataset_name=dataset_name)
+        
+        if da:
+            da.delete()
+        
+        all = Packages.objects.all()
+        
+        return HttpResponse("DELETE Done\n")
+
+    else:
+        return HttpResponse("Error\n")
+
+#Service API for the Dataset_Access table
+#GET
+#http://<host>:<port>/exploratory_analysis/group_dataset/<group>
+#POST
+#echo '{ "dataset" :  <dataset_name> }' | curl -d @- 'http://<host>:<port>/exploratory_analysis/group_dataset/<group>/' -H "Accept:application/json" -H "Context-Type:application/json"
+#DELETE
+#http://<host>:<port>/exploratory_analysis/group_dataset/<group>/
+def dataset_published(request,dataset_name):
+    
+    from exploratory_analysis.models import Published
+        
+    if request.method == 'POST':
+        
+        print '\nIn POST\n'  
+        
+        #load the json object
+        json_data = json.loads(request.body)
+            
+        #grab the dataset added
+        published = json_data['published'] #should be a string
+        
+        #grab the record with the given dataset_name
+        da = Published.objects.filter(dataset_name=dataset_name)
+        
+        new_dataset_list = ''
+        if da:
+            #delete the record and rewrite the record with the new dataset list
+            da.delete()
+        
+        
+        all = Published.objects.all()
+        
+        dataset_published_record = Published(
+                                                  dataset_name=dataset_name,
+                                                  published=published
+                                                  )
+            
+        #save to the database
+        dataset_published_record.save()
+        
+        all = Published.objects.all()
+        
+        
+        return HttpResponse("POST Done\n")
+
+    elif request.method == 'GET':
+        
+        print '\nIn GET\n'  
+        
+        #grab the record with the given dataset_name
+        da = Published.objects.filter(dataset_name=dataset_name)
+        
+        if not da:
+            data = {'published' : ''}
+            data_string = json.dumps(data,sort_keys=False,indent=2)
+            return HttpResponse(data_string + "\n")
+       
+        #otherwise grab the contents and return as a list
+        #note: da[0] is the only record in the filtering of the Dataset_Access objects
+        dataset_list = []
+        
+        for dataset in da[0].published.split(','):
+            dataset_list.append(dataset)
+            
+        data = {'published' : dataset_list}
+        data_string = json.dumps(data,sort_keys=False)#,indent=2)
+
+        print("GET Done\n")
+        return HttpResponse(data_string)# + "\n")
+        
+    
+    elif request.method == 'DELETE':
+        
+        print '\nIn DELETE\n'    
+        
+        #not sure if this is the right behavior but this will delete the ENTIRE record given the group
+        #grab the group record
+        da = Published.objects.filter(dataset_name=dataset_name)
+        
+        if da:
+            da.delete()
+        
+        all = Published.objects.all()
+        
+        return HttpResponse("DELETE Done\n")
+
+    else:
+        return HttpResponse("Error\n")
+
+#Service API for the Dataset_Access table
+#GET
+#http://<host>:<port>/exploratory_analysis/group_dataset/<group>
+#POST
+#echo '{ "dataset" :  <dataset_name> }' | curl -d @- 'http://<host>:<port>/exploratory_analysis/group_dataset/<group>/' -H "Accept:application/json" -H "Context-Type:application/json"
+#DELETE
+#http://<host>:<port>/exploratory_analysis/group_dataset/<group>/
 def dataset_variables(request,dataset_name):
     
     from exploratory_analysis.models import Variables
@@ -162,8 +340,6 @@ def dataset_variables(request,dataset_name):
 
     else:
         return HttpResponse("Error\n")
-
-
 
 
 #Models table has the form
@@ -680,6 +856,10 @@ def datasets1(request,user_id):
     print '\nEnd in datasets for user_id: ' + user_id
     
     return HttpResponse(data_string)
+
+def cdflink(request, dataset_id, package_id, variable_id, time_id):
+    file_path = 'http://' + paths.ea_hostname + paths.generate_token_url('/' + dataset_id + '/' + package_id + '/' + variable_id)
+    return HttpResponse(file_path)
 
 
 def downloadlist(request, dataset_id, package_id, variable_id, time_id):

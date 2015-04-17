@@ -51,7 +51,9 @@ urlpatterns = patterns('',
   url(r'^datasets1/(?P<user_id>\w+)/$',views.datasets1,name='datasets1'),
   
   url(r'^downloadlist/(?P<dataset_id>[\-.:\w]+)/(?P<package_id>\w+)/(?P<variable_id>\w+)/(?P<time_id>\w+)/$',views.downloadlist,name='downloadlist'),
-  
+
+  url(r'^cdflink/(?P<dataset_id>[\-.:\w]+)/(?P<package_id>\w+)/(?P<variable_id>[\-.:\w]+)/(?P<time_id>\w+)/$',views.cdflink,name='cdflink'),
+    
   #grabs variables given a dataset
   url(r'^variables/(?P<dataset_id>[\-.:\w]+)/(?P<package_id>\w+)/$',views.variables,name='variables'),
   
@@ -134,8 +136,8 @@ urlpatterns = patterns('',
   
   #service API for retrieving dataset variables
   url(r'^dataset_variables/(?P<dataset_name>\w+)/$',views.dataset_variables,name='dataset_variables'),
-  
-  
+  url(r'^dataset_packages/(?P<dataset_name>\w+)/$',views.dataset_packages,name='dataset_packages'),
+  url(r'^dataset_published/(?P<dataset_name>\w+)/$',views.dataset_published,name='dataset_published'),  
   
   #for generation of classic views on the fly
   url(r'^classic_views_html/$',views.classic_views_html,name='classic_views_html'),
