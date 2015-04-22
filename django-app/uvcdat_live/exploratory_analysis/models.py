@@ -117,7 +117,17 @@ class Dataset_Access(models.Model):
     def __unicode__(self):
         return 'group_name: ' + self.group_name + ' datasets_list: ' + self.dataset_list
 
-
+class Packages(models.Model):
+    dataset_name = models.CharField(max_length=1000)
+    packages = models.TextField(null=True)
+    def __unicode__(self):
+        return self.dataset_name + ' ' + str(self.packages)
+    
+class Published(models.Model):
+    dataset_name = models.CharField(max_length=1000)
+    published = models.TextField(null=True)
+    def __unicode__(self):
+        return self.dataset_name + ' ' + str(self.published)
 
 class Variables(models.Model):
     dataset_name = models.CharField(max_length=1000)
