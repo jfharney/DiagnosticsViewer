@@ -274,7 +274,7 @@ function go_publish() {
 			}
 			
 			
-			$inner.append('<button type="button" class="btn btn-default" onclick="publish_button()">Publish</button>');
+			$inner.append('<button type="button" class="btn btn-default" style="margin-top:20px;" onclick="publish_button()">Publish</button>');
 			
 			
 			
