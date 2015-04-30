@@ -86,6 +86,14 @@
 				<hr class="create_tree_options">
 
 				<div class="row-fluid create_tree_options">
+					<label for="select_Project" >Project:</label>
+					<br>
+					<select id="select_Project" multiple="multiple"></select>
+					<br>
+				</div>
+				<br>
+				
+				<div class="row-fluid create_tree_options">
 					<label for="selectD" >Dataset:</label>
 					<br>
 					<select id="selectD" multiple="multiple"></select>
@@ -93,7 +101,7 @@
 				</div>
 				<br>
 
-				<div class="row-fluid create_tree_options">
+				<div class="row-fluid create_tree_options" id="package_button_div">
 					<label for="selectP">Package:</label>
 					<br>
 					<select id="selectP" multiple="multiple"></select>
@@ -275,24 +283,26 @@
 				<div id="downloads_div">
 					<TABLE width='1150' >
 						<TR id="dataset_downloads">
-							<!--
-							<TD><TH ALIGN=left VALIGN=top><font color=blue>Downloads</font>
+							
+							<TD><TH ALIGN=left VALIGN=top><font color=blue>Dataset Options:</font>
+							<br>
 							<br>
 							<div id="dataset_downloads_div">
 
-								<A class="disabled"> Climos</A>
+								<A href="javascript:populate_downloads()"> Download Climos Files</A>
 								<br>
-								<A class="disabled"> Raw</A>
+								<A id="publish_link" href="javascript:get_publish_status()"> Publish Dataset to ESGF</A>
 
 							</div>
-							-->
+				<!--			
 				<button type="downloads" id="downloads_Button" onclick="populate_downloads()" >
 					Download Climos
 				</button>
 							<br>
-				<button type="button" id="go_publish_Button" onclick="go_publish()" >
+				<button type="button" id="go_publish_Button" onclick="get_publish_status()" >
 					Publish to ESGF
 				</button>
+				-->
 							</TD>
 
 						</TR>
@@ -327,7 +337,7 @@
 
 			</div>
 
-			<div class="col-md-6" id="plotSpace" align="center" style="overflow:scroll">
+			<div class="col-md-6" id="plotSpace" style="overflow:scroll">
 				<div align="left" style="padding: 25px; padding-top:25px">
 					<button id="download" class="plot_btn" type="button" onclick="downloadPlot()" style="display:none">
 						<span class="glyphicon glyphicon-file"></span>

@@ -8,10 +8,27 @@ $(document).ready(function() {
 	//var current_username = 'jfhCSSEF';
 	console.log('current_username: ' + current_username);
 
+	var dataList = ["ACME"];
+	$("#select_Project").multiselect().multiselectfilter();
+
+	$("#select_Project").multiselect({
+		minWidth : 195,
+		multiple : false,
+		header : "Select a dataset",
+		//noneSelectedText : "tropics_warming_th_q_co2",
+		selectedList : 1
+	});
+
+	d3.select("#select_Project").selectAll("option").data(dataList).enter().append("option").attr("value", String).text(String);
+
+	$("#select_Project").multiselect("refresh");
+	$("#select_Project").multiselect('disable');
+
 	getDatasets(current_username);
 
 	getPackages(current_username);
 
+	checkRole(current_username);
 	//getVariables(current_username);
 
 	//getTimes(current_username);
@@ -163,13 +180,11 @@ $(document).ready(function() {
 		hide_land_sets();
 		hide_atm_sets();
 	});
-	
-	
-	$('#publish_button').on('click',function(){
+
+	$('#publish_button').on('click', function() {
 		console.log('publishing...');
 	});
-	
-	
+
 });
 
 var clicked = 0;
@@ -202,9 +217,9 @@ function populate_downloads() {
 
 			console.log('success in getting downloadlist');
 
-					var download_list = response_data;
-					$('#plotArea').show();
-					document.getElementById("plotArea").innerHTML = download_list;
+			var download_list = response_data;
+			$('#plotArea').show();
+			document.getElementById("plotArea").innerHTML = download_list;
 
 		},
 		error : function(xhr, status, error) {
@@ -217,91 +232,201 @@ function populate_downloads() {
 			}
 		}
 	});
-	
 
 }
 
-function go_publish() {
-	
+function checkRole(userID) {
+
+	var dataset = $('#selectD').val();
+	var pckg = $('#selectP').val();
+	url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/has_publish_role/' + userID;
+
+	$.ajax({
+		type : "GET",
+		url : url,
+		dataType : 'text',
+
+		success : function(response_data) {
+
+			if(response_data != "true"){
+				//hide link
+				$('#publish_link').hide();
+			}
+
+		},
+		error : function(xhr, status, error) {
+			console.log(error);
+		}
+	});
+
+}
+function get_publish_status() {
+	var dataset = $('#selectD').val();
+	var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/dataset_published/' + dataset;
+	$.ajax({
+		type : "GET",
+		url : url,
+		async : false,
+		contentType : "application/json",
+		success : function(response_data) {
+			var data = JSON.parse(response_data);
+			if(data.published == "") generate_publish_ui();
+			else{
+			    document.getElementById("plotArea").style.visibility = 'visible';
+	            document.getElementById("plotArea").innerHTML = "";	
+	            var innerHTML = '<font color=blue><h2>' + dataset + '</h2></font>';
+	            innerHTML += '<h5>Publising Process in Progress<h5><br>';
+	            innerHTML += '<h3>Status: <font color=blue>' + data.published + '</h3>';
+	            
+			    $('#plotArea').show();		
+			    document.getElementById("plotArea").innerHTML = innerHTML;
+			   
+			}
+			
+
+		},
+		error : function() {
+			alert('error');
+
+		}
+	});
+
+}
+
+
+function generate_publish_ui() {
+
 	
 	//these are all the options for the different facets
 	var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/base_facets/jfharney';
-	
+
 	//set to default values here (just in case)
 	var response_data = EA.default_facet_list;
-	
+
+	document.getElementById("plotArea").innerHTML = "";
+
 	console.log('url: ' + url);
 	$.ajax({
 		type : "GET",
 		url : url,
 		//dataType : 'json',
-		
+
 		success : function(data) {
-				
+
 			data = JSON.parse(data);
 			console.log('success in extracting facets');
-			
-					
+
 			//set response data to the data returned by the service
 			//response_data = data;
-			
+
 			//set the publish form to visible
 			document.getElementById("plotArea").style.visibility = 'visible';
 
-			
-			
 			//$inner = $('<div class="span8" id="info_pane">fff</div>');
 
 			$inner = $('<div><div>');
-			$inner.append('<hr>');
-			for (var i=0;i<response_data.length;i++) {
-			//for (var facet_key in response_data) {
+			//$inner.append('<hr>');
+			for (var i = 0; i < response_data.length; i++) {
+				//for (var facet_key in response_data) {
 				var facet = response_data[i];
 				for (var key in facet) {
 					//console.log('\t\tkey: ' + key + ' value: ' + facet[key] + ' length: ' + facet[key].length);
-					$inner.append('<label for="selectF0">' + key + ':</label>');
+					$inner.append('<label for="selectF0" class="pull-left">' + key + ':</label>');
 					$inner.append('<br>');
 					var facet_value_arr = facet[key].split(',');
-					$select = $('<select id="selectF' + i + '"></select>');
+					$select = $('<select  id="selectF' + i + '" class = "pull-left"></select>');
 					for (var facet_value in facet_value_arr) {
 						//console.log('\t\t\t' + facet_value_arr[facet_value]);
 						$select.append('<option value="' + facet_value_arr[facet_value] + '">' + facet_value_arr[facet_value] + '</option>');
 					}
 					$inner.append($select);
 					$inner.append('<br>');
-					
+
 				}
 			}
-			
-			
 			$inner.append('<button type="button" class="btn btn-default" onclick="publish_button()">Publish</button>');
-			
-			
-			
+
 			$('#plotArea').show();
 			//document.getElementById("plotArea").innerHTML = inner_html;
-			
-			
+
 			$('#plotArea').append($inner);
 			
-			
+			for (var i = 0; i < response_data.length; i++) {
+					//console.log('\t\tkey: ' + key + ' value: ' + facet[key] + ' length: ' + facet[key].length);
+
+
+					$('#selectF' + i).multiselect().multiselectfilter();
+
+					$("#selectF" + i).multiselect({
+						minWidth : 195,
+						multiple : false,
+						header : "Select an option",
+						selectedList : 1
+					});
+
+					$("#selectF" + i).multiselect("refresh");
+				
+		}
+
 		},
-		error: function(xhr,err){
-			console.log('error');
-		    alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
-		    alert("responseText: "+xhr.responseText);
+		error : function(xhr, err) {
+			//set response data to the data returned by the service
+			//response_data = data;
+
+			//set the publish form to visible
+			document.getElementById("plotArea").style.visibility = 'visible';
+
+			//$inner = $('<div class="span8" id="info_pane">fff</div>');
+
+			$inner = $('<div>');
+			//$inner.append('<hr>');
+			for (var i = 0; i < response_data.length; i++) {
+				//for (var facet_key in response_data) {
+				var facet = response_data[i];
+				for (var key in facet) {
+					//console.log('\t\tkey: ' + key + ' value: ' + facet[key] + ' length: ' + facet[key].length);
+					$inner.append('<label for="selectF0" class="pull-left">' + key + ':</label>');
+					$inner.append('<br><br>');
+					var facet_value_arr = facet[key].split(',');
+					$select = $('<select  id="selectF' + i + '" class = "pull-left"></select>');
+					for (var facet_value in facet_value_arr) {
+						//console.log('\t\t\t' + facet_value_arr[facet_value]);
+						$select.append('<option value="' + facet_value_arr[facet_value] + '">' + facet_value_arr[facet_value] + '</option>');
+					}
+					$inner.append($select);
+					$inner.append('<br><br>');
+
+				}
+			}
+
+			$inner.append('<br><button type="button" class="btn btn-default pull-left" onclick="publish_button()">Publish</button><br>');
+
+			$('#plotArea').show();
+			//document.getElementById("plotArea").innerHTML = inner_html;
+
+			$('#plotArea').append($inner);
+			for (var i = 0; i < response_data.length; i++) {
+					//console.log('\t\tkey: ' + key + ' value: ' + facet[key] + ' length: ' + facet[key].length);
+
+
+					$('#selectF' + i).multiselect().multiselectfilter();
+
+					$("#selectF" + i).multiselect({
+						minWidth : 195,
+						multiple : false,
+						header : "Select an option",
+						selectedList : 1
+					});
+
+					$("#selectF" + i).multiselect("refresh");
+				}
 		}
 	});
-	
-	
-	
-	
-	
-	
+
 }
 
 function publish_button() {
-	
+
 	console.log('in publish button');
 
 	var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/publish/jfharney/';
@@ -317,37 +442,37 @@ function publish_button() {
 	console.log('project: ' + project);
 	console.log('data_type: ' + data_type);
 	console.log('experiment: ' + experiment);
-	
+
 	var data = {
-			'project' : project,
-			'data_type' : data_type,
-			'experiment' : experiment,
-			'version' : version,
-			'range' : range,
-			'realm' : realm,
-			'regridding' : regridding
+		'project' : project,
+		'data_type' : data_type,
+		'experiment' : experiment,
+		'version' : version,
+		'range' : range,
+		'realm' : realm,
+		'regridding' : regridding
 	};
-		
+
 	$.ajax({
 		type : "POST",
 		url : url,
-		async: false,
-		contentType: "application/json",
-		data: JSON.stringify(data),
+		async : false,
+		contentType : "application/json",
+		data : JSON.stringify(data),
 		success : function(response_data) {
 			alert('success ' + response_data);
-			
+
 		},
-		error: function() {
+		error : function() {
 			alert('error');
-			
+
 		}
 	});
-	
+
 }
 
 function publish() {
-	
+
 	var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/publish/jfharney/';
 
 	var project = $('#selectF0').val();
@@ -358,8 +483,6 @@ function publish() {
 	var realm = $('#selectF5').val();
 	var regridding = $('#selectF6').val();
 
-	
-	
 	var data = {
 		'project' : project,
 		'data_type' : data_type,
@@ -369,25 +492,23 @@ function publish() {
 		'realm' : realm,
 		'regridding' : regridding
 	};
-	
-	
+
 	$.ajax({
 		type : "POST",
 		url : url,
 		//dataType : 'text',
-		async: false,
-		data: data,
+		async : false,
+		data : data,
 		success : function(data) {
 			alert('success ' + data);
-			
+
 		},
-		error: function() {
+		error : function() {
 			alert('error');
-			
+
 		}
 	});
-	
-	
+
 }
 
 function imgError(image) {
@@ -506,7 +627,7 @@ function downloadPlot() {
 	 html += '<a download="" target="_blank">json</a>';
 	 html += '<br>';
 	 */
-	
+
 	var split = lastURL.split('/');
 
 	split = split[split.length - 1];
@@ -527,10 +648,10 @@ function downloadPlot() {
 
 			console.log('success in getting downloadlist');
 
-					var download_link = response_data;
-					html += '<a href=\"' + download_link +  '\">netcdf</a>';
-					html += '<br>';
-					document.getElementById("plotArea").innerHTML = html;
+			var download_link = response_data;
+			html += '<a href=\"' + download_link + '\">netcdf</a>';
+			html += '<br>';
+			document.getElementById("plotArea").innerHTML = html;
 		},
 		error : function(xhr, status, error) {
 			console.log(error + xhr + status);
@@ -542,7 +663,7 @@ function downloadPlot() {
 			}
 		}
 	});
-	
+
 	document.getElementById("plotArea").innerHTML = html;
 
 }
@@ -877,102 +998,89 @@ function hide_atm_home() {
 	document.getElementById('atmHome').style.display = 'none';
 }
 
-
-
-
-
-
-
-
 /* Removed 3-25-15
 
-$inner.append('<select id="selectF1"></select>');
-$inner.append('<br>');
-$inner.append('<select id="selectF1">');
-for (var i=0;i<response_data['project'].length;i++) {
-	//inner_html += '<option value="' + response_data['project'][i] + '">' + response_data['project'][i] + '</option>'; 
-	$inner.append('<option value="' + response_data['project'][i] + '">' + response_data['project'][i] + '</option>');
-}
+ $inner.append('<select id="selectF1"></select>');
+ $inner.append('<br>');
+ $inner.append('<select id="selectF1">');
+ for (var i=0;i<response_data['project'].length;i++) {
+ //inner_html += '<option value="' + response_data['project'][i] + '">' + response_data['project'][i] + '</option>';
+ $inner.append('<option value="' + response_data['project'][i] + '">' + response_data['project'][i] + '</option>');
+ }
 
+ //var inner_html = "<hr>";
 
-//var inner_html = "<hr>";
+ /*
+ inner_html += '<label for="selectF1">Project:</label>';
+ inner_html += '<br>';
 
-/*
-inner_html += '<label for="selectF1">Project:</label>';
-inner_html += '<br>';
+ inner_html += '<select id="selectF1" multiple="multiple">';
+ for (var i=0;i<response_data['project'].length;i++) {
+ inner_html += '<option value="' + response_data['project'][i] + '">' + response_data['project'][i] + '</option>';
+ }
+ inner_html += '</select>';
 
-inner_html += '<select id="selectF1" multiple="multiple">';
-for (var i=0;i<response_data['project'].length;i++) {
-	inner_html += '<option value="' + response_data['project'][i] + '">' + response_data['project'][i] + '</option>'; 
-}
-inner_html += '</select>';
+ inner_html += "<br>";
 
-inner_html += "<br>";
+ inner_html += '<label for="selectF2">Data Type:</label>';
+ inner_html += '<br>';
+ inner_html += '<select id="selectF2" multiple="multiple">';
+ for (var i=0;i<response_data['data_type'].length;i++) {
+ inner_html += '<option value="' + response_data['data_type'][i] + '">' + response_data['data_type'][i] + '</option>';
+ }
+ inner_html += '</select>';
 
-inner_html += '<label for="selectF2">Data Type:</label>';
-inner_html += '<br>';
-inner_html += '<select id="selectF2" multiple="multiple">';
-for (var i=0;i<response_data['data_type'].length;i++) {
-	inner_html += '<option value="' + response_data['data_type'][i] + '">' + response_data['data_type'][i] + '</option>'; 
-}
-inner_html += '</select>';
+ inner_html += "<br>";
 
-inner_html += "<br>";
+ inner_html += '<label for="selectF3">Experiment:</label>';
+ inner_html += '<br>';
+ inner_html += '<select id="selectF3" multiple="multiple">';
+ for (var i=0;i<response_data['experiment'].length;i++) {
+ inner_html += '<option value="' + response_data['experiment'][i] + '">' + response_data['experiment'][i] + '</option>';
+ }
+ inner_html += '</select>';
 
-inner_html += '<label for="selectF3">Experiment:</label>';
-inner_html += '<br>';
-inner_html += '<select id="selectF3" multiple="multiple">';
-for (var i=0;i<response_data['experiment'].length;i++) {
-	inner_html += '<option value="' + response_data['experiment'][i] + '">' + response_data['experiment'][i] + '</option>'; 
-}
-inner_html += '</select>';
+ inner_html += "<br>";
 
-inner_html += "<br>";
+ inner_html += '<label for="selectF4">Version:</label>';
+ inner_html += '<br>';
+ inner_html += '<select id="selectF4" multiple="multiple">';
+ for (var i=0;i<response_data['versionnum'].length;i++) {
+ inner_html += '<option value="' + response_data['versionnum'][i] + '">' + response_data['versionnum'][i] + '</option>';
+ }
+ inner_html += '</select>';
 
-inner_html += '<label for="selectF4">Version:</label>';
-inner_html += '<br>';
-inner_html += '<select id="selectF4" multiple="multiple">';
-for (var i=0;i<response_data['versionnum'].length;i++) {
-	inner_html += '<option value="' + response_data['versionnum'][i] + '">' + response_data['versionnum'][i] + '</option>'; 
-}
-inner_html += '</select>';
+ inner_html += "<br>";
 
+ inner_html += '<label for="selectF5">Range:</label>';
+ inner_html += '<br>';
+ inner_html += '<select id="selectF5" multiple="multiple">';
+ for (var i=0;i<response_data['range'].length;i++) {
+ inner_html += '<option value="' + response_data['range'][i] + '">' + response_data['range'][i] + '</option>';
+ }
+ inner_html += '</select>';
 
-inner_html += "<br>";
+ inner_html += "<br>";
 
-inner_html += '<label for="selectF5">Range:</label>';
-inner_html += '<br>';
-inner_html += '<select id="selectF5" multiple="multiple">';
-for (var i=0;i<response_data['range'].length;i++) {
-	inner_html += '<option value="' + response_data['range'][i] + '">' + response_data['range'][i] + '</option>'; 
-}
-inner_html += '</select>';
+ inner_html += '<label for="selectF6">Realm:</label>';
+ inner_html += '<br>';
+ inner_html += '<select id="selectF6" multiple="multiple">';
+ for (var i=0;i<response_data['realm'].length;i++) {
+ inner_html += '<option value="' + response_data['realm'][i] + '">' + response_data['realm'][i] + '</option>';
+ }
+ inner_html += '</select>';
 
+ inner_html += "<br>";
+ inner_html += '<label for="selectF7">Regridding:</label>';
+ inner_html += '<br>';
+ inner_html += '<select id="selectF7" multiple="multiple" style="margin-bottom:20px;">';
+ for (var i=0;i<response_data['regridding'].length;i++) {
+ inner_html += '<option value="' + response_data['regridding'][i] + '">' + response_data['regridding'][i] + '</option>';
+ }
+ inner_html += '</select>';
 
-
-inner_html += "<br>";
-
-
-inner_html += '<label for="selectF6">Realm:</label>';
-inner_html += '<br>';
-inner_html += '<select id="selectF6" multiple="multiple">';
-for (var i=0;i<response_data['realm'].length;i++) {
-		inner_html += '<option value="' + response_data['realm'][i] + '">' + response_data['realm'][i] + '</option>'; 
-}		
-inner_html += '</select>';	
-
-inner_html += "<br>";
-inner_html += '<label for="selectF7">Regridding:</label>';
-inner_html += '<br>';
-inner_html += '<select id="selectF7" multiple="multiple" style="margin-bottom:20px;">';
-for (var i=0;i<response_data['regridding'].length;i++) {
-	inner_html += '<option value="' + response_data['regridding'][i] + '">' + response_data['regridding'][i] + '</option>'; 
-}		
-inner_html += '</select>';	
-
-
-inner_html += '<button type="button" class="btn btn-default" id="dataset_selected" onclick="publish()">';
-inner_html + 'Publish';
-inner_html += '</button>';
-*/
+ inner_html += '<button type="button" class="btn btn-default" id="dataset_selected" onclick="publish()">';
+ inner_html + 'Publish';
+ inner_html += '</button>';
+ */
 

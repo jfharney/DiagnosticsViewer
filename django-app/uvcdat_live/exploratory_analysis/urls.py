@@ -144,7 +144,7 @@ urlpatterns = patterns('',
   
   url(r'^classic_set_list_html/$',views.classic_set_list_html,name='classic_set_list_html'),
   
-
+  url(r'has_publish_role/(?P<user_id>\w+)/$',views.has_publish_role,name='has_publish_role'),
   
 
   #for posting a new dataset to a group
@@ -158,8 +158,11 @@ urlpatterns = patterns('',
   url(r'^core_parameters/$',views.core_parameters,name='core_parameters'),
   
   
+  
+  
   #for retrieving base facets
   url(r'base_facets/(?P<user_id>\w+)/$',views.base_facets,name='base_facets'),
+  
   
   url(r'publish/(?P<user_id>\w+)/$',views.publish,name='publish'),
   
