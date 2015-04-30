@@ -88,6 +88,14 @@ def base_facets(request,user_id):
     
     return HttpResponse(data_string)
 
+
+def has_publish_role(request,user_id):
+    
+    data_string = "true"
+    
+    return HttpResponse(data_string)
+
+
 def publish(request,user_id):
     
     print 'request.body: ' + str(request.body)

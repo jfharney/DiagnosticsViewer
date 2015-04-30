@@ -26,14 +26,15 @@ function getDatasets(username) {
 		  		minWidth: 195,
 				multiple : false,
 				header : "Select a dataset",
-				//noneSelectedText : "tropics_warming_th_q_co2",
+				noneSelectedText : "tropics_warming_th_q_co2",
 				selectedList : 1
 		  });
 
 		  d3.select("#selectD").selectAll("option").data(dataList).enter().append("option").attr("value", String).text(String);
-
+		  $("#selectD").multiselect("uncheckAll");
 		  $("#selectD").multiselect("refresh");
-		  
+
+
 		  
 	  },
 	  error: function(xhr, status, error) {
