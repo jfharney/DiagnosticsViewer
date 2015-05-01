@@ -242,7 +242,7 @@ def dataset_published(request,dataset_name):
         
     if request.method == 'POST':
         
-        print '\nIn POST - dsname: ', dataset_name, 'request:', request
+        print '\nIn POST - dsname: ', dataset_name
         
         #load the json object
         json_data = json.loads(request.body)
