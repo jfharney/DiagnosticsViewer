@@ -242,7 +242,7 @@ def dataset_published(request,dataset_name):
         
     if request.method == 'POST':
         
-        print '\nIn POST\n'  
+        print '\nIn POST - dsname: ', dataset_name, 'request:', request
         
         #load the json object
         json_data = json.loads(request.body)
@@ -1259,8 +1259,8 @@ def classic_set_list_html(request):
     
         print 'varlist: ' + str(varlist) + ' ' #+ vars.length
         print 'times: ' + str(times) + ' ' #+ times.length
-        print 'package: ' + package
-        print 'dataset: ' + dataset
+        print 'package: ' + str(package)
+        print 'dataset: ' + str(dataset)
                    
     html = '<TABLE width="1150" ><TR><TD><TH ALIGN=left VALIGN=top><font color=blue>Set </font><font color=blue>Description</font><br><font color=red>Top Ten</font><a class="classic_toggle_sets" id="classicatm_topten" href="#">Tier 1A/Top Ten</a> summary for this dataset.<br><font color=red>0</font><A class="classic_toggle_sets" id="classicatm_topten" HREF="#"> Top Ten</A> of ANN, DJF, JJA, global and regional means and RMSE.<br><font color=red>1</font><A class="classic_toggle_sets" id="classicatm_set1" HREF="#"> Tables</A> of ANN, DJF, JJA, global and regional means and RMSE.<br><font color=red>2</font><A class="classic_toggle_sets" id="classicatm_set2" HREF="#"> Line plots</A> of annual implied northward transports.<br><font color=red>3</font><A class="classic_toggle_sets" id="classicatm_set3" HREF="#"> Line plots</A> of DJF, JJA and ANN zonal means<br><font color=red>4</font> Vertical <A class="classic_toggle_sets" id="classicatm_set4" HREF="#">contour plots</A> of DJF, JJA and ANN zonal means<br><font color=red>4a</font> Vertical (XZ) <A class="classic_toggle_sets" id="classicatm_set4a" HREF="#">contour plots</A> of DJF, JJA and ANN meridional means<br><font color=red>5</font> Horizontal <A class="classic_toggle_sets" id="classicatm_set5" HREF="#">contour plots</A> of DJF, JJA and ANN means<br><font color=red>6</font> Horizontal <A class="classic_toggle_sets" id="classicatm_set6" HREF="#">vector plots</A> of DJF, JJA and ANN means<br><font color=red>7</font> Polar <A class="classic_toggle_sets" id="classicatm_set7" HREF="#">contour and vector plots</A> of DJF, JJA and ANN means<br><font color=red>8</font> Annual cycle <A class="classic_toggle_sets" id="classicatm_set8" HREF="#">contour plots</A> of zonal means<br><font color=red>9</font> Horizontal <A class="classic_toggle_sets" id="classicatm_set9" HREF="#">contour plots</A> of DJF-JJA differences<br><font color=red>10</font> Annual cycle line <A class="classic_toggle_sets" id="classicatm_set10" HREF="#">plots</A> of global means<br><font color=red>11</font> Pacific annual cycle, Scatter plot <A class="classic_toggle_sets" id="classicatm_set11" HREF="#">plots</A><br><font color=red>12</font> Vertical profile <A class="classic_toggle_sets" id="classicatm_set12" HREF="#">plots</A> from 17 selected stations<br><font color=red>13</font> ISCCP cloud simulator <A class="classic_toggle_sets" id="classicatm_set13" HREF="#">plots</A><br><font color=red>14</font> Taylor Diagram <A class="classic_toggle_sets" id="classicatm_set14" HREF="#">plots</A><br><font color=red>15</font> Annual Cycle at Select Stations <A class="classic_toggle_sets" id="classicatm_set15" HREF="#">plots</A><br><br></TD></TR></TABLE>'
     response = html
