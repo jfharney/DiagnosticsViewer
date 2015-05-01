@@ -54,6 +54,8 @@ img_cache_path = uvcdat_live_root + '/exploratory_analysis/static/exploratory_an
 timeseries_cache_path = uvcdat_live_root +'/exploratory_analysis/static/exploratory_analysis/cache'
 generated_img_path = uvcdat_live_root + '/exploratory_analysis/static/exploratory_analysis/img/tree/'
 
+proxy_cert_dir = config.get("options", "proxy_cert_dir")
+
 syspath_append_uvcmetrics = metrics_root + '/src/python'
 
 syspath_append_cdscan = uvcdat_root+ '/install/Library/Frameworks/Python.framework/Versions/2.7/bin/cdscan'

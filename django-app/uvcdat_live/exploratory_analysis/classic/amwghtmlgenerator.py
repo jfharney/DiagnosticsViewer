@@ -44,6 +44,7 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
    #if seasons != ['NA']:
    #   seasons = list(set(times) & set(def_seasons))
 
+   regions = diags_collection[sets].get('regions', ['Global'])
    # get a list of all obssets used in this collection
    varlist = list(set(diags_collection[sets].keys()) - set(collection_special_vars))
    obslist = []
@@ -78,6 +79,10 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
                   html += '<TR>'
                   html += '    <TH ALIGN=LEFT>' + v
                   html += '    <TH ALIGN=LEFT>' + diags_varlist[v]['desc']
+
+		  if regions == ['Global']:
+		     regionstr = '_Global'
+   
                   for season in seasons:
                      if season == 'NA':
                         seasonstr = ''
@@ -89,14 +94,14 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
                         postfix = '-model.png'
                      varopts = diags_collection[sets][v].get('varopts', False)
                      if varopts == False:
-                        fname = 'http://' + paths.ea_hostname + paths.generate_token_url('/' + dataset + '/' + package + '/set'+sets+seasonstr+'_'+v+'_'+obsfname+postfix)
+                        fname = 'http://' + paths.ea_hostname + paths.generate_token_url('/' + dataset + '/' + package + '/set'+sets+regionstr+seasonstr+'_'+v+'_'+obsfname+postfix)
                      else:
                         for varopt in varopts:
-                           fname = 'http://' + paths.ea_hostname + paths.generate_token_url('/' + dataset + '/' + package + '/set'+sets+seasonstr+'_'+v+'_'+varopt+'_'+obsfname+postfix)
+                           fname = 'http://' + paths.ea_hostname + paths.generate_token_url('/' + dataset + '/' + package + '/set'+sets+regionstr+seasonstr+'_'+v+'_'+varopt+'_'+obsfname+postfix)
                            
 #                     print 'Looking for: ', fname
 #                     if 'TTRP' in v:
-#                        fname = 'http://' + paths.ea_hostname + paths.generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+season+'_'+v.replace('_TROP','')+'_'+obsfname+'-combined.png')
+#                        fname = 'http://' + paths.ea_hostname + paths.generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+regionstr+'_'+season+'_'+v.replace('_TROP','')+'_'+obsfname+'-combined.png')
 #                     elif 'TTRP' in v:
 #                        fname = 'http://' + paths.ea_hostname + paths.generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+season+'_'+v+'_'+obsfname+'_TROP-combined.png')
 #                     else:
@@ -280,6 +285,7 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
       for v in varlist:
          obsname = diags_collection[sets][v]['obs']
          fkey = diags_varlist[v]['filekey']
+	 print 'file key:', fkey
          desc = diags_varlist[v]['desc']
          if type(obsname) == list and len(obsname) != 1:
             print 'Set 2 only supports one obs set for a given "variable"'

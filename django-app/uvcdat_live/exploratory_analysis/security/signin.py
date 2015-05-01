@@ -71,8 +71,18 @@ def esgf_login(request):
             #username = 'jfharney'
             #cert_path=os.path.join(proxy_cert_dir,username)
             #print 'cert_path: ' + cert_path
+		cert_name = 'x509acme'
+		outdir = os.path.join(paths.proxy_cert_dir, username1)
+		try:
+			os.makedirs(outdir)
+		except:
+			print 'makedirs \'', outdir, '\' failed. Directory probably already exists'
+			pass
+		outfile = os.path.join(outdir, cert_name)
+		outfile = str(outfile)
                 
-                outfile = '/tmp/x509up_u%s' % (os.getuid()) 
+#                outfile = '/tmp/x509up_u%s' % (os.getuid()) 
+		print '----> OUTFILE: ', outfile
         
                 import myproxy_logon
            
@@ -106,7 +116,7 @@ def esgf_login(request):
                 
                 #authenticate to django
                 
-                print 'user n: ' + str(user.username) + ' ' + str(user.password)
+                print 'user n: ' + str(user.username)# + ' ' + str(user.password)
             
                 #login to the app and return the string "Authenticated"
                 login(request,user)
@@ -120,7 +130,7 @@ def esgf_login(request):
                 user = authenticate(username=username1,password=password1)
             
                 print str('username1: ' + username1)
-                print str('password1: ' + password1)
+#                print str('password1: ' + password1)
                 
                 #login to the app and return the string "Authenticated"
                 login(request,user)
@@ -136,7 +146,7 @@ def esgf_login(request):
                 
                 #authenticate to django
                 
-                print 'user n: ' + str(user.username) + ' ' + str(user.password)
+                print 'user n: ' + str(user.username)# + ' ' + str(user.password)
             
                 #login to the app and return the string "Authenticated"
                 login(request,user)
@@ -150,7 +160,7 @@ def esgf_login(request):
                 user = authenticate(username=username1,password=password1)
             
                 print str('username1: ' + username1)
-                print str('password1: ' + password1)
+#                print str('password1: ' + password1)
                 
                 #login to the app and return the string "Authenticated"
                 login(request,user)
@@ -239,7 +249,7 @@ def esgf_login(request):
                 
                 #authenticate to django
                 
-                print 'user n: ' + str(user.username) + ' ' + str(user.password)
+                print 'user n: ' + str(user.username) #+ ' ' + str(user.password)
             
                 #login to the app and return the string "Authenticated"
                 login(request,user)
@@ -253,7 +263,7 @@ def esgf_login(request):
                 user = authenticate(username=username1,password=password1)
             
                 print str('username1: ' + username1)
-                print str('password1: ' + password1)
+                #print str('password1: ' + password1)
                 
                 #login to the app and return the string "Authenticated"
                 login(request,user)
@@ -269,7 +279,7 @@ def esgf_login(request):
                 
                 #authenticate to django
                 
-                print 'user n: ' + str(user.username) + ' ' + str(user.password)
+                print 'user n: ' + str(user.username)# + ' ' + str(user.password)
             
                 #login to the app and return the string "Authenticated"
                 login(request,user)
@@ -283,7 +293,7 @@ def esgf_login(request):
                 user = authenticate(username=username1,password=password1)
             
                 print str('username1: ' + username1)
-                print str('password1: ' + password1)
+                #print str('password1: ' + password1)
                 
                 #login to the app and return the string "Authenticated"
                 login(request,user)

@@ -345,20 +345,10 @@ function generate_publish_ui() {
 
 				}
 			}
-			/*
-<<<<<<< HEAD
-			
-			
-			$inner.append('<button type="button" class="btn btn-default" style="margin-top:20px;" onclick="publish_button()">Publish</button>');
-			
-			
-			
-=======
-			*/
+
 			
 			$inner.append('<button type="button" class="btn btn-default" onclick="publish_button()">Publish</button>');
 
-//>>>>>>> 03215863ec3a4e46d7b6c9bcc9b74b0648d1bc3a
 			$('#plotArea').show();
 			//document.getElementById("plotArea").innerHTML = inner_html;
 
