@@ -69,8 +69,10 @@ def base_facets(request,user_id):
     
     import urllib2
     import urllib
+    esgf_hostname = paths.esgf_hostname
+    esgf_port = paths.esgf_port
     
-    url = "http://" + 'localhost' + ":" + '8082' + "/groups/base_facets/" + user_id
+    url = "http://" + esgf_hostname + ":" + esgf_port + "/acme_services/publishing/base_facets/" + user_id
     
     #curl -X GET http://localhost:8082/groups/base_facets/jfharney
     
@@ -91,12 +93,17 @@ def base_facets(request,user_id):
 
 def has_publish_role(request,user_id):
     
+    ###Insert logic for inspecting the certificate here
+    
     data_string = "true"
     
     return HttpResponse(data_string)
 
 
 def publish(request,user_id):
+    
+    print 'ABOUT TO PUBLISH'
+    
     
     print 'request.body: ' + str(request.body)
     
@@ -108,7 +115,19 @@ def publish(request,user_id):
     import urllib2
     import urllib
     
-    url = "http://" + 'localhost' + ":" + '8082' + "/groups/publish/" + user_id
+    import requests
+    payload = {'key1': 'value1', 'key2': 'value2'}
+    
+    url = 'http://esg.ccs.ornl.gov:7070/acme_services/publish/jfharney'
+    
+    r = requests.post(url, data=payload)
+    
+    print(r.status_code, r.reason)
+    
+    
+    
+    '''
+    #url = "http://" + 'localhost' + ":" + '8082' + "/groups/publish/" + user_id
     
     # Prepare the data
     query_args = { 'q':'query string', 'foo':'bar' }
@@ -122,7 +141,7 @@ def publish(request,user_id):
     response = urllib2.urlopen(request)
  
     html = response.read()
-
+    '''
     
     
     
@@ -236,6 +255,8 @@ def dataset_packages(request,dataset_name):
 #echo '{ "dataset" :  <dataset_name> }' | curl -d @- 'http://<host>:<port>/exploratory_analysis/group_dataset/<group>/' -H "Accept:application/json" -H "Context-Type:application/json"
 #DELETE
 #http://<host>:<port>/exploratory_analysis/group_dataset/<group>/
+#Schema for "Published":
+#dataset_name | published_state ( ) 
 def dataset_published(request,dataset_name):
     
     from exploratory_analysis.models import Published

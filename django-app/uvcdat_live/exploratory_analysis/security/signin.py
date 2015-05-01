@@ -40,7 +40,7 @@ def esgf_login(request):
         
         #from backends import authenticate1
         
-        
+        print 'paths.esgfAuth: ' + str(paths.esgfAuth)
         
         #authenticates to ESGF
         if paths.esgfAuth:
