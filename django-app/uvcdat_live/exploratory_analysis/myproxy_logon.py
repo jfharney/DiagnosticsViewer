@@ -86,7 +86,7 @@ def myproxy_logon_py(hostname,username,passphrase,outfile,lifetime=43200,port=75
     
     print 'hostname: ' + hostname
     print 'username: ' + username
-    print 'passphrase: ' + passphrase
+#    print 'passphrase: ' + passphrase
     print 'outfile: ' + outfile
     print 'lifetime: ' + str(lifetime)
     print 'port: ' + str(port)
@@ -192,7 +192,7 @@ def myproxy_logon_py(hostname,username,passphrase,outfile,lifetime=43200,port=75
     
     print 'hostname: ' + hostname
     print 'username: ' + username
-    print 'passphrase: ' + passphrase
+#    print 'passphrase: ' + passphrase
     print 'outfile: ' + outfile
     print 'lifetime: ' + str(lifetime)
     print 'port: ' + str(port)
