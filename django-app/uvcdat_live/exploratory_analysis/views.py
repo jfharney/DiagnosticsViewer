@@ -115,18 +115,31 @@ def publish(request,user_id):
     import urllib2
     import urllib
     
-    import requests
     payload = {'key1': 'value1', 'key2': 'value2'}
     
     url = 'http://esg.ccs.ornl.gov:7070/acme_services/publish/jfharney'
     
+    print 'sending to url: ' + str(url) 
+    
+    
+    # This urlencodes your data (that's why we need to import urllib at the top)
+    data = urllib.urlencode(payload)
+
+    # Send HTTP POST request
+    request = urllib2.Request(url, data)
+
+    response = urllib2.urlopen(request)
+ 
+    html = response.read()
+    
+    '''
     r = requests.post(url, data=payload)
     
     print(r.status_code, r.reason)
     
     
     
-    '''
+    
     #url = "http://" + 'localhost' + ":" + '8082' + "/groups/publish/" + user_id
     
     # Prepare the data
