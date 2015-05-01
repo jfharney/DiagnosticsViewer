@@ -117,7 +117,7 @@ def publish(request,user_id):
     
     payload = {'key1': 'value1', 'key2': 'value2'}
     
-    url = 'http://esg.ccs.ornl.gov:7070/acme_services/publish/jfharney'
+    url = 'http://esg.ccs.ornl.gov:7070/acme_services/publishing/publish/jfharney'
     
     print 'sending to url: ' + str(url) 
     
