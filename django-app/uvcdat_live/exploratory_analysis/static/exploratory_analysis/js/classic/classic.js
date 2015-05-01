@@ -346,10 +346,7 @@ function generate_publish_ui() {
 				}
 			}
 
-<<<<<<< HEAD
-=======
-			
->>>>>>> c9e2d5b855bfc173f9e4b5fbbb7533891cacf80e
+
 			$inner.append('<button type="button" class="btn btn-default" onclick="publish_button()">Publish</button>');
 
 			$('#plotArea').show();
