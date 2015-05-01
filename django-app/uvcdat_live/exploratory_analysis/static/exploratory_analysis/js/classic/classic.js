@@ -271,7 +271,7 @@ function get_publish_status() {
 		contentType : "application/json",
 		success : function(response_data) {
 			var data = JSON.parse(response_data);
-			if(data.published == "") generate_publish_ui();
+			if(data.published == "" || data.published == "unpublished") generate_publish_ui();
 			else{
 			    document.getElementById("plotArea").style.visibility = 'visible';
 	            document.getElementById("plotArea").innerHTML = "";	
