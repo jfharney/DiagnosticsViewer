@@ -6,6 +6,8 @@ config = ConfigParser.ConfigParser()
 config.read('eaconfig.cfg')
 
 ea_hostname = config.get("paths",'ea_hostname')
+esgf_hostname = config.get("paths",'esgf_hostname')
+esgf_port = config.get("paths",'esgf_port')
 
 try:
    ea_root = config.get("paths", "ea_root")

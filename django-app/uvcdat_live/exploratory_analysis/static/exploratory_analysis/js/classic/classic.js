@@ -262,6 +262,7 @@ function checkRole(userID) {
 }
 function get_publish_status() {
 	var dataset = $('#selectD').val();
+	console.log('dataset: ' + dataset);
 	var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/dataset_published/' + dataset;
 	$.ajax({
 		type : "GET",
@@ -304,7 +305,7 @@ function generate_publish_ui() {
 	var response_data = EA.default_facet_list;
 
 	document.getElementById("plotArea").innerHTML = "";
-
+	
 	console.log('url: ' + url);
 	$.ajax({
 		type : "GET",
@@ -345,6 +346,10 @@ function generate_publish_ui() {
 				}
 			}
 
+<<<<<<< HEAD
+=======
+			
+>>>>>>> c9e2d5b855bfc173f9e4b5fbbb7533891cacf80e
 			$inner.append('<button type="button" class="btn btn-default" onclick="publish_button()">Publish</button>');
 
 			$('#plotArea').show();
