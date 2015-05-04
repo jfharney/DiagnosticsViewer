@@ -298,6 +298,8 @@ function get_publish_status() {
 function generate_publish_ui() {
 
 	
+	
+	
 	//these are all the options for the different facets
 	var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/base_facets/jfharney';
 
@@ -373,6 +375,8 @@ function generate_publish_ui() {
 
 		},
 		error : function(xhr, err) {
+			
+			console.log("in error for generate publish ui")
 			//set response data to the data returned by the service
 			//response_data = data;
 

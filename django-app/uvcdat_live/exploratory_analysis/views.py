@@ -115,7 +115,16 @@ def publish(request,user_id):
     import urllib2
     import urllib
     
-    payload = {'key1': 'value1', 'key2': 'value2'}
+    payload = {'project': 'ACME', 
+               'data_type': 'climo',
+               'regridding' : 'bilinear',
+               'realm' : 'atm',
+               'experiment' : 'B1850C5e1_ne30',
+               'range' : 'all',
+               'versionnum' : 'v0_1' }
+    
+    username = user_id
+    
     
     url = 'http://esg.ccs.ornl.gov:7070/acme_services/publishing/publish_data/jfharney'
     
@@ -283,6 +292,8 @@ def dataset_published(request,dataset_name):
             
         #grab the dataset added
         published = json_data['published'] #should be a string
+        
+        print 'published state: ' + published
         
         #grab the record with the given dataset_name
         da = Published.objects.filter(dataset_name=dataset_name)

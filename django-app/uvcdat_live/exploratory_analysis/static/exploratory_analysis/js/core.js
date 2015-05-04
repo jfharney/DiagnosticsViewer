@@ -91,6 +91,7 @@ EA.default_facet_list.push(range_obj);
 EA.default_facet_list.push(versionnum_obj);
 EA.default_facet_list.push(experiment_obj);
 
+EA.useDefaultFacetList = true;
 
 /*
 EA.default_facet_list = [];
