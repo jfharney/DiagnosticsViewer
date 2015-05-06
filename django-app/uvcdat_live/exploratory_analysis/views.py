@@ -64,6 +64,24 @@ figures_store = {}
 from django.http import HttpResponseRedirect
 
 
+def celery_test(request,user_id):
+    
+    import sys
+    sys.path.append('/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis')
+    print 'sys.path: ' + str(sys.path)
+    
+    from proj import tasks
+    #import tasks
+    
+    from tasks import add
+    
+    
+    print 'in celery_test\n'
+    
+    add.delay(str(request.body),25,4,user_id)
+    
+    return HttpResponse('celery_test\n')
+
 def base_facets(request,user_id):
     
     
@@ -105,6 +123,25 @@ def publish(request,user_id):
     print 'ABOUT TO PUBLISH'
     
     
+    import sys
+    sys.path.append('/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis')
+    print 'sys.path: ' + str(sys.path)
+    
+    from proj import tasks
+    #import tasks
+    
+    from tasks import add
+    
+    
+    print 'in celery_test\n'
+    
+    add.delay(str(request.body),25,4,user_id)
+    
+    return HttpResponse('celery_test\n')
+
+    
+    '''
+    
     print 'request.body: ' + str(request.body)
     
     json_data = json.loads(request.body)
@@ -114,6 +151,12 @@ def publish(request,user_id):
     
     import urllib2
     import urllib
+    
+    esgf_hostname = paths.esgf_hostname
+    esgf_port = paths.esgf_port
+
+    print 'esgf_hostname: ' + esgf_hostname
+    print 'esgf_port: ' + esgf_port
     
     payload = {'project': 'ACME', 
                'data_type': 'climo',
@@ -126,7 +169,11 @@ def publish(request,user_id):
     username = user_id
     
     
-    url = 'http://esg.ccs.ornl.gov:7070/acme_services/publishing/publish_data/jfharney/'
+#<<<<<<< HEAD
+#    url = 'http://esg.ccs.ornl.gov:7070/acme_services/publishing/publish_data/jfharney/'
+#=======
+    url = 'http://' + esgf_hostname + ':' + esgf_port + '/acme_services/publishing/publish_data/' + username
+#>>>>>>> e1c67acadc611939499b3f9587750edfa20acd62
     
     print 'sending to url: ' + str(url) 
     
@@ -140,6 +187,13 @@ def publish(request,user_id):
     response = urllib2.urlopen(request)
  
     html = response.read()
+    
+    '''
+    
+    
+    
+    
+    
     
     '''
     r = requests.post(url, data=payload)
