@@ -33,8 +33,9 @@ $(document).ready(function() {
 
 	//getTimes(current_username);
 
-	var treeloaded = $('#treeloaded').html();
+	//var treeloaded = $('#treeloaded').html();
 
+	
 	//for post requests, need to get the csrf token
 	function getCookie(name) {
 		var cookieValue = null;
@@ -467,8 +468,8 @@ function publish_button() {
 		contentType : "application/json",
 		data : JSON.stringify(data),
 		success : function(response_data) {
-			alert('success ' + response_data);
-
+			//alert('success ' + response_data);
+			console.log('success: ' + response_data);
 		},
 		error : function() {
 			alert('error');
