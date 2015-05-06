@@ -126,7 +126,7 @@ def publish(request,user_id):
     username = user_id
     
     
-    url = 'http://esg.ccs.ornl.gov:7070/acme_services/publishing/publish_data/jfharney'
+    url = 'http://esg.ccs.ornl.gov:7070/acme_services/publishing/publish_data/jfharney/'
     
     print 'sending to url: ' + str(url) 
     
