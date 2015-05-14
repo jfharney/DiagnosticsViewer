@@ -470,6 +470,27 @@ function publish_button() {
 		success : function(response_data) {
 			//alert('success ' + response_data);
 			console.log('success: ' + response_data);
+			var current_username = $('#username_posted').html();
+			//setTimeout(checkRole(current_username), 100);
+				var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/dataset_published/' + $('#selectD').val() + '/';
+				var status = {"published": "pending"};
+				$.ajax({
+		type : "POST",
+		url : url,
+		async : false,
+		contentType : "application/json",
+		data : JSON.stringify(status),
+		success : function(response_data) {
+			//alert('success ' + response_data);
+			console.log('success: ' + response_data);
+			var current_username = $('#username_posted').html();
+			get_publish_status();
+		},
+		error : function() {
+			alert('error');
+
+		}
+	});
 		},
 		error : function() {
 			alert('error');
@@ -787,6 +808,7 @@ function toggle_set_list() {
 		//async : false,
 		success : function(html) {
 			console.log(html);
+			$('#atmHome').empty();
 			$('#atmHome').append(html);
 			$('.classic_toggle_sets').click(function() {
 

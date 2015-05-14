@@ -3,19 +3,18 @@ from __future__ import absolute_import
 from exploratory_analysis.celery import app
 
 
-def issue_publish(request,x,y,user_id):
+def issue_publish(request,user_id):
     
     import urllib2
     import urllib
     
     import sys
     print 'sys.path: ' + str(sys.path)
+    print 'THIS IS BROKEN'
+    sys.path.append('/usr/local/uvcdat/ea/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis')
     
-    
-    sys.path.append('/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis')
-    
+#    sys.path.append('/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis')
     from paths import paths
-    
     
     esgf_hostname = paths.esgf_hostname
     esgf_port = paths.esgf_port
@@ -56,21 +55,15 @@ def issue_publish(request,x,y,user_id):
     
 
 @app.task
-def add(request,x, y,user_id):
-    
-    import time
+def add(request,user_id):
     
     print 'starting task'
-    #time.sleep(300)
-    time.sleep(3)
     
-    issue_publish(request,x,y,user_id)
+    print 'Issuing publish'
+    issue_publish(request,user_id)
+    print 'Done issuing publish'
     
     print 'ending task'
-    
-    
-    return x + y
-
 
 @app.task
 def mul(x, y):

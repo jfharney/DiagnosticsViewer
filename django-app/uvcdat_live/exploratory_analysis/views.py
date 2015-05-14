@@ -67,20 +67,19 @@ from django.http import HttpResponseRedirect
 def celery_test(request,user_id):
     
     import sys
-    sys.path.append('/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis')
-    print 'sys.path: ' + str(sys.path)
+#    sys.path.append('/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis')
+#    print 'sys.path: ' + str(sys.path)
     
-    from proj import tasks
+    #from proj import tasks
     #import tasks
     
     from tasks import add
     
+    print 'in celery_test new\n'
     
-    print 'in celery_test\n'
+    add.delay(str(request.body),user_id)
     
-    add.delay(str(request.body),25,4,user_id)
-    
-    return HttpResponse('celery_test\n')
+    return HttpResponse('celery_test_new\n')
 
 def base_facets(request,user_id):
     
@@ -124,20 +123,19 @@ def publish(request,user_id):
     
     
     import sys
-    sys.path.append('/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis')
-    print 'sys.path: ' + str(sys.path)
+#    sys.path.append('/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app/uvcdat_live/exploratory_analysis')
+#    print 'sys.path: ' + str(sys.path)
     
-    from proj import tasks
+    #from proj import tasks
     #import tasks
     
     from tasks import add
     
-    
     print 'in celery_test\n'
     
-    add.delay(str(request.body),25,4,user_id)
+    add.delay(str(request.body),user_id)
     
-    return HttpResponse('celery_test\n')
+    return HttpResponse('celery_test -- new\n')
 
     
     '''
