@@ -134,6 +134,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'exploratory_analysis',
+    'djcelery',
     #'polls',
     'message_reader',
 )
@@ -166,3 +167,10 @@ LOGGING = {
         },
     }
 }
+
+import djcelery
+djcelery.setup_loader()
+
+
+CELERY_IMPORTS = ("tasks", )
+

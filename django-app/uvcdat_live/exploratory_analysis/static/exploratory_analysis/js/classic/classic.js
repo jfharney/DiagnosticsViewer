@@ -33,8 +33,9 @@ $(document).ready(function() {
 
 	//getTimes(current_username);
 
-	var treeloaded = $('#treeloaded').html();
+	//var treeloaded = $('#treeloaded').html();
 
+	
 	//for post requests, need to get the csrf token
 	function getCookie(name) {
 		var cookieValue = null;
@@ -298,6 +299,8 @@ function get_publish_status() {
 function generate_publish_ui() {
 
 	
+	
+	
 	//these are all the options for the different facets
 	var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/base_facets/jfharney';
 
@@ -373,6 +376,8 @@ function generate_publish_ui() {
 
 		},
 		error : function(xhr, err) {
+			
+			console.log("in error for generate publish ui")
 			//set response data to the data returned by the service
 			//response_data = data;
 
@@ -463,8 +468,29 @@ function publish_button() {
 		contentType : "application/json",
 		data : JSON.stringify(data),
 		success : function(response_data) {
-			alert('success ' + response_data);
+			//alert('success ' + response_data);
+			console.log('success: ' + response_data);
+			var current_username = $('#username_posted').html();
+			//setTimeout(checkRole(current_username), 100);
+				var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/dataset_published/' + $('#selectD').val() + '/';
+				var status = {"published": "pending"};
+				$.ajax({
+		type : "POST",
+		url : url,
+		async : false,
+		contentType : "application/json",
+		data : JSON.stringify(status),
+		success : function(response_data) {
+			//alert('success ' + response_data);
+			console.log('success: ' + response_data);
+			var current_username = $('#username_posted').html();
+			get_publish_status();
+		},
+		error : function() {
+			alert('error');
 
+		}
+	});
 		},
 		error : function() {
 			alert('error');
@@ -784,9 +810,11 @@ function toggle_set_list() {
 		success : function(html) {
 			
 			console.log(html);
+
 			//$('#atmHome').empty();
 		    document.getElementById('#atmHome').innerHTML = "";
 			$('#atmHome').html(html);
+
 			$('.classic_toggle_sets').click(function() {
 
 				var index = this.id.search('_');

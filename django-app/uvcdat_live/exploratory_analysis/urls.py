@@ -14,6 +14,7 @@ urlpatterns = patterns('',
   url(r'^$', views.index, name='index'),
   
 
+  url(r'^celery_test/(?P<user_id>\w+)/$', views.celery_test, name='celery_test'),
   
   url(r'^main/(?P<user_id>\w+)/$',views.main,name='main'),
   

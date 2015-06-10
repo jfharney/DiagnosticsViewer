@@ -182,7 +182,9 @@ def datasetListHelper1(request,user_id):
     dataset_list_returned = list(set(datasets_in_groups).intersection(disk_datasets))
    
     dataset_list_returned = disk_datasets
+
     dataset_list_returned.remove('tmp')
+
  
     data = {'datasets' : dataset_list_returned } #datasets_in_groups}
     data_string = json.dumps(data,sort_keys=False,indent=2)
