@@ -1,0 +1,247 @@
+From 3183282de3cbb9a680da142d8e1a18b28f2dad7b Mon Sep 17 00:00:00 2001
+From: root <root@acme-dev-2.ornl.gov>
+Date: Fri, 1 May 2015 16:05:26 -0400
+Subject: [PATCH 4/4] updates for amwghtmlgenerator. fixes for paths/myproxylogin/signin, conflict in classic.js, tweaks to dataset_published in views.py
+
+---
+ .../classic/amwghtmlgenerator.py                   |   12 ++++++--
+ .../exploratory_analysis/myproxy_logon.py          |    6 ++--
+ .../exploratory_analysis/paths/paths.py            |    2 +
+ .../exploratory_analysis/security/signin.py        |   30 +++++++++++++------
+ .../exploratory_analysis/js/classic/classic.js     |   10 +------
+ .../uvcdat_live/exploratory_analysis/views.py      |    2 +-
+ 6 files changed, 36 insertions(+), 26 deletions(-)
+
+diff --git a/django-app/uvcdat_live/exploratory_analysis/classic/amwghtmlgenerator.py b/django-app/uvcdat_live/exploratory_analysis/classic/amwghtmlgenerator.py
+index 099adf6..47dfbf6 100644
+--- a/django-app/uvcdat_live/exploratory_analysis/classic/amwghtmlgenerator.py
++++ b/django-app/uvcdat_live/exploratory_analysis/classic/amwghtmlgenerator.py
+@@ -44,6 +44,7 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
+    #if seasons != ['NA']:
+    #   seasons = list(set(times) & set(def_seasons))
+ 
++   regions = diags_collection[sets].get('regions', ['Global'])
+    # get a list of all obssets used in this collection
+    varlist = list(set(diags_collection[sets].keys()) - set(collection_special_vars))
+    obslist = []
+@@ -78,6 +79,10 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
+                   html += '<TR>'
+                   html += '    <TH ALIGN=LEFT>' + v
+                   html += '    <TH ALIGN=LEFT>' + diags_varlist[v]['desc']
++
++		  if regions == ['Global']:
++		     regionstr = '_Global'
++   
+                   for season in seasons:
+                      if season == 'NA':
+                         seasonstr = ''
+@@ -89,14 +94,14 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
+                         postfix = '-model.png'
+                      varopts = diags_collection[sets][v].get('varopts', False)
+                      if varopts == False:
+-                        fname = 'http://' + paths.ea_hostname + paths.generate_token_url('/' + dataset + '/' + package + '/set'+sets+seasonstr+'_'+v+'_'+obsfname+postfix)
++                        fname = 'http://' + paths.ea_hostname + paths.generate_token_url('/' + dataset + '/' + package + '/set'+sets+regionstr+seasonstr+'_'+v+'_'+obsfname+postfix)
+                      else:
+                         for varopt in varopts:
+-                           fname = 'http://' + paths.ea_hostname + paths.generate_token_url('/' + dataset + '/' + package + '/set'+sets+seasonstr+'_'+v+'_'+varopt+'_'+obsfname+postfix)
++                           fname = 'http://' + paths.ea_hostname + paths.generate_token_url('/' + dataset + '/' + package + '/set'+sets+regionstr+seasonstr+'_'+v+'_'+varopt+'_'+obsfname+postfix)
+                            
+ #                     print 'Looking for: ', fname
+ #                     if 'TTRP' in v:
+-#                        fname = 'http://' + paths.ea_hostname + paths.generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+season+'_'+v.replace('_TROP','')+'_'+obsfname+'-combined.png')
++#                        fname = 'http://' + paths.ea_hostname + paths.generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+regionstr+'_'+season+'_'+v.replace('_TROP','')+'_'+obsfname+'-combined.png')
+ #                     elif 'TTRP' in v:
+ #                        fname = 'http://' + paths.ea_hostname + paths.generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+season+'_'+v+'_'+obsfname+'_TROP-combined.png')
+ #                     else:
+@@ -280,6 +285,7 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
+       for v in varlist:
+          obsname = diags_collection[sets][v]['obs']
+          fkey = diags_varlist[v]['filekey']
++	 print 'file key:', fkey
+          desc = diags_varlist[v]['desc']
+          if type(obsname) == list and len(obsname) != 1:
+             print 'Set 2 only supports one obs set for a given "variable"'
+diff --git a/django-app/uvcdat_live/exploratory_analysis/myproxy_logon.py b/django-app/uvcdat_live/exploratory_analysis/myproxy_logon.py
+index 084072d..a3df434 100644
+--- a/django-app/uvcdat_live/exploratory_analysis/myproxy_logon.py
++++ b/django-app/uvcdat_live/exploratory_analysis/myproxy_logon.py
+@@ -86,7 +86,7 @@ def myproxy_logon_py(hostname,username,passphrase,outfile,lifetime=43200,port=75
+     
+     print 'hostname: ' + hostname
+     print 'username: ' + username
+-    print 'passphrase: ' + passphrase
++#    print 'passphrase: ' + passphrase
+     print 'outfile: ' + outfile
+     print 'lifetime: ' + str(lifetime)
+     print 'port: ' + str(port)
+@@ -192,7 +192,7 @@ def myproxy_logon_py(hostname,username,passphrase,outfile,lifetime=43200,port=75
+     
+     print 'hostname: ' + hostname
+     print 'username: ' + username
+-    print 'passphrase: ' + passphrase
++#    print 'passphrase: ' + passphrase
+     print 'outfile: ' + outfile
+     print 'lifetime: ' + str(lifetime)
+     print 'port: ' + str(port)
+@@ -374,4 +374,4 @@ if __name__ == '__main__':
+     
+     
+     
+-    
+\ No newline at end of file
++    
+diff --git a/django-app/uvcdat_live/exploratory_analysis/paths/paths.py b/django-app/uvcdat_live/exploratory_analysis/paths/paths.py
+index 4bedf68..da5b918 100644
+--- a/django-app/uvcdat_live/exploratory_analysis/paths/paths.py
++++ b/django-app/uvcdat_live/exploratory_analysis/paths/paths.py
+@@ -52,6 +52,8 @@ img_cache_path = uvcdat_live_root + '/exploratory_analysis/static/exploratory_an
+ timeseries_cache_path = uvcdat_live_root +'/exploratory_analysis/static/exploratory_analysis/cache'
+ generated_img_path = uvcdat_live_root + '/exploratory_analysis/static/exploratory_analysis/img/tree/'
+ 
++proxy_cert_dir = config.get("options", "proxy_cert_dir")
++
+ syspath_append_uvcmetrics = metrics_root + '/src/python'
+ 
+ syspath_append_cdscan = uvcdat_root+ '/install/Library/Frameworks/Python.framework/Versions/2.7/bin/cdscan'
+diff --git a/django-app/uvcdat_live/exploratory_analysis/security/signin.py b/django-app/uvcdat_live/exploratory_analysis/security/signin.py
+index d157d17..397fd22 100644
+--- a/django-app/uvcdat_live/exploratory_analysis/security/signin.py
++++ b/django-app/uvcdat_live/exploratory_analysis/security/signin.py
+@@ -71,8 +71,18 @@ def esgf_login(request):
+             #username = 'jfharney'
+             #cert_path=os.path.join(proxy_cert_dir,username)
+             #print 'cert_path: ' + cert_path
++		cert_name = 'x509acme'
++		outdir = os.path.join(paths.proxy_cert_dir, username1)
++		try:
++			os.makedirs(outdir)
++		except:
++			print 'makedirs \'', outdir, '\' failed. Directory probably already exists'
++			pass
++		outfile = os.path.join(outdir, cert_name)
++		outfile = str(outfile)
+                 
+-                outfile = '/tmp/x509up_u%s' % (os.getuid()) 
++#                outfile = '/tmp/x509up_u%s' % (os.getuid()) 
++		print '----> OUTFILE: ', outfile
+         
+                 import myproxy_logon
+            
+@@ -106,7 +116,7 @@ def esgf_login(request):
+                 
+                 #authenticate to django
+                 
+-                print 'user n: ' + str(user.username) + ' ' + str(user.password)
++                print 'user n: ' + str(user.username)# + ' ' + str(user.password)
+             
+                 #login to the app and return the string "Authenticated"
+                 login(request,user)
+@@ -120,7 +130,7 @@ def esgf_login(request):
+                 user = authenticate(username=username1,password=password1)
+             
+                 print str('username1: ' + username1)
+-                print str('password1: ' + password1)
++#                print str('password1: ' + password1)
+                 
+                 #login to the app and return the string "Authenticated"
+                 login(request,user)
+@@ -136,7 +146,7 @@ def esgf_login(request):
+                 
+                 #authenticate to django
+                 
+-                print 'user n: ' + str(user.username) + ' ' + str(user.password)
++                print 'user n: ' + str(user.username)# + ' ' + str(user.password)
+             
+                 #login to the app and return the string "Authenticated"
+                 login(request,user)
+@@ -150,7 +160,7 @@ def esgf_login(request):
+                 user = authenticate(username=username1,password=password1)
+             
+                 print str('username1: ' + username1)
+-                print str('password1: ' + password1)
++#                print str('password1: ' + password1)
+                 
+                 #login to the app and return the string "Authenticated"
+                 login(request,user)
+@@ -239,7 +249,7 @@ def esgf_login(request):
+                 
+                 #authenticate to django
+                 
+-                print 'user n: ' + str(user.username) + ' ' + str(user.password)
++                print 'user n: ' + str(user.username) #+ ' ' + str(user.password)
+             
+                 #login to the app and return the string "Authenticated"
+                 login(request,user)
+@@ -253,7 +263,7 @@ def esgf_login(request):
+                 user = authenticate(username=username1,password=password1)
+             
+                 print str('username1: ' + username1)
+-                print str('password1: ' + password1)
++                #print str('password1: ' + password1)
+                 
+                 #login to the app and return the string "Authenticated"
+                 login(request,user)
+@@ -269,7 +279,7 @@ def esgf_login(request):
+                 
+                 #authenticate to django
+                 
+-                print 'user n: ' + str(user.username) + ' ' + str(user.password)
++                print 'user n: ' + str(user.username)# + ' ' + str(user.password)
+             
+                 #login to the app and return the string "Authenticated"
+                 login(request,user)
+@@ -283,7 +293,7 @@ def esgf_login(request):
+                 user = authenticate(username=username1,password=password1)
+             
+                 print str('username1: ' + username1)
+-                print str('password1: ' + password1)
++                #print str('password1: ' + password1)
+                 
+                 #login to the app and return the string "Authenticated"
+                 login(request,user)
+@@ -294,4 +304,4 @@ def esgf_login(request):
+ 
+     else:
+         print 'it is not a post'
+-'''  
+\ No newline at end of file
++'''  
+diff --git a/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/js/classic/classic.js b/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/js/classic/classic.js
+index f294a65..afc6ab9 100644
+--- a/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/js/classic/classic.js
++++ b/django-app/uvcdat_live/exploratory_analysis/static/exploratory_analysis/js/classic/classic.js
+@@ -344,17 +344,9 @@ function generate_publish_ui() {
+ 
+ 				}
+ 			}
+-<<<<<<< HEAD
+-			
+-			
+-			$inner.append('<button type="button" class="btn btn-default" style="margin-top:20px;" onclick="publish_button()">Publish</button>');
+-			
+-			
+-			
+-=======
++
+ 			$inner.append('<button type="button" class="btn btn-default" onclick="publish_button()">Publish</button>');
+ 
+->>>>>>> 03215863ec3a4e46d7b6c9bcc9b74b0648d1bc3a
+ 			$('#plotArea').show();
+ 			//document.getElementById("plotArea").innerHTML = inner_html;
+ 
+diff --git a/django-app/uvcdat_live/exploratory_analysis/views.py b/django-app/uvcdat_live/exploratory_analysis/views.py
+index a954e73..4ddcbff 100644
+--- a/django-app/uvcdat_live/exploratory_analysis/views.py
++++ b/django-app/uvcdat_live/exploratory_analysis/views.py
+@@ -242,7 +242,7 @@ def dataset_published(request,dataset_name):
+         
+     if request.method == 'POST':
+         
+-        print '\nIn POST - dsname: ', dataset_name, 'request:', request
++        print '\nIn POST - dsname: ', dataset_name
+         
+         #load the json object
+         json_data = json.loads(request.body)
+-- 
+1.7.1
+

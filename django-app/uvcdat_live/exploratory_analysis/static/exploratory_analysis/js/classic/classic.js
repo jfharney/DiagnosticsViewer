@@ -684,6 +684,7 @@ function nodisplayImage() {
 function toggle_varSelect() {
 	var dataset = $('#selectD').val();
 
+
 	$('#dataset_selected').hide();
 	$('#variables_div').show();
 	getVariables('ul');
@@ -781,8 +782,11 @@ function toggle_set_list() {
 		data : JSON.stringify(data),
 		//async : false,
 		success : function(html) {
+			
 			console.log(html);
-			$('#atmHome').append(html);
+			//$('#atmHome').empty();
+		    document.getElementById('#atmHome').innerHTML = "";
+			$('#atmHome').html(html);
 			$('.classic_toggle_sets').click(function() {
 
 				var index = this.id.search('_');
@@ -882,7 +886,8 @@ function toggle_vis(set) {
 		"dataset" : datasetData
 
 	};
-
+	document.getElementById('atmHome').innerHTML = "";
+	document.getElementById('landHome').innerHTML = "";
 	var url = '/exploratory_analysis/classic_views_html/' + '?_=' + Math.round(Math.random() * 10000);
 
 	$.ajax({
