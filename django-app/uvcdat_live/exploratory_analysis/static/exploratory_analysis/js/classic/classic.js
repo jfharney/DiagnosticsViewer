@@ -811,9 +811,8 @@ function toggle_set_list() {
 			
 			console.log(html);
 
-			//$('#atmHome').empty();
-		    document.getElementById('#atmHome').innerHTML = "";
-			$('#atmHome').html(html);
+			$('#atmHome').empty();
+			$('#atmHome').append(html);
 
 			$('.classic_toggle_sets').click(function() {
 
