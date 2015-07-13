@@ -504,3 +504,149 @@ In Dataset_Access GET
 2015-07-08 18:32:32,698 - exploratory_analysis - DEBUG - 
 In Dataset_Access GET
 
+2015-07-08 19:14:27,966 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-07-08 19:14:28,021 - exploratory_analysis - DEBUG - tb: Traceback (most recent call last):
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/views.py", line 97, in get
+    da = Dataset_Access.objects.filter(dataset_name=dataset_name)
+NameError: global name 'Dataset_Access' is not defined
+
+2015-07-08 19:14:40,701 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-07-08 19:17:14,024 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-07-08 19:18:45,547 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-07-08 19:18:45,581 - exploratory_analysis - DEBUG - tb: Traceback (most recent call last):
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/views.py", line 109, in get
+    for dataset in da[0].dataset_list.split(','):
+  File "/Library/Python/2.7/site-packages/django/db/models/query.py", line 184, in __getitem__
+    return self._result_cache[k]
+IndexError: list index out of range
+
+2015-07-08 19:32:36,626 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-07-08 19:37:36,863 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-07-08 19:38:21,649 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-07-08 19:38:21,651 - exploratory_analysis - DEBUG - tb: Traceback (most recent call last):
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/views.py", line 110, in get
+    variables.append(dataset)
+NameError: global name 'dataset' is not defined
+
+2015-07-08 19:45:15,634 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-07-08 20:06:45,348 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-07-08 20:06:47,109 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-07-08 20:07:32,765 - exploratory_analysis - DEBUG - 
+Variables record: D2 A,B,C
+2015-07-08 20:07:34,527 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-07-08 20:22:57,554 - exploratory_analysis - DEBUG - 
+Variables record: D2 A,B,C
+2015-07-08 20:23:00,139 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-07-08 20:23:00,140 - exploratory_analysis - DEBUG - dataset_name: D1
+2015-07-08 20:23:02,296 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-07-08 20:23:02,297 - exploratory_analysis - DEBUG - dataset_name: D1
+2015-07-08 20:23:51,986 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-07-08 20:23:52,082 - exploratory_analysis - DEBUG - dataset_name: D2
+2015-07-08 20:24:04,539 - exploratory_analysis - DEBUG - 
+Variables record: D2 A,B
+2015-07-08 20:24:06,733 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-07-08 20:24:06,733 - exploratory_analysis - DEBUG - dataset_name: D2
+2015-07-08 20:31:14,740 - exploratory_analysis - DEBUG - 
+In Published GET
+
+2015-07-08 20:31:14,740 - exploratory_analysis - DEBUG - dataset_name: D2
+2015-07-08 20:40:55,299 - exploratory_analysis - DEBUG - tb: Traceback (most recent call last):
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/views.py", line 80, in post
+    da = Published.objects.filter(dataset_name=dataset_name)
+NameError: global name 'Published' is not defined
+
+2015-07-08 20:41:15,039 - exploratory_analysis - DEBUG - 
+Published record: D2 false
+2015-07-08 20:41:19,685 - exploratory_analysis - DEBUG - 
+In Published GET
+
+2015-07-08 20:41:19,685 - exploratory_analysis - DEBUG - dataset_name: D2
+2015-07-08 20:41:31,257 - exploratory_analysis - DEBUG - 
+Published record: D2 true
+2015-07-08 20:41:33,541 - exploratory_analysis - DEBUG - 
+In Published GET
+
+2015-07-08 20:41:33,542 - exploratory_analysis - DEBUG - dataset_name: D2
+2015-07-08 20:44:57,450 - exploratory_analysis - DEBUG - 
+Published record: D2 false
+2015-07-08 20:45:00,552 - exploratory_analysis - DEBUG - 
+In Published GET
+
+2015-07-08 20:45:00,553 - exploratory_analysis - DEBUG - dataset_name: D2
+2015-07-08 20:45:04,520 - exploratory_analysis - DEBUG - 
+Published record: D1 false
+2015-07-08 20:45:06,767 - exploratory_analysis - DEBUG - 
+In Published GET
+
+2015-07-08 20:45:06,767 - exploratory_analysis - DEBUG - dataset_name: D2
+2015-07-08 20:45:09,462 - exploratory_analysis - DEBUG - 
+In Published GET
+
+2015-07-08 20:45:09,462 - exploratory_analysis - DEBUG - dataset_name: D1
+2015-07-08 20:45:35,553 - exploratory_analysis - DEBUG - 
+Published record: D1 true
+2015-07-08 20:45:38,435 - exploratory_analysis - DEBUG - 
+In Published GET
+
+2015-07-08 20:45:38,435 - exploratory_analysis - DEBUG - dataset_name: D1
+2015-07-08 20:51:08,886 - exploratory_analysis - DEBUG - 
+Published record: D1 false
+2015-07-08 20:51:10,912 - exploratory_analysis - DEBUG - 
+In Published GET
+
+2015-07-08 20:51:10,912 - exploratory_analysis - DEBUG - dataset_name: D1
+2015-07-08 21:01:02,949 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-07-08 21:01:02,987 - exploratory_analysis - DEBUG - dataset_name: D1
+2015-07-12 17:11:49,293 - exploratory_analysis - DEBUG - 
+Variables record: D1 1,2,3
+2015-07-12 19:30:39,128 - exploratory_analysis - DEBUG - tb: Traceback (most recent call last):
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/views.py", line 94, in auth
+    outdir = os.path.join(proxy_cert_dir, username)
+NameError: global name 'os' is not defined
+
+2015-07-12 19:32:04,750 - exploratory_analysis - DEBUG - tb: Traceback (most recent call last):
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/views.py", line 99, in auth
+    os.makedirs(outdir)
+  File "/Users/8xo/uvcdatprojects/src/cdat-basic/build-uvcdat/install/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/os.py", line 157, in makedirs
+    mkdir(name, mode)
+OSError: [Errno 17] File exists: '/tmp/8xo'
+
+2015-07-12 19:32:51,858 - exploratory_analysis - DEBUG - tb: Traceback (most recent call last):
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/views.py", line 99, in auth
+    os.makedirs(outdir)
+  File "/Users/8xo/uvcdatprojects/src/cdat-basic/build-uvcdat/install/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/os.py", line 157, in makedirs
+    mkdir(name, mode)
+OSError: [Errno 17] File exists: '/tmp/8xo'
+

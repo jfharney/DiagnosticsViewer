@@ -2,7 +2,6 @@ import sys, os
 sys.path.append(str(os.getcwd() + '/exploratory_analysis'))
 from paths import paths
 
-from django.contrib.auth import authenticate, login
 
 from django.http import HttpResponse
 from django.http import HttpResponseServerError
