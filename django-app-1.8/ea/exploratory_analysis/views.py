@@ -4,6 +4,8 @@ from django.views.generic import View
 from django.template import RequestContext, loader
 from django.contrib.auth import authenticate, login
 
+from metrics.frontend.amwgmaster import *
+    
 
 import json
 import logging
@@ -168,18 +170,299 @@ def isLoggedIn(request,user_id):
 
 
 
+def classic(request,user_id):
+
+
+    template = loader.get_template('exploratory_analysis/classic.html')
+    
+    context = RequestContext(request, {
+      'username' : user_id,
+    })
+
+    return HttpResponse(template.render(context))
 
 
 
 
+def classic_set_list_html(request):
+
+    print 'in classic_set_list_html'
+
+    package = request.GET.get('package','')
+    print 'package: ' + package
+
+    '''
+    json_data = json.loads(request.body)
+    project = json_data['project']
+    dataset = json_data['dataset']
+    pckg = json_data['pckg']
+    variables = json_data['variables']
+    times = json_data['times']
+    '''
+    
+    #html = '<TABLE width="1150" ><TR><TD><TH ALIGN=left VALIGN=top><font color=blue>Set </font><font color=blue>Description</font><br><font color=red>Top Ten</font><a class="classic_toggle_sets" id="classicatm_topten" href="#">Tier 1A/Top Ten</a> summary for this dataset.<br><font color=red>0</font><A class="classic_toggle_sets" id="classicatm_topten" HREF="#"> Top Ten</A> of ANN, DJF, JJA, global and regional means and RMSE.<br><font color=red>1</font><A class="classic_toggle_sets" id="classicatm_set1" HREF="#"> Tables</A> of ANN, DJF, JJA, global and regional means and RMSE.<br><font color=red>2</font><A class="classic_toggle_sets" id="classicatm_set2" HREF="#"> Line plots</A> of annual implied northward transports.<br><font color=red>3</font><A class="classic_toggle_sets" id="classicatm_set3" HREF="#"> Line plots</A> of DJF, JJA and ANN zonal means<br><font color=red>4</font> Vertical <A class="classic_toggle_sets" id="classicatm_set4" HREF="#">contour plots</A> of DJF, JJA and ANN zonal means<br><font color=red>4a</font> Vertical (XZ) <A class="classic_toggle_sets" id="classicatm_set4a" HREF="#">contour plots</A> of DJF, JJA and ANN meridional means<br><font color=red>5</font> Horizontal <A class="classic_toggle_sets" id="classicatm_set5" HREF="#">contour plots</A> of DJF, JJA and ANN means<br><font color=red>6</font> Horizontal <A class="classic_toggle_sets" id="classicatm_set6" HREF="#">vector plots</A> of DJF, JJA and ANN means<br><font color=red>7</font> Polar <A class="classic_toggle_sets" id="classicatm_set7" HREF="#">contour and vector plots</A> of DJF, JJA and ANN means<br><font color=red>8</font> Annual cycle <A class="classic_toggle_sets" id="classicatm_set8" HREF="#">contour plots</A> of zonal means<br><font color=red>9</font> Horizontal <A class="classic_toggle_sets" id="classicatm_set9" HREF="#">contour plots</A> of DJF-JJA differences<br><font color=red>10</font> Annual cycle line <A class="classic_toggle_sets" id="classicatm_set10" HREF="#">plots</A> of global means<br><font color=red>11</font> Pacific annual cycle, Scatter plot <A class="classic_toggle_sets" id="classicatm_set11" HREF="#">plots</A><br><font color=red>12</font> Vertical profile <A class="classic_toggle_sets" id="classicatm_set12" HREF="#">plots</A> from 17 selected stations<br><font color=red>13</font> ISCCP cloud simulator <A class="classic_toggle_sets" id="classicatm_set13" HREF="#">plots</A><br><font color=red>14</font> Taylor Diagram <A class="classic_toggle_sets" id="classicatm_set14" HREF="#">plots</A><br><font color=red>15</font> Annual Cycle at Select Stations <A class="classic_toggle_sets" id="classicatm_set15" HREF="#">plots</A><br><br></TD></TR></TABLE>'
+         
+    if package == 'atm':
+        print 'getting atm home'
+        template = loader.get_template('exploratory_analysis/atm_home.html')
+        context = RequestContext(request, {
+            
+        })
+        return HttpResponse(template.render(context))
+    else:
+        print 'getting lnd home'
+        template = loader.get_template('exploratory_analysis/land_home.html')
+        context = RequestContext(request, {
+            
+        })
+        return HttpResponse(template.render(context))
+    
+    #return HttpResponse(html);
 
 
+def classic_views_html(request):
+    
+    sets = str(request.GET.get('set',''))
+    
+    #sets = str(set[3:])
+    varlist = 'TLAI'
+    times = 't1'
+    package = 'p1'
+    dataset = 'd1'
+    options = []
+    
+    html = pageGenerator(sets, varlist, times, package, dataset, options)
+    
+    print 'returning html: ' + str(html)
+    
+    return HttpResponse(html)
 
 
+def pageHeader(dataset,sets):
+    # Header stuff
+    html = ''
+    html = '<p>'
+    html += '<img src="/static/exploratory_analysis/img/classic/amwg/SET'+sets+'.gif" border=1 hspace=10 align=left alt="set '+sets+'">'
+    html += '<font color=maroon size=+3><b>'
+    html += dataset+'<br>and<br>OBS data'
+    html += '</b></font>'
+            
+    html += '<p>'
+    html += '<b>DIAG Set'+sets+' '+diags_collection[sets]['desc']
+    html += '<hr noshade size=2 size="100%">'
+        
+    html += '<b>'+diags_collection[sets].get('preamble', '')
+
+    return html
+    
+    
+
+def pageGenerator(sets, varlist, times, package, dataset, options):
+    
+    ea_root = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer'
+    uvcdat_live_root = ea_root+ '/django-app-1.8/uvcdat_live/' 
+    img_cache_path = uvcdat_live_root + '/exploratory_analysis/static/exploratory_analysis/cache/'
+    
+    print 'img_cache_path: ' + img_cache_path
+    
+    print 'sets: ' + sets
+    
+    html = ''
+    try:
+        img_prefix = ''
+        if __name__ != '__main__':
+          img_prefix = os.path.join(img_cache_path, dataset, package, 'img', '')
+        else:
+          img_prefix ='path'
+    
+    
+        #sets = '3'
+        #sets = '4'
+        
+        html = pageHeader(dataset,sets)
+        
+        
+        obssort = 1 
+   
+        '''
+        html = '<div>' + img_prefix + '</div>'
+    
+    
+        obssort = 1 
+        # Header stuff
+        html = ''
+        html = '<p>'
+        html += '<img src="/static/exploratory_analysis/img/classic/amwg/SET'+sets+'.gif" border=1 hspace=10 align=left alt="set '+sets+'">'
+        html += '<font color=maroon size=+3><b>'
+        html += dataset+'<br>and<br>OBS data'
+        html += '</b></font>'
+                
+        html += '<p>'
+        html += '<b>DIAG Set'+sets+' '+diags_collection[sets]['desc']
+        html += '<hr noshade size=2 size="100%">'
+            
+        html += '<b>'+diags_collection[sets].get('preamble', '')
+        '''
+    
+    
+        
+        html += '<TABLE>'
+
+        print 'DEFAULTING TO ALL VARS FOR NOW'
+        print 'DEFAULTING TO EXISTING FILENAME CONVENTIONS'
+        print 'DEFAULTING TO NO ABSOLUTE PATHS'
+     
+        # Determine number of columns
+        # The default is just 'ANN', and if that is the only one or nothing is specified, we don't need a column for it.
+        # ['NA'] is also something to deal with.
+        seasons = diags_collection[sets].get('seasons', ['ANN'])
+        # Were some specific seasons passed in? If so, limit our list.
+        print 'DEFAULTING TO ALL SEASONS FOR NOW'
+        #if seasons != ['NA']:
+        #   seasons = list(set(times) & set(def_seasons))
+        
+        regions = diags_collection[sets].get('regions', ['Global'])
+        
+        
+        # get a list of all obssets used in this collection
+        varlist = list(set(diags_collection[sets].keys()) - set(collection_special_vars))
+        obslist = []
+        for v in varlist:
+            obslist.extend(diags_collection[sets][v]['obs'])
+            # unique-ify
+        obslist = list(set(obslist))
+
+        # does this set need the --combined filename?
+        # Eventually this might be per-variable...
+        hasCombined = diags_collection[sets].get('combined',False)
+
+        print 'regions: ' + str(regions)
+        print 'varlist: ' + str(varlist)
+        print 'obslist: ' + str(obslist)
+        print 'hasCombined: ' + str(hasCombined)
+        
+        specialCases = ['1', '2', '11', '12', '13', '14']
+   
+        ea_hostname = 'localhost'
+        
+        
+        
+        
+        if sets not in specialCases:
+            if obssort == 1:
+                print 'obsort = 1'
+                for o in obslist:
+                    html += '<TR>'
+                    html += '<TH><BR>' # the variable
+                    obsname = diags_obslist[o]['desc']
+                    html += '  <TH ALIGN=LEFT><font color="navy" size="+1">'+obsname+'</font>' # the obs/desc
+                    '''
+                    print '\thtml: ' + '  <TH ALIGN=LEFT><font color="navy" size="+1">'+obsname+'</font>' # the obs/desc
+                    if len(seasons) != 1:
+                        for season in seasons: 
+                            print '\t    <TH>'+season
+                            html += '    <TH>'+season # the plot links
+                    else:
+                        html += '<TH>'
+                    '''
+                    
+                '''
+                for o in obslist:
+                    html += '<TR>'
+                    html += '<TH><BR>' # the variable
+                    obsname = diags_obslist[o]['desc']
+                    html += '  <TH ALIGN=LEFT><font color="navy" size="+1">'+obsname+'</font>' # the obs/desc
+                    if len(seasons) != 1:
+                        for season in seasons: 
+                            html += '    <TH>'+season # the plot links
+                    else:
+                        html += '<TH>'
+
+                    for v in varlist:
+                    # Is this obsset used by this variable?
+                        print 'v: ' + v
+                        if diags_collection[sets][v]['obs'] != None:
+                            
+                            if o in diags_collection[sets][v]['obs']:
+                                obsfname = diags_obslist[o]['filekey']
+                                html += '<TR>'
+                                html += '    <TH ALIGN=LEFT>' + v
+                                html += '    <TH ALIGN=LEFT>' + diags_varlist[v]['desc']
+                
+                #print '\n\nregions: ' + str(regions) + '\n\n'
+                if regions == ['Global']:
+                     regionstr = '_Global'
+                     for season in seasons:
+                         if season == 'NA':
+                            seasonstr = ''
+                         else:
+                            seasonstr = '_'+season
+                         if hasCombined == True:
+                            postfix = '-combined.png'
+                         else:
+                            postfix = '-model.png'
+                         varopts = diags_collection[sets][v].get('varopts', False)
+                         if varopts == False:
+                            fname = 'http://' + ea_hostname + generate_token_url('/' + dataset + '/' + package + '/set'+sets+regionstr+seasonstr+'_'+v+'_'+obsfname+postfix)
+                         else:
+                            for varopt in varopts:
+                               fname = 'http://' + ea_hostname + generate_token_url('/' + dataset + '/' + package + '/set'+sets+regionstr+seasonstr+'_'+v+'_'+varopt+'_'+obsfname+postfix)
+                                        
+#                     print 'Looking for: ', fname
+#                     if 'TTRP' in v:
+#                        fname = 'http://' + paths.ea_hostname + paths.generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+regionstr+'_'+season+'_'+v.replace('_TROP','')+'_'+obsfname+'-combined.png')
+#                     elif 'TTRP' in v:
+#                        fname = 'http://' + paths.ea_hostname + paths.generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+season+'_'+v+'_'+obsfname+'_TROP-combined.png')
+#                     else:
+#                        fname = 'http://' + paths.ea_hostname + paths.generate_token_url('/' + dataset + '/' + package +'/set'+sets+'_'+season+'_'+v+'_'+obsfname+'-combined.png')
+                         click = 'onclick="displayImageClick(\''+fname+'\');" '
+                         over = 'onmouseover="displayImageHover(\''+fname+'\');" '
+                         out = 'onmouseout="nodisplayImage();" '
+                         
+                         html += '<TH ALIGN=LEFT><A HREF="#" '+click+over+out+'">plot</a>'
+                '''
+                            
+                            
+        html += '</TABLE>'
+        
+        
+        return html
+      
+
+    
+        
+    
+    except:
+        tb = traceback.format_exc()
+        print 'tb: ' + tb
+        return HttpResponse("error")
+    
+    
+    
+
+    return html
 
 
-
-
+def generate_token_url(filename):
+    import os, time, hashlib
+    
+    secret = "secret string"#config.get("options","secret_key")
+    protectedPath = "/acme-data/"#config.get("options", "protectedPath")
+    
+    
+    ipLimitation = False                                    # Same as AuthTokenLimitByIp
+    hexTime = "{0:x}".format(int(time.time()))              # Time in Hexadecimal      
+    fileName = filename                       # The file to access
+    
+    # Let's generate the token depending if we set AuthTokenLimitByIp
+    if ipLimitation:
+      token = hashlib.md5(''.join([secret, fileName, hexTime, os.environ["REMOTE_ADDR"]])).hexdigest()
+    else:
+      token = hashlib.md5(''.join([secret, fileName, hexTime])).hexdigest()
+    
+    # We build the url
+    url = ''.join([protectedPath, token, "/", hexTime, fileName])
+    return url 
 
 
 
@@ -317,12 +600,13 @@ class PublishedView(View):
 
 
 
+
 #GET
-#curl -X GET http://localhost:8081/exploratory_analysis/published/<dataset_name>/
+#curl -X GET http://localhost:8081/exploratory_analysis/variables/<dataset_name>/
 #POST
-#curl -i -H "Accept: application/json" -X POST -d '{ "variables" :  "a,b,c" }'  http://localhost:8081/exploratory_analysis/published/<dataset_name>/
+#curl -i -H "Accept: application/json" -X POST -d '{ "variables" :  "a,b,c" }'  http://localhost:8081/exploratory_analysis/variables/<dataset_name>/
 #PUT
-#curl -i -H "Accept: application/json" -X PUT -d '{ "variables" :  "a,b,c" }'  http://localhost:8081/exploratory_analysis/published/<dataset_name>/
+#curl -i -H "Accept: application/json" -X PUT -d '{ "variables" :  "a,b,c" }'  http://localhost:8081/exploratory_analysis/variables/<dataset_name>/
 #NOTE: PUT functionality is buggy and shouldn't be used for now
 class VariablesView(View):
     
@@ -647,10 +931,6 @@ class Dataset_AccessView(View):
 #http://<host>:<port>/exploratory_analysis/group_dataset/<group_name>
 class PackagesView(View):
     
-    #dbname = acme_services_config.get("db_options","dbname")
-    #dbuser = acme_services_config.get("db_options","dbuser")
-    #dbpassword = acme_services_config.get("db_options","dbpassword")
-    #isConnectedToDB = acme_services_config.get("db_options","isConnectedToDB")
     
     
     def get(self, request, dataset_name):

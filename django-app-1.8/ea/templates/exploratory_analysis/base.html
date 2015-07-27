@@ -30,6 +30,7 @@
 		<script src="{% static 'exploratory_analysis/js/core.js' %}"></script>
 
 		
+		
 	<style type="text/css">
 		.hiddentext {
 				display:none 
@@ -123,6 +124,10 @@
 			
 			$('#login_link').click(function(){
 				location.href = "http://" + EA.host + ":" + EA.port + "/exploratory_analysis/login";
+			});
+			
+			$('#classic_link').click(function(){
+				location.href = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/classic/' + username;
 			});
 			
 		});	
