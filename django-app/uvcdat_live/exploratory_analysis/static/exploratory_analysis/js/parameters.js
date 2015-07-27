@@ -17,6 +17,7 @@ function getDatasets(username) {
 		  console.log('success in getting datasets');
 		  
 		  var dataList = response_data['datasets'];
+		  //var dataList = ["cam5se","b1850c5_t2"];
 		  
 		  //var dataList = ["tropics_warming_th_q_co2"];
 			

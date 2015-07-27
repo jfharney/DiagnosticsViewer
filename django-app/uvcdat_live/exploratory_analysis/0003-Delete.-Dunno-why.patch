@@ -1,0 +1,38 @@
+From d0e659477eec17494c3ad447a53ed6e0fe61f2ec Mon Sep 17 00:00:00 2001
+From: root <root@acme-dev-2.ornl.gov>
+Date: Fri, 1 May 2015 13:56:54 -0400
+Subject: [PATCH 3/4] Delete. Dunno why.
+
+---
+ .../paths/generate_token_url.py                    |   18 ------------------
+ 1 files changed, 0 insertions(+), 18 deletions(-)
+ delete mode 100644 django-app/uvcdat_live/exploratory_analysis/paths/generate_token_url.py
+
+diff --git a/django-app/uvcdat_live/exploratory_analysis/paths/generate_token_url.py b/django-app/uvcdat_live/exploratory_analysis/paths/generate_token_url.py
+deleted file mode 100644
+index 60d8ad5..0000000
+--- a/django-app/uvcdat_live/exploratory_analysis/paths/generate_token_url.py
++++ /dev/null
+@@ -1,18 +0,0 @@
+-def generate_token_url(filename):
+-    import os, time, hashlib
+-    
+-    secret = "secret string"                                # Same as AuthTokenSecret
+-    protectedPath = "/acme-data/"                           # Same as AuthTokenPrefix
+-    ipLimitation = False                                    # Same as AuthTokenLimitByIp
+-    hexTime = "{0:x}".format(int(time.time()))              # Time in Hexadecimal      
+-    fileName = filename                       # The file to access
+-    
+-    # Let's generate the token depending if we set AuthTokenLimitByIp
+-    if ipLimitation:
+-      token = hashlib.md5(''.join([secret, fileName, hexTime, os.environ["REMOTE_ADDR"]])).hexdigest()
+-    else:
+-      token = hashlib.md5(''.join([secret, fileName, hexTime])).hexdigest()
+-    
+-    # We build the url
+-    url = ''.join([protectedPath, token, "/", hexTime, fileName])
+-    return url 
+\ No newline at end of file
+-- 
+1.7.1
+
