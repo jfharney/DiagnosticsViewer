@@ -57,7 +57,7 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
    # Eventually this might be per-variable...
    hasCombined = diags_collection[sets].get('combined',False)
 
-   specialCases = ['1', '2', '11', '12', '13', '14', 'tier1b']
+   specialCases = ['1', '2', '11', '12', '13', '14']
    
    if sets not in specialCases:
       if obssort == 1:
@@ -118,27 +118,6 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
          return None
 
    # The special cases.
-   if sets == 'tier1b':
-      html += '<TR>'
-      html += '<TH ALIGN=LEFT><font color="navy" size="+1">Domain</font>'
-      # file names are settier1b-postfix-VAR.png
-      # web page is for each variable, create a new line.
-      #     create a new line for each postfix defined
-      for v in varlist:
-         postfixes = diags_collection[sets][v].get('postfixes', [])
-         for p in postfixes:
-            html+='<TR>'
-            html+='<TH>'+v+'-'+p+'</TH>'
-            fname = 'http://' + paths.ea_hostname + paths.generate_token_url('/' + dataset + '/' + package + '/settier1b-'+p+'-'+v+'.png')
-            print 'Looking for ', fname
-            click = 'onclick="displayImageClick(\''+fname+'\');" '
-            over = 'onmouseover="displayImageHover(\''+fname+'\');" '
-            out = 'onmouseout="nodisplayImage();" '
-            html += '<TH ALIGN=LEFT><A HREF="#" '+click+over+out+'>plot</a></TH>'
-            html+= '</TR>'
-      html += '</TABLE>'
-      return html
-
    if sets == '1':
       regions = diags_collection[sets]['regions']
 
