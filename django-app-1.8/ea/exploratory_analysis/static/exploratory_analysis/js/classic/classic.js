@@ -1,3 +1,7 @@
+
+
+
+
 $(document).ready(function() {
 
 	$('#go_Land_Home_Button').click(function(){
@@ -13,7 +17,6 @@ $(document).ready(function() {
 		load_diags_homepage();
 		
 	});
-	
 	
 });
 
@@ -180,10 +183,6 @@ function transformClassicLinkNames(link_name) {
 
 function load_sets_homepage(pckg,set) {
 	var url = '/exploratory_analysis/classic_views_html?set=' + set; //+ '?_=' + Math.round(Math.random() * 10000);
-
-	alert('set: ' + set);
-	
-	
 	
 	$.ajax({
 		type : "GET",
@@ -203,16 +202,12 @@ function load_sets_homepage(pckg,set) {
 				$('#atmHome').append(html);
 			}
 			
-			
-			
 			/*
-			var html_elem_id = packageData + '_' + setData + '_html';
-
-			$('#' + html_elem_id).empty();
-			$('#' + html_elem_id).append(html);
-			document.getElementById(html_elem_id).style.display = 'block';
-			console.log(html_elem_id);
+			$('.plot_links').on("click",function(){
+				console.log('clicky');
+			});
 			*/
+			
 		},
 		error : function(xhr, status, error) {
 
@@ -222,3 +217,166 @@ function load_sets_homepage(pckg,set) {
 		},
 	});
 }
+
+var clicked = 0;
+var lastURL = "";
+
+function displayImageClick(imageURL) {
+
+	
+	if($('#release').attr('disabled')) {
+		//alert('disabled');
+		$('#release').prop('disabled', false);
+		
+	} else {
+		//alert('not disabled: ' + $('#release').attr('disabled'));
+		$('#release').prop('disabled', true);
+	}
+	
+	
+}
+
+function imgError(image) {
+	image.onerror = "";
+	image.src = EA.noImageSource;
+	return true;
+}
+
+function displayImageHover(imageURL) {
+
+	if($('#release').prop('disabled')) {
+	
+		$('#plotArea').empty();
+		$('.plot_btn').show();
+		var imagePath = "<img src=\"" + imageURL + "\" \onerror=\"imgError(this);\"/>";
+		console.log('html: ' + $('#plotArea').html());
+		
+		$('#plotArea').append('<div>' + imageURL + '</div>');
+		$('#plotArea').append('<div>' + imagePath + '</div>');
+		$('#plotArea').show();
+		lastURL = imageURL;
+	
+	} else {
+		
+		
+		
+	}
+	
+}
+
+
+function nodisplayImage() {
+	//alert($('#release').prop('disabled'))
+	if($('#release').prop('disabled')) {
+		$('#plotArea').empty();
+	} else {
+		//alert('display image');
+	}
+	
+}
+
+function releasePlot() {
+	$('#plotArea').empty();
+	$('#release').prop('disabled','true');
+}
+
+function displayTable(imageURL) {
+
+	
+	if($('#release').attr('disabled')) {
+		$('#release').prop('disabled', false);
+		
+	} else {
+		$('#release').prop('disabled', true);
+	}
+}
+
+function displayTableHover(textTableURL) {
+	if($('#release').prop('disabled')) {
+		
+		$('#plotArea').empty();
+		$('.plot_btn').show();
+		var textTableURL = "<img src=\"" + textTableURL + "\" \onerror=\"imgError(this);\"/>";
+		console.log('table path ' + textTableURL);
+		
+		console.log('html: ' + $('#plotArea').html());
+		
+		$('#plotArea').append('<div>' + textTableURL + '</div>');
+		//$('#plotArea').append('<div>' + textTablePath + '</div>');
+		$('#plotArea').show();
+		lastURL = tableURL;
+	
+	} 
+	/*
+	if (clicked != 1) {
+		textTableURL = textTableURL;
+		if (textTableURL.endsWith('.json')) {
+			var tableHTML = '<table id="r22" width="100%" height="600" cellspacing="0"><thead><tr><th>Name</th><th>Position</th><th>Office</th><th>Extn.</th><th>Start date</th><th>Salary</th> </tr></thead><tfoot><tr><th>Name</th><th>Position</th><th>Office</th><th>Extn.</th><th>Start date</th><th>Salary</th></tr></tfoot></table>';
+			document.getElementById("plotArea").style.visibility = 'visible';
+			document.getElementById("plotArea").innerHTML = '' + tableHTML;
+
+			//$(document).ready(function(){
+			$('#r22').DataTable({
+				"ajax" : {
+					"url" : textTableURL,
+					"dataSrc" : ""
+				},
+				"columns" : [{
+					"data" : "name"
+				}, {
+					"data" : "position"
+				}, {
+					"data" : "office"
+				}, {
+					"data" : "extn"
+				}, {
+					"data" : "start_date"
+				}, {
+					"data" : "salary"
+				}]
+				//} );
+			});
+		} else {
+			document.getElementById("plotArea").style.visibility = 'visible';
+			document.getElementById("plotArea").innerHTML = '<iframe src="' + textTableURL + '" width=100% height=800 frameborder=0 ></iframe>';
+		}
+
+	}
+	*/
+
+}
+
+
+
+
+function expandPlot() {
+	window.open(lastURL);
+}
+
+
+
+
+
+//Taken out 7-29-15
+//<button id="release" class="btn btn-default plot_btn" type="button" onclick="releasePlot()" style="display:none">Release
+//<!-- <span class="glyphicon glyphicon-new-window"></span> -->
+//</button>
+
+//$('.plot_btn').show();
+/*
+alert('imgURL : ' + 
+		imageURL );
+
+$('.plot_btn').show();
+var imagePath = "<img src=\"" + imageURL + "\" \onerror=\"imgError(this);\"/>";
+document.getElementById("plotArea").style.visibility = 'visible';
+//document.getElementById("plotArea").innerHTML = imagePath;
+//document.getElementById("plotArea").innerHTML = '<div>' + imageURL + '</div>';
+
+console.log('html: ' + $('#plotArea').html());
+
+$('#plotArea').append('<div>' + imagePath + '</div>');
+$('#plotArea').show();
+lastURL = imageURL;
+clicked = 1;
+*/
