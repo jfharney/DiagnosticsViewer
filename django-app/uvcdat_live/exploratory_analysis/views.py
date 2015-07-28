@@ -35,9 +35,10 @@ generated_img_path = paths.generated_img_path
 
 # import the diags code
 if isConnected:
-    #sys.path.append(syspath_append_uvcmetrics)
-    #sys.path.append(syspath_append_cdscan)
+    sys.path.append(syspath_append_uvcmetrics)
+    sys.path.append(syspath_append_cdscan)
    
+    print 'sys.path: ' + str(sys.path)
     
     from metrics.frontend.options import Options
     from metrics.computation.reductions import *
