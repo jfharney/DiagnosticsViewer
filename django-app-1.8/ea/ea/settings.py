@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'exploratory_analysis',
+    'ea_services',
 )
 
 MIDDLEWARE_CLASSES = (

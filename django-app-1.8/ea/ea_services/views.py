@@ -4,21 +4,13 @@ from django.views.generic import View
 from django.template import RequestContext, loader
 from django.contrib.auth import authenticate, login
 
-from metrics.frontend import lmwgmaster
-#from metrics.frontend.lmwgmaster import *
-
-import amwg
-import lmwg
-
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.csrf import ensure_csrf_cookie
-
 import json
 import logging
 import traceback
 import os
 
-from utils import generate_token_url
+
+
 
 logger = logging.getLogger('exploratory_analysis')
 logger.setLevel(logging.DEBUG)
@@ -34,251 +26,17 @@ logger.addHandler(fh)
 
 
 
-#various variables that need to go into a config file
-#esgfAuth - flag for turning on (True) or turning off (False) esgf authentication
-esgfAuth = False
 
-#the directory for the certs to be fetched
-proxy_cert_dir = '/tmp'
-
-#naAuthReq - authentication via the cookie on (True) or off (False)
-authReq = True
-
-#certNameSuffix - the suffix of the certificate file
-certNameSuffix = 'x509acme'
-
-
-ea_root = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer'
-uvcdat_live_root = ea_root+ '/django-app-1.8/uvcdat_live/' 
-img_cache_path = uvcdat_live_root + '/exploratory_analysis/static/exploratory_analysis/cache/'
-staticfiles_dirs = uvcdat_live_root + "/exploratory_analysis/static/exploratory_analysis"
-
-javascript_namespace = 'EA_CLASSIC_VIEWER.functions.'
-
-# Main page.
+# Create your views here.
 def index(request):
     
-    template = loader.get_template('exploratory_analysis/index.html')
-
-    context = RequestContext(request, {
-        'username' : '',
-    })
-
-    return HttpResponse(template.render(context))
-
-
-#http://<host>/exploratory_analysis/login
-def login(request):
     
-    template = loader.get_template('exploratory_analysis/login.html')
 
-    context = RequestContext(request, {
-        
-    })
-
-    return HttpResponse(template.render(context))
+    return HttpResponse("ea services index")
 
 
 
 
-#Example: curl -i -H "Accept: application/json" -X POST -d '{ "username" :  "u1" }'  http://localhost:8081/exploratory_analysis/auth/
-@ensure_csrf_cookie
-def auth(request):
-    
-    
-    if request.method == "POST":
-        json_data = json.loads(request.body)
-        
-        username = json_data['username'] 
-        password = json_data['password'] 
-        
-        
-        #return a None message if the username is blank
-        if username == '':
-            return HttpResponse("None")
-        if username == None:
-            return HttpResponse("None")
-    
-        #insert code for authentication here
-        #create a valid user object
-        
-        
-        #authenticates to ESGF
-        if esgfAuth:
-            print 'esgfAuth is true, so authenticate'
-    
-            from fcntl import flock, LOCK_EX, LOCK_UN
-            
-            cert_name = certNameSuffix
-            
-            outdir = os.path.join(proxy_cert_dir, username)
-                
-            try:
-                
-                if not os.path.exists(outdir):
-                    os.makedirs(outdir)
-                else:
-                    print 'path already exists'
-                
-                outfile = os.path.join(outdir, cert_name)
-                outfile = str(outfile)
-                
-                # outfile = '/tmp/x509up_u%s' % (os.getuid()) 
-                print '----> OUTFILE: ', outfile
-                
-                    
-                    
-                
-            except:
-                tb = traceback.format_exc()
-                logger.debug('tb: ' + tb)
-                print "couldn't make directory " + str(outdir)
-                return HttpResponse("Not Authenticated")
-            
-    
-        else:
-            print 'esgfAuth is false, so dont authenticate'
-            return HttpResponse("Authenticated")
-           
-    
-    return HttpResponse("Hello")
-
-
-
-#Main view
-def main(request,user_id):
-  
-    #check to see if the user is logged in
-    loggedIn = isLoggedIn(request,user_id)
-    
-    template = loader.get_template('exploratory_analysis/index.html')
-    
-    if(loggedIn == False):
-        template = loader.get_template('exploratory_analysis/not_logged_in.html')
-    
-    context = RequestContext(request, {
-        'username' : str(user_id),
-        'loggedIn' : str(loggedIn)
-    })
-
-    return HttpResponse(template.render(context))
-
-
-
-#Belongs in a common utils package
-def isLoggedIn(request,user_id):
-    
-    print 'user: ' + str(request.user) + ' user_id: ' + user_id
-    
-    if authReq:
-        
-        
-        return True
-    
-    else:
-        if (str(request.user) == str(user_id)):
-            loggedIn = True
-        else: 
-            return False
-
-
-
-def classic(request,user_id):
-
-
-    template = loader.get_template('exploratory_analysis/classic.html')
-    
-    context = RequestContext(request, {
-      'username' : user_id,
-    })
-
-    return HttpResponse(template.render(context))
-
-
-
-
-def classic_set_list_html(request):
-
-    print 'in classic_set_list_html'
-
-    package = request.GET.get('package','')
-    print 'package: ' + package
-
-    '''
-    json_data = json.loads(request.body)
-    project = json_data['project']
-    dataset = json_data['dataset']
-    pckg = json_data['pckg']
-    variables = json_data['variables']
-    times = json_data['times']
-    '''
-    
-    if package == 'atm':
-        print 'getting atm home'
-        template = loader.get_template('exploratory_analysis/atm_home.html')
-        context = RequestContext(request, {
-            
-        })
-        return HttpResponse(template.render(context))
-    else:
-        print 'getting lnd home'
-        template = loader.get_template('exploratory_analysis/land_home.html')
-        context = RequestContext(request, {
-            
-        })
-        return HttpResponse(template.render(context))
-    
-    #return HttpResponse(html);
-
-
-def classic_views_html(request):
-    """
-    Generate new clasic view html
-    The view shown depends on the package
-    """    
-    sets = str(request.GET.get('set',''))
-    
-    #sets = str(set[3:])
-    varlist = 'TLAI'
-    times = 't1'
-    dataset = 'd1'
-    options = []
-    package = ''
-    
-    html = ''
-    
-    try:
-        if package == 'lnd':
-            html = lmwg.pageGenerator(sets, varlist, times, package, dataset, options)
-        else:
-            html = amwg.pageGenerator(sets, varlist, times, package, dataset, options)
-    
-    except:
-        tb = traceback.format_exc()
-        print 'tb: ' + tb
-        return HttpResponse("error")
-        
-    print 'returning html: ' + str(html)
-    
-    return HttpResponse(html)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-'''
 #GET
 #curl -X GET http://localhost:8081/exploratory_analysis/published/<dataset_name>/
 #POST
@@ -370,7 +128,8 @@ class PublishedView(View):
     def get(self, request, dataset_name):
         
         
-        #print '\nIn GET\n'  
+        print '\nIn GET\n'  
+        
         logger.debug('\nIn Published GET\n')
         
         from exploratory_analysis.models import Published
@@ -425,7 +184,7 @@ class VariablesView(View):
     
     def put(self, request, dataset_name):
         
-        
+        '''
         #print '\nIn GET\n'  
         logger.debug('\nIn Variables PUT\n')
         
@@ -480,7 +239,7 @@ class VariablesView(View):
         all = Dataset_Access.objects.all()
         
         #logger.debug('all: ' + str(all))
-        
+        '''
     
         return HttpResponse("PUT Done\n")   
         
@@ -727,6 +486,8 @@ class Dataset_AccessView(View):
             logger.debug('tb: ' + tb)
             return HttpResponse("error")
         
+        
+        
         return HttpResponse("respone")
 
 
@@ -846,6 +607,5 @@ class PackagesView(View):
     
     
     
-'''  
-
+    
     

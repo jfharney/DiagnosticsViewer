@@ -3323,3 +3323,31 @@ In Dataset_Access GET
 In Variables GET
 
 2015-08-03 13:57:52,977 - exploratory_analysis - DEBUG - dataset_name: null
+2015-08-03 15:13:03,844 - exploratory_analysis - DEBUG - 
+In Published GET
+
+2015-08-03 15:13:03,844 - exploratory_analysis - DEBUG - 
+In Published GET
+
+2015-08-03 15:13:03,846 - exploratory_analysis - DEBUG - dataset_name: 8xo
+2015-08-03 15:13:03,846 - exploratory_analysis - DEBUG - dataset_name: 8xo
+2015-08-03 15:16:59,707 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-03 15:16:59,707 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-03 15:17:10,091 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-03 15:17:10,091 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-03 15:17:10,092 - exploratory_analysis - DEBUG - dataset_name: 8xo
+2015-08-03 15:17:10,092 - exploratory_analysis - DEBUG - dataset_name: 8xo
+2015-08-03 15:18:28,467 - exploratory_analysis - DEBUG - 
+In GET
+
+2015-08-03 15:18:28,467 - exploratory_analysis - DEBUG - 
+In GET
+
