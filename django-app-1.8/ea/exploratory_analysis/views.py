@@ -4,8 +4,14 @@ from django.views.generic import View
 from django.template import RequestContext, loader
 from django.contrib.auth import authenticate, login
 
-from metrics.frontend.amwgmaster import *
-    
+from metrics.frontend import lmwgmaster
+#from metrics.frontend.lmwgmaster import *
+
+import amwg
+import lmwg
+
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 import json
 import logging
@@ -47,6 +53,8 @@ uvcdat_live_root = ea_root+ '/django-app-1.8/uvcdat_live/'
 img_cache_path = uvcdat_live_root + '/exploratory_analysis/static/exploratory_analysis/cache/'
 staticfiles_dirs = uvcdat_live_root + "/exploratory_analysis/static/exploratory_analysis"
 
+javascript_namespace = 'EA_CLASSIC_VIEWER.functions.'
+
 # Main page.
 def index(request):
     
@@ -72,9 +80,6 @@ def login(request):
 
 
 
-
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.csrf import ensure_csrf_cookie
 
 #Example: curl -i -H "Accept: application/json" -X POST -d '{ "username" :  "u1" }'  http://localhost:8081/exploratory_analysis/auth/
 @ensure_csrf_cookie
@@ -227,7 +232,10 @@ def classic_set_list_html(request):
 
 
 def classic_views_html(request):
-    
+    """
+    Generate new clasic view html
+    The view shown depends on the package
+    """    
     sets = str(request.GET.get('set',''))
     
     #sets = str(set[3:])
@@ -235,15 +243,15 @@ def classic_views_html(request):
     times = 't1'
     dataset = 'd1'
     options = []
-    package = 'lnd'
+    package = ''
     
     html = ''
     
     try:
         if package == 'lnd':
-            html = landPageGenerator(sets, varlist, times, package, dataset, options)
+            html = lmwg.pageGenerator(sets, varlist, times, package, dataset, options)
         else:
-            html = pageGenerator(sets, varlist, times, package, dataset, options)
+            html = amwg.pageGenerator(sets, varlist, times, package, dataset, options)
     
     except:
         tb = traceback.format_exc()
@@ -257,90 +265,6 @@ def classic_views_html(request):
 
 
 
-'''
-Begin page generator for atm
-'''
-
-
-
-def landPageGenerator(set, varlist, times, package, dataset, options):
-    
-    print 'in landPageGenerator'
-    
-    html = ''
-    
-    #regions = ['Global Land','Northern Hemisphere Land', 'Southern Hemisphere Land', 'Alaskan Arctic', 'Central U.S.', 'Mediterranean and Western Asia']  
-    regions = ['Global','Alaska','Alaskan_Arctic','Amazonia','Antarctica','Arabian_Peninsula','Asia','Australia','Alaskan_Arctic', 'Central_US', 'Mediterranean'] 
-    set3varlist = ['hydro', 'landf', 'moistEnergyFlx', 'radf', 'reg', 'snow', 'turbf']
-    set6varlist = ['cnFlx', 'frFlx', 'hydro', 'landf', 'radf', 'reg', 'snowliqIce', 'soilice', 'soilliq', 'soilliiqIce', 'tsoi', 'turbf']
-    set3Headers = ['reg', 'landf','randf','turbf','cnFlx','frFlx','moistEnergyFlx','snow','albedo','hydro']
-        
-    if set == '1': 
-
-            url_prefix = staticfiles_dirs + "/img/classic/" + dataset + "/" + package + "/"
-            url_prefixIMAGE = "/" + dataset + "/" + package + "/set1_"
-            url = url_prefix + set + ".html"
-
-            html=""        
-            
-            #Header
-            html+="<p>\n" 
-            html+="<b><font color=maroon size=+2>Set 1 Description: <b></font>Line plots of annual trends in energy balance, soil water/ice and temperature, runoff, snow water/ice, photosynthesis </b><br>\n"
-            html+="<br clear=left>"
-            html+="</p>\n"
-            html+="<p>\n"
-            html+="<A HREF=\"/static/exploratory_analysis/img/classic/lmwg/set1/variableList_1.html\" target=\"set1_Variables\">\n"
-            html+="<font color=maroon size=+1 text-align: right><b>Lookup Table: Set 1 Variable Definition</b></font></a>\n"
-            html+="</br>\n"
-            html+="</p>\n"
-           
-            
-            
-            #Start table
-            html+="<p>\n"
-            html+="<hr noshade size=2 size=\"100%\">\n"
-            html+="<TABLE> \n"
-            html+="<TR>\n"
-            html+="<TH><TH ALIGN=LEFT><font color=maroon>Trend</font>\n"
-            html+="</TR>\n"
-            
-            
-            #python for loop----------
-            #Descriptions are (predefinedBrianSmithDictionary[key]) 
-            
-            
-            for key in vardict:
-                if 1 in vardict[key]['sets'] and key in varlist:
-                    html+="<TR>\n"
-                    html+='<TH ALIGN=LEFT>'
-                    html+=vardict[key]['desc']
-                    html+='('
-                    html+=key
-                    html+=')'
-                    html+='<TH ALIGN=LEFT>'
-                    html+='<a href="#" onclick="displayImageClick('
-                    #file.write(url_prefixIMAGE)#Here we write gif name
-                    html+='\''
-                    html+= 'http://' + ea_hostname + generate_token_url(url_prefixIMAGE + key + '.gif')
-                    html+='\''
-                    html+=');" onmouseover="displayImageHover(\''
-                    #file.write(url_prefixIMAGE)#Here we write gif name again
-                    html+='http://' + ea_hostname + generate_token_url(url_prefixIMAGE + key + '.gif')
-                    html+='\''
-                    html+=');" onmouseout="nodisplayImage();">plot</A>\n'
-                    html+="</TR>\n"
-            
-
-            #end for loop and end table generation-------------------------
-            
-            html+="</TABLE> \n"
-            html+="</p>\n"
-    
-
-    
-
-    
-    return html 
 
 
 
@@ -353,376 +277,6 @@ def landPageGenerator(set, varlist, times, package, dataset, options):
 
 
 
-
-'''
-Begin page generator for atm
-'''
-
-
-def pageHeader(dataset,sets):
-    # Header stuff
-    html = ''
-    html = '<p>'
-    html += '<img src="/static/exploratory_analysis/img/classic/amwg/SET'+sets+'.gif" border=1 hspace=10 align=left alt="set '+sets+'">'
-    html += '<font color=maroon size=+3><b>'
-    html += dataset+'<br>and<br>OBS data'
-    html += '</b></font>'
-            
-    html += '<p>'
-    html += '<b>DIAG Set'+sets+' '+diags_collection[sets]['desc']
-    html += '<hr noshade size=2 size="100%">'
-        
-    html += '<b>'+diags_collection[sets].get('preamble', '')
-
-    return html
-    
-    
-
-def pageGenerator(sets, varlist, times, package, dataset, options):
-    
-    
-    print 'img_cache_path: ' + img_cache_path
-    
-    print 'sets: ' + sets
-    
-    html = ''
-    try:
-        img_prefix = ''
-        if __name__ != '__main__':
-          img_prefix = os.path.join(img_cache_path, dataset, package, 'img', '')
-        else:
-          img_prefix ='path'
-    
-    
-        #sets = '3'
-        #sets = '4'
-        
-        html = pageHeader(dataset,sets)
-        
-        
-        obssort = 1 
-   
-        
-    
-    
-        
-        
-        print 'DEFAULTING TO ALL VARS FOR NOW'
-        print 'DEFAULTING TO EXISTING FILENAME CONVENTIONS'
-        print 'DEFAULTING TO NO ABSOLUTE PATHS'
-     
-        # Determine number of columns
-        # The default is just 'ANN', and if that is the only one or nothing is specified, we don't need a column for it.
-        # ['NA'] is also something to deal with.
-        seasons = diags_collection[sets].get('seasons', ['ANN'])
-        # Were some specific seasons passed in? If so, limit our list.
-        print 'DEFAULTING TO ALL SEASONS FOR NOW'
-        #if seasons != ['NA']:
-        #   seasons = list(set(times) & set(def_seasons))
-        
-        regions = diags_collection[sets].get('regions', ['Global'])
-        
-        
-        # get a list of all obssets used in this collection
-        varlist = list(set(diags_collection[sets].keys()) - set(collection_special_vars))
-        obslist = []
-        for v in varlist:
-            obslist.extend(diags_collection[sets][v]['obs'])
-            # unique-ify
-        obslist = list(set(obslist))
-
-        # does this set need the --combined filename?
-        # Eventually this might be per-variable...
-        hasCombined = diags_collection[sets].get('combined',False)
-
-        print '\n\n\n'
-        print 'regions: ' + str(regions)
-        print 'varlist: ' + str(varlist)
-        print 'obslist: ' + str(obslist)
-        print 'hasCombined: ' + str(hasCombined)
-        
-        print '\n\n'
-        
-        specialCases = ['1', '2', '11', '12', '13', '14']
-   
-        ea_hostname = 'localhost'
-        
-        
-        html += '<TABLE>'
-
-        
-        if sets not in specialCases:
-            if obssort == 1:
-                print 'obsort = 1'
-                for o in obslist:
-                    html += '<TR>'
-                    html += '<TH><BR>' # the variable
-                    obsname = diags_obslist[o]['desc']
-                    html += '  <TH ALIGN=LEFT><font color="navy" size="+1">'+obsname+'</font>' # the obs/desc
-                    
-                    #print '\thtml: ' + '  <TH ALIGN=LEFT><font color="navy" size="+1">'+obsname+'</font>' # the obs/desc
-                    if len(seasons) != 1:
-                        for season in seasons: 
-                            print '\t    <TH>'+season
-                            html += '    <TH>'+season # the plot links
-                    else:
-                        html += '<TH>'
-                    
-                    for v in varlist:
-                    # Is this obsset used by this variable?
-                        print 'v: ' + v
-                        if diags_collection[sets][v]['obs'] != None:
-                            print '\tNot None'
-                            if o in diags_collection[sets][v]['obs']:
-                                print '\t\o: ' + str(o)
-                                obsfname = diags_obslist[o]['filekey']
-                                html += '<TR>'
-                                html += '    <TH ALIGN=LEFT>' + v
-                                html += '    <TH ALIGN=LEFT>' + diags_varlist[v]['desc']
-                
-                
-                                '''
-                                if regions == ['Global']:
-                                    regionstr = '_Global'
-                                    print 'regions: ' + str(regions)
-                                '''
-                
-                                regionstr = '_Global'
-                                
-                                for season in seasons:
-                                         if season == 'NA':
-                                            seasonstr = ''
-                                         else:
-                                            seasonstr = '_'+season
-                                         if hasCombined == True:
-                                            postfix = '-combined.png'
-                                         else:
-                                            postfix = '-model.png'
-                                         varopts = diags_collection[sets][v].get('varopts', False)
-                                         if varopts == False:
-                                            fname = 'http://' + ea_hostname + generate_token_url('/' + dataset + '/' + package + '/set'+sets+regionstr+seasonstr+'_'+v+'_'+obsfname+postfix)
-                                         else:
-                                            for varopt in varopts:
-                                               fname = 'http://' + ea_hostname + generate_token_url('/' + dataset + '/' + package + '/set'+sets+regionstr+seasonstr+'_'+v+'_'+varopt+'_'+obsfname+postfix)
-                                         
-                                         click = 'onclick="displayImageClick(\''+fname+'\');" '
-                                         over = 'onmouseover="displayImageHover(\''+fname+'\');" '
-                                         out = 'onmouseout="nodisplayImage();" '
-                                         html_class = 'plot_links'
-                                         
-                                         html += '<TH ALIGN=LEFT><A HREF="#" class="' + html_class + '" ' +click+over+out+'">plot</a>'               
-                                         print '\nadding a link\n'
-                
-            html += '</TABLE>'
-                            
-        # The special cases.
-        if sets == '1':
-            regions = diags_collection[sets]['regions']
-        
-            html += '<TR>'
-            html += '<TH ALIGN=LEFT><font color="navy" size="+1">Domain</font>'
-            for season in seasons:
-                html += '<TH>'+season
-            for r in regions:
-                html +='<TR>'
-                html+='<TH>'+r+'</TH>'
-                for season in seasons:
-                     #whenever these are paths.generated with diags use this?
-                     fname = 'http://' + ea_hostname + generate_token_url('/' + dataset + '/' + package + '/set1_'+season+'_'+all_regions[r].filekey+'-table.text')
-        #             print 'looking for '+fname
-                     click = 'onclick="displayTable(\''+fname+'\');" '
-                     over = 'onmouseover="displayTableHover(\''+fname+'\');" '
-                     out = 'onmouseout="nodisplayImage();" '
-                     html += ' <TH ALIGN=LEFT><A HREF="#" '+click+over+out+'>table</a>'
-            html += '</TABLE>'
-        
-        
-        if sets == '11':
-            # two subtables.
-            # format for both is <var><obs><plot link>
-            set1obs = { 'CERES2 March 2000-October 2005':'CERES2','CERES 2000-2003':'CERES', 'ERBE 1985-1989':'ERBE'}
-            set2list = {}
-            set2list['LHFLX'] = {'desc':'Latent Heat Flux', 'obslist':{'ECMWF 1979-1993':'ECMWF', 'WHOI 1958-2006':'WHOI'}}
-            set2list['PRECT'] = {'desc':'Precipitation Rate', 'obslist':{'GPCP 1979-2003':'GPCP'}}
-            set2list['SST'] = {'desc':'Sea Surface Temperature', 'obslist':{'HADISST 1982-2001':'HADISST'}}
-            set2list['SWCF'] = {'desc':'Shortwave Cloud Forcing', 'obslist':{'ERBE 1985-1989':'ERBE'}}
-            set2list['TAUX'] = {'desc':'Surface Zonal Stress', 'obslist':{'ERS 1992-2000':'ERS', 'LARGE-YEAGER 1984-2004':'LARYEA'}}
-            set2list['TAUY'] = {'desc':'Surface Meridional Stress', 'obslist':{'ERS 1992-2000':'ERS', 'LARGE-YEAGER 1984-2004':'LARYEA'}}
-        
-            html += '<TR>'
-            html += ' <TH ALIGN=LEFT>Warm Pool Scatter Plot<TH><TH>'
-        
-            for o in set1obs:
-               html += '<TR>'
-               html += '  <TH ALIGN=LEFT>SW/LW Cloud Forcing'
-               html += '  <TH ALIGN=LEFT><font color="navy">'+o+'</font>'
-               obsfname = set1obs[o]
-               fname = 'http://' + ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set11_SWCF_LWCF_'+obsfname+'.png')
-               click = 'onclick="displayImageClick(\''+fname+'\');" '
-               over = 'onmouseover="displayImageHover(\''+fname+'\');" '
-               out = 'onmouseout="nodisplayImage();" '
-               html += '<TH ALIGN=LEFT><A HREF="#" '+click+over+out+'">plot</a>'
-        
-            html += '</TABLE>'
-            html += '<TABLE>'
-        
-            html += '<TR>'
-            html += '<TH ALIGN=LEFT">Annual Cycle on the Equatorial Pacific<TH><TH>'
-            for v in set2list.keys():
-                for o in set2list[v]['obslist'].keys():
-                    html += '<TR>'
-                    html += '  <TH ALIGN=LEFT>'+set2list[v]['desc']
-                    html += '  <TH ALIGN=LEFT>'+o
-                    fname = 'http://' + ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set11_'+v+'_'+set2list[v]['obslist'][o]+'.png')
-                    click = 'onclick="displayImageClick(\''+fname+'\');" '
-                    over = 'onmouseover="displayImageHover(\''+fname+'\');" '
-                    out = 'onmouseout="nodisplayImage();" '
-                    html += '<TH ALIGN=LEFT><A HREF="#" '+click+over+out+'">plot</a>'
-        
-              
-        
-      
-        
-        
-        # These two are pretty similar at least.
-        if sets == '12' or sets == '13':
-        
-            if sets == '12':
-               cols = ['T', 'Q', 'H']
-               vlist = { 'Thule Greenland':'Thule_Greenland', 'Resolute NWT Canada':'Resolute_Canada', 'Ship P Gulf of Alaska':'ShipP_GulfofAlaska', 'Midway Island (N Pacific)':'Midway_Island', 'Northern Great Plains USA':'Great_Plains_USA', 'San Francisco Calif USA':'SanFrancisco_CA', 'Western Europe':'Western_Europe', 'Miami Florida USA':'Miami_FL', 'Panama Central America':'Panama', 'Hawaii (Eq Pacific)':'Hawaii', 'Marshall Islands (Eq Pacific)':'Marshall_Islands', 'Yap Island (Eq Pacific)':'Yap_Island', 'Truk Island (Eq Pacific)':'Truk_Island', 'Diego Garcia (Eq Indian)':'Diego_Garcia', 'Ascension Island (Eq Atlantic)':'Ascension_Island', 'Easter Island (S Pacific)':'Easter_Island', 'McMurdo Antarctica':'McMurdo_Antarctica'}
-               header = 'Station Name'
-            else:
-               cols = ['DJF', 'JJA', 'ANN']
-               vlist = {'Global':'global', 'Tropics (15S-15N)':'tropics', 'NH SubTropics (15N-30N)':'nsubtrop', 'SH SubTropics (30S-15S)':'ssubtrop', 'NH Mid-Latitudes (30N-70N)':'nmidlats', 'SH Mid-Latitudes (70S-30S)':'smidlats', 'NH Polar (70N-90N)':'npole', 'SH Polar (90S-70S)':'spole', 'North Pacific Stratus':'npacstrat', 'South Pacific Stratus':'spacstrat', 'North Pacific':'npacific', 'North Atlantic':'natlantic', 'Warm Pool':'warmpool', 'Central Africa':'cafrica', 'USA':'usa'}
-               header = 'Region'
-        
-            html += '<TR>'
-            html += '<TH ALIGN=LEFT><font color=blue>'+header+'</font>'
-        
-            for col in cols:
-               html += '<TH>' + col
-            
-            for var in vlist:
-               html += '<TR>'
-               html += '<TH ALIGN=LEFT>' + var
-               # some day, we could check for all of the "derived" paths and use them if defined, otherwise derive them.
-            
-               for col in cols:
-                  if sets == '13':
-                     fname = 'http://' + ea_hostname + generate_token_url('/' + dataset + '/' + package  + 'set13_' + col + '_' + vlist[var] + '.png')
-                  else:
-                     fname = 'http://' + ea_hostname + generate_token_url('/' + dataset + '/' + package  + 'set12_' + vlist[var] + '_' + col + '.png')
-    
-                  click = 'onclick="displayImageClick(\''+fname+'\');" '
-                  over = 'onmouseover="displayImageHover(\''+fname+'\');" '
-                  out = 'onmouseout="nodisplayImage();" '
-                  html += '<TH ALIGN=LEFT><A HREF="#" '+click+over+out+'">plot</a>'
-    
-                
-            html += '</TABLE>'
-    
-    
-        if sets == '14':
-            html += '<TR>'
-            html += ' <TH ALIGN=LEFT>Space and Time'
-            fname = 'http://' + ea_hostname + generate_token_url('/' + dataset + '/' + package + '/set14_ANN_SPACE_TIME.png')
-            click = 'onclick="displayImageClick(\''+fname+'\');" '
-            over = 'onmouseover="displayImageHover(\''+fname+'\');" '
-            out = 'onmouseout="nodisplayImage();" '
-            html += ' <TH ALIGN=LEFT><A HREF="#" '+click+over+out+'">plot</a>'
-    
-            html += '<TR>'
-            html += ' <TH ALIGN=LEFT>Space only'
-            seasons = ['ANN', 'DJF', 'MAM', 'JJA', 'SON']
-            for season in seasons:
-               fname = 'http://' + ea_hostname + generate_token_url('/' + dataset + '/' + package + '/set14_'+season+'_SPACE.png')
-               click = 'onclick="displayImageClick(\''+fname+'\');" '
-               over = 'onmouseover="displayImageHover(\''+fname+'\');" '
-               out = 'onmouseout="nodisplayImage();" '
-               html += ' <TH ALIGN=LEFT><A HREF="#" '+click+over+out+'">'+season+'</a>'
-    
-            html += '</TABLE>'
-
-            html += '<TABLE>'
-            html += '<TR>'
-            html += '<TH ALIGN=LEFT>Bias(%), Variance (ratio), Correlation Coefficient Tables'
-            html += '<TR>'
-            html += '<TH ALIGN=LEFT>Space and Time'
-            varl = {'Correlation':'CC', 'Variance': 'VAR', 'Bias':'BIAS'}
-            for v in varl.keys():
-               fname = 'http://' + ea_hostname + generate_token_url('/' + dataset + '/' + package + '/set14.METRICS_'+varl[v]+'_SPACE_TIME.png')
-               click = 'onclick="displayImageClick(\''+fname+'\');" '
-               over = 'onmouseover="displayImageHover(\''+fname+'\');" '
-               out = 'onmouseout="nodisplayImage();" '
-               html += ' <TH ALIGN=LEFT><A HREF="#" '+click+over+out+'">'+v+'</a>'
-            html += '<TR>'
-            html += '<TH ALIGN=LEFT>Space only'
-            for v in varl.keys():
-               fname = 'http://' + ea_hostname + generate_token_url('/' + dataset + '/' + package + '/set14.METRICS_'+varl[v]+'_SPACE.png')
-               click = 'onclick="displayImageClick(\''+fname+'\');" '
-               over = 'onmouseover="displayImageHover(\''+fname+'\');" '
-               out = 'onmouseout="nodisplayImage();" '
-               html += ' <TH ALIGN=LEFT><A HREF="#" '+click+over+out+'">'+v+'</a>'
-            html += '<TR>'
-            html += '<TH ALIGN=LEFT>Time only'
-            fname = 'http://' + ea_hostname + generate_token_url('/' + dataset + '/' + package +'/set14.METRICS_CC_TIME.png')
-            click = 'onclick="displayImageClick(\''+fname+'\');" '
-            over = 'onmouseover="displayImageHover(\''+fname+'\');" '
-            out = 'onmouseout="nodisplayImage();" '
-            html += ' <TH ALIGN=LEFT><A HREF="#" '+click+over+out+'">Correlation</a>'
-            html += '</TABLE>'
-
-      
-      
-        if sets == '2' :
-          for v in varlist:
-             obsname = diags_collection[sets][v]['obs']
-    
-          html += '<TR>'
-          html += '<TH ALIGN=LEFT><font color="navy" size="+1">Annual Implied Northward Transports</font><TH>'
-          for v in varlist:
-             obsname = diags_collection[sets][v]['obs']
-             fkey = diags_varlist[v]['filekey']
-             print 'file key:', fkey
-             desc = diags_varlist[v]['desc']
-             if type(obsname) == list and len(obsname) != 1:
-                print 'Set 2 only supports one obs set for a given "variable"'
-                quit()
-             if type(obsname) == list:
-                obsname = obsname[0]
-             obskey = diags_obslist[obsname]['filekey']
-    
-             html += '<TR>'
-             html += ' <TH ALIGN=LEFT>'+desc
-             fname ='http://' + ea_hostname + generate_token_url('/' + dataset + '/' + package + '/set2_ANN_'+fkey+'_'+obskey+'_Global-combined.png')
-    #         print 'set 2 fname: ', fname
-             click = 'onclick="displayImageClick(\''+fname+'\');" '
-             over = 'onmouseover="displayImageHover(\''+fname+'\');" '
-             out = 'onmouseout="nodisplayImage();" '
-             html += ' <TH ALIGN=LEFT><A HREF="#" '+click+over+out+'">plot</a>'
-          html += '</TABLE>'
-
-        
-        return html
-    
-    except:
-        tb = traceback.format_exc()
-        print 'tb: ' + tb
-        return HttpResponse("error")
-    
-    
-    
-
-    return html
-
-
-
-
-
-
-'''
-End page generator for atm
-'''
 
 
 #GET
