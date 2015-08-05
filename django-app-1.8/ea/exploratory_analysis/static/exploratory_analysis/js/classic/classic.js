@@ -162,11 +162,11 @@ EA_CLASSIC_VIEWER.functions = (function() {
 			
 			//alert('run diags');
 			
-			var project = getMenuItem('#select_Project');
-			var dataset = getMenuItem('#selectD');
-			var pckg = getMenuItem('#selectP');
-			var variables = getMenuItem('#selectV');
-			var times = getMenuItem('#selectT');
+			var project = EA_MENU.functions.getMenuItem('#select_Project');
+			var dataset = EA_MENU.functions.getMenuItem('#selectD');
+			var pckg = EA_MENU.functions.getMenuItem('#selectP');
+			var variables = EA_MENU.functions.getMenuItem('#selectV');
+			var times = EA_MENU.functions.getMenuItem('#selectT');
 			
 			console.log('project: ' + project);
 			console.log('dataset: ' + dataset);
@@ -318,9 +318,6 @@ $(document).ready(function() {
 
 
 
-var clicked = 0;
-var lastURL = "";
-
 
 
 
@@ -331,6 +328,10 @@ var lastURL = "";
 
 //BELOW to be removed 8-2-15
 /*
+
+var clicked = 0;
+var lastURL = "";
+
 function showButton(pckg) {
 	if(pckg == 'lnd') {
 		//hide atm button

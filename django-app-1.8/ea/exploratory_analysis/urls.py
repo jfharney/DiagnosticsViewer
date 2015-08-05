@@ -2,7 +2,7 @@ from django.conf.urls import patterns, url
 
 from exploratory_analysis import views
 
-from exploratory_analysis.views import PackagesView, Dataset_AccessView, PublishedView, VariablesView
+#from exploratory_analysis.views import PackagesView, Dataset_AccessView, PublishedView, VariablesView
 
 urlpatterns = [
                
@@ -26,22 +26,6 @@ urlpatterns = [
     
     #classic html block - specific set
     url(r'^classic_views_html/$',views.classic_views_html,name='classic_views_html'),
-    
-    
-    '''
-    url(r'^dataset_packages/(?P<dataset_name>\w+)/$', PackagesView.as_view()),
-    
-    
-    url(r'^dataset_access/(?P<group_name>\w+)/$', Dataset_AccessView.as_view()),
-    
-    
-    url(r'^published/(?P<dataset_name>\w+)/$', PublishedView.as_view()),
-    
-    url(r'^variables/(?P<dataset_name>\w+)/$', VariablesView.as_view()),
-    '''
-    #service API for retrieving dataset_published flags
-    #url(r'^dataset_published/(?P<dataset_name>\w+)/$',views.dataset_published,name='dataset_published'),  
-    
     
     
 ]

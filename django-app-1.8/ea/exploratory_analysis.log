@@ -3351,3 +3351,233 @@ In GET
 2015-08-03 15:18:28,467 - exploratory_analysis - DEBUG - 
 In GET
 
+2015-08-03 19:03:01,115 - exploratory_analysis - DEBUG - 
+In Published GET
+
+2015-08-03 19:03:01,115 - exploratory_analysis - DEBUG - 
+In Published GET
+
+2015-08-03 19:03:01,138 - exploratory_analysis - DEBUG - dataset_name: 8xo
+2015-08-03 19:03:01,138 - exploratory_analysis - DEBUG - dataset_name: 8xo
+2015-08-03 19:03:03,092 - exploratory_analysis - DEBUG - 
+In Published GET
+
+2015-08-03 19:03:03,092 - exploratory_analysis - DEBUG - 
+In Published GET
+
+2015-08-03 19:03:03,092 - exploratory_analysis - DEBUG - dataset_name: 8xo
+2015-08-03 19:03:03,092 - exploratory_analysis - DEBUG - dataset_name: 8xo
+2015-08-03 20:04:29,979 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-03 20:04:29,979 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-03 20:04:32,984 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-03 20:04:32,984 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-03 20:04:32,985 - exploratory_analysis - DEBUG - dataset_name: null
+2015-08-03 20:04:32,985 - exploratory_analysis - DEBUG - dataset_name: null
+2015-08-03 20:05:43,797 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-03 20:05:43,797 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-03 20:08:37,627 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-03 20:08:37,627 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-03 20:08:42,331 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-03 20:08:42,331 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-03 20:08:42,332 - exploratory_analysis - DEBUG - dataset_name: null
+2015-08-03 20:08:42,332 - exploratory_analysis - DEBUG - dataset_name: null
+2015-08-03 20:08:45,269 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-03 20:08:45,269 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-03 20:09:25,991 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-03 20:09:25,991 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-03 20:09:25,991 - exploratory_analysis - DEBUG - dataset_name: null
+2015-08-03 20:09:25,991 - exploratory_analysis - DEBUG - dataset_name: null
+2015-08-03 20:09:31,539 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-03 20:09:31,539 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-03 20:16:54,733 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-03 20:16:54,733 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-03 20:17:40,419 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-03 20:17:40,419 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-03 20:17:58,790 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-03 20:17:58,790 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-03 20:17:58,791 - exploratory_analysis - DEBUG - dataset_name: null
+2015-08-03 20:17:58,791 - exploratory_analysis - DEBUG - dataset_name: null
+2015-08-03 20:23:14,401 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-03 20:23:14,401 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-03 20:25:11,003 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-03 20:25:11,003 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-03 20:26:12,736 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-03 20:26:12,736 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-03 20:26:13,820 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-03 20:26:13,820 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-03 20:26:13,820 - exploratory_analysis - DEBUG - dataset_name: null
+2015-08-03 20:26:13,820 - exploratory_analysis - DEBUG - dataset_name: null
+2015-08-03 20:31:05,373 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-03 20:31:05,373 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-03 20:31:06,263 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-03 20:31:06,263 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-03 20:31:06,264 - exploratory_analysis - DEBUG - dataset_name: null
+2015-08-03 20:31:06,264 - exploratory_analysis - DEBUG - dataset_name: null
+2015-08-03 20:31:26,697 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-03 20:31:26,697 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-03 20:31:27,905 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-03 20:31:27,905 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-03 20:31:27,905 - exploratory_analysis - DEBUG - dataset_name: null
+2015-08-03 20:31:27,905 - exploratory_analysis - DEBUG - dataset_name: null
+2015-08-03 20:32:28,901 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-03 20:32:28,901 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-03 20:32:29,537 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-03 20:32:29,537 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-03 20:32:29,537 - exploratory_analysis - DEBUG - dataset_name: null
+2015-08-03 20:32:29,537 - exploratory_analysis - DEBUG - dataset_name: null
+2015-08-03 20:38:04,309 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-03 20:38:04,309 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-03 20:38:08,150 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-03 20:38:08,150 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-03 20:38:08,150 - exploratory_analysis - DEBUG - dataset_name: null
+2015-08-03 20:38:08,150 - exploratory_analysis - DEBUG - dataset_name: null
+2015-08-03 20:38:09,076 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-03 20:38:09,076 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-03 20:38:09,076 - exploratory_analysis - DEBUG - dataset_name: null
+2015-08-03 20:38:09,076 - exploratory_analysis - DEBUG - dataset_name: null
+2015-08-03 20:45:19,056 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-03 20:45:19,056 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-03 20:45:20,527 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-03 20:45:20,527 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-03 20:45:20,527 - exploratory_analysis - DEBUG - dataset_name: null
+2015-08-03 20:45:20,527 - exploratory_analysis - DEBUG - dataset_name: null
+2015-08-03 20:48:13,182 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-03 20:48:13,182 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-03 20:48:14,217 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-03 20:48:14,217 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-03 20:48:14,218 - exploratory_analysis - DEBUG - dataset_name: null
+2015-08-03 20:48:14,218 - exploratory_analysis - DEBUG - dataset_name: null
+2015-08-03 20:49:42,685 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-03 20:49:42,685 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-03 20:49:44,507 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-03 20:49:44,507 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-03 20:49:44,508 - exploratory_analysis - DEBUG - dataset_name: null
+2015-08-03 20:49:44,508 - exploratory_analysis - DEBUG - dataset_name: null
+2015-08-03 20:51:10,443 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-03 20:51:10,443 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-03 20:51:10,443 - exploratory_analysis - DEBUG - dataset_name: null
+2015-08-03 20:51:10,443 - exploratory_analysis - DEBUG - dataset_name: null

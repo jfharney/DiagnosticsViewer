@@ -277,7 +277,7 @@ def classic_views_html(request):
 
 
 
-
+#Moved the services to its own app 8-2-15
 '''
 #GET
 #curl -X GET http://localhost:8081/exploratory_analysis/published/<dataset_name>/

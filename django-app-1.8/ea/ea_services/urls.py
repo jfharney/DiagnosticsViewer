@@ -18,17 +18,7 @@ urlpatterns = [
     
     url(r'^variables/(?P<dataset_name>\w+)/$', VariablesView.as_view()),
     
-    #service API for retrieving dataset_published flags
-    #url(r'^dataset_published/(?P<dataset_name>\w+)/$',views.dataset_published,name='dataset_published'),  
-    
     
     
 ]
 
-
-#service API for retrieving dataset variables
-#url(r'^dataset_variables/(?P<dataset_name>\w+)/$',views.dataset_variables,name='dataset_variables'),
-    
-    
-#service API for retrieving dataset pacakages
-#url(r'^dataset_packages/(?P<dataset_name>\w+)/$',views.dataset_packages,name='dataset_packages'),
