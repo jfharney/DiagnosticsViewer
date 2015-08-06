@@ -32,28 +32,50 @@ fh.setFormatter(formatter)
 # add handler to logger object
 logger.addHandler(fh)
 
+import ConfigParser
+
+print 'This one is looking for ./exploratory_analysis/eaconfig.cfg'
+config = ConfigParser.ConfigParser()
+config.read('./exploratory_analysis/eaconfig.cfg')
+
 
 
 #various variables that need to go into a config file
 #esgfAuth - flag for turning on (True) or turning off (False) esgf authentication
-esgfAuth = False
+#esgfAuth = False
+esgfAuth = config.get("options", "esgfAuth")
 
 #the directory for the certs to be fetched
-proxy_cert_dir = '/tmp'
+#proxy_cert_dir = '/tmp'
+proxy_cert_dir = config.get("certificate", "proxy_cert_dir")
+
 
 #naAuthReq - authentication via the cookie on (True) or off (False)
-authReq = True
+#authReq = True
+authReq = config.get("options", "authReq")
+
+
 
 #certNameSuffix - the suffix of the certificate file
-certNameSuffix = 'x509acme'
+#certNameSuffix = 'x509acme'
+certNameSuffix = config.get("certificate","certNameSuffix")
+
+#ea_root = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer'
+ea_root = config.get('paths','ea_root')
+
+#uvcdat_live_root = ea_root+ '/django-app-1.8/uvcdat_live/' 
+uvcdat_live_root = config.get('paths','uvcdat_live_root')
+
+#img_cache_path = uvcdat_live_root + '/exploratory_analysis/static/exploratory_analysis/cache/'
+img_cache_path = config.get('paths','img_cache_path')
+
+#staticfiles_dirs = uvcdat_live_root + "/exploratory_analysis/static/exploratory_analysis"
+staticfiles_dirs = config.get('paths','staticfiles_dirs')
 
 
-ea_root = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer'
-uvcdat_live_root = ea_root+ '/django-app-1.8/uvcdat_live/' 
-img_cache_path = uvcdat_live_root + '/exploratory_analysis/static/exploratory_analysis/cache/'
-staticfiles_dirs = uvcdat_live_root + "/exploratory_analysis/static/exploratory_analysis"
+#javascript_namespace = 'EA_CLASSIC_VIEWER.functions.'
+javascript_namespace = config.get('namespaces','javascript_namespace')
 
-javascript_namespace = 'EA_CLASSIC_VIEWER.functions.'
 
 # Main page.
 def index(request):
