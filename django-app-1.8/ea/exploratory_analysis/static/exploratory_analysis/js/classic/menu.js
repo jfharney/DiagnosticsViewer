@@ -129,9 +129,10 @@ EA_MENU.functions = (function() {
 				  url: url,
 				  success: function(response_data)
 				  {
+				  	  var response_data_json = JSON.parse(response_data);
 					  console.log('success ' + response_data);
 					  
-					  EA_MENU.functions.makeMenuSelection("#selectD",data_list,'select a dataset',false);
+					  EA_MENU.functions.makeMenuSelection("#selectD",response_data_json['dataset_list'],'select a dataset',false);
 					
 				  },
 				  error: function() {
@@ -180,7 +181,7 @@ EA_MENU.functions = (function() {
 				  {
 					  console.log('success ' + response_data);
 					  
-					  var response_data_json = JSON.parse(response_data)
+					  var response_data_json = JSON.parse(response_data);
 					  
 					  if(response_data_json['variables'] == '') {
 						  data_list = EA.default_variables;
