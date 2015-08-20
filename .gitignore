@@ -27,3 +27,6 @@ nohup.out
 /django-app/uvcdat_live/exploratory_analysis/paths/paths.py
 /django-app/uvcdat_live/uvcdat_live/paths/paths.py
 /django-app-1.8/ea/exploratory_analysis.log
+/django-app-1.8/ea/eaconfig.cfg
+/django-app-1.8/ea/exploratory_analysis/static/exploratory_analysis/js/core.js
+/django-app-1.8/ea/db.sqlite3
