@@ -22,39 +22,39 @@ EA_CLASSIC_VIEWER.functions = (function() {
 		},
 		transformClassicLinkNames: function (link_name) {
 			
-			if (link_name.search('15') > -1) {
-				link_name = '15';
-			} else if (link_name.search('14') > -1) {
-				link_name = '14';
-			} else if (link_name.search('13') > -1) {
-				link_name = '13';
-			} else if (link_name.search('12') > -1) {
-				link_name = '12';
-			} else if (link_name.search('11') > -1) {
-				link_name = '11';
-			} else if (link_name.search('10') > -1) {
-				link_name = '10';
-			} else if (link_name.search('topten') > -1) {
-				link_name = 'topten';
-			} else if (link_name.search('9') > -1) {
-				link_name = '9';
-			} else if (link_name.search('8') > -1) {
-				link_name = '8';
-			} else if (link_name.search('7') > -1) {
-				link_name = '7';
-			} else if (link_name.search('6') > -1) {
-				link_name = '6';
-			} else if (link_name.search('5') > -1) {
-				link_name = '5';
-			} else if (link_name.search('4') > -1) {
-				link_name = '4';
-			} else if (link_name.search('3') > -1) {
-				link_name = '3';
-			} else if (link_name.search('2') > -1) {
-				link_name = '2';
-			} else if (link_name.search('1') > -1) {
-				link_name = '1';
-			} 
+//			if (link_name.search('15') > -1) {
+//				link_name = '15';
+//			} else if (link_name.search('14') > -1) {
+//				link_name = '14';
+//			} else if (link_name.search('13') > -1) {
+//				link_name = '13';
+//			} else if (link_name.search('12') > -1) {
+//				link_name = '12';
+//			} else if (link_name.search('11') > -1) {
+//				link_name = '11';
+//			} else if (link_name.search('10') > -1) {
+//				link_name = '10';
+//			} else if (link_name.search('topten') > -1) {
+//				link_name = 'topten';
+//			} else if (link_name.search('9') > -1) {
+//				link_name = '9';
+//			} else if (link_name.search('8') > -1) {
+//				link_name = '8';
+//			} else if (link_name.search('7') > -1) {
+//				link_name = '7';
+//			} else if (link_name.search('6') > -1) {
+//				link_name = '6';
+//			} else if (link_name.search('5') > -1) {
+//				link_name = '5';
+//			} else if (link_name.search('4') > -1) {
+//				link_name = '4';
+//			} else if (link_name.search('3') > -1) {
+//				link_name = '3';
+//			} else if (link_name.search('2') > -1) {
+//				link_name = '2';
+//			} else if (link_name.search('1') > -1) {
+//				link_name = '1';
+//			} 
 			
 			return link_name;
 			
