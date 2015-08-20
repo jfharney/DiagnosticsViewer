@@ -198,18 +198,34 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
                                          else:
                                             postfix = '-model.png'
                                          varopts = amwgmaster.diags_collection[sets][v].get('varopts', False)
-                                         if varopts == False:
+                                         pfixes = amwgmaster.diags_collection[sets][v].get('postfixes', False)
+                                         if varopts == False and pfixes == False:
                                             fname = 'http://' + ea_hostname + generate_token_url('/' + dataset + '/' + package + '/set'+sets+regionstr+seasonstr+'_'+v+'_'+obsfname+postfix)
+                                            click = 'onclick="' + javascript_namespace + 'displayImageClick(\''+fname+'\');" '
+                                            over = 'onmouseover="' + javascript_namespace + 'displayImageHover(\''+fname+'\');" '
+                                            out = 'onmouseout="' + javascript_namespace + 'nodisplayImage();" '
+                                            html_class = 'plot_links'
+                                            html += '<TH ALIGN=LEFT><A HREF="#" class="' + html_class + '" ' +click+over+out+'">plot</a> '               
                                          else:
-                                            for varopt in varopts:
-                                               fname = 'http://' + ea_hostname + generate_token_url('/' + dataset + '/' + package + '/set'+sets+regionstr+seasonstr+'_'+v+'_'+varopt+'_'+obsfname+postfix)
+                                            if pfixes == False:
+                                               for varopt in varopts:
+                                                  fname = 'http://' + ea_hostname + generate_token_url('/' + dataset + '/' + package + '/set'+sets+regionstr+seasonstr+'_'+v+'_'+varopt+'_'+obsfname+postfix)
+                                                  click = 'onclick="' + javascript_namespace + 'displayImageClick(\''+fname+'\');" '
+                                                  over = 'onmouseover="' + javascript_namespace + 'displayImageHover(\''+fname+'\');" '
+                                                  out = 'onmouseout="' + javascript_namespace + 'nodisplayImage();" '
+                                                  html_class = 'plot_links'
+                                                  html += '<TH ALIGN=LEFT><A HREF="#" class="' + html_class + '" ' +click+over+out+'">plot</a> '               
+                                            else:
+                                                print 'VERIFY WHERE THE PFIX GOES ON FILES'
+                                                for pfix in pfixes:
+                                                  fname = 'http://' + ea_hostname + generate_token_url('/' + dataset + '/' + package + '/set'+sets+regionstr+seasonstr+'_'+v+'_'+pfix+'_'+obsfname+postfix)
+                                                  click = 'onclick="' + javascript_namespace + 'displayImageClick(\''+fname+'\');" '
+                                                  over = 'onmouseover="' + javascript_namespace + 'displayImageHover(\''+fname+'\');" '
+                                                  out = 'onmouseout="' + javascript_namespace + 'nodisplayImage();" '
+                                                  html_class = 'plot_links'
+                                                  html += '<TH ALIGN=LEFT><A HREF="#" class="' + html_class + '" ' +click+over+out+'">'+pfix+'</a> '
+
                                          
-                                         click = 'onclick="' + javascript_namespace + 'displayImageClick(\''+fname+'\');" '
-                                         over = 'onmouseover="' + javascript_namespace + 'displayImageHover(\''+fname+'\');" '
-                                         out = 'onmouseout="' + javascript_namespace + 'nodisplayImage();" '
-                                         html_class = 'plot_links'
-                                         
-                                         html += '<TH ALIGN=LEFT><A HREF="#" class="' + html_class + '" ' +click+over+out+'">plot</a>'               
                                          print '\nadding a link\n'
                 
             html += '</TABLE>'
