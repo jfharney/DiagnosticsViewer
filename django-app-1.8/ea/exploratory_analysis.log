@@ -262,3 +262,201 @@ In Variables GET
 
 2015-08-20 18:23:53,086 - exploratory_analysis - DEBUG - dataset_name: null
 2015-08-20 18:23:53,086 - exploratory_analysis - DEBUG - dataset_name: null
+2015-08-20 18:37:55,338 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 18:37:55,338 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 18:37:59,615 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-20 18:37:59,615 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-20 18:37:59,615 - exploratory_analysis - DEBUG - dataset_name: cam5se
+2015-08-20 18:37:59,615 - exploratory_analysis - DEBUG - dataset_name: cam5se
+2015-08-20 18:48:50,997 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 18:48:50,997 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 18:48:54,869 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-20 18:48:54,869 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-20 18:48:54,870 - exploratory_analysis - DEBUG - dataset_name: cam5se
+2015-08-20 18:48:54,870 - exploratory_analysis - DEBUG - dataset_name: cam5se
+2015-08-20 18:56:51,925 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 18:56:51,925 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 18:56:58,277 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-20 18:56:58,277 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-20 18:56:58,277 - exploratory_analysis - DEBUG - dataset_name: null
+2015-08-20 18:56:58,277 - exploratory_analysis - DEBUG - dataset_name: null
+2015-08-20 18:57:04,334 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 18:57:04,334 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 18:57:49,655 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 18:57:49,655 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 18:59:11,627 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 18:59:11,627 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 19:01:48,645 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 19:01:48,645 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 19:05:58,069 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-20 19:05:58,069 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-20 19:05:58,069 - exploratory_analysis - DEBUG - dataset_name: cam5se
+2015-08-20 19:05:58,069 - exploratory_analysis - DEBUG - dataset_name: cam5se
+2015-08-20 19:08:11,602 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 19:08:11,602 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 19:08:12,653 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-20 19:08:12,653 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-20 19:08:12,653 - exploratory_analysis - DEBUG - dataset_name: cam5se
+2015-08-20 19:08:12,653 - exploratory_analysis - DEBUG - dataset_name: cam5se
+2015-08-20 19:08:18,673 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 19:08:18,673 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 19:08:22,202 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-20 19:08:22,202 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-20 19:08:22,202 - exploratory_analysis - DEBUG - dataset_name: cam5se
+2015-08-20 19:08:22,202 - exploratory_analysis - DEBUG - dataset_name: cam5se
+2015-08-20 19:09:23,827 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 19:09:23,827 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 19:09:25,036 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-20 19:09:25,036 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-20 19:09:25,036 - exploratory_analysis - DEBUG - dataset_name: cam5se
+2015-08-20 19:09:25,036 - exploratory_analysis - DEBUG - dataset_name: cam5se
+2015-08-20 19:12:40,046 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 19:12:40,046 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 19:12:42,299 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-20 19:12:42,299 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-20 19:12:42,299 - exploratory_analysis - DEBUG - dataset_name: cam5se
+2015-08-20 19:12:42,299 - exploratory_analysis - DEBUG - dataset_name: cam5se
+2015-08-20 19:12:51,572 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-20 19:12:51,572 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-20 19:12:51,573 - exploratory_analysis - DEBUG - dataset_name: test_data_cam5se
+2015-08-20 19:12:51,573 - exploratory_analysis - DEBUG - dataset_name: test_data_cam5se
+2015-08-20 19:29:16,034 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 19:29:16,034 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 19:29:16,037 - exploratory_analysis - DEBUG - 
+In GET
+
+2015-08-20 19:29:16,037 - exploratory_analysis - DEBUG - 
+In GET
+
+2015-08-20 19:30:45,783 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-20 19:30:45,783 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-20 19:30:45,784 - exploratory_analysis - DEBUG - dataset_name: cam5se
+2015-08-20 19:30:45,784 - exploratory_analysis - DEBUG - dataset_name: cam5se
+2015-08-20 19:31:01,865 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 19:31:01,865 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 19:31:01,868 - exploratory_analysis - DEBUG - 
+In GET
+
+2015-08-20 19:31:01,868 - exploratory_analysis - DEBUG - 
+In GET
+
+2015-08-20 19:31:06,681 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-20 19:31:06,681 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-20 19:31:06,681 - exploratory_analysis - DEBUG - dataset_name: test_data_cam5se
+2015-08-20 19:31:06,681 - exploratory_analysis - DEBUG - dataset_name: test_data_cam5se
+2015-08-20 19:36:48,608 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 19:36:48,608 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 19:36:48,611 - exploratory_analysis - DEBUG - 
+In GET
+
+2015-08-20 19:36:48,611 - exploratory_analysis - DEBUG - 
+In GET
+
+2015-08-20 19:36:52,847 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-20 19:36:52,847 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-20 19:36:52,847 - exploratory_analysis - DEBUG - dataset_name: test_data_cam5se
+2015-08-20 19:36:52,847 - exploratory_analysis - DEBUG - dataset_name: test_data_cam5se

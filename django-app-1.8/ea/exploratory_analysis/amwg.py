@@ -200,7 +200,7 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
                                          varopts = amwgmaster.diags_collection[sets][v].get('varopts', False)
                                          pfixes = amwgmaster.diags_collection[sets][v].get('postfixes', False)
                                          if varopts == False and pfixes == False:
-                                            fname = 'http://' + ea_hostname + generate_token_url('/' + dataset + '/' + package + '/set'+sets+regionstr+seasonstr+'_'+v+'_'+obsfname+postfix)
+                                            fname = 'http://' + ea_hostname + generate_token_url('/' + dataset + '/' + package + 'set'+sets+regionstr+seasonstr+'_'+v+'_'+obsfname+postfix)
                                             click = 'onclick="' + javascript_namespace + 'displayImageClick(\''+fname+'\');" '
                                             over = 'onmouseover="' + javascript_namespace + 'displayImageHover(\''+fname+'\');" '
                                             out = 'onmouseout="' + javascript_namespace + 'nodisplayImage();" '
@@ -209,7 +209,7 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
                                          else:
                                             if pfixes == False:
                                                for varopt in varopts:
-                                                  fname = 'http://' + ea_hostname + generate_token_url('/' + dataset + '/' + package + '/set'+sets+regionstr+seasonstr+'_'+v+'_'+varopt+'_'+obsfname+postfix)
+                                                  fname = 'http://' + ea_hostname + generate_token_url('/' + dataset + '/' + package + 'set'+sets+regionstr+seasonstr+'_'+v+'_'+varopt+'_'+obsfname+postfix)
                                                   click = 'onclick="' + javascript_namespace + 'displayImageClick(\''+fname+'\');" '
                                                   over = 'onmouseover="' + javascript_namespace + 'displayImageHover(\''+fname+'\');" '
                                                   out = 'onmouseout="' + javascript_namespace + 'nodisplayImage();" '
@@ -218,7 +218,7 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
                                             else:
                                                 print 'VERIFY WHERE THE PFIX GOES ON FILES'
                                                 for pfix in pfixes:
-                                                  fname = 'http://' + ea_hostname + generate_token_url('/' + dataset + '/' + package + '/set'+sets+regionstr+seasonstr+'_'+v+'_'+pfix+'_'+obsfname+postfix)
+                                                  fname = 'http://' + ea_hostname + generate_token_url('/' + dataset + '/' + package + 'set'+sets+regionstr+seasonstr+'_'+v+'_'+pfix+'_'+obsfname+postfix)
                                                   click = 'onclick="' + javascript_namespace + 'displayImageClick(\''+fname+'\');" '
                                                   over = 'onmouseover="' + javascript_namespace + 'displayImageHover(\''+fname+'\');" '
                                                   out = 'onmouseout="' + javascript_namespace + 'nodisplayImage();" '
@@ -243,7 +243,7 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
                 html+='<TH>'+r+'</TH>'
                 for season in seasons:
                      #whenever these are paths.generated with diags use this?
-                     fname = 'http://' + ea_hostname + generate_token_url('/' + dataset + '/' + package + '/set1_'+season+'_'+amwgmaster.all_regions[r].filekey+'-table.text')
+                     fname = 'http://' + ea_hostname + generate_token_url('/' + dataset + '/' + package + 'set1_'+season+'_'+amwgmaster.all_regions[r].filekey+'-table.text')
         #             print 'looking for '+fname
                      click = 'onclick="' + javascript_namespace + 'displayTable(\''+fname+'\');" '
                      over = 'onmouseover="' + javascript_namespace + 'displayTableHover(\''+fname+'\');" '

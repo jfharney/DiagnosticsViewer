@@ -71,15 +71,17 @@ EA_MENU.functions = (function() {
 		},
 		
 		makeMenuSelection: function(element,data_list,header,multiple) {
+			$(element).multiselect().multiselectfilter();
 			$(element).multiselect({
 				multiple : multiple,
 				minWidth : 195,
-				header : header
+				header : header,
+				selectedList : 1
 				//noneSelectedText : "tropics_warming_th_q_co2",
 			});
 			d3.select(element).selectAll("option").data(data_list).enter().append("option").attr("value", String).text(String);
 			$(element).multiselect("refresh");
-
+			if(multiple) $(element).multiselect("checkAll");
 		},
 		
 		getGroups: function(username) {
@@ -153,21 +155,49 @@ EA_MENU.functions = (function() {
 		
 		
 		getPackages: function(username) {
-			var url = 'http://' + EA.host + ':' + EA.port + '/ea_services/dataset_packages/' + 'ACME';//username;
+			var url = '/ea_services/dataset_packages/' + 'ACME';//username;
 			//http://<host>:<port>/exploratory_analysis/dataset_packages/(?P<dataset_name>\w+)/$
 			console.log('url get datasets-->' + url);
 			  
 			var data_list = EA.default_packages;
-			EA_MENU.functions.makeMenuSelection("#selectP",data_list,'select a package',false);
+			//EA_MENU.functions.makeMenuSelection("#selectP",data_list,'select a package',false);
+
 			//need to get the data list from a service
-			
+			$.ajax({
+				  type: "GET",
+				  url: url,
+				  success: function(response_data)
+				  {
+					  console.log('success ' + response_data);
+					  
+					  var response_data_json = JSON.parse(response_data);
+					  
+					  if(response_data_json['packages'] == '') {
+						  data_list = EA.default_packages;
+					  } else {
+						  data_list = response_data_json['packages'];
+					  }
+					  
+					  EA_MENU.functions.makeMenuSelection("#selectP",data_list,'select package',false);
+					
+				  },
+				  error: function() {
+					  console.log('error');
+
+					  //need to get the default data list 
+					  
+					  EA_MENU.functions.makeMenuSelection("#selectP",data_list,'select package',false);
+					  
+					  
+				  }
+			});
 			
 		},
 		
 		
 		getVariables: function(dataset_chosen) {
 			
-			var url = 'http://' + EA.host + ':' + EA.port + '/ea_services/variables/' + dataset_chosen;//username;
+			var url = '/ea_services/variables/' + dataset_chosen;//username;
 			
 			console.log('url get datasets-->' + url);
 			  
