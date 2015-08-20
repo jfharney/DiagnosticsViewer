@@ -12,8 +12,13 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import ConfigParser
+config = ConfigParser.ConfigParser()
+config.read('eaconfig.cfg')
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = config.get('paths', 'root')
+
+DEBUG=config.get('options', 'debug')
 
 
 # Quick-start development settings - unsuitable for production
@@ -21,9 +26,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '0q)#6%s9!8+onlj897rkl5ii)=&*wzlep8w!fu2&$mm8-j5#!='
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -77,10 +79,14 @@ WSGI_APPLICATION = 'ea.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
+db_name = config.get("paths", "database")
+print "Looking for database at ", os.path.join(BASE_DIR, db_name)
+db_path = os.path.join(BASE_DIR, db_name)
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': db_path,
     }
 }
 

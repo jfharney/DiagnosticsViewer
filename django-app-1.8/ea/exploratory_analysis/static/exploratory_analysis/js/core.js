@@ -1,7 +1,7 @@
 var EA = EA || {};
 
-EA.host = 'localhost';
-EA.port = document.location.port;
+EA.host = 'acme-ea-dev2.ornl.gov';
+EA.port = '8081' //document.location.port;
 
 EA.default_groups = ['ACME'];
 EA.default_datasets = ['a','b','c'];

@@ -9,13 +9,8 @@ import logging
 import traceback
 import os
 
-
-
-
 logger = logging.getLogger('exploratory_analysis')
 logger.setLevel(logging.DEBUG)
-
-
 
 fh = logging.FileHandler('exploratory_analysis.log')
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -24,18 +19,10 @@ fh.setFormatter(formatter)
 # add handler to logger object
 logger.addHandler(fh)
 
-
-
-
 # Create your views here.
 def index(request):
     
-    
-
     return HttpResponse("ea services index")
-
-
-
 
 #GET
 #curl -X GET http://localhost:8081/exploratory_analysis/published/<dataset_name>/

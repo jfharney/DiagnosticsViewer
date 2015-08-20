@@ -34,9 +34,9 @@ logger.addHandler(fh)
 
 import ConfigParser
 
-print 'This one is looking for ./exploratory_analysis/eaconfig.cfg'
+print 'This one is looking for ./eaconfig.cfg'
 config = ConfigParser.ConfigParser()
-config.read('./exploratory_analysis/eaconfig.cfg')
+config.read('eaconfig.cfg')
 
 
 
@@ -61,19 +61,13 @@ authReq = config.get("options", "authReq")
 certNameSuffix = config.get("certificate","certNameSuffix")
 
 #ea_root = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer'
-ea_root = config.get('paths','ea_root')
+root_dir = config.get('paths', 'root')
+ea_root = os.path.join(root_dir, config.get('paths', 'ea_dir'))
 
-#uvcdat_live_root = ea_root+ '/django-app-1.8/uvcdat_live/' 
-uvcdat_live_root = config.get('paths','uvcdat_live_root')
+img_cache_path = os.path.join(root_dir, config.get('paths', 'img_cache_path'))
 
-#img_cache_path = uvcdat_live_root + '/exploratory_analysis/static/exploratory_analysis/cache/'
-img_cache_path = config.get('paths','img_cache_path')
+staticfiles_dirs = os.path.join(root_dir, config.get('paths', 'staticfiles_dirs'))
 
-#staticfiles_dirs = uvcdat_live_root + "/exploratory_analysis/static/exploratory_analysis"
-staticfiles_dirs = config.get('paths','staticfiles_dirs')
-
-
-#javascript_namespace = 'EA_CLASSIC_VIEWER.functions.'
 javascript_namespace = config.get('namespaces','javascript_namespace')
 
 
@@ -316,6 +310,7 @@ def classic_views_html(request):
     options = []
     package = ''
     
+    print 'IN CLASSIC_VIEWS_HTML - SET: ', sets
     html = ''
     
     try:

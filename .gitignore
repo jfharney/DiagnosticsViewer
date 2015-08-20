@@ -9,7 +9,6 @@ nohup.out
 /django-app/uvcdat_live/exploratory_analysis/mapviewhelper/__init__.pyc
 /django-app/uvcdat_live/exploratory_analysis/mapviewhelper/timeseries.pyc
 /django-app/uvcdat_live/exploratory_analysis/menuhelper/__init__.pyc
-.pyc
 /django-app/uvcdat_live/exploratory_analysis/menuhelper/datasets.pyc
 /django-app/uvcdat_live/exploratory_analysis/menuhelper/times.pyc
 /django-app/uvcdat_live/exploratory_analysis/menuhelper/variablelist.pyc
@@ -27,3 +26,4 @@ nohup.out
 /src/.DS_Store
 /django-app/uvcdat_live/exploratory_analysis/paths/paths.py
 /django-app/uvcdat_live/uvcdat_live/paths/paths.py
+/django-app-1.8/ea/exploratory_analysis.log
