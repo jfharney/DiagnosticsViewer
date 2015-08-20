@@ -3,23 +3,22 @@ from django.conf.urls import patterns, url
 from exploratory_analysis import views
 
 #from exploratory_analysis.views import PackagesView, Dataset_AccessView, PublishedView, VariablesView
-
+'''
 urlpatterns = [
                
+    
     #points to the main page view
     url(r'^$', views.index, name='index'),
     
     #login view
-    url(r'^login/$',views.login_page,name='login_page'),
-    
-    #logout view
-    url(r'^logout/$',views.logout_page,name='logout_page'),
+    url(r'^login/$',views.login,name='login'),
     
     #auth view
     url(r'^auth/$',views.auth,name='auth'),
     
     #main page view
     url(r'^main/(?P<user_id>\w+)/$',views.main,name='main'),
+    
     
     #classic view
     url(r'^classic/(?P<user_id>\w+)/$',views.classic,name='classic'),
@@ -32,6 +31,7 @@ urlpatterns = [
     
     
 ]
+'''
 
 
 #service API for retrieving dataset variables

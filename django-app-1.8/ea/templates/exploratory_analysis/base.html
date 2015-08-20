@@ -126,6 +126,10 @@
 				location.href = "http://" + EA.host + ":" + EA.port + "/exploratory_analysis/login";
 			});
 			
+			$('#logout_link').click(function(){
+				location.href = "http://" + EA.host + ":" + EA.port + "/exploratory_analysis/logout";
+			});
+			
 			$('#classic_link').click(function(){
 				location.href = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/classic/' + username;
 			});

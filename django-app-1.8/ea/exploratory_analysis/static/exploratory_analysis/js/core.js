@@ -1,5 +1,6 @@
 var EA = EA || {};
 
+
 EA.host = 'acme-ea-dev1.ornl.gov';
 EA.port = '8081'; //document.location.port;
 

@@ -20,6 +20,7 @@ $(document).ready(function(){
     
 	console.log('csrftoken ' + csrftoken);
 	
+	
 
 	$('#signin').click(function(){
 
