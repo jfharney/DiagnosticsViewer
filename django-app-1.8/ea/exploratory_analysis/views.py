@@ -104,10 +104,77 @@ def login(request):
 
 
 #Example: curl -i -H "Accept: application/json" -X POST -d '{ "username" :  "u1" }'  http://localhost:8081/exploratory_analysis/auth/
-@ensure_csrf_cookie
+#@ensure_csrf_cookie
 def auth(request):
     
+    print 'in auth request'
     
+    
+    if request.method == "POST":
+        
+        json_data = json.loads(request.body)
+        
+        username = json_data['username']
+        password = json_data['password']
+        
+        #return a None message if the username is blank
+        if username == '':
+            return HttpResponse("None")
+        elif username == None:
+            return HttpResponse("None")
+        
+        #insert code for authentication here
+        #create a valid user object
+        
+        from fcntl import flock, LOCK_EX, LOCK_UN
+        print '*****Begin ESGF Login*****'
+        import traceback
+        cert_name = certNameSuffix
+        outdir = os.path.join(proxy_cert_dir, username)
+        
+        print 'outdir: ' + str(outdir)
+        
+        try:
+                
+                if not os.path.exists(outdir):
+                    os.makedirs(outdir)
+                else:
+                    print 'path already exists'
+                
+                outfile = os.path.join(outdir, cert_name)
+                outfile = str(outfile)
+                
+                # outfile = '/tmp/x509up_u%s' % (os.getuid()) 
+                print '----> OUTFILE: ', outfile
+                   
+                import myproxy_logon
+                
+                #username = username1
+                #password = password1
+                peernode = 'esg.ccs.ornl.gov'
+           
+                myproxy_logon.myproxy_logon(peernode,
+                      username,
+                      password,
+                      outfile,#os.path.join(cert_path,username + '.pem').encode("UTF-8"),
+                      lifetime=43200,
+                      port=7512
+                      )
+            
+                print '*****End ESGF login*****'
+                
+        except:
+                tb = traceback.format_exc()
+                logger.debug('tb: ' + tb)
+                print "couldn't make directory " + str(outdir)
+                return HttpResponse("Not Authenticated")
+        
+        return HttpResponse("POST")
+    else:
+        
+        return HttpResponse("Not available")
+    
+    '''
     if request.method == "POST":
         json_data = json.loads(request.body)
         
@@ -162,7 +229,7 @@ def auth(request):
             print 'esgfAuth is false, so dont authenticate'
             return HttpResponse("Authenticated")
            
-    
+    '''
     return HttpResponse("Hello")
 
 

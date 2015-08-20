@@ -3650,3 +3650,93 @@ In Variables GET
 
 2015-08-06 15:46:46,887 - exploratory_analysis - DEBUG - dataset_name: null
 2015-08-06 15:46:46,887 - exploratory_analysis - DEBUG - dataset_name: null
+2015-08-19 20:04:14,510 - exploratory_analysis - DEBUG - tb: Traceback (most recent call last):
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/views.py", line 144, in auth
+    outfile = os.path.join(outdir, cert_name)
+NameError: global name 'cert_name' is not defined
+
+2015-08-19 20:04:14,510 - exploratory_analysis - DEBUG - tb: Traceback (most recent call last):
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/views.py", line 144, in auth
+    outfile = os.path.join(outdir, cert_name)
+NameError: global name 'cert_name' is not defined
+
+2015-08-19 20:10:30,229 - exploratory_analysis - DEBUG - tb: Traceback (most recent call last):
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/views.py", line 150, in auth
+    import myproxy_logon
+ImportError: No module named myproxy_logon
+
+2015-08-19 20:10:30,229 - exploratory_analysis - DEBUG - tb: Traceback (most recent call last):
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/views.py", line 150, in auth
+    import myproxy_logon
+ImportError: No module named myproxy_logon
+
+2015-08-19 20:19:39,459 - exploratory_analysis - DEBUG - tb: Traceback (most recent call last):
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/views.py", line 161, in auth
+    port=7512
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/myproxy_logon.py", line 100, in myproxy_logon_py
+    context.sset_options(0x00000800L)
+AttributeError: 'OpenSSL.SSL.Context' object has no attribute 'sset_options'
+
+2015-08-19 20:19:39,459 - exploratory_analysis - DEBUG - tb: Traceback (most recent call last):
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/views.py", line 161, in auth
+    port=7512
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/myproxy_logon.py", line 100, in myproxy_logon_py
+    context.sset_options(0x00000800L)
+AttributeError: 'OpenSSL.SSL.Context' object has no attribute 'sset_options'
+
+2015-08-19 20:22:34,079 - exploratory_analysis - DEBUG - tb: Traceback (most recent call last):
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/views.py", line 161, in auth
+    port=7512
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/myproxy_logon.py", line 133, in myproxy_logon_py
+    raise GetException(errortext)
+GetException: invalid password
+
+2015-08-19 20:22:34,079 - exploratory_analysis - DEBUG - tb: Traceback (most recent call last):
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/views.py", line 161, in auth
+    port=7512
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/myproxy_logon.py", line 133, in myproxy_logon_py
+    raise GetException(errortext)
+GetException: invalid password
+
+2015-08-19 20:22:58,345 - exploratory_analysis - DEBUG - tb: Traceback (most recent call last):
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/views.py", line 161, in auth
+    port=7512
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/myproxy_logon.py", line 133, in myproxy_logon_py
+    raise GetException(errortext)
+GetException: invalid password
+
+2015-08-19 20:22:58,345 - exploratory_analysis - DEBUG - tb: Traceback (most recent call last):
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/views.py", line 161, in auth
+    port=7512
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/myproxy_logon.py", line 133, in myproxy_logon_py
+    raise GetException(errortext)
+GetException: invalid password
+
+2015-08-19 20:23:09,772 - exploratory_analysis - DEBUG - tb: Traceback (most recent call last):
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/views.py", line 161, in auth
+    port=7512
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/myproxy_logon.py", line 133, in myproxy_logon_py
+    raise GetException(errortext)
+GetException: invalid username
+
+2015-08-19 20:23:09,772 - exploratory_analysis - DEBUG - tb: Traceback (most recent call last):
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/views.py", line 161, in auth
+    port=7512
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/myproxy_logon.py", line 133, in myproxy_logon_py
+    raise GetException(errortext)
+GetException: invalid username
+
+2015-08-19 20:23:17,829 - exploratory_analysis - DEBUG - tb: Traceback (most recent call last):
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/views.py", line 161, in auth
+    port=7512
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/myproxy_logon.py", line 133, in myproxy_logon_py
+    raise GetException(errortext)
+GetException: invalid username
+
+2015-08-19 20:23:17,829 - exploratory_analysis - DEBUG - tb: Traceback (most recent call last):
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/views.py", line 161, in auth
+    port=7512
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/myproxy_logon.py", line 133, in myproxy_logon_py
+    raise GetException(errortext)
+GetException: invalid username
+
