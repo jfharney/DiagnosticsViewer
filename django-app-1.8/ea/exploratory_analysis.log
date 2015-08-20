@@ -3740,3 +3740,127 @@ GetException: invalid username
     raise GetException(errortext)
 GetException: invalid username
 
+2015-08-20 17:33:18,825 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 17:33:18,825 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 17:33:32,709 - exploratory_analysis - DEBUG - tb: Traceback (most recent call last):
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/views.py", line 161, in auth
+    port=7512
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/myproxy_logon.py", line 133, in myproxy_logon_py
+    raise GetException(errortext)
+GetException: invalid username
+
+2015-08-20 17:33:32,709 - exploratory_analysis - DEBUG - tb: Traceback (most recent call last):
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/views.py", line 161, in auth
+    port=7512
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/myproxy_logon.py", line 133, in myproxy_logon_py
+    raise GetException(errortext)
+GetException: invalid username
+
+2015-08-20 17:46:38,925 - exploratory_analysis - DEBUG - tb: Traceback (most recent call last):
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/views.py", line 176, in auth
+    user = User.objects.create_user(username1, str(username1 + '@acme.com'), password1)
+NameError: global name 'username1' is not defined
+
+2015-08-20 17:46:38,925 - exploratory_analysis - DEBUG - tb: Traceback (most recent call last):
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/views.py", line 176, in auth
+    user = User.objects.create_user(username1, str(username1 + '@acme.com'), password1)
+NameError: global name 'username1' is not defined
+
+2015-08-20 17:47:50,048 - exploratory_analysis - DEBUG - tb: Traceback (most recent call last):
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/views.py", line 172, in auth
+    login(request,user)
+TypeError: login() takes exactly 1 argument (2 given)
+
+2015-08-20 17:47:50,048 - exploratory_analysis - DEBUG - tb: Traceback (most recent call last):
+  File "/Users/8xo/software/exploratory_analysis/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/views.py", line 172, in auth
+    login(request,user)
+TypeError: login() takes exactly 1 argument (2 given)
+
+2015-08-20 18:18:12,702 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 18:18:12,702 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 18:18:13,754 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-20 18:18:13,754 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-20 18:18:13,754 - exploratory_analysis - DEBUG - dataset_name: null
+2015-08-20 18:18:13,754 - exploratory_analysis - DEBUG - dataset_name: null
+2015-08-20 18:29:09,119 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 18:29:09,119 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 18:43:11,391 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 18:43:11,391 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 18:48:37,264 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 18:48:37,264 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 18:49:11,487 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 18:49:11,487 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 18:49:24,567 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 18:49:24,567 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 19:00:56,497 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 19:00:56,497 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 19:00:57,442 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-20 19:00:57,442 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-20 19:00:57,442 - exploratory_analysis - DEBUG - dataset_name: null
+2015-08-20 19:00:57,442 - exploratory_analysis - DEBUG - dataset_name: null
+2015-08-20 19:01:16,268 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 19:01:16,268 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 19:02:02,481 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 19:02:02,481 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 19:13:30,028 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 19:13:30,028 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2015-08-20 19:13:32,614 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-20 19:13:32,614 - exploratory_analysis - DEBUG - 
+In Variables GET
+
+2015-08-20 19:13:32,614 - exploratory_analysis - DEBUG - dataset_name: null
+2015-08-20 19:13:32,614 - exploratory_analysis - DEBUG - dataset_name: null

@@ -10,7 +10,10 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     
     #login view
-    url(r'^login/$',views.login,name='login'),
+    url(r'^login/$',views.login_page,name='login_page'),
+    
+    #logout view
+    url(r'^logout/$',views.logout_page,name='logout_page'),
     
     #auth view
     url(r'^auth/$',views.auth,name='auth'),

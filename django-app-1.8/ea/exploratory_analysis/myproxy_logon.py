@@ -84,13 +84,14 @@ LIFETIME=%d\0"""
 
 def myproxy_logon_py(hostname,username,passphrase,outfile,lifetime=43200,port=7512):
     
+    '''
     print 'hostname: ' + hostname
     print 'username: ' + username
     #print 'passphrase: ' + passphrase
     print 'outfile: ' + outfile
     print 'lifetime: ' + str(lifetime)
     print 'port: ' + str(port)
-    
+    '''
     
     context = SSL.Context(SSL.SSLv3_METHOD)
 
@@ -120,14 +121,11 @@ def myproxy_logon_py(hostname,username,passphrase,outfile,lifetime=43200,port=75
     
     
     if debuglevel(1): print "debug: get server response"
-    print 'am i here 1'
     dat = conn.recv(8192)
     
-    print 'am i here 2'
     
     if debuglevel(1): print dat
     response,errortext = deserialize_response(dat)
-    print 'am i here 3'
     
     if response:
         raise GetException(errortext)
@@ -181,7 +179,6 @@ def myproxy_logon_py(hostname,username,passphrase,outfile,lifetime=43200,port=75
     # - rest of cert chain
     if debuglevel(1): print "debug: write proxy and certs to",outfile
     
-    print "debug: write proxy and certs to",outfile
     
     if isinstance(outfile,str):
         f = file(outfile,'w')
@@ -225,48 +222,21 @@ if __name__ == '__main__':
     debug = options.debug
 
     # process options
-    '''
-    host = options.host
-    if not host:
-        print "Error: MyProxy host not specified"
-        sys.exit(1)
-    print 'host: ' + host
-    '''
+   
     host = 'esg.ccs.ornl.gov'
     
-    '''
-    port = int(options.port)
-    username = options.username
-    if not username:
-        if sys.platform == 'win32':
-            username = os.environ["USERNAME"]
-        else:
-            import pwd
-            username = pwd.getpwuid(os.geteuid())[0]
-    lifetime = int(options.lifetime)
-    '''
+    
     port = 7512
     username = 'jfharney'
     lifetime = 43200
     
-    '''
-    outfile = options.outfile
-    if not outfile:
-        if sys.platform == 'win32':
-            outfile = 'proxy'
-        elif sys.platform in ['linux2','darwin']:
-            outfile = '/tmp/x509up_u%s' % (os.getuid())
-    elif outfile.lower()=="stdout":
-        outfile = sys.stdout
-        
-    '''   
+    
     
     outfile = '/tmp/x509up_u%s' % (os.getuid())
     
     # Get MyProxy password
     #passphrase = getpass.getpass()
 
-    passphrase = 'Mattryan12'
     
     
     import traceback
