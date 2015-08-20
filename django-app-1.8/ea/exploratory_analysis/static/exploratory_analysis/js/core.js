@@ -1,6 +1,6 @@
 var EA = EA || {};
 
-EA.host = 'acme-ea-dev2.ornl.gov';
+EA.host = 'localhost';
 EA.port = '8081' //document.location.port;
 
 EA.default_groups = ['ACME'];
