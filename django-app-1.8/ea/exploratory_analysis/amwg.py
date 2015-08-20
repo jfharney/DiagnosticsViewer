@@ -1,3 +1,4 @@
+
 '''
 Begin page generator for atm
 '''
@@ -8,37 +9,44 @@ from django.views.generic import View
 from django.template import RequestContext, loader
 from django.contrib.auth import authenticate, login
 
-import traceback
-import os
-
 from metrics.frontend import amwgmaster
 from utils import generate_token_url
 
-#various variables that need to go into a config file
-#esgfAuth - flag for turning on (True) or turning off (False) esgf authentication
-esgfAuth = False
+import traceback
+import os
 
-#the directory for the certs to be fetched
-proxy_cert_dir = '/tmp'
+import ConfigParser
+config = ConfigParser.ConfigParser()
 
-#naAuthReq - authentication via the cookie on (True) or off (False)
-authReq = True
-
-#certNameSuffix - the suffix of the certificate file
-certNameSuffix = 'x509acme'
+fp = open('eaconfig.cfg')
+print 'Open returned: ', fp
+config.readfp(fp)
+print 'Looking for config in ', os.getcwd()
 
 
-ea_root = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer'
-uvcdat_live_root = ea_root+ '/django-app-1.8/uvcdat_live/' 
-img_cache_path = uvcdat_live_root + '/exploratory_analysis/static/exploratory_analysis/cache/'
-staticfiles_dirs = uvcdat_live_root + "/exploratory_analysis/static/exploratory_analysis"
+root = config.get('paths', 'root')
 
-javascript_namespace = 'EA_CLASSIC_VIEWER.functions.'
+esgfAuth = config.get('options','esgfAuth')
+authReq = config.get('options', 'authReq')
 
+proxy_cert_dir = config.get('certificate', 'proxy_cert_dir')
+certNameSuffix = config.get('certificate', 'certNameSuffix')
 
+ea_root = os.path.join(root, config.get('paths', 'ea_dir'))
 
+img_cache_path = os.path.join(root, config.get('paths', 'img_cache_path'))
+staticfiles_dirs = os.path.join(root, config.get('paths', 'staticfiles_dirs'))
 
+javascript_namespace = config.get('namespaces', 'javascript_namespace')
 
+ea_name = str(config.get('options', 'hostname'))
+ea_port = str(config.get('options', 'port'))
+print type(ea_name)
+print type(ea_port)
+
+ea_hostname = '%s:%s' % (str(ea_name),str(ea_port))
+print 'EA_HOSTNAME: %s' % ea_hostname
+fp.close()
 
 def pageHeader(dataset,sets):
     '''
@@ -68,7 +76,19 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
     
     print 'img_cache_path: ' + img_cache_path
     
-    print 'sets: ' + sets
+    print 'sets passed in: ' + sets
+    if '_' in sets:
+        ind = sets.find('_')
+        setv = sets[ind+1:]
+        print 'actual set:', setv
+        sets = setv
+        if 'set' in sets: # now remove set from set[number]
+            ind = sets.find('t')
+            setv = sets[ind+1:]
+            print 'actual set: ', setv
+            sets = setv
+        
+       
     
     html = ''
     try:
@@ -86,11 +106,6 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
         
         
         obssort = 1 
-   
-        
-    
-    
-        
         
         print 'DEFAULTING TO ALL VARS FOR NOW'
         print 'DEFAULTING TO EXISTING FILENAME CONVENTIONS'
@@ -120,19 +135,18 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
         # Eventually this might be per-variable...
         hasCombined = amwgmaster.diags_collection[sets].get('combined',False)
 
+      
         print '\n\n\n'
         print 'regions: ' + str(regions)
         print 'varlist: ' + str(varlist)
         print 'obslist: ' + str(obslist)
         print 'hasCombined: ' + str(hasCombined)
+        print 'sets: ' + str(sets)
         
         print '\n\n'
         
         specialCases = ['1', '2', '11', '12', '13', '14']
    
-        ea_hostname = 'localhost'
-        
-        
         html += '<TABLE>'
 
         
