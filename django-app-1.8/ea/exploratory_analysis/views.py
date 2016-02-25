@@ -238,6 +238,11 @@ def isLoggedIn(request,user_id):
     if (str(request.user) == str(user_id)):
         loggedIn = True
         
+        
+    #take out when putting security back in
+    loggedIn = True
+    
+    
     return loggedIn
 
 
