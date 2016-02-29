@@ -45,17 +45,21 @@
 				<div class="row-fluid create_tree_options">
 					<label for="selectD" >Dataset:</label>
 					<br>
-					<select id="selectD" multiple="multiple"></select>
+					<select id="selectD" multiple="multiple" id="dataset_dropdown"></select>
 					<br>
 				</div>
 				<br>
-				<div class="row-fluid create_tree_options">
+				 
+				<div class="row-fluid create_tree_options" id="package_dropdown" style="display:none">
 					<label for="selectP" >Package:</label>
 					<br>
 					<select id="selectP" multiple="multiple"></select>
 					<br>
 				</div>
 				<br>
+				
+				<!--  
+				 
 				<button type="button" class="btn btn-default" id="dataset_selected">
 					Next
 				</button>
@@ -91,75 +95,79 @@
 					</div>
 					
 				</div>
-				
+				-->
 			</div>
 			<!-- end menu -->
 			
 			
+			<div class="col-md-10">
 			
-			
-			<div class="col-md-4" style="border-right: 1px solid #000000; overflow:scroll; resize: both; padding-bottom: 250px; height:650px;max-height:5000px;">
-				
-				<button type="button" class="btn btn-default" id="go_Land_Home_Button" style="display:none">
-					Back to Land Home
-				</button>
-				<button type="button" class="btn btn-default" id="go_Atm_Home_Button" style="display:none">
-					Back to Atm Home
-				</button>
-				
-				
-				<hr>
-				<div id="landHome">
-				
-				</div>
-				<div id="atmHome">
+				<div class="col-md-5" style="border-right: 1px solid #000000; overflow:scroll; resize: both; padding-bottom: 250px; height:650px;max-height:5000px;">
+					
+					<button type="button" class="btn btn-default" id="go_Land_Home_Button" style="display:none">
+						Back to Land Home
+					</button>
+					<button type="button" class="btn btn-default" id="go_Atm_Home_Button" style="display:none">
+						Back to Atm Home
+					</button>
+					
+					
+					<hr>
+					<div id="landHome">
+					
+					</div>
+					<div id="atmHome">
+						
+					</div>
 					
 				</div>
-				
-			</div>
 			
-			<div class="col-md-6" id="plotSpace" style="overflow:scroll">
-			
+				<div class="col-md-7" id="plotSpace" style="overflow:scroll">
 				
-				<div class="row-fluid" style="margin-bottom:20px;">
 					
-					<div class='col-md-12'>
-						<button id="download"  class="btn btn-default plot_btn" type="button" onclick="EA_CLASSIC_VIEWER.functions.downloadPlot()" style="display:none">Download
-								<!-- <span class="glyphicon glyphicon-file"></span>  -->
-						</button>
-						<button id="expand" class="btn btn-default plot_btn" type="button" onclick="EA_CLASSIC_VIEWER.functions.expandPlot()" style="display:none">Open Plot in a New Page
-								<!-- <span class="glyphicon glyphicon-new-window"></span> -->
-						</button>
-						<button id="release" class="btn btn-default plot_btn" type="button" onclick="EA_CLASSIC_VIEWER.functions.releasePlot()" style="display:none;" disabled >Release
-								<!-- <span class="glyphicon glyphicon-new-window"></span> -->
-						</button>
+					<div class="row-fluid" style="margin-bottom:20px;">
+						
+						<div class='col-md-12'>
+							<button id="download"  class="btn btn-default plot_btn" type="button" onclick="EA_CLASSIC_VIEWER.functions.downloadPlot()" style="display:none">Download
+									<!-- <span class="glyphicon glyphicon-file"></span>  -->
+							</button>
+							<button id="expand" class="btn btn-default plot_btn" type="button" onclick="EA_CLASSIC_VIEWER.functions.expandPlot()" style="display:none">Open Plot in a New Page
+									<!-- <span class="glyphicon glyphicon-new-window"></span> -->
+							</button>
+							<button id="release" class="btn btn-default plot_btn" type="button" onclick="EA_CLASSIC_VIEWER.functions.releasePlot()" style="display:none;" disabled >Release
+									<!-- <span class="glyphicon glyphicon-new-window"></span> -->
+							</button>
+							
+						</div>
+							
+					
+					
+					</div>
+					
+					
+					<div class="row-fluid">
+						
+						<div id="plotArea" style="display:none">
+						
+						<!--  
+						<span style="margin-left:10px;font-weight:bold"> Plot for Selected Dataset</span>
+						<body >
+							<p>
+								Selected Plots
+							</p>
+						</body>
+						-->
+						</div>
 						
 					</div>
 						
-				
-				
-				</div>
-				
-				
-				<div class="row-fluid">
 					
-					<div id="plotArea" style="display:none">
-					
-					<!--  
-					<span style="margin-left:10px;font-weight:bold"> Plot for Selected Dataset</span>
-					<body >
-						<p>
-							Selected Plots
-						</p>
-					</body>
-					-->
-					</div>
 					
 				</div>
-					
-				
-				
+			
 			</div>
+			
+			
 			
 			
 		</div>

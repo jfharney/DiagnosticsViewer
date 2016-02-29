@@ -3,11 +3,25 @@ $(document).ready(function() {
 	var current_username = $('#username_posted').html();
 	
 	EA_MENU.functions.getGroups(current_username);
-
+	
+	EA_MENU.functions.changeMenuSelections();
+	/*
 	EA_MENU.functions.getDatasets(current_username);
+
+	alert(EA_MENU.functions.getMenuItem('#selectD'));
 	
 	EA_MENU.functions.getPackages(current_username);
+	*/
 	
+	$('#selectD').change(function() {
+		
+		EA_MENU.functions.changeMenuSelections();
+		
+		
+	}); 
+			
+	
+		
 	
 	//Next button event
 	//console.log('next button');
@@ -70,6 +84,95 @@ EA_MENU.functions = (function() {
 			return word + ' echo';
 		},
 		
+		//initial loading of selections based on the group
+		changeMenuSelections: function() {
+			
+			//remember that acme is hard-coded here - need to remove
+			var url = 'http://' + EA.host + ':' + EA.port + '/ea_services/dataset_access/' + 'ACME';//username;
+			
+			console.log('url get datasets-->' + url);
+			  
+			var data_list = EA.default_datasets;
+
+			//need to get the data list from a service
+			$.ajax({
+				  type: "GET",
+				  url: url,
+				  success: function(response_data)
+				  {
+				  	  var response_data_json = JSON.parse(response_data);
+					  console.log('success ' + response_data);
+					  
+					  EA_MENU.functions.makeMenuSelection("#selectD",response_data_json['dataset_list'],'select a dataset',false);
+					
+					  //alert('downdown ready');
+					  
+					  //get the dataset selected here
+					  
+					  //var url = '/ea_services/dataset_packages/' + 'ACME';//username;
+					  
+					  //alert('changing to dataset: ' + EA_MENU.functions.getMenuItem('#selectD'));
+					  
+					  var url = '/ea_services/dataset_packages/' + EA_MENU.functions.getMenuItem('#selectD');//'z';//username;
+					  //http://<host>:<port>/exploratory_analysis/dataset_packages/(?P<dataset_name>\w+)/$
+					  console.log('url get packages-->' + url);
+						  
+					  var data_list = EA.default_packages;
+					  //EA_MENU.functions.makeMenuSelection("#selectP",data_list,'select a package',false);
+
+					  //need to get the data list from a service
+					  $.ajax({
+							  type: "GET",
+							  url: url,
+							  success: function(response_data)
+							  {
+								  console.log('success ' + response_data);
+								  
+								  var response_data_json = JSON.parse(response_data);
+								  
+								  if(response_data_json['packages'] == '') {
+									  data_list = EA.default_packages;
+								  } else {
+									  data_list = response_data_json['packages'];
+								  }
+								  
+								  EA_MENU.functions.makeMenuSelection("#selectP",data_list,'select package',false);
+
+								  //alert('show dropdown');
+								  $('#package_dropdown').show();
+								  
+								  
+								  
+								  
+								  
+							  },
+							  error: function() {
+								  console.log('error');
+
+								  //need to get the default data list 
+								  
+								  EA_MENU.functions.makeMenuSelection("#selectP",data_list,'select package',false);
+								  
+								  
+							  }
+					  });
+					  
+					  
+						//alert('dataset_dropdown: ' + $('#dataset_dropdown').val());
+				  },
+				  error: function() {
+					  console.log('error');
+
+					  //need to get the default data list 
+					  
+					  EA_MENU.functions.makeMenuSelection("#selectD",data_list,'select a dataset',false);
+					  
+
+				  }
+			});
+			
+		},
+		
 		makeMenuSelection: function(element,data_list,header,multiple) {
 			$(element).multiselect().multiselectfilter();
 			$(element).multiselect({
@@ -119,6 +222,8 @@ EA_MENU.functions = (function() {
 
 		
 		getDatasets: function(username) {
+			
+			//remember that acme is hard-coded here - need to remove
 			var url = 'http://' + EA.host + ':' + EA.port + '/ea_services/dataset_access/' + 'ACME';//username;
 			
 			console.log('url get datasets-->' + url);
@@ -136,6 +241,8 @@ EA_MENU.functions = (function() {
 					  
 					  EA_MENU.functions.makeMenuSelection("#selectD",response_data_json['dataset_list'],'select a dataset',false);
 					
+
+						//alert('dataset_dropdown: ' + $('#dataset_dropdown').val());
 				  },
 				  error: function() {
 					  console.log('error');
@@ -144,7 +251,7 @@ EA_MENU.functions = (function() {
 					  
 					  EA_MENU.functions.makeMenuSelection("#selectD",data_list,'select a dataset',false);
 					  
-					  
+
 				  }
 			});
 		},
@@ -155,9 +262,14 @@ EA_MENU.functions = (function() {
 		
 		
 		getPackages: function(username) {
-			var url = '/ea_services/dataset_packages/' + 'ACME';//username;
+			console.log('in getPackages');
+			
+			
+			
+			//var url = '/ea_services/dataset_packages/' + 'ACME';//username;
+			var url = '/ea_services/dataset_packages/' + 'z';//username;
 			//http://<host>:<port>/exploratory_analysis/dataset_packages/(?P<dataset_name>\w+)/$
-			console.log('url get datasets-->' + url);
+			console.log('url get packages-->' + url);
 			  
 			var data_list = EA.default_packages;
 			//EA_MENU.functions.makeMenuSelection("#selectP",data_list,'select a package',false);
@@ -191,6 +303,8 @@ EA_MENU.functions = (function() {
 					  
 				  }
 			});
+			
+			
 			
 		},
 		

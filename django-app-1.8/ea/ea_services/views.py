@@ -465,6 +465,8 @@ class Dataset_AccessView(View):
             data = {'dataset_list' : dataset_list}
             data_string = json.dumps(data,sort_keys=False,indent=2)
     
+            print 'access data_string: ' + str(data_string)
+    
             return HttpResponse(data_string + "\n")
             
             return HttpResponse("response")
@@ -501,27 +503,35 @@ class PackagesView(View):
         #print '\nIn GET\n'  
         logger.debug('\nIn GET\n')
         
-        #grab the record with the given dataset_name
-        da = Packages.objects.filter(dataset_name=dataset_name)
-        
-        if not da:
-            data = {'packages' : ''}
-            data_string = json.dumps(data,sort_keys=False,indent=2)
-            return HttpResponse(data_string + "\n")
-       
-        #otherwise grab the contents and return as a list
-        #note: da[0] is the only record in the filtering of the Dataset_Access objects
-        dataset_list = []
-        
-        for dataset in da[0].packages.split(','):
-            dataset_list.append(dataset)
+        try:
+            #grab the record with the given dataset_name
+            da = Packages.objects.filter(dataset_name=dataset_name)
             
-        data = {'packages' : dataset_list}
-        data_string = json.dumps(data,sort_keys=False)#,indent=2)
-
+            if not da:
+                data = {'packages' : ''}
+                data_string = json.dumps(data,sort_keys=False,indent=2)
+                return HttpResponse(data_string + "\n")
+           
+            #otherwise grab the contents and return as a list
+            #note: da[0] is the only record in the filtering of the Dataset_Access objects
+            packages_list = []
+            
+            for package in da[0].packages.split(','):
+                packages_list.append(package)
+                
+            data = {'packages' : packages_list}
+            data_string = json.dumps(data,sort_keys=False,indent=2)#,indent=2)
+    
+            print 'packages data_string: ' + str(data_string)
+            
+            return HttpResponse(data_string + '\n')# + "\
         
-        logger.debug("End GET\n")
-        return HttpResponse(data_string)# + "\
+        except:
+            tb = traceback.format_exc()
+            logger.debug('tb: ' + tb)
+            return HttpResponse("error")
+            
+    
 
     
     def post(self, request, dataset_name):

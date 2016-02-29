@@ -283,7 +283,7 @@ def classic_set_list_html(request):
     times = json_data['times']
     '''
     
-    if package == 'atm':
+    if (package == 'atm' or package == 'amwg'):
         print 'getting atm home'
         template = loader.get_template('exploratory_analysis/atm_home.html')
         context = RequestContext(request, {

@@ -201,6 +201,8 @@ EA_CLASSIC_VIEWER.functions = (function() {
 					
 					//console.log('appending ' + html);
 					
+					alert('pckg: ' + pckg);
+					
 					$('#landHome').empty();
 					$('#atmHome').empty();
 					if (pckg == 'lnd') {
@@ -300,6 +302,7 @@ console.log('echo: ' + EA_CLASSIC_VIEWER.functions.echo('me'));
 
 $(document).ready(function() {
 
+	
 	$('#go_Land_Home_Button').click(function(){
 		EA_CLASSIC_VIEWER.functions.load_diags_homepage();
 	});
@@ -308,11 +311,22 @@ $(document).ready(function() {
 		EA_CLASSIC_VIEWER.functions.load_diags_homepage();
 	});
 	
+	
+	$('#selectP').change(function() {
+		
+		//EA_MENU.functions.changeMenuSelections();
+		alert('changed pacakge');
+		EA_CLASSIC_VIEWER.functions.load_diags_homepage();
+		
+	}); 
+
+	/*
 	$('button#plots').click(function() {
 		
 		EA_CLASSIC_VIEWER.functions.load_diags_homepage();
 		
 	});
+	*/
 	
 });
 
