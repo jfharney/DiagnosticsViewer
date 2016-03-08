@@ -36,7 +36,7 @@ $(document).ready(function(){
 				'peernode':peernode
 		};
 		
-		var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/auth/';
+		var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/auth_noesgf/';
 		
 		$.ajax({
 			  type: "POST",
@@ -45,10 +45,11 @@ $(document).ready(function(){
 			  contentType: 'application/json',
 			  success: function(data)
 			  { 
+				  
 				  console.log(data);
 				  
 				  if(data == 'Authenticated') {
-					  //alert('Authenticated - go to the main page with the username');
+					  console.log('Authenticated - go to the main page with the username');
 					  //window.location = 'http://localhost:8081/exploratory_analysis/main/' + username;
 					  window.location = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/main/' + username;
 				  } else {

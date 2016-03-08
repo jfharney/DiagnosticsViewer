@@ -1208,3 +1208,237 @@ In GET
 2016-02-26 20:57:44,738 - exploratory_analysis - DEBUG - 
 In GET
 
+2016-02-29 19:06:33,999 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2016-02-29 19:06:33,999 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2016-02-29 19:06:34,016 - exploratory_analysis - DEBUG - 
+In GET
+
+2016-02-29 19:06:34,016 - exploratory_analysis - DEBUG - 
+In GET
+
+2016-02-29 19:15:25,698 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2016-02-29 19:15:25,698 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2016-02-29 19:15:25,712 - exploratory_analysis - DEBUG - 
+In GET
+
+2016-02-29 19:15:25,712 - exploratory_analysis - DEBUG - 
+In GET
+
+2016-03-08 14:56:03,024 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2016-03-08 14:56:03,024 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2016-03-08 14:56:03,049 - exploratory_analysis - DEBUG - 
+In GET
+
+2016-03-08 14:56:03,049 - exploratory_analysis - DEBUG - 
+In GET
+
+2016-03-08 14:56:13,180 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2016-03-08 14:56:13,180 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2016-03-08 14:56:13,196 - exploratory_analysis - DEBUG - 
+In GET
+
+2016-03-08 14:56:13,196 - exploratory_analysis - DEBUG - 
+In GET
+
+2016-03-08 15:43:44,258 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2016-03-08 15:43:44,258 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2016-03-08 15:43:44,276 - exploratory_analysis - DEBUG - 
+In GET
+
+2016-03-08 15:43:44,276 - exploratory_analysis - DEBUG - 
+In GET
+
+2016-03-08 15:43:57,760 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2016-03-08 15:43:57,760 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2016-03-08 15:43:57,775 - exploratory_analysis - DEBUG - 
+In GET
+
+2016-03-08 15:43:57,775 - exploratory_analysis - DEBUG - 
+In GET
+
+2016-03-08 15:44:18,676 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2016-03-08 15:44:18,676 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2016-03-08 15:44:18,692 - exploratory_analysis - DEBUG - 
+In GET
+
+2016-03-08 15:44:18,692 - exploratory_analysis - DEBUG - 
+In GET
+
+2016-03-08 15:57:43,892 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2016-03-08 15:57:43,892 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2016-03-08 15:57:43,910 - exploratory_analysis - DEBUG - 
+In GET
+
+2016-03-08 15:57:43,910 - exploratory_analysis - DEBUG - 
+In GET
+
+2016-03-08 16:01:13,102 - exploratory_analysis - DEBUG - tb: Traceback (most recent call last):
+  File "/Users/8xo/software/classic/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/views.py", line 172, in auth
+    port=7512
+  File "/Users/8xo/software/classic/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/myproxy_logon.py", line 106, in myproxy_logon_py
+    conn.connect((hostname,port))
+  File "/usr/local/uvcdat/2.2.0/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/socket.py", line 224, in meth
+    return getattr(self._sock,name)(*args)
+error: [Errno 61] Connection refused
+
+2016-03-08 16:01:13,102 - exploratory_analysis - DEBUG - tb: Traceback (most recent call last):
+  File "/Users/8xo/software/classic/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/views.py", line 172, in auth
+    port=7512
+  File "/Users/8xo/software/classic/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/myproxy_logon.py", line 106, in myproxy_logon_py
+    conn.connect((hostname,port))
+  File "/usr/local/uvcdat/2.2.0/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/socket.py", line 224, in meth
+    return getattr(self._sock,name)(*args)
+error: [Errno 61] Connection refused
+
+2016-03-08 16:01:23,486 - exploratory_analysis - DEBUG - tb: Traceback (most recent call last):
+  File "/Users/8xo/software/classic/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/views.py", line 172, in auth
+    port=7512
+  File "/Users/8xo/software/classic/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/myproxy_logon.py", line 106, in myproxy_logon_py
+    conn.connect((hostname,port))
+  File "/usr/local/uvcdat/2.2.0/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/socket.py", line 224, in meth
+    return getattr(self._sock,name)(*args)
+error: [Errno 61] Connection refused
+
+2016-03-08 16:01:23,486 - exploratory_analysis - DEBUG - tb: Traceback (most recent call last):
+  File "/Users/8xo/software/classic/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/views.py", line 172, in auth
+    port=7512
+  File "/Users/8xo/software/classic/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/myproxy_logon.py", line 106, in myproxy_logon_py
+    conn.connect((hostname,port))
+  File "/usr/local/uvcdat/2.2.0/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/socket.py", line 224, in meth
+    return getattr(self._sock,name)(*args)
+error: [Errno 61] Connection refused
+
+2016-03-08 16:07:12,615 - exploratory_analysis - DEBUG - tb: Traceback (most recent call last):
+  File "/Users/8xo/software/classic/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/views.py", line 182, in auth
+    port=7512
+  File "/Users/8xo/software/classic/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/myproxy_logon.py", line 106, in myproxy_logon_py
+    conn.connect((hostname,port))
+  File "/usr/local/uvcdat/2.2.0/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/socket.py", line 224, in meth
+    return getattr(self._sock,name)(*args)
+error: [Errno 61] Connection refused
+
+2016-03-08 16:07:12,615 - exploratory_analysis - DEBUG - tb: Traceback (most recent call last):
+  File "/Users/8xo/software/classic/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/views.py", line 182, in auth
+    port=7512
+  File "/Users/8xo/software/classic/DiagnosticsViewer/django-app-1.8/ea/exploratory_analysis/myproxy_logon.py", line 106, in myproxy_logon_py
+    conn.connect((hostname,port))
+  File "/usr/local/uvcdat/2.2.0/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/socket.py", line 224, in meth
+    return getattr(self._sock,name)(*args)
+error: [Errno 61] Connection refused
+
+2016-03-08 16:23:42,979 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2016-03-08 16:23:42,979 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2016-03-08 16:23:43,006 - exploratory_analysis - DEBUG - 
+In GET
+
+2016-03-08 16:23:43,006 - exploratory_analysis - DEBUG - 
+In GET
+
+2016-03-08 16:24:08,612 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2016-03-08 16:24:08,612 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2016-03-08 16:24:08,627 - exploratory_analysis - DEBUG - 
+In GET
+
+2016-03-08 16:24:08,627 - exploratory_analysis - DEBUG - 
+In GET
+
+2016-03-08 16:25:12,307 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2016-03-08 16:25:12,307 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2016-03-08 16:25:12,322 - exploratory_analysis - DEBUG - 
+In GET
+
+2016-03-08 16:25:12,322 - exploratory_analysis - DEBUG - 
+In GET
+
+2016-03-08 16:26:49,243 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2016-03-08 16:26:49,243 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2016-03-08 16:26:49,263 - exploratory_analysis - DEBUG - 
+In GET
+
+2016-03-08 16:26:49,263 - exploratory_analysis - DEBUG - 
+In GET
+
+2016-03-08 16:27:27,009 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2016-03-08 16:27:27,009 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2016-03-08 16:27:27,031 - exploratory_analysis - DEBUG - 
+In GET
+
+2016-03-08 16:27:27,031 - exploratory_analysis - DEBUG - 
+In GET
+
+2016-03-08 16:32:07,115 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2016-03-08 16:32:07,115 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2016-03-08 16:32:07,131 - exploratory_analysis - DEBUG - 
+In GET
+
+2016-03-08 16:32:07,131 - exploratory_analysis - DEBUG - 
+In GET
+
+2016-03-08 16:32:16,592 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2016-03-08 16:32:16,592 - exploratory_analysis - DEBUG - 
+In Dataset_Access GET
+
+2016-03-08 16:32:16,615 - exploratory_analysis - DEBUG - 
+In GET
+
+2016-03-08 16:32:16,615 - exploratory_analysis - DEBUG - 
+In GET
+

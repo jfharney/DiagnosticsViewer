@@ -18,6 +18,9 @@ urlpatterns = [
     #auth view
     url(r'^auth/$',views.auth,name='auth'),
     
+    #auth view - no esgf
+    url(r'^auth_noesgf/$',views.auth_noesgf,name='auth_noesgf'),
+    
     #main page view
     url(r'^main/(?P<user_id>\w+)/$',views.main,name='main'),
     

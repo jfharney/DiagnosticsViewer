@@ -18,7 +18,7 @@ import logging
 import traceback
 import os
 
-from utils import generate_token_url
+from utils import isLoggedIn, generate_token_url
 
 logger = logging.getLogger('exploratory_analysis')
 logger.setLevel(logging.DEBUG)
@@ -111,6 +111,140 @@ def logout_page(request):
     })
 
     return HttpResponse(template.render(context))
+
+#authentication based on the django user model
+#VERY SIMPLISTIC - user will have to user either the ACME username or register with a simple new account
+def auth_noesgf(request):
+    
+    json_data = json.loads(request.body)
+        
+    username = json_data['username']
+    password = json_data['password']
+    
+    user = authenticate(username=username,password=password)
+                
+    if user is not None:
+        login(request,user)
+        return HttpResponse('Authenticated')
+                    
+                    
+    else:  
+        return HttpResponse('Not Authenticated')
+    
+    
+
+
+
+#Main view
+def main(request,user_id):
+  
+    #check to see if the user is logged in
+    loggedIn = isLoggedIn(request,user_id)
+    
+    template = loader.get_template('exploratory_analysis/index.html')
+    
+    if(loggedIn == False):
+        template = loader.get_template('exploratory_analysis/not_logged_in.html')
+    
+    context = RequestContext(request, {
+        'username' : str(user_id),
+        'loggedIn' : str(loggedIn)
+    })
+
+    return HttpResponse(template.render(context))
+
+
+
+
+
+#classic view
+#url(r'^classic/(?P<user_id>\w+)/$',views.classic,name='classic'),
+def classic(request,user_id):
+
+    loggedIn = isLoggedIn(request,user_id)
+    
+    template = loader.get_template('exploratory_analysis/classic.html')
+    
+    if(loggedIn == False):
+        template = loader.get_template('exploratory_analysis/not_logged_in.html')
+    
+    
+    context = RequestContext(request, {
+        'username' : str(user_id),
+        'loggedIn' : str(loggedIn)
+    })
+
+    return HttpResponse(template.render(context))
+
+
+
+
+def classic_set_list_html(request):
+
+    print 'in classic_set_list_html'
+
+    package = request.GET.get('package','')
+    print 'package: ' + package
+
+    '''
+    json_data = json.loads(request.body)
+    project = json_data['project']
+    dataset = json_data['dataset']
+    pckg = json_data['pckg']
+    variables = json_data['variables']
+    times = json_data['times']
+    '''
+    
+    if (package == 'atm' or package == 'amwg'):
+        print 'getting atm home'
+        template = loader.get_template('exploratory_analysis/atm_home.html')
+        context = RequestContext(request, {
+            
+        })
+        return HttpResponse(template.render(context))
+    else:
+        print 'getting lnd home'
+        template = loader.get_template('exploratory_analysis/land_home.html')
+        context = RequestContext(request, {
+            
+        })
+        return HttpResponse(template.render(context))
+    
+    #return HttpResponse(html);
+
+
+def classic_views_html(request):
+    """
+    Generate new clasic view html
+    The view shown depends on the package
+    """    
+    sets = str(request.GET.get('set',''))
+    
+    #sets = str(set[3:])
+    varlist = 'TLAI'
+    times = 't1'
+    dataset = 'd1'
+    options = []
+    package = ''
+    
+    print 'IN CLASSIC_VIEWS_HTML - SET: ', sets
+    html = ''
+    
+    try:
+        if package == 'lnd':
+            html = lmwg.pageGenerator(sets, varlist, times, package, dataset, options)
+        else:
+            html = amwg.pageGenerator(sets, varlist, times, package, dataset, options)
+    
+    except:
+        tb = traceback.format_exc()
+        print 'tb: ' + tb
+        return HttpResponse("error")
+        
+    print 'returning html: ' + str(html)
+    
+    return HttpResponse(html)
+
 
 
 
@@ -206,137 +340,6 @@ def auth(request):
     
     
     return HttpResponse("Hello")
-
-
-
-#Main view
-def main(request,user_id):
-  
-    #check to see if the user is logged in
-    loggedIn = isLoggedIn(request,user_id)
-    
-    template = loader.get_template('exploratory_analysis/index.html')
-    
-    if(loggedIn == False):
-        template = loader.get_template('exploratory_analysis/not_logged_in.html')
-    
-    context = RequestContext(request, {
-        'username' : str(user_id),
-        'loggedIn' : str(loggedIn)
-    })
-
-    return HttpResponse(template.render(context))
-
-
-
-#Belongs in a common utils package
-def isLoggedIn(request,user_id):
-    #print 'user: ' + str(request.user)
-    
-    loggedIn = False
-    
-    if (str(request.user) == str(user_id)):
-        loggedIn = True
-        
-        
-    #take out when putting security back in
-    loggedIn = True
-    
-    
-    return loggedIn
-
-
-
-def classic(request,user_id):
-
-    loggedIn = isLoggedIn(request,user_id)
-    
-    template = loader.get_template('exploratory_analysis/classic.html')
-    
-    if(loggedIn == False):
-        template = loader.get_template('exploratory_analysis/not_logged_in.html')
-    
-    
-    context = RequestContext(request, {
-        'username' : str(user_id),
-        'loggedIn' : str(loggedIn)
-    })
-
-    return HttpResponse(template.render(context))
-
-
-
-
-def classic_set_list_html(request):
-
-    print 'in classic_set_list_html'
-
-    package = request.GET.get('package','')
-    print 'package: ' + package
-
-    '''
-    json_data = json.loads(request.body)
-    project = json_data['project']
-    dataset = json_data['dataset']
-    pckg = json_data['pckg']
-    variables = json_data['variables']
-    times = json_data['times']
-    '''
-    
-    if (package == 'atm' or package == 'amwg'):
-        print 'getting atm home'
-        template = loader.get_template('exploratory_analysis/atm_home.html')
-        context = RequestContext(request, {
-            
-        })
-        return HttpResponse(template.render(context))
-    else:
-        print 'getting lnd home'
-        template = loader.get_template('exploratory_analysis/land_home.html')
-        context = RequestContext(request, {
-            
-        })
-        return HttpResponse(template.render(context))
-    
-    #return HttpResponse(html);
-
-
-def classic_views_html(request):
-    """
-    Generate new clasic view html
-    The view shown depends on the package
-    """    
-    sets = str(request.GET.get('set',''))
-    
-    #sets = str(set[3:])
-    varlist = 'TLAI'
-    times = 't1'
-    dataset = 'd1'
-    options = []
-    package = ''
-    
-    print 'IN CLASSIC_VIEWS_HTML - SET: ', sets
-    html = ''
-    
-    try:
-        if package == 'lnd':
-            html = lmwg.pageGenerator(sets, varlist, times, package, dataset, options)
-        else:
-            html = amwg.pageGenerator(sets, varlist, times, package, dataset, options)
-    
-    except:
-        tb = traceback.format_exc()
-        print 'tb: ' + tb
-        return HttpResponse("error")
-        
-    print 'returning html: ' + str(html)
-    
-    return HttpResponse(html)
-
-
-
-
-
 
 
 
