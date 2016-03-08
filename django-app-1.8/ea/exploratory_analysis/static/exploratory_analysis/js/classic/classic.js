@@ -201,7 +201,6 @@ EA_CLASSIC_VIEWER.functions = (function() {
 					
 					//console.log('appending ' + html);
 					
-					alert('pckg: ' + pckg);
 					
 					$('#landHome').empty();
 					$('#atmHome').empty();
@@ -296,9 +295,9 @@ EA_CLASSIC_VIEWER.functions = (function() {
 })();
 
 for (var key in EA_CLASSIC_VIEWER.functions) {
-	console.log('key: ' + key);
+	console.log('functions key: ' + key);
 }
-console.log('echo: ' + EA_CLASSIC_VIEWER.functions.echo('me'));
+
 
 $(document).ready(function() {
 
@@ -311,14 +310,26 @@ $(document).ready(function() {
 		EA_CLASSIC_VIEWER.functions.load_diags_homepage();
 	});
 	
-	
+
 	$('#selectP').change(function() {
 		
 		//EA_MENU.functions.changeMenuSelections();
-		alert('changed pacakge');
+		
 		EA_CLASSIC_VIEWER.functions.load_diags_homepage();
 		
 	}); 
+	
+	$('#selectD').change(function() {
+		
+		//EA_MENU.functions.changeMenuSelections();
+		
+		EA_CLASSIC_VIEWER.functions.load_diags_homepage();
+		
+	}); 
+	
+	alert('load page here');
+	EA_CLASSIC_VIEWER.functions.load_diags_homepage();
+	
 
 	/*
 	$('button#plots').click(function() {
