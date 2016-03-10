@@ -28,7 +28,7 @@ def generate_token_url(filename):
       token = hashlib.md5(''.join([secret, filename, hexTime])).hexdigest()
     
     # We build the url
-    url = ''.join([protectedPath, token, "/", hexTime, fileName])
+    url = ''.join([protectedPath, token, "/", hexTime, filename])
     return url 
 
 
