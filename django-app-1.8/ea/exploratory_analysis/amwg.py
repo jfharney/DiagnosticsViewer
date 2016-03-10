@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic import View
 from django.template import RequestContext, loader
-from django.contrib.auth import authenticate, login
+#from django.contrib.auth import authenticate, login
 
 from metrics.frontend import amwgmaster
 from utils import generate_token_url
@@ -18,35 +18,52 @@ import os
 import ConfigParser
 config = ConfigParser.ConfigParser()
 
-fp = open('eaconfig.cfg')
-print 'Open returned: ', fp
-config.readfp(fp)
-print 'Looking for config in ', os.getcwd()
+if __name__ != '__main__':
+   print 'Looking for config in ', os.getcwd()
+   fp = open('eaconfig.cfg')
+   print 'Open returned: ', fp
+   config.readfp(fp)
 
 
-root = config.get('paths', 'root')
+   root = config.get('paths', 'root')
 
-esgfAuth = config.get('options','esgfAuth')
-authReq = config.get('options', 'authReq')
+   esgfAuth = config.get('options','esgfAuth')
+   authReq = config.get('options', 'authReq')
 
-proxy_cert_dir = config.get('certificate', 'proxy_cert_dir')
-certNameSuffix = config.get('certificate', 'certNameSuffix')
+   proxy_cert_dir = config.get('certificate', 'proxy_cert_dir')
+   certNameSuffix = config.get('certificate', 'certNameSuffix')
 
-ea_root = os.path.join(root, config.get('paths', 'ea_dir'))
+   ea_root = os.path.join(root, config.get('paths', 'ea_dir'))
 
-img_cache_path = os.path.join(root, config.get('paths', 'img_cache_path'))
-staticfiles_dirs = os.path.join(root, config.get('paths', 'staticfiles_dirs'))
+   img_cache_path = os.path.join(root, config.get('paths', 'img_cache_path'))
+   staticfiles_dirs = os.path.join(root, config.get('paths', 'staticfiles_dirs'))
 
-javascript_namespace = config.get('namespaces', 'javascript_namespace')
+   javascript_namespace = config.get('namespaces', 'javascript_namespace')
 
-ea_name = str(config.get('options', 'hostname'))
-ea_port = str(config.get('options', 'port'))
-print type(ea_name)
-print type(ea_port)
+   ea_name = str(config.get('options', 'hostname'))
+   ea_port = str(config.get('options', 'port'))
+   print type(ea_name)
+   print type(ea_port)
+   print 'EA_host: %s:%s\n' % (ea_name, ea_port)
+   fp.close()
 
-ea_hostname = '%s:%s' % (str(ea_name),str(ea_port))
+else:
+   ea_name = "STANDALONE_TEST"
+   ea_port = "1234"
+   root = "."
+   esgfAuth = False
+   authReq = False
+   proxy_cert_dir = "."
+   certNameSuffix = ""
+   ea_root = "."
+   img_cache_path = "."
+   staticfiles_dirs = "."
+   javascript_namespace = "foo"
+
+
+ea_hostname = ':'.join([str(ea_name), str(ea_port)])
+ea_hostname = str(ea_name)
 print 'EA_HOSTNAME: %s' % ea_hostname
-fp.close()
 
 def pageHeader(dataset,sets):
     '''
@@ -76,8 +93,9 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
     
     print 'img_cache_path: ' + img_cache_path
     
+    
     print 'sets passed in: ' + sets
-    if '_' in sets:
+    if '_' in sets and 'tier1b' not in sets: # need to figure out why this code was there before
         ind = sets.find('_')
         setv = sets[ind+1:]
         print 'actual set:', setv
@@ -103,7 +121,6 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
         #sets = '4'
         
         html = pageHeader(dataset,sets)
-        
         
         obssort = 1 
         
@@ -432,7 +449,13 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
 
 
 
-
+if __name__ == '__main__':
+   for x in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', 'topten', 'tier1b_clouds']: # '41'
+      page = pageGenerator(x, 'TLAI', 't1', 'd1', 'test', [])
+      fname = 'page-%s.html' % x
+      f = open(fname, 'w')
+      f.write(page)
+      f.close()
 
 
 '''
