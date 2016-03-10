@@ -63,6 +63,7 @@ certNameSuffix = config.get("certificate","certNameSuffix")
 #ea_root = '/Users/8xo/software/exploratory_analysis/DiagnosticsViewer'
 root_dir = config.get('paths', 'root')
 ea_root = os.path.join(root_dir, config.get('paths', 'ea_dir'))
+print 'And found ea_root - ', ea_root
 
 img_cache_path = os.path.join(root_dir, config.get('paths', 'img_cache_path'))
 
@@ -277,8 +278,13 @@ def auth(request):
         import traceback
         cert_name = certNameSuffix
         outdir = os.path.join(proxy_cert_dir, username)
-        
-        
+        print 'Authreq: (%s)' % authReq
+        print type(authReq)
+
+        if authReq == 'False':
+            print 'Returning "authenticated"'
+            return HttpResponse('Authenticated')
+         
         try:
                 
                 if not os.path.exists(outdir):
