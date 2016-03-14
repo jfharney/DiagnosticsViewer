@@ -24,6 +24,9 @@ urlpatterns = [
     #main page view
     url(r'^main/(?P<user_id>\w+)/$',views.main,name='main'),
     
+    #proveance view
+    url(r'^provenance/$',views.provenance,name='provenance'),
+    
     #classic view
     url(r'^classic/(?P<user_id>\w+)/$',views.classic,name='classic'),
     

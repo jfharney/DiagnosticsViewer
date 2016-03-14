@@ -44,7 +44,7 @@ def isLoggedIn(request,user_id):
         
     
     #take out when putting security back in
-    #loggedIn = True
+    loggedIn = True
     
     
     return loggedIn

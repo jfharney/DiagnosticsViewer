@@ -248,7 +248,18 @@ def classic_views_html(request):
 
 
 
-
+def provenance(request):
+    
+    filename = request.GET.get('filename', '')
+    
+    print 'in provenance for filename ' + filename
+    
+    #insert call to dictionary
+    
+    
+    html = '<p>insert provenance data here for ' + filename + '</p>'
+    
+    return HttpResponse(html)
 
 
 

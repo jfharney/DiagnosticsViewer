@@ -64,8 +64,9 @@ EA_CLASSIC_VIEWER.functions = (function() {
 		},
 		displayTableHover: function (textTableURL) {
 			if($('#release').prop('disabled')) {
-				
+
 				$('#plotArea').empty();
+				$('#provenaceArea').empty();
 				$('.plot_btn').show();
 				var textTableURL = "<img src=\"" + textTableURL + "\" \onerror=\"EA_CLASSIC_VIEWER.functions.imgError(this);\"/>";
 				console.log('table path ' + textTableURL);
@@ -76,6 +77,7 @@ EA_CLASSIC_VIEWER.functions = (function() {
 				//$('#plotArea').append('<div>' + textTablePath + '</div>');
 				$('#plotArea').show();
 				//lastURL = tableURL;
+				$('#provenanceArea').show();
 			} 
 		},
 		
@@ -98,9 +100,13 @@ EA_CLASSIC_VIEWER.functions = (function() {
 		
 		displayImageHover: function (imageURL) {
 
+
+			//$('#proveanceArea').empty()
+			
 			if($('#release').prop('disabled')) {
 			
 				$('#plotArea').empty();
+				$('#provenanceArea').empty()
 				$('.plot_btn').show();
 				var imagePath = "<img id='displayed_image' src=\"" + imageURL + "\" \onerror=\"EA_CLASSIC_VIEWER.functions.imgError(this);\"/>";
 				console.log('html: ' + $('#plotArea').html());
@@ -110,6 +116,8 @@ EA_CLASSIC_VIEWER.functions = (function() {
 				$('#plotArea').show();
 				lastURL = imageURL;
 			
+				$('#provenanceArea').show();
+				
 			} else {
 				
 				
@@ -260,6 +268,7 @@ EA_CLASSIC_VIEWER.functions = (function() {
 			//alert($('#release').prop('disabled'))
 			if($('#release').prop('disabled')) {
 				$('#plotArea').empty();
+				$('#provenaceArea').empty();
 			} else {
 				//alert('display image');
 			}
@@ -268,6 +277,7 @@ EA_CLASSIC_VIEWER.functions = (function() {
 		
 		releasePlot: function() {
 			$('#plotArea').empty();
+			$('#provenanceArea').empty();
 			$('#release').prop('disabled','true');
 		},
 		
@@ -287,7 +297,65 @@ EA_CLASSIC_VIEWER.functions = (function() {
 			image.onerror = "";
 			image.src = EA.noImageSource;
 			return true;
-		}
+		},
+		
+		getDatasetName: function () {
+			
+			var tempLastURL = lastURL;
+			//alert(tempLastURL.search("/"));
+			
+			var index = tempLastURL.search("/");
+			while(index >= 0) {
+				tempLastURL = tempLastURL.substring(index+1);
+				index = tempLastURL.search("/");
+				//alert('tempLawstURL - ' + tempLastURL);
+			}
+			
+			
+			return tempLastURL;
+			
+		},
+		
+		getProvenance: function () {
+			
+
+			//$('#provenanceArea').append(lastURL);
+
+			$('#provenanceArea').empty();
+			
+			var filtered_figure_name = EA_CLASSIC_VIEWER.functions.getDatasetName();
+			
+			var url = '/exploratory_analysis/provenance/?filename=' + filtered_figure_name; // + '?_=' + Math.round(Math.random() * 10000);
+
+			
+			$.ajax({
+				type : "GET",
+				url : url,
+				cache : false,
+				success : function(html) {
+					
+					console.log('appending ' + html);
+					//$('#provenanceArea').empty();
+					$('#provenanceArea').append(html);
+					/*
+					$('#landHome').empty();
+					$('#atmHome').empty();
+					if (pckg == 'lnd') {
+						$('#landHome').append(html);
+					} else {
+						$('#atmHome').append(html);
+					}
+					*/
+					
+				},
+				error: function() {
+					console.log('error');
+				}
+			});
+			
+			
+			return 'text';
+		} 
 		
 	
 	
@@ -327,7 +395,6 @@ $(document).ready(function() {
 		
 	}); 
 	
-	alert('load page here');
 	EA_CLASSIC_VIEWER.functions.load_diags_homepage();
 	
 
