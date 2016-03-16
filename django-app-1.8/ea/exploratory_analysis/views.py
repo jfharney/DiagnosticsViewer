@@ -252,9 +252,9 @@ def provenance(request):
     
     filename = request.GET.get('filename', '')
     dataset_name = request.GET.get('dataset_name','')
+    package = request.GET.get('package','')
     
-    
-    print 'in provenance for filename ' + filename + ' and dataset_name ' + dataset_name
+    print 'in provenance for filename ' + filename + ' and dataset_name ' + dataset_name + ' and package: ' + package
     
     #insert call to dictionary
     
