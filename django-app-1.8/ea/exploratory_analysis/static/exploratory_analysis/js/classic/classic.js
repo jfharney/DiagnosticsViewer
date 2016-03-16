@@ -325,7 +325,8 @@ EA_CLASSIC_VIEWER.functions = (function() {
 			
 			var filtered_figure_name = EA_CLASSIC_VIEWER.functions.getDatasetName();
 			
-			var url = '/exploratory_analysis/provenance/?filename=' + filtered_figure_name; // + '?_=' + Math.round(Math.random() * 10000);
+			var dataset_name = EA_MENU.functions.getMenuItem('#selectD');
+			var url = '/exploratory_analysis/provenance/?filename=' + filtered_figure_name + '&dataset_name=' + dataset_name; // + '?_=' + Math.round(Math.random() * 10000);
 
 			
 			$.ajax({

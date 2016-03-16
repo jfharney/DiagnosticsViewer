@@ -251,8 +251,10 @@ def classic_views_html(request):
 def provenance(request):
     
     filename = request.GET.get('filename', '')
+    dataset_name = request.GET.get('dataset_name','')
     
-    print 'in provenance for filename ' + filename
+    
+    print 'in provenance for filename ' + filename + ' and dataset_name ' + dataset_name
     
     #insert call to dictionary
     
