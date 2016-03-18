@@ -221,11 +221,14 @@ def classic_views_html(request):
     The view shown depends on the package
     """    
     sets = str(request.GET.get('set',''))
+    dataset = str(request.GET.get('dataset_name'))
+    
+    print '\n\n\n' + dataset + '\n\n\n'
     
     #sets = str(set[3:])
     varlist = 'TLAI'
     times = 't1'
-    dataset = 'd1'
+    #dataset = 'd1'
     options = []
     package = ''
     

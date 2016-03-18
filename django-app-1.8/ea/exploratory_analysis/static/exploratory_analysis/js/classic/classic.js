@@ -128,7 +128,7 @@ EA_CLASSIC_VIEWER.functions = (function() {
 		
 		
 		load_sets_homepage: function (pckg,set) {
-			var url = '/exploratory_analysis/classic_views_html?set=' + set; //+ '?_=' + Math.round(Math.random() * 10000);
+			var url = '/exploratory_analysis/classic_views_html?set=' + set + '&dataset_name=' + EA_MENU.functions.getMenuItem('#selectD'); //+ '?_=' + Math.round(Math.random() * 10000);
 			
 			$.ajax({
 				type : "GET",
