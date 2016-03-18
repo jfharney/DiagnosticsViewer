@@ -111,7 +111,7 @@ EA_CLASSIC_VIEWER.functions = (function() {
 				var imagePath = "<img id='displayed_image' src=\"" + imageURL + "\" \onerror=\"EA_CLASSIC_VIEWER.functions.imgError(this);\"/>";
 				console.log('html: ' + $('#plotArea').html());
 				
-				$('#plotArea').append('<div>' + imageURL + '</div>');
+//				$('#plotArea').append('<div>' + imageURL + '</div>');
 				$('#plotArea').append('<div>' + imagePath + '</div>');
 				$('#plotArea').show();
 				lastURL = imageURL;
