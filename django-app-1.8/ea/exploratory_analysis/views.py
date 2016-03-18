@@ -71,6 +71,7 @@ staticfiles_dirs = os.path.join(root_dir, config.get('paths', 'staticfiles_dirs'
 
 javascript_namespace = config.get('namespaces','javascript_namespace')
 
+protected_path = config.get("paths", "protectedPath")
 
 # Main page.
 def index(request):
@@ -254,12 +255,30 @@ def provenance(request):
     dataset_name = request.GET.get('dataset_name','')
     package = request.GET.get('package','')
     
-    print 'in provenance for filename ' + filename + ' and dataset_name ' + dataset_name + ' and package: ' + package
+#    print 'in provenance for filename ' + filename + ' and dataset_name ' + dataset_name + ' and package: ' + package
     
-    #insert call to dictionary
+#    print 'getting config'
+    path = config.get('paths', 'realPath')
+#    print 'Importing vcs'
     
+    import vcs
+    fname = os.path.join(path, dataset_name, package, filename)
+#    print 'Looking for metadata in ', fname
+
+
+    md = vcs.png_read_metadata(fname)
+#    print 'Found: (%s)' % md
+
+    if md == None or type(md) is not dict or md == {}:
+      html = '<p>No provenance data found for ' + filename + '</p>'
+    else:
+      html = '<table border=1>'
+      for k in md.keys():
+         html += '<tr><td>%s</td><td>%s</td></tr>' % ( k, md[k])
+      html += '</table>'
+
+#    print 'html: ', html
     
-    html = '<p>insert provenance data here for ' + filename + '</p>'
     
     return HttpResponse(html)
 
