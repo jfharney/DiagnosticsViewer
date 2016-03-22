@@ -127,8 +127,10 @@ EA_CLASSIC_VIEWER.functions = (function() {
 		},
 		
 		
-		load_sets_homepage: function (pckg,set) {
-			var url = '/exploratory_analysis/classic_views_html?set=' + set + '&dataset_name=' + EA_MENU.functions.getMenuItem('#selectD'); //+ '?_=' + Math.round(Math.random() * 10000);
+		load_sets_homepage: function (pckg,dataset,set) {
+
+			var url = '/exploratory_analysis/classic_views_html?set=' + set + '&dataset_name=' + dataset + '&package=' + pckg;   //+ '?_=' + Math.round(Math.random() * 10000);
+            console.log('url: ', url);
 			
 			$.ajax({
 				type : "GET",
@@ -138,7 +140,7 @@ EA_CLASSIC_VIEWER.functions = (function() {
 				//async : false,
 				success : function(html) {
 					
-					console.log('html: ' + html);
+//					console.log('html: ' + html);
 
 					$('#landHome').empty();
 					$('#atmHome').empty();
@@ -230,7 +232,7 @@ EA_CLASSIC_VIEWER.functions = (function() {
 						var set = EA_CLASSIC_VIEWER.functions.transformClassicLinkNames(this.id);
 
 						
-						EA_CLASSIC_VIEWER.functions.load_sets_homepage(pckg,set);
+						EA_CLASSIC_VIEWER.functions.load_sets_homepage(pckg,dataset,set);
 						
 						
 						

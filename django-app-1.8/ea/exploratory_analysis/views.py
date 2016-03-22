@@ -220,17 +220,18 @@ def classic_views_html(request):
     Generate new clasic view html
     The view shown depends on the package
     """    
-    sets = str(request.GET.get('set',''))
-    dataset = str(request.GET.get('dataset_name'))
+    sets = str(request.GET.get('set',None))
+    dataset = str(request.GET.get('dataset_name',None))
+    package = str(request.GET.get('package', None))
+    if dataset == None or sets == None or package == None:
+      print 'Sets or dataset not passed properly. We should never get here.'
+      quit()
     
-    print '\n\n\n' + dataset + '\n\n\n'
+    print 'Got %s - %s - %s' % (package, dataset, sets)
     
-    #sets = str(set[3:])
     varlist = 'TLAI'
     times = 't1'
-    #dataset = 'd1'
     options = []
-    package = ''
     
     print 'IN CLASSIC_VIEWS_HTML - SET: ', sets
     html = ''
@@ -246,7 +247,7 @@ def classic_views_html(request):
         print 'tb: ' + tb
         return HttpResponse("error")
         
-    print 'returning html: ' + str(html)
+#    print 'returning html: ' + str(html)
     
     return HttpResponse(html)
 

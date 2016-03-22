@@ -13,7 +13,7 @@ def generate_token_url(filename):
     secret = config.get("options","secret_key")
     protectedPath = config.get("paths", "protectedPath")
 #    print 'hashing on: (%s)(%s)' % (secret, filename)
-#    print 'filename: (%s) secret: (%s) - path - (%s)\n' % ( filename, secret, protectedPath)
+    print 'filename: (%s) secret: (%s) - path - (%s)\n' % ( filename, secret, protectedPath)
 #    print type(secret)
 #    print 'filename type: ', type(filename)
     fp.close()
