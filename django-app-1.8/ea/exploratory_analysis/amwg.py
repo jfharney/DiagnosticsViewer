@@ -95,16 +95,17 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
     
     
     print 'sets passed in: ' + sets
-    if '_' in sets and 'tier1b' not in sets: # need to figure out why this code was there before
+    # we get {classicatm}_setX passed in. Need to strip off up to the first underscore.
+    if '_' in sets: # and 'tier1b' not in sets: # need to figure out why this code was there before
         ind = sets.find('_')
         setv = sets[ind+1:]
         print 'actual set:', setv
         sets = setv
-        if 'set' in sets: # now remove set from set[number]
+        if 'set' in sets[0:3]: # now remove set from set[number]
             ind = sets.find('t')
             setv = sets[ind+1:]
-            print 'actual set: ', setv
             sets = setv
+    print 'key will be: ' + sets
         
        
     
@@ -124,21 +125,13 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
         
         obssort = 1 
         
-        print 'DEFAULTING TO ALL VARS FOR NOW'
-        print 'DEFAULTING TO EXISTING FILENAME CONVENTIONS'
-        print 'DEFAULTING TO NO ABSOLUTE PATHS'
-     
         # Determine number of columns
         # The default is just 'ANN', and if that is the only one or nothing is specified, we don't need a column for it.
         # ['NA'] is also something to deal with.
         seasons = amwgmaster.diags_collection[sets].get('seasons', ['ANN'])
-        # Were some specific seasons passed in? If so, limit our list.
-        print 'DEFAULTING TO ALL SEASONS FOR NOW'
-        #if seasons != ['NA']:
-        #   seasons = list(set(times) & set(def_seasons))
         
+	# see if there is a collections-level region. If not, set it to global. Still need checks per-variable though.
         regions = amwgmaster.diags_collection[sets].get('regions', ['Global'])
-        
         
         # get a list of all obssets used in this collection
         varlist = list(set(amwgmaster.diags_collection[sets].keys()) - set(amwgmaster.collection_special_vars))
@@ -153,15 +146,6 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
         hasCombined = amwgmaster.diags_collection[sets].get('combined',False)
 
       
-        print '\n\n\n'
-        print 'regions: ' + str(regions)
-        print 'varlist: ' + str(varlist)
-        print 'obslist: ' + str(obslist)
-        print 'hasCombined: ' + str(hasCombined)
-        print 'sets: ' + str(sets)
-        
-        print '\n\n'
-        
         specialCases = ['1', '2', '11', '12', '13', '14']
    
         html += '<TABLE>'
@@ -169,7 +153,6 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
         
         if sets not in specialCases:
             if obssort == 1:
-                print 'obsort = 1'
                 for o in obslist:
                     html += '<TR>'
                     html += '<TH><BR>' # the variable
@@ -179,76 +162,78 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
                     #print '\thtml: ' + '  <TH ALIGN=LEFT><font color="navy" size="+1">'+obsname+'</font>' # the obs/desc
                     if len(seasons) != 1:
                         for season in seasons: 
-                            print '\t    <TH>'+season
+#                            print '\t    <TH>'+season
                             html += '    <TH>'+season # the plot links
                     else:
                         html += '<TH>'
                     
                     for v in varlist:
                     # Is this obsset used by this variable?
-                        print 'v: ' + v
+#                        print 'v: ' + v
                         if amwgmaster.diags_collection[sets][v]['obs'] != None:
-                            print '\tNot None'
+#                            print '\tNot None'
                             if o in amwgmaster.diags_collection[sets][v]['obs']:
-                                print '\t\o: ' + str(o)
+#                                print '\t\o: ' + str(o)
                                 obsfname = amwgmaster.diags_obslist[o]['filekey']
                                 html += '<TR>'
                                 html += '    <TH ALIGN=LEFT>' + v
                                 html += '    <TH ALIGN=LEFT>' + amwgmaster.diags_varlist[v]['desc']
                 
-                
-                                '''
-                                if regions == ['Global']:
-                                    regionstr = '_Global'
-                                    print 'regions: ' + str(regions)
-                                '''
-                
-                                regionstr = '_Global'
-                                
-                                for season in seasons:
-                                         if season == 'NA':
-                                            seasonstr = ''
-                                         else:
-                                            seasonstr = '_'+season
-                                         if hasCombined == True:
-                                            postfix = '-combined.png'
-                                         else:
-                                            postfix = '-model.png'
-                                         varopts = amwgmaster.diags_collection[sets][v].get('varopts', False)
-                                         pfixes = amwgmaster.diags_collection[sets][v].get('postfixes', False)
-                                         if varopts == False and pfixes == False:
-                                            fname = 'http://' + ea_hostname + generate_token_url('/' + dataset + '/' + package + '/set'+sets+regionstr+seasonstr+'_'+v+'_'+obsfname+postfix)
-                                            click = 'onclick="' + javascript_namespace + 'displayImageClick(\''+fname+'\');" '
-                                            over = 'onmouseover="' + javascript_namespace + 'displayImageHover(\''+fname+'\');" '
-                                            out = 'onmouseout="' + javascript_namespace + 'nodisplayImage();" '
-                                            html_class = 'plot_links'
-                                            html += '<TH ALIGN=LEFT><A HREF="#" class="' + html_class + '" ' +click+over+out+'">plot</a> '               
-                                         else:
-                                            if pfixes == False:
-                                               for varopt in varopts:
-                                                  fname = 'http://' + ea_hostname + generate_token_url('/' + dataset + '/' + package + '/set'+sets+regionstr+seasonstr+'_'+v+'_'+varopt+'_'+obsfname+postfix)
-                                                  click = 'onclick="' + javascript_namespace + 'displayImageClick(\''+fname+'\');" '
-                                                  over = 'onmouseover="' + javascript_namespace + 'displayImageHover(\''+fname+'\');" '
-                                                  out = 'onmouseout="' + javascript_namespace + 'nodisplayImage();" '
-                                                  html_class = 'plot_links'
-                                                  html += '<TH ALIGN=LEFT><A HREF="#" class="' + html_class + '" ' +click+over+out+'">plot</a> '               
-                                            else:
-                                                print 'VERIFY WHERE THE PFIX GOES ON FILES'
-                                                for pfix in pfixes:
-                                                  fname = 'http://' + ea_hostname + generate_token_url('/' + dataset + '/' + package + '/set'+sets+regionstr+seasonstr+'_'+v+'_'+pfix+'_'+obsfname+postfix)
-                                                  click = 'onclick="' + javascript_namespace + 'displayImageClick(\''+fname+'\');" '
-                                                  over = 'onmouseover="' + javascript_namespace + 'displayImageHover(\''+fname+'\');" '
-                                                  out = 'onmouseout="' + javascript_namespace + 'nodisplayImage();" '
-                                                  html_class = 'plot_links'
-                                                  html += '<TH ALIGN=LEFT><A HREF="#" class="' + html_class + '" ' +click+over+out+'">'+pfix+'</a> '
+				for season in seasons:
+					if season == 'NA':
+						season = 'ANN'
+
+                                        if hasCombined == True:
+                                        	postfix = 'combined.png'
+                                        else:
+                                        	postfix = 'model.png'
+
+					var_regions = amwgmaster.diags_collection[sets][v].get('regions', [])
+					if var_regions == []:
+						var_regions = regions # the collection-level if we don't have a var-level.
+					 
+					for region in var_regions:
+                                        	varopts = amwgmaster.diags_collection[sets][v].get('varopts', False)
+                                        	pfixes = amwgmaster.diags_collection[sets][v].get('postfixes', False)
+						regionstr = amwgmaster.all_regions[region].filekey
+
+						if varopts == False and pfixes == False:
+							fname_str = '/set%s_%s_%s_%s_%s-%s' % (sets, season, v, obsfname, regionstr, postfix)
+							fname = 'http://' + ea_hostname + generate_token_url('/' + dataset + '/' + package + fname_str)
+							print 'FNAME: %s - dataset (%s) package (%s) set (%s)\n' % ( fname, dataset, package, sets)
+							click = 'onclick="' + javascript_namespace + 'displayImageClick(\''+fname+'\');" '
+							over = 'onmouseover="' + javascript_namespace + 'displayImageHover(\''+fname+'\');" '
+							out = 'onmouseout="' + javascript_namespace + 'nodisplayImage();" '
+							html_class = 'plot_links'
+							html += '<TH ALIGN=LEFT><A HREF="#" class="' + html_class + '" ' +click+over+out+'">plot</a> '               
+
+						else:
+							if pfixes == False:
+								for varopt in varopts:
+									fname_str = '/set%s_%s_%s_%s_%s_%s-%s' % (sets, season, v, varopt, obsfname, regionstr, postfix)
+									fname = 'http://' + ea_hostname + generate_token_url('/' + dataset + '/' + package + fname_str)
+									click = 'onclick="' + javascript_namespace + 'displayImageClick(\''+fname+'\');" '
+									over = 'onmouseover="' + javascript_namespace + 'displayImageHover(\''+fname+'\');" '
+									out = 'onmouseout="' + javascript_namespace + 'nodisplayImage();" '
+									html_class = 'plot_links'
+									html += '<TH ALIGN=LEFT><A HREF="#" class="' + html_class + '" ' +click+over+out+'">plot</a> '               
+							else:
+								for pfix in pfixes: # these are just used on some loose-coupled diags
+									fname_str = '/set%s_%s_%s_%s_%s_%s-%s' % (sets, season, v, pfixes, obsfname, regionstr, postfix)
+									fname = 'http://' + ea_hostname + generate_token_url('/' + dataset + '/' + package + fname_str)
+									click = 'onclick="' + javascript_namespace + 'displayImageClick(\''+fname+'\');" '
+									over = 'onmouseover="' + javascript_namespace + 'displayImageHover(\''+fname+'\');" '
+									out = 'onmouseout="' + javascript_namespace + 'nodisplayImage();" '
+									html_class = 'plot_links'
+									html += '<TH ALIGN=LEFT><A HREF="#" class="' + html_class + '" ' +click+over+out+'">'+pfix+'</a> '
 
                                          
-                                         print '\nadding a link\n'
+#            		print '\nadding a link\n'
                 
             html += '</TABLE>'
                             
         # The special cases.
-        if sets == '1':
+        if sets == '1': # The tables.
             regions = amwgmaster.diags_collection[sets]['regions']
         
             html += '<TR>'
@@ -259,8 +244,8 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
                 html +='<TR>'
                 html+='<TH>'+r+'</TH>'
                 for season in seasons:
-                     #whenever these are paths.generated with diags use this?
                      fname = 'http://' + ea_hostname + generate_token_url('/' + dataset + '/' + package + '/set1_'+season+'_'+amwgmaster.all_regions[r].filekey+'-table.text')
+                     print 'amwgmaster.all_regions[%s].filekey - %s' % (r, amwgmaster.all_regions[r].filekey)
         #             print 'looking for '+fname
                      click = 'onclick="' + javascript_namespace + 'displayTable(\''+fname+'\');" '
                      over = 'onmouseover="' + javascript_namespace + 'displayTableHover(\''+fname+'\');" '
