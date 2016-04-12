@@ -15,6 +15,9 @@ urlpatterns = [
     #logout view
     url(r'^logout/$',views.logout_page,name='logout_page'),
     
+    #front end config
+    url(r'^config/$',views.config,name='config'),
+    
     #auth view
     url(r'^auth/$',views.auth,name='auth'),
     

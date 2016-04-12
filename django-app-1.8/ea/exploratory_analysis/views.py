@@ -73,6 +73,10 @@ javascript_namespace = config.get('namespaces','javascript_namespace')
 
 protected_path = config.get("paths", "protectedPath")
 
+
+EA_hostname = config.get("options", "hostname")
+EA_port = config.get("options", "port")
+
 # Main page.
 def index(request):
     
@@ -134,7 +138,23 @@ def auth_noesgf(request):
         return HttpResponse('Not Authenticated')
     
     
-
+def config(request):
+    
+    sets = str(request.GET.get('set',None))
+    dataset_name = str(request.GET.get('dataset_name',None))
+    
+    
+    print '\n\n\n\n\t\thostname: ' + str(EA_hostname)
+    
+    config_params = dict( {'EA_hostname' : str(EA_hostname)} )
+    #c_params['EA_hostname'] = str(EA_hostname)
+    config_params['EA_port'] = str(EA_port)
+    
+    data = config_params#{'config_params' : config_params}
+    data_string = json.dumps(data,sort_keys=False,indent=2)#,indent=2)
+    
+    print 'packages data_string: ' + str(data_string)
+    return HttpResponse(data_string + '\n')
 
 
 #Main view

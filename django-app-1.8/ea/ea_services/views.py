@@ -494,13 +494,6 @@ class Dataset_AccessView(View):
 
 
 #gets packages information
-#Service API for the Dataset_Access table
-#GET
-#http://<host>:<port>/exploratory_analysis/dataset_packages/<dataset_name>
-#POST
-#echo '{ "dataset" :  <dataset_name> }' | curl -d @- 'http://<host>:<port>/exploratory_analysis/dataset_packages/(?P<dataset_name>\w+)/$' -H "Accept:application/json" -H "Context-Type:application/json"
-#DELETE
-#http://<host>:<port>/exploratory_analysis/group_dataset/<group_name>
 class PackagesView(View):
     
     
