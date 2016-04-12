@@ -335,102 +335,101 @@ class Dataset_AccessView(View):
     
     def put(self, request, group_name):
     
+        from exploratory_analysis.models import Dataset_Access
+        
         #print '\nIn GET\n'  
         logger.debug('\nIn Dataset_Access PUT\n')
         
         #load the json object
         json_data = json.loads(request.body)
             
-        
         #grab the dataset added
         dataset = json_data['dataset'] #should be a string
     
-        from exploratory_analysis.models import Dataset_Access
-        
         #grab the group record
         da = Dataset_Access.objects.filter(group_name=group_name)
-        
-        #for put, APPEND the new dataset given
-        #append dataset to the end of the dataset list
-        
-        new_dataset_list = ''
-        if da:
-            new_dataset_list = da[0].dataset_list
-            
-            new_dataset_list_list = new_dataset_list.split(',')
-            
-            isDuplicate = False
-            
-            #check for duplicates
-            for entry in new_dataset_list_list:
-                logger.debug('entry: ' + entry + ' dataset: ' + dataset)
-                if entry == dataset:
-                    logger.debug('match')
-                    isDuplicate = True
-            if not isDuplicate:
-                new_dataset_list = new_dataset_list + ',' + dataset
-                logger.debug('\nNew Dataset List: ' + str(new_dataset_list))
-                da.delete()
-        else:
+    
+    
+        #if the input json data is blank AND there is no da object, create the da object and just return blank
+        if dataset == '' and not da:
+            #print 'if the input json data is blank AND there is no da object, create the da object and just save the blank'
             new_dataset_list = dataset
-        
-        
-        #logger.debug('new_dataset_list: ' + str(new_dataset_list))
-        
-        dataset_access_record = Dataset_Access(
+            dataset_access_record = Dataset_Access(
                                                   group_name=group_name,
                                                   dataset_list=new_dataset_list
                                                   )
+            
+            
+            #save to the database
+            dataset_access_record.save()
+            
+        #if the input json data is blank AND there is a da object, save the da object
+        elif dataset == '' and da:
+            print 'if the input json data is blank AND there is a da object, save nothing'
+            
+            
+        #if the input json data is not blank AND there is no da object, create the da object and populate with data
+        elif dataset != '' and not da:
+            #print 'if the input json data is not blank AND there is no da object, create the da object and populate with data'
+            
+            new_dataset_list = dataset
+            dataset_access_record = Dataset_Access(
+                                                  group_name=group_name,
+                                                  dataset_list=new_dataset_list
+                                                  )
+            
+            
+            #save to the database
+            dataset_access_record.save()
+            
+        #if the input json data is not blank AND there is a da object, union the data with old data
+        else:
+            #print 'if the input json data is not blank AND there is a da object, union the data with old data'
         
-          
-        #save to the database
-        dataset_access_record.save()
+            new_dataset_entries = set(dataset.split(','))
+            old_dataset_entries = set(da[0].dataset_list.split(','))
+            da.delete()
+            refined_dataset_list = old_dataset_entries.union(new_dataset_entries)
+            refined_str = ','.join(refined_dataset_list)
+            new_dataset_list = refined_str
         
-        all = Dataset_Access.objects.all()
+            dataset_access_record = Dataset_Access(
+                                                  group_name=group_name,
+                                                  dataset_list=new_dataset_list
+                                                  )
+            
+            
+            #save to the database
+            dataset_access_record.save()
         
-        #logger.debug('all: ' + str(all))
         
-    
         return HttpResponse("PUT Done\n")   
     
     def post(self, request, group_name):
         
+        from exploratory_analysis.models import Dataset_Access
+        
         #load the json object
         json_data = json.loads(request.body)
             
-        
         #grab the dataset added
         dataset = json_data['dataset'] #should be a string
     
-        #print 'Group_name: ' + group_name
-        #print 'dataset: ' + str(dataset)
-        
-        from exploratory_analysis.models import Dataset_Access
-        
-        #grab the group record
-        da = Dataset_Access.objects.filter(group_name=group_name)
+    
         
         
-        #for post, remove ALL datasets from the list and substitute the new one given
         new_dataset_list = dataset
-            
-        if da:
-            da.delete()
-        
         dataset_access_record = Dataset_Access(
-                                                  group_name=group_name,
-                                                  dataset_list=new_dataset_list
-                                                  )
-        
-        
+                                              group_name=group_name,
+                                              dataset_list=new_dataset_list
+                                              )
         
         
         #save to the database
         dataset_access_record.save()
         
-        all = Dataset_Access.objects.all()
-        
     
+        
         return HttpResponse("POST Done\n")   
         
     
@@ -480,8 +479,18 @@ class Dataset_AccessView(View):
         return HttpResponse("respone")
 
 
-
-
+    def delete(self, request, group_name):
+        #print '\nIn GET\n'  
+        logger.debug('\nIn Dataset_Access GET\n')
+        
+        from exploratory_analysis.models import Dataset_Access
+        #grab the group record
+        da = Dataset_Access.objects.filter(group_name=group_name)
+        
+        if da:
+           da.delete() 
+            
+        return HttpResponse("DELETE Done\n")   
 
 
 #gets packages information
@@ -603,6 +612,99 @@ class PackagesView(View):
         return HttpResponse("Success\n")
     
     
+'''
+        #grab the group record
+        da = Dataset_Access.objects.filter(group_name=group_name)
     
     
+        #if the input json data is blank AND there is no da object, create the da object and just return blank
+        if dataset == '' and not da:
+            #print 'if the input json data is blank AND there is no da object, create the da object and just save the blank'
+            new_dataset_list = dataset
+            dataset_access_record = Dataset_Access(
+                                                  group_name=group_name,
+                                                  dataset_list=new_dataset_list
+                                                  )
+            
+            
+            #save to the database
+            dataset_access_record.save()
+            
+        #if the input json data is blank AND there is a da object, save the da object
+        elif dataset == '' and da:
+            print 'if the input json data is blank AND there is a da object, save nothing'
+            new_dataset_list = dataset
+            dataset_access_record = Dataset_Access(
+                                                  group_name=group_name,
+                                                  dataset_list=new_dataset_list
+                                                  )
+            
+            
+            #save to the database
+            dataset_access_record.save()
+            
+        #if the input json data is not blank AND there is no da object, create the da object and populate with data
+        elif dataset != '' and not da:
+            #print 'if the input json data is not blank AND there is no da object, create the da object and populate with data'
+            
+            new_dataset_list = dataset
+            dataset_access_record = Dataset_Access(
+                                                  group_name=group_name,
+                                                  dataset_list=new_dataset_list
+                                                  )
+            
+            
+            #save to the database
+            dataset_access_record.save()
+            
+        #if the input json data is not blank AND there is a da object, union the data with old data
+        else:
+            #print 'if the input json data is not blank AND there is a da object, union the data with old data'
+        
+            new_dataset_list = dataset
+            dataset_access_record = Dataset_Access(
+                                                  group_name=group_name,
+                                                  dataset_list=new_dataset_list
+                                                  )
+            
+            
+            #save to the database
+            dataset_access_record.save()
+'''    
     
+''' removed 4-13
+        #load the json object
+        json_data = json.loads(request.body)
+            
+        
+        #grab the dataset added
+        dataset = json_data['dataset'] #should be a string
+    
+        #print 'Group_name: ' + group_name
+        #print 'dataset: ' + str(dataset)
+        
+        from exploratory_analysis.models import Dataset_Access
+        
+        #grab the group record
+        da = Dataset_Access.objects.filter(group_name=group_name)
+        
+        
+        #for post, remove ALL datasets from the list and substitute the new one given
+        new_dataset_list = dataset
+            
+        if da:
+            da.delete()
+        
+        dataset_access_record = Dataset_Access(
+                                                  group_name=group_name,
+                                                  dataset_list=new_dataset_list
+                                                  )
+        
+        
+        
+        
+        #save to the database
+        dataset_access_record.save()
+        
+'''
+      
