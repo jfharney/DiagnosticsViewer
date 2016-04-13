@@ -17,6 +17,7 @@ EA.noImageSource = "/static/exploratory_analysis/img/classic/Noimage.png";
 EA.config_url = '/exploratory_analysis/config?set=' + 'set' + '&dataset_name=' + 'dataset';// + '&package=' + pckg;   //+ '?_=' + Math.round(Math.random() * 10000);
 console.log('url: ', EA.config_url);
 
+/*
 
 $.ajax({
 	type : "GET",
@@ -39,7 +40,7 @@ $.ajax({
 		console.log('error');
 	}
 });
-
+*/
 
 
 var EA_CLASSIC_VIEWER = EA_CLASSIC_VIEWER || {};
