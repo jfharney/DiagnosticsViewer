@@ -8,6 +8,7 @@ import json
 import logging
 import traceback
 import os
+import urllib
 
 logger = logging.getLogger('exploratory_analysis')
 logger.setLevel(logging.DEBUG)
@@ -411,6 +412,7 @@ class Dataset_AccessView(View):
         
         #load the json object
         json_data = json.loads(request.body)
+        #json_data = json.loads(urllib.unquote(request.body))
             
         #grab the dataset added
         dataset = json_data['dataset'] #should be a string
