@@ -13,10 +13,15 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 import ConfigParser
+
 config = ConfigParser.ConfigParser()
-config.read('eaconfig.cfg')
+CFG_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "eaconfig.cfg")
+config.read(CFG_PATH)
+
+print config.sections()
 
 BASE_DIR = config.get('paths', 'root')
+os.chdir(BASE_DIR)
 
 DEBUG=config.get('options', 'debug')
 

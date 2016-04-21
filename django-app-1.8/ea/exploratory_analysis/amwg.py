@@ -7,6 +7,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic import View
 from django.template import RequestContext, loader
+from django.conf import settings
 #from django.contrib.auth import authenticate, login
 
 from metrics.frontend import amwgmaster
@@ -19,8 +20,7 @@ import ConfigParser
 config = ConfigParser.ConfigParser()
 
 if __name__ != '__main__':
-   print 'Looking for config in ', os.getcwd()
-   fp = open('eaconfig.cfg')
+   fp = open(settings.CFG_PATH)
    print 'Open returned: ', fp
    config.readfp(fp)
 
@@ -200,7 +200,9 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
 						if varopts == False and pfixes == False:
 							fname_str = '/set%s_%s_%s_%s_%s-%s' % (sets, season, v, obsfname, regionstr, postfix)
 							fname = 'http://' + ea_hostname + generate_token_url('/' + dataset + '/' + package + fname_str)
-							print 'FNAME: %s - dataset (%s) package (%s) set (%s)\n' % ( fname, dataset, package, sets)
+#set3_ANN_PRECT_LEGATES_Global-combined.png
+                                                        
+#							print 'FNAME: %s - dataset (%s) package (%s) set (%s)\n' % ( fname, dataset, package, sets)
 							click = 'onclick="' + javascript_namespace + 'displayImageClick(\''+fname+'\');" '
 							over = 'onmouseover="' + javascript_namespace + 'displayImageHover(\''+fname+'\');" '
 							out = 'onmouseout="' + javascript_namespace + 'nodisplayImage();" '
