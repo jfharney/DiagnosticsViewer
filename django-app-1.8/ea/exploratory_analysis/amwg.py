@@ -201,7 +201,11 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
 							fname_str = '/set%s_%s_%s_%s_%s-%s' % (sets, season, v, obsfname, regionstr, postfix)
 							fname = 'http://' + ea_hostname + generate_token_url('/' + dataset + '/' + package + fname_str)
 #set3_ANN_PRECT_LEGATES_Global-combined.png
-                                                        
+                                                        #print 'find()...' + str(fname_str.find("set3_ANN_PRECT_LEGATES"))
+                                                        if fname_str.find("set3_ANN_PRECT_LEGATES") != -1: 
+                                                          print 'what should i print here?\n'
+                                                          print 'fname_str: ' + fname_str
+                                                          print 'fname: ' + str(fname)
 #							print 'FNAME: %s - dataset (%s) package (%s) set (%s)\n' % ( fname, dataset, package, sets)
 							click = 'onclick="' + javascript_namespace + 'displayImageClick(\''+fname+'\');" '
 							over = 'onmouseover="' + javascript_namespace + 'displayImageHover(\''+fname+'\');" '

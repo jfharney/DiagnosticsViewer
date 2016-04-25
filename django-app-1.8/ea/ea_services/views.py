@@ -342,6 +342,9 @@ class Dataset_AccessView(View):
         
         #load the json object
         json_data = json.loads(request.body)
+
+
+        print 'json_data: ' + str(json_data)
             
         #grab the dataset added
         dataset = json_data['dataset'] #should be a string
@@ -408,7 +411,9 @@ class Dataset_AccessView(View):
     def post(self, request, group_name):
         
         from exploratory_analysis.models import Dataset_Access
-        
+      
+        print '\n\n\tPOSTing...'
+  
         #load the json object
         json_data = json.loads(request.body)
             
@@ -416,7 +421,7 @@ class Dataset_AccessView(View):
         dataset = json_data['dataset'] #should be a string
     
     
-        
+        print 'json_data: ' + str(json_data)   
         
         new_dataset_list = dataset
         dataset_access_record = Dataset_Access(
@@ -428,7 +433,7 @@ class Dataset_AccessView(View):
         #save to the database
         dataset_access_record.save()
         
-    
+        print 'POST DONE'   
         
         return HttpResponse("POST Done\n")   
         

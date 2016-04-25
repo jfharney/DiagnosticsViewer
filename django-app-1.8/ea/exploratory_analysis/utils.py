@@ -11,11 +11,14 @@ def generate_token_url(filename):
 #    print 'PROTECTED FILENAME: ', filename
     
     secret = config.get("options","secret_key")
+
+    #print 'secret: ' + str(secret)
+
     protectedPath = config.get("paths", "protectedPath")
-#    print 'hashing on: (%s)(%s)' % (secret, filename)
+    print 'hashing on: (%s)(%s)' % (secret, filename)
     print 'filename: (%s) secret: (%s) - path - (%s)\n' % ( filename, secret, protectedPath)
-#    print type(secret)
-#    print 'filename type: ', type(filename)
+    print type(secret)
+    print 'filename type: ', type(filename)
     fp.close()
     
     ipLimitation = False                                    # Same as AuthTokenLimitByIp
