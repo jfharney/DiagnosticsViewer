@@ -420,7 +420,12 @@ class Dataset_AccessView(View):
         #grab the dataset added
         dataset = json_data['dataset'] #should be a string
     
-    
+   
+        da = Dataset_Access.objects.filter(group_name=group_name)
+
+        if da:
+          da.delete()
+ 
         print 'json_data: ' + str(json_data)   
         
         new_dataset_list = dataset

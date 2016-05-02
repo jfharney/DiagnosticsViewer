@@ -29,6 +29,11 @@ def generate_token_url(filename):
       token = hashlib.md5(''.join([secret, filename, hexTime, os.environ["REMOTE_ADDR"]])).hexdigest()
     else:
       token = hashlib.md5(''.join([secret, filename, hexTime])).hexdigest()
+
+
+    if filename.find('set3_ANN_PRECT_LEGATES') != -1:
+      print '\n\nfilename: ' + str(filename) + ' hexTime: ' + str(hexTime)
+      print '\n\nkey: ' + str(secret) + ' token: ' + str(token) 
     
     # We build the url
     url = ''.join([protectedPath, token, "/", hexTime, filename])
