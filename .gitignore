@@ -1,3 +1,4 @@
+
 django-app/uvcdat_live/uvcdat_live/settings.py
 
 nohup.out
@@ -30,3 +31,21 @@ nohup.out
 /django-app-1.8/ea/eaconfig.cfg
 /django-app-1.8/ea/exploratory_analysis/static/exploratory_analysis/js/core.js
 /django-app-1.8/ea/db.sqlite3
+
+*.sqlite3
+*.log
+*.pot
+*.pyc
+*.DS_Store
+local
+
+local_settings.py
+
+/admin/
+/css/
+/env/
+/fonts/
+/images/
+/js/
+/jspanel/
+
