@@ -6,7 +6,7 @@ EA_CLASSIC_VIEWER.functions = (function() {
 			return word + ' echo';
 		},
 		showButton: function (pckg) {
-			if(pckg == 'lnd') {
+			if(pckg == 'lmwg') {
 				//hide atm button
 				$('#go_Atm_Home_Button').hide();
 				
@@ -85,12 +85,10 @@ EA_CLASSIC_VIEWER.functions = (function() {
 
 			
 			if($('#release').attr('disabled')) {
-				//alert('disabled');
 				$('#release').prop('disabled', false);
 				
 			} else {
 				
-				//alert($('#displayed_image').attr('src'));
 				//make the button disabled
 				$('#release').prop('disabled', true);
 			}
@@ -129,6 +127,7 @@ EA_CLASSIC_VIEWER.functions = (function() {
 		
 		load_sets_homepage: function (pckg,dataset,set) {
 
+			//alert('set: ' + set + " dataset: " + dataset);
 			var url = '/exploratory_analysis/classic_views_html?set=' + set + '&dataset_name=' + dataset + '&package=' + pckg;   //+ '?_=' + Math.round(Math.random() * 10000);
             console.log('url: ', url);
 			
@@ -144,7 +143,8 @@ EA_CLASSIC_VIEWER.functions = (function() {
 
 					$('#landHome').empty();
 					$('#atmHome').empty();
-					if (pckg == 'lnd') {
+					//alert('appending html here for pkg: ' + pckg);
+					if (pckg == 'lmwg') {
 						$('#landHome').append(html);
 					} else {
 						$('#atmHome').append(html);
@@ -169,8 +169,6 @@ EA_CLASSIC_VIEWER.functions = (function() {
 		
 		
 		load_diags_homepage: function () {
-			
-			//alert('run diags');
 			
 			var project = EA_MENU.functions.getMenuItem('#select_Project');
 			var dataset = EA_MENU.functions.getMenuItem('#selectD');
@@ -202,6 +200,7 @@ EA_CLASSIC_VIEWER.functions = (function() {
 			
 			var url = '/exploratory_analysis/classic_set_list_html?package=' + pckg; // + '?_=' + Math.round(Math.random() * 10000);
 
+			//alert('before ajax: ' + pckg);
 			
 			$.ajax({
 				type : "GET",
@@ -214,7 +213,7 @@ EA_CLASSIC_VIEWER.functions = (function() {
 					
 					$('#landHome').empty();
 					$('#atmHome').empty();
-					if (pckg == 'lnd') {
+					if (pckg == 'lmwg') {
 						$('#landHome').append(html);
 					} else {
 						$('#atmHome').append(html);
@@ -235,23 +234,6 @@ EA_CLASSIC_VIEWER.functions = (function() {
 						EA_CLASSIC_VIEWER.functions.load_sets_homepage(pckg,dataset,set);
 						
 						
-						
-						/*
-						var index = this.id.search('_');
-
-						var set = this.id.substring(index + 1);
-						
-
-						//alert('classic toggle sets ' + set);
-						
-						load_sets_homepage(pckg,set);
-						*/
-						
-						/*
-						//console.log('this.id: ' + this.id);
-
-						toggle_vis(set);
-						*/
 					});
 					
 
@@ -267,7 +249,6 @@ EA_CLASSIC_VIEWER.functions = (function() {
 		},
 		
 		nodisplayImage: function () {
-			//alert($('#release').prop('disabled'))
 			if($('#release').prop('disabled')) {
 				$('#plotArea').empty();
 				$('#provenaceArea').empty();
@@ -304,7 +285,6 @@ EA_CLASSIC_VIEWER.functions = (function() {
 		getDatasetName: function () {
 			
 			var tempLastURL = lastURL;
-			//alert(tempLastURL.search("/"));
 			
 			var index = tempLastURL.search("/");
 			while(index >= 0) {
@@ -367,12 +347,15 @@ EA_CLASSIC_VIEWER.functions = (function() {
 })();
 
 for (var key in EA_CLASSIC_VIEWER.functions) {
-	console.log('functions key: ' + key);
+	//console.log('functions key: ' + key);
 }
 
 
 $(document).ready(function() {
-
+	
+	//alert('document ready in classic.js');
+	
+	
 	
 	$('#go_Land_Home_Button').click(function(){
 		EA_CLASSIC_VIEWER.functions.load_diags_homepage();
@@ -382,7 +365,7 @@ $(document).ready(function() {
 		EA_CLASSIC_VIEWER.functions.load_diags_homepage();
 	});
 	
-
+	/**/
 	$('#selectP').change(function() {
 		
 		//EA_MENU.functions.changeMenuSelections();
@@ -399,16 +382,10 @@ $(document).ready(function() {
 		
 	}); 
 	
-	EA_CLASSIC_VIEWER.functions.load_diags_homepage();
 	
-
-	/*
-	$('button#plots').click(function() {
-		
-		EA_CLASSIC_VIEWER.functions.load_diags_homepage();
-		
-	});
-	*/
+	
+	
+	
 	
 });
 

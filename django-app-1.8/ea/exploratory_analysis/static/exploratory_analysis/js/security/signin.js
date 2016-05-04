@@ -20,7 +20,11 @@ $(document).ready(function(){
     
 	console.log('csrftoken ' + csrftoken);
 	
-	
+	$('#register_toggle').click(function(){
+
+		console.log('in register toggle');
+		
+	});
 
 	$('#signin').click(function(){
 
@@ -35,6 +39,10 @@ $(document).ready(function(){
 				'password':password,
 				'peernode':peernode
 		};
+		
+		for(var key in input_data) {
+			console.log('key: ' + key);
+		}
 		
 		var url = 'http://' + EA.host + ':' + EA.port + '/exploratory_analysis/auth_noesgf/';
 		

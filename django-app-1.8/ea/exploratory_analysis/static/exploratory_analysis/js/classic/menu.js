@@ -5,6 +5,37 @@ $(document).ready(function() {
 	EA_MENU.functions.getGroups(current_username);
 	
 	EA_MENU.functions.changeMenuSelections();
+	
+	
+	
+	$('#selectD').change(function() {
+		
+		EA_MENU.functions.changeMenuSelections();
+		
+	}); 
+	
+
+
+	//"Select ACME" button event
+	$('button#dataset_display').click(function() {
+		$('#dataset_options').show();
+		
+		
+		//alert('show the space now for dataset: ' + EA_MENU.functions.getMenuItem('#selectD') + ' and package: ' + EA_MENU.functions.getMenuItem('#selectP'));
+		
+		EA_CLASSIC_VIEWER.functions.load_diags_homepage();
+		//these are disabled for now - they were meant to represent the variables and times for the datasets
+		//var dataset_chosen = $('#selectD').val();
+		//EA_MENU.functions.getVariables(dataset_chosen);
+		//EA_MENU.functions.getTimes(dataset_chosen);
+		
+		//debug line here
+		//EA_MENU.functions.changeMenuSelections();
+		
+	});
+	
+	
+			
 	/*
 	EA_MENU.functions.getDatasets(current_username);
 
@@ -12,18 +43,13 @@ $(document).ready(function() {
 	
 	EA_MENU.functions.getPackages(current_username);
 	*/
-	
-	$('#selectD').change(function() {
-		
-		EA_MENU.functions.changeMenuSelections();
-		
-		
-	}); 
-			
-	
 		
 	
-	//Next button event
+	
+	
+	
+	
+	/*
 	//console.log('next button');
 	$('button#dataset_selected').click(function() {
 		$('#next_options').show();
@@ -35,7 +61,7 @@ $(document).ready(function() {
 		EA_MENU.functions.getTimes(dataset_chosen);
 		
 	});
-	
+	*/
 	
 	/* Insert change calls here
 	$('#selectP').change(function() {
@@ -87,6 +113,13 @@ EA_MENU.functions = (function() {
 		//initial loading of selections based on the group
 		changeMenuSelections: function() {
 			
+			var wasNull = false;
+			if(EA_MENU.functions.getMenuItem('#selectD') == null) {
+				wasNull = true;
+				
+				
+			}
+			
 			//remember that acme is hard-coded here - need to remove
 			var url = 'http://' + EA.host + ':' + EA.port + '/ea_services/dataset_access/' + 'ACME';//username;
 			
@@ -94,6 +127,7 @@ EA_MENU.functions = (function() {
 			  
 			var data_list = EA.default_datasets;
 
+			  
 			//need to get the data list from a service
 			$.ajax({
 				  type: "GET",
@@ -101,25 +135,20 @@ EA_MENU.functions = (function() {
 				  success: function(response_data)
 				  {
 				  	  var response_data_json = JSON.parse(response_data);
-					  console.log('success ' + response_data);
+					  //console.log('success ' + response_data);
 					  
 					  EA_MENU.functions.makeMenuSelection("#selectD",response_data_json['dataset_list'],'select a dataset',false);
 					
-					  //alert('downdown ready');
-					  
-					  //get the dataset selected here
-					  
-					  //var url = '/ea_services/dataset_packages/' + 'ACME';//username;
-					  
-					  //alert('changing to dataset: ' + EA_MENU.functions.getMenuItem('#selectD'));
 					  
 					  var url = '/ea_services/dataset_packages/' + EA_MENU.functions.getMenuItem('#selectD');//'z';//username;
 					  //http://<host>:<port>/exploratory_analysis/dataset_packages/(?P<dataset_name>\w+)/$
-					  console.log('url get packages-->' + url);
+					  //console.log('url get packages-->' + url);
 						  
 					  var data_list = EA.default_packages;
 					  //EA_MENU.functions.makeMenuSelection("#selectP",data_list,'select a package',false);
 
+					  //alert('selectD: ' + EA_MENU.functions.getMenuItem('#selectD'));
+					  
 					  //need to get the data list from a service
 					  $.ajax({
 							  type: "GET",
@@ -138,18 +167,15 @@ EA_MENU.functions = (function() {
 								  
 								  EA_MENU.functions.makeMenuSelection("#selectP",data_list,'select package',false);
 
-								  //alert('show dropdown');
 								  $('#package_dropdown').show();
-								  
-								  
-								  
+
+								  //alert('selectD: ' +  EA_MENU.functions.getMenuItem('#selectD'));
+								  //alert('selectP: ' +  EA_MENU.functions.getMenuItem('#selectP'));
 								  
 								  
 							  },
 							  error: function() {
 								  console.log('error');
-
-								  //need to get the default data list 
 								  
 								  EA_MENU.functions.makeMenuSelection("#selectP",data_list,'select package',false);
 								  
@@ -158,7 +184,6 @@ EA_MENU.functions = (function() {
 					  });
 					  
 					  
-						//alert('dataset_dropdown: ' + $('#dataset_dropdown').val());
 				  },
 				  error: function() {
 					  console.log('error');
@@ -367,6 +392,28 @@ EA_MENU.functions = (function() {
 	};
 	
 })();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -42,9 +42,9 @@ if __name__ != '__main__':
 
    ea_name = str(config.get('options', 'hostname'))
    ea_port = str(config.get('options', 'port'))
-   print type(ea_name)
-   print type(ea_port)
-   print 'EA_host: %s:%s\n' % (ea_name, ea_port)
+   #print type(ea_name)
+   #print type(ea_port)
+   #print 'EA_host: %s:%s\n' % (ea_name, ea_port)
    fp.close()
 
 else:
@@ -63,7 +63,7 @@ else:
 
 ea_hostname = ':'.join([str(ea_name), str(ea_port)])
 ea_hostname = str(ea_name)
-print 'EA_HOSTNAME: %s' % ea_hostname
+#print 'EA_HOSTNAME: %s' % ea_hostname
 
 def pageHeader(dataset,sets):
     '''
@@ -94,7 +94,7 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
     print 'img_cache_path: ' + img_cache_path
     
     
-    print 'sets passed in: ' + sets
+    #print 'sets passed in: ' + sets
     # we get {classicatm}_setX passed in. Need to strip off up to the first underscore.
     if '_' in sets: # and 'tier1b' not in sets: # need to figure out why this code was there before
         ind = sets.find('_')
@@ -105,7 +105,7 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
             ind = sets.find('t')
             setv = sets[ind+1:]
             sets = setv
-    print 'key will be: ' + sets
+    #print 'key will be: ' + sets
         
        
     
@@ -201,11 +201,13 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
 							fname_str = '/set%s_%s_%s_%s_%s-%s' % (sets, season, v, obsfname, regionstr, postfix)
 							fname = 'http://' + ea_hostname + generate_token_url('/' + dataset + '/' + package + fname_str)
 #set3_ANN_PRECT_LEGATES_Global-combined.png
+                                                        '''
                                                         #print 'find()...' + str(fname_str.find("set3_ANN_PRECT_LEGATES"))
                                                         if fname_str.find("set3_ANN_PRECT_LEGATES") != -1: 
                                                           print 'what should i print here?\n'
                                                           print 'fname_str: ' + fname_str
                                                           print 'fname: ' + str(fname)
+                                                        '''
 #							print 'FNAME: %s - dataset (%s) package (%s) set (%s)\n' % ( fname, dataset, package, sets)
 							click = 'onclick="' + javascript_namespace + 'displayImageClick(\''+fname+'\');" '
 							over = 'onmouseover="' + javascript_namespace + 'displayImageHover(\''+fname+'\');" '
@@ -430,7 +432,7 @@ def pageGenerator(sets, varlist, times, package, dataset, options):
     
     except:
         tb = traceback.format_exc()
-        print 'tb: ' + tb
+        #print 'tb: ' + tb
         return HttpResponse("error")
     
     

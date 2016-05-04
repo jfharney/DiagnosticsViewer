@@ -42,22 +42,31 @@
 					<br>
 				</div>
 				<br>
-				<div class="row-fluid create_tree_options">
-					<label for="selectD" >Dataset:</label>
-					<br>
-					<select id="selectD" multiple="multiple" id="dataset_dropdown"></select>
-					<br>
-				</div>
+				
+				<button type="button" class="btn btn-default" id="dataset_display">
+					Select ACME
+				</button>
+				
 				<br>
-				 
-				<div class="row-fluid create_tree_options" id="package_dropdown" style="display:none">
-					<label for="selectP" >Package:</label>
-					<br>
-					<select id="selectP" multiple="multiple"></select>
-					<br>
-				</div>
 				<br>
 				
+				<div style="display:none" id="dataset_options">
+					<div class="row-fluid create_tree_options">
+						<label for="selectD" >Dataset:</label>
+						<br>
+						<select id="selectD" multiple="multiple" id="dataset_dropdown"></select>
+						<br>
+					</div>
+					<br>
+					 
+					<div class="row-fluid create_tree_options" id="package_dropdown" style="display:none">
+						<label for="selectP" >Package:</label>
+						<br>
+						<select id="selectP" multiple="multiple"></select>
+						<br>
+					</div>
+					<br>
+				</div>
 				<!--  
 				 
 				<button type="button" class="btn btn-default" id="dataset_selected">

@@ -15,10 +15,10 @@ def generate_token_url(filename):
     #print 'secret: ' + str(secret)
 
     protectedPath = config.get("paths", "protectedPath")
-    print 'hashing on: (%s)(%s)' % (secret, filename)
-    print 'filename: (%s) secret: (%s) - path - (%s)\n' % ( filename, secret, protectedPath)
-    print type(secret)
-    print 'filename type: ', type(filename)
+    #print 'hashing on: (%s)(%s)' % (secret, filename)
+    #print 'filename: (%s) secret: (%s) - path - (%s)\n' % ( filename, secret, protectedPath)
+    #print type(secret)
+    #print 'filename type: ', type(filename)
     fp.close()
     
     ipLimitation = False                                    # Same as AuthTokenLimitByIp
@@ -30,10 +30,11 @@ def generate_token_url(filename):
     else:
       token = hashlib.md5(''.join([secret, filename, hexTime])).hexdigest()
 
-
+    '''
     if filename.find('set3_ANN_PRECT_LEGATES') != -1:
       print '\n\nfilename: ' + str(filename) + ' hexTime: ' + str(hexTime)
       print '\n\nkey: ' + str(secret) + ' token: ' + str(token) 
+    '''
     
     # We build the url
     url = ''.join([protectedPath, token, "/", hexTime, filename])
@@ -42,9 +43,9 @@ def generate_token_url(filename):
 
 #Belongs in a common utils package
 def isLoggedIn(request,user_id):
-    print '\n\n\nIN isLoggedIn'
-    print 'user: ' + str(request.user)
-    print 'user_id: ' + user_id
+    #print '\n\n\nIN isLoggedIn'
+    #print 'user: ' + str(request.user)
+    #print 'user_id: ' + user_id
     loggedIn = False
     
     if (str(request.user) == str(user_id)):

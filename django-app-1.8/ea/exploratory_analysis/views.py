@@ -34,7 +34,7 @@ logger.addHandler(fh)
 
 import ConfigParser
 
-print 'This one is looking for ./eaconfig.cfg'
+#print 'This one is looking for ./eaconfig.cfg'
 config = ConfigParser.ConfigParser()
 config.read('eaconfig.cfg')
 
@@ -98,6 +98,7 @@ def login_page(request):
         
     })
 
+
     return HttpResponse(template.render(context))
 
 def logout_page(request):
@@ -129,6 +130,7 @@ def auth_noesgf(request):
     
     user = authenticate(username=username,password=password)
                 
+    print 'in auth_noesgf: ' + str(user)
     if user is not None:
         login(request,user)
         return HttpResponse('Authenticated')
@@ -144,7 +146,7 @@ def config(request):
     dataset_name = str(request.GET.get('dataset_name',None))
     
     
-    print '\n\n\n\n\t\thostname: ' + str(EA_hostname)
+    #print '\n\n\n\n\t\thostname: ' + str(EA_hostname)
     
     config_params = dict( {'EA_hostname' : str(EA_hostname)} )
     #c_params['EA_hostname'] = str(EA_hostname)
@@ -153,7 +155,7 @@ def config(request):
     data = config_params#{'config_params' : config_params}
     data_string = json.dumps(data,sort_keys=False,indent=2)#,indent=2)
     
-    print 'packages data_string: ' + str(data_string)
+    #print 'packages data_string: ' + str(data_string)
     return HttpResponse(data_string + '\n')
 
 
@@ -203,10 +205,10 @@ def classic(request,user_id):
 
 def classic_set_list_html(request):
 
-    print 'in classic_set_list_html'
+    #print 'in classic_set_list_html'
 
     package = request.GET.get('package','')
-    print 'package: ' + package
+    #print 'package: ' + package
 
     '''
     json_data = json.loads(request.body)
@@ -218,14 +220,14 @@ def classic_set_list_html(request):
     '''
     
     if (package == 'atm' or package == 'amwg'):
-        print 'getting atm home'
+        #print 'getting atm home'
         template = loader.get_template('exploratory_analysis/atm_home.html')
         context = RequestContext(request, {
             
         })
         return HttpResponse(template.render(context))
     else:
-        print 'getting lnd home'
+        #print 'getting lnd home'
         template = loader.get_template('exploratory_analysis/land_home.html')
         context = RequestContext(request, {
             
@@ -253,7 +255,7 @@ def classic_views_html(request):
     times = 't1'
     options = []
     
-    print 'IN CLASSIC_VIEWS_HTML - SET: ', sets
+    #print 'IN CLASSIC_VIEWS_HTML - SET: ', sets
     html = ''
     
     try:
@@ -264,7 +266,7 @@ def classic_views_html(request):
     
     except:
         tb = traceback.format_exc()
-        print 'tb: ' + tb
+        #print 'tb: ' + tb
         return HttpResponse("error")
         
 #    print 'returning html: ' + str(html)
